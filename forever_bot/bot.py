@@ -21,6 +21,7 @@ from discord.ext import commands, tasks
 from . import __version__
 from . import classes as K
 from . import content as C
+from . import guides as G
 from . import render as R
 from .fetchers import Twitch, YouTube, refresh_all
 from .logsetup import Timer, ev, setup_logging
@@ -153,6 +154,81 @@ class DeepDiveButton(discord.ui.DynamicItem[discord.ui.Button], template=r"dd:(?
         await interaction.response.send_message(embed=discord.Embed.from_dict(e), ephemeral=True)
 
 
+GUIDE_KINDS = {"tips": ("Class tips", "🎯"), "keys": ("Keybinds", "⌨️"), "macros": ("Macros", "🧩"), "rot": ("Rotation", "🔁")}
+
+
+def guide_embed(cls: str, kind: str, faction: str = "horde") -> dict | None:
+    return {"tips": lambda: R.classtips_embed(cls, faction), "keys": lambda: R.keybinds_embed(cls),
+            "macros": lambda: R.macros_embed(cls), "rot": lambda: R.rotation_embed(cls)}.get(kind, lambda: None)()
+
+
+class ClassGuideButton(discord.ui.DynamicItem[discord.ui.Button], template=r"cg:(?P<cls>[A-Za-z]{4,10}):(?P<kind>tips|keys|macros|rot)"):
+    """Buttons under class cards: open that class's tips / keybinds / macros / rotation privately."""
+
+    def __init__(self, cls: str, kind: str, label: str | None = None):
+        self.cls, self.kind = cls, kind
+        name, emoji = GUIDE_KINDS[kind]
+        super().__init__(discord.ui.Button(label=label or name, emoji=emoji, style=discord.ButtonStyle.secondary,
+                                           custom_id=f"cg:{cls}:{kind}"))
+
+    @classmethod
+    async def from_custom_id(cls_, interaction, item, match):
+        return cls_(match["cls"], match["kind"])
+
+    async def callback(self, interaction: discord.Interaction):
+        c = bot.store.get_guild(interaction.guild_id) if interaction.guild_id else None
+        e = guide_embed(self.cls, self.kind, c.faction if c else "horde")
+        if not e:
+            return await interaction.response.send_message("I don't have that one. Try `/help`.", ephemeral=True)
+        await interaction.response.send_message(embed=discord.Embed.from_dict(e), view=class_guide_view(self.cls, exclude=self.kind),
+                                                ephemeral=True)
+        ev(clog, "guide_button", guild=interaction.guild_id, user=interaction.user.id, cls=self.cls, kind=self.kind)
+
+
+def class_guide_view(cls: str, exclude: str | None = None) -> discord.ui.View:
+    v = discord.ui.View(timeout=None)
+    for kind in GUIDE_KINDS:
+        if kind != exclude:
+            v.add_item(ClassGuideButton(cls, kind))
+    return v
+
+
+class QuizView(discord.ui.View):
+    """/whichclass: one question at a time, private to the person taking it."""
+
+    def __init__(self, user_id: int, faction: str, answers: list[int] | None = None):
+        super().__init__(timeout=600)
+        self.user_id, self.faction, self.answers = user_id, faction, answers or []
+        q, opts = G.QUIZ[len(self.answers)]
+        for i, (label, _) in enumerate(opts):
+            b = discord.ui.Button(label=label[:80], style=discord.ButtonStyle.secondary, row=i // 3)
+            b.callback = self._pick(i)
+            self.add_item(b)
+
+    def _pick(self, i: int):
+        async def cb(interaction: discord.Interaction):
+            if interaction.user.id != self.user_id:
+                return await interaction.response.send_message("Run `/whichclass` to take your own quiz.", ephemeral=True)
+            answers = self.answers + [i]
+            if len(answers) < len(G.QUIZ):
+                await interaction.response.edit_message(embed=discord.Embed.from_dict(R.quiz_embed(len(answers))),
+                                                        view=QuizView(self.user_id, self.faction, answers))
+                return
+            ranked = G.score_quiz(answers)
+            top = ranked[0][0]
+            runner = ranked[1][0] if len(ranked) > 1 else None
+            v = discord.ui.View(timeout=None)
+            v.add_item(ClassGuideButton(top, "tips", f"{top} tips"))
+            v.add_item(ClassGuideButton(top, "keys", f"{top} keybinds"))
+            if runner:
+                v.add_item(ClassGuideButton(runner, "tips", f"{runner} tips"))
+            await interaction.response.edit_message(
+                embed=discord.Embed.from_dict(R.quiz_result_embed(answers, self.faction)), view=v)
+            ev(clog, "quiz_done", guild=interaction.guild_id, user=interaction.user.id, top=top, runner=runner,
+               answers="".join(map(str, answers)))
+        return cb
+
+
 class PingToggleButton(discord.ui.DynamicItem[discord.ui.Button], template=r"ping:(?P<role>[0-9]{5,25})"):
     """On the pinned card: lets members opt in/out of the ping role themselves."""
 
@@ -251,7 +327,7 @@ class ForeverBot(commands.Bot):
 
     async def setup_hook(self):
         self.add_view(RollcallView(self))  # persistent: buttons keep working after restarts
-        self.add_dynamic_items(DeepDiveButton, PingToggleButton)
+        self.add_dynamic_items(DeepDiveButton, PingToggleButton, ClassGuideButton)
         cached = self.store.cache_get("_snapshot")[0]
         if cached:
             self.snap = cached
@@ -498,6 +574,10 @@ class ForeverBot(commands.Bot):
     @tasks.loop(seconds=30)
     async def launch_loop(self):
         now = now_utc()
+        for iso, key, text in C.EVENT_PINGS:
+            at = datetime.fromisoformat(iso)
+            if at <= now < at + MILESTONE_WINDOW:
+                await self.send_event_ping(key, text)
         for minutes, _ in R.MILESTONES:
             at = C.LAUNCH - timedelta(minutes=minutes)
             if not (at <= now < at + MILESTONE_WINDOW):
@@ -523,6 +603,26 @@ class ForeverBot(commands.Bot):
                     ev(slog, "milestone_failed", logging.ERROR, guild=cfg.guild_id, minutes_before=minutes,
                        status=getattr(e, "status", None), error=str(e)[:160])
                 await asyncio.sleep(0.5)
+
+    async def send_event_ping(self, key: str, text: str):
+        for cfg in self.store.all_guilds():
+            if self.store.was_posted(cfg.guild_id, "event", key):
+                continue
+            ch = self.get_channel(cfg.channel_id)
+            problem = self._can_post(ch)
+            if problem:
+                self.say_once(slog, (cfg.guild_id, "event", key), "event_blocked", logging.ERROR,
+                              guild=cfg.guild_id, event_key=key, reason=problem)
+                continue
+            ping = f"<@&{cfg.ping_role_id}> " if cfg.ping_role_id else ""
+            try:
+                await ch.send(ping + text, allowed_mentions=discord.AllowedMentions(
+                    roles=[discord.Object(cfg.ping_role_id)]) if cfg.ping_role_id else discord.AllowedMentions.none())
+                self.store.mark_posted(cfg.guild_id, "event", key)
+                ev(slog, "event_sent", guild=cfg.guild_id, event_key=key)
+            except discord.HTTPException as e:
+                ev(slog, "event_failed", logging.ERROR, guild=cfg.guild_id, event_key=key, error=str(e)[:160])
+            await asyncio.sleep(0.5)
 
     def next_post(self, cfg: GuildConfig, now: datetime):
         """Next scheduled (slot, datetime) for this server, looking up to 2 days ahead."""
@@ -798,7 +898,50 @@ async def tips_cmd(interaction: discord.Interaction, topic: app_commands.Choice[
 async def classtips_cmd(interaction: discord.Interaction, cls: app_commands.Choice[str], share: bool = False):
     c = bot.store.get_guild(interaction.guild_id) if interaction.guild_id else None
     e = R.classtips_embed(cls.value, c.faction if c else "horde")
-    await interaction.response.send_message(embed=discord.Embed.from_dict(e), ephemeral=not share)
+    await interaction.response.send_message(embed=discord.Embed.from_dict(e), ephemeral=not share,
+                                            view=class_guide_view(cls.value, exclude="tips"))
+
+
+CLASS_CHOICES = [app_commands.Choice(name=c, value=c) for c in K.CLASSES]
+
+
+@bot.tree.command(name="keybinds", description="What to bind and where. Stop clicking!")
+@app_commands.describe(cls="Get a starter layout for a class", topic="General basics, or controller setup")
+@app_commands.rename(cls="class")
+@app_commands.choices(cls=CLASS_CHOICES, topic=[app_commands.Choice(name="Keyboard basics", value="basics"),
+                                                app_commands.Choice(name="Controller / gamepad", value="controller")])
+async def keybinds_cmd(interaction: discord.Interaction, cls: app_commands.Choice[str] | None = None,
+                       topic: app_commands.Choice[str] | None = None):
+    t = topic.value if topic else "basics"
+    e = R.keybinds_embed(cls.value if cls and t != "controller" else None, t)
+    view = class_guide_view(cls.value, exclude="keys") if cls and t != "controller" else None
+    await interaction.response.send_message(embed=discord.Embed.from_dict(e), ephemeral=True,
+                                            **({"view": view} if view else {}))
+
+
+@bot.tree.command(name="macros", description="Copy-paste macros for a class")
+@app_commands.describe(cls="Which class?")
+@app_commands.rename(cls="class")
+@app_commands.choices(cls=CLASS_CHOICES)
+async def macros_cmd(interaction: discord.Interaction, cls: app_commands.Choice[str]):
+    await interaction.response.send_message(embed=discord.Embed.from_dict(R.macros_embed(cls.value)), ephemeral=True,
+                                            view=class_guide_view(cls.value, exclude="macros"))
+
+
+@bot.tree.command(name="rotation", description="Simple leveling priorities for every spec of a class")
+@app_commands.describe(cls="Which class?")
+@app_commands.rename(cls="class")
+@app_commands.choices(cls=CLASS_CHOICES)
+async def rotation_cmd(interaction: discord.Interaction, cls: app_commands.Choice[str]):
+    await interaction.response.send_message(embed=discord.Embed.from_dict(R.rotation_embed(cls.value)), ephemeral=True,
+                                            view=class_guide_view(cls.value, exclude="rot"))
+
+
+@bot.tree.command(name="whichclass", description="Not sure what to play? Take a quick quiz")
+async def whichclass_cmd(interaction: discord.Interaction):
+    c = bot.store.get_guild(interaction.guild_id) if interaction.guild_id else None
+    await interaction.response.send_message(embed=discord.Embed.from_dict(R.quiz_embed(0)), ephemeral=True,
+                                            view=QuizView(interaction.user.id, c.faction if c else "horde"))
 
 
 @bot.tree.command(name="pinpost", description="Post a 'start here' card to pin (it keeps itself updated)")

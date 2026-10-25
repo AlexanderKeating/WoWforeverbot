@@ -12,6 +12,7 @@ from zoneinfo import ZoneInfo
 
 from . import classes as K
 from . import content as C
+from . import guides as G
 
 DESC_SOFT_CAP = 1900     # keep the main post ~2 phone screens
 EMBED_TOTAL_CAP = 5800   # Discord hard cap is 6000
@@ -387,13 +388,15 @@ def countdown_embed(tz: str, now: datetime) -> dict:
 SPELLBOOK = {
     "quest": {
         "label": "Quest log", "emoji": "📜", "admin": False,
-        "blurb": "New to Azeroth? These four get you ready for Nov 4.",
+        "blurb": "New to Azeroth? Six quick steps to be ready for Nov 4.",
         "flavor": "A grizzled orc slams a scroll on the table. \"Read it. Then we ride.\"",
         "spells": [
             ("faq", "", "Step 1 · Instant", "What Forever is, what to buy (nothing), and which ruleset to pick."),
             ("tips", "topic:basics", "Step 2 · Instant · Private", "The essentials every new player should know."),
-            ("classtips", "class", "Step 3 · Instant · Private", "What's different about your class in Forever."),
-            ("pickaclass", "", "Step 4 · Instant", "Tell the server what you're rolling. Change it anytime."),
+            ("whichclass", "", "Step 3 · Instant · Private", "Not sure what to play? A 5-question quiz."),
+            ("classtips", "class", "Step 4 · Instant · Private", "What's different about your class in Forever."),
+            ("keybinds", "[class] [topic]", "Step 5 · Instant · Private", "Stop clicking: what to bind and where."),
+            ("pickaclass", "", "Step 6 · Instant", "Tell the server what you're rolling. Change it anytime."),
         ],
     },
     "countdown": {
@@ -414,6 +417,10 @@ SPELLBOOK = {
             ("faq", "", "Instant", "Quick answers to the questions everyone asks."),
             ("tourney", "", "Instant", "The $100K Forever Open: top 8, class win rates, and why Warlocks won."),
             ("classtips", "class", "Instant · Private", "Forever changes, leveling and PvP tips, and key talents for any class."),
+            ("keybinds", "[class] [topic]", "Instant · Private", "Keybind basics, what each class should bind first, and controller setup."),
+            ("macros", "class", "Instant · Private", "Copy-paste macros like mouseover heals and interrupts."),
+            ("rotation", "class", "Instant · Private", "Simple leveling priorities for every spec."),
+            ("whichclass", "", "Instant · Private", "A quick quiz that suggests a class for you."),
         ],
         "extra": "🔎 **Deep dive** buttons on daily posts open a private, detailed breakdown of that day's topic.",
     },
@@ -496,11 +503,82 @@ def classtips_embed(cls: str, faction: str = "horde") -> dict | None:
         {"name": "⭐ Talents worth knowing", "value": bullets(d["talents"]), "inline": False},
     ]
     tl = tourney_line(cls)
-    footer = (f"Beta tournament finals (level 30): {tl} · " if tl else "") + "Beta info; Blizzard may still tune things."
+    footer = (f"Beta tournament finals (level 30): {tl} · " if tl else "") + "Beta info; Blizzard may still tune things. Buttons: keybinds, macros, rotation"
     race_label = "Horde races" if faction == "horde" else "Races"
     return {"title": f"{cls} in WoW: Forever", "color": K.COLORS.get(cls, C.BRAND_COLOR),
             "description": f"{d['role']}\n-# {race_label}: {d['races']}", "fields": fields,
             "footer": {"text": footer[:2048]}}
+
+
+# ======================================================================= keybinds / macros / rotations
+def _b(xs):
+    return "\n".join(f"• {x}" for x in xs)[:1024]
+
+
+def keybinds_embed(cls: str | None = None, topic: str = "basics") -> dict:
+    if topic == "controller":
+        return {"title": "🎮 Playing WoW: Forever on a controller", "color": C.GREEN,
+                "description": "\n".join(f"• {x}" for x in G.CONTROLLER)[:4000],
+                "footer": {"text": "Gamepad UI is labeled Alpha; details may change."}}
+    if cls and cls in G.CLASS_GUIDES:
+        g = G.CLASS_GUIDES[cls]
+        first = "\n".join(f"• **{a}**: {why}" for a, why in g["bind_first"])[:1024]
+        grid = "```\n" + "\n".join(f"{k:<12}{a}" for k, a in g["layout"]) + "\n```"
+        return {"title": f"⌨️ {cls} keybinds", "color": K.COLORS.get(cls, C.BRAND_COLOR),
+                "description": "Start here, then adjust to your hands. The point is: **never click these in a fight.**",
+                "fields": [{"name": "Bind these first", "value": first, "inline": False},
+                           {"name": "A starter layout to copy", "value": grid[:1024], "inline": False}],
+                "footer": {"text": "Some abilities unlock later or come from talents. /keybinds for general tips · /macros for mouseover macros"}}
+    B = G.KEYBIND_BASICS
+    return {"title": "⌨️ Keybinds 101", "color": C.GREEN,
+            "description": G.KEYBIND_BASICS["howto"],
+            "fields": [{"name": "🌱 The basics", "value": _b(B["new"]), "inline": False},
+                       {"name": "🗺️ Where to put things", "value": _b(B["layout"]), "inline": False},
+                       {"name": "🎯 Targeting", "value": _b(B["targeting"]), "inline": False}],
+            "footer": {"text": "/keybinds class:<yours> for what to bind first · /keybinds topic:controller for gamepad"}}
+
+
+def macros_embed(cls: str) -> dict | None:
+    ms = G.MACROS.get(cls)
+    if not ms:
+        return None
+    fields = []
+    for title, text, what, verified in ms:
+        tag = "" if verified else " · ⚠️ test in-game"
+        fields.append({"name": f"{title}{tag}", "value": f"```\n{text}\n```{what}"[:1024], "inline": False})
+    return {"title": f"🧩 {cls} macros", "color": K.COLORS.get(cls, C.BRAND_COLOR), "description": G.MACRO_HOWTO,
+            "fields": fields,
+            "footer": {"text": "⚠️ = standard Classic macro syntax not yet confirmed for Forever. Others use syntax confirmed working in Forever."}}
+
+
+def rotation_embed(cls: str) -> dict | None:
+    rs = G.ROTATIONS.get(cls)
+    if not rs:
+        return None
+    fields = [{"name": spec, "value": "\n".join(f"{i}. {step}" for i, step in enumerate(steps, 1))[:1024], "inline": False}
+              for spec, steps in rs]
+    return {"title": f"🔁 {cls}: what to press", "color": K.COLORS.get(cls, C.BRAND_COLOR),
+            "description": "Simple leveling priorities. Not min-maxed; just a solid place to start.",
+            "fields": fields,
+            "footer": {"text": "Numbers in parentheses = talent points needed. Beta info; Blizzard may still tune things."}}
+
+
+def quiz_embed(qi: int) -> dict:
+    q, opts = G.QUIZ[qi]
+    return {"title": f"🧭 Which class fits you? · {qi + 1}/{len(G.QUIZ)}", "description": f"**{q}**",
+            "color": C.BRAND_COLOR, "footer": {"text": "Just for fun. Every class is viable in Forever."}}
+
+
+def quiz_result_embed(answers: list[int], faction: str = "horde") -> dict:
+    ranked = G.score_quiz(answers)
+    top, runner = ranked[0][0], ranked[1][0] if len(ranked) > 1 else None
+    d = K.CLASSES[top]
+    lines = [f"**Your match: {top}**", d["role"], f"-# Horde races: {d['races']}" if faction == "horde" else ""]
+    if runner:
+        lines += ["", f"**Also worth a look: {runner}**", K.CLASSES[runner]["role"]]
+    lines += ["", "Use the buttons for tips, or run `/pickaclass` to join the roll call."]
+    return {"title": "🧭 Your Forever class", "description": "\n".join(l for l in lines if l is not None),
+            "color": K.COLORS.get(top, C.BRAND_COLOR)}
 
 
 # ======================================================================= pinned "start here" card
@@ -540,7 +618,7 @@ def pinned_embed(cfg, times, now: datetime, latest_url: str | None = None, ping_
         "Each full post has the day's topic for new players 🌱 and veterans 🧙, a pro tip, a 🔎 deep dive, "
         "news, top clips, and a class roll call.", "",
         "**🧭 New here? Start with**",
-        "`/faq` → `/tips basics` → `/classtips` → `/pickaclass`", "",
+        "`/faq` → `/whichclass` → `/classtips` → `/keybinds` → `/pickaclass`", "",
         "**🗓️ Key dates**", *dates, "",
         "**📖 Everything else:** `/help` opens the full command spellbook.",
     ]

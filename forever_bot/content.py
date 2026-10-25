@@ -27,7 +27,7 @@ GREEN = 0x1D9E75
 
 # (iso date, text). Shown in /dates and used for "Next up".
 KEY_DATES = [
-    ("2026-10-27", "Name reservation opens (Heroic pack or higher)"),
+    ("2026-10-27", "Name reservation opens, 1 PM Pacific / 3 PM Central (Skyborne pack owners; 3 names)"),
     ("2026-11-03", "Name reservation ends"),
     ("2026-11-04", "Launch"),
     ("2026-12-09", "Raids unlock: Barrow Deeps (10) and Hyjal Summit (20)"),
@@ -42,9 +42,17 @@ PAST_DATES = [
 ]
 LATER = [("Winter 2026", "Hardcore ruleset"), ("Spring / Summer 2027", "Major content updates")]
 
+# One-off pings to every server at an exact time (UTC). (iso datetime, key, text)
+EVENT_PINGS = [
+    ("2026-10-27T19:30:00+00:00", "names-30m", "📛 **Name reservation opens in 30 minutes** (1 PM Pacific / 3 PM Central). "
+     "3 names total across all rulesets. Have your first + last name ideas ready, and on PvP make your **Horde** character first."),
+    ("2026-10-27T20:00:00+00:00", "names-open", "📛 **Name reservation is open now.** First come, first served. Go get your name."),
+    ("2026-11-03T16:00:00+00:00", "names-last", "⏰ **Last day of name reservation.** If you haven't locked in your name yet, today's the day."),
+]
+
 # Shown at the top of the daily post on that date.
 TODAY_CALLOUTS = {
-    "2026-10-27": "📛 **Name reservation opens today.** Heroic pack or higher can create characters through Nov 3. On the PvP ruleset, make your Horde character first: your account gets locked to one faction there.",
+    "2026-10-27": "📛 **Name reservation opens today at 1 PM Pacific / 3 PM Central.** Skyborne pack owners can reserve **3 names total** across all rulesets, through Nov 3. On the PvP ruleset, make your Horde character first: your account gets locked to one faction there.",
     "2026-11-03": "⏰ **Last day of name reservation.**",
     "2026-11-04": "🚀 **It's launch day.**",
 }
@@ -146,6 +154,7 @@ NEWBIE_TIPS = [
     "Talents unlock at level 10. Each class has three trees; you don't have to copy a guide, but it helps.",
     "Lost in a city? Ask any guard. They'll mark the bank, trainers and more on your map.",
     "No mount until level 40. Save about 100 gold for riding plus your first mount.",
+    "Stop clicking your abilities. Put them on keys around WASD. /keybinds shows you how.",
     "Battlegrounds give Honor whether you win or lose, but winning gives more.",
     "Transmog is opt-in. If someone's gear looks weird, they might just have it on.",
 ]

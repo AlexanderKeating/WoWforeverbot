@@ -44,6 +44,8 @@ Works in any number of servers. Each server picks its own channel, ping role, po
 | Everyone | `/help` or `/spellbook` | A WoW-style spellbook of every command: flip pages with a dropdown, tap a command to use it. New players get a "Quest log" page; the Officer page only shows for admins |
 | Everyone | `/classtips class:<name> [share]` | Forever changes, leveling and Horde PvP tips, key talents and beta-tournament record for any class (private unless `share:true`) |
 | Admins | `/pinpost [channel]` | Posts a "start here" card to pin; it updates itself after every post. Includes a 🔔 ping opt-in button |
+| Everyone | `/keybinds [class] [topic]` · `/macros class` · `/rotation class` | Keybind basics + class starter layouts + controller setup; copy-paste macros; leveling priorities per spec |
+| Everyone | `/whichclass` | 5-question quiz that suggests a class |
 | Everyone | `/tips [topic]` | Tips by topic: basics, leveling, pvp, camping, professions, travel (private) |
 | Everyone | `/countdown` `/tourney` `/faq` `/dates` `/pickaclass` | |
 
