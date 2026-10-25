@@ -52,6 +52,7 @@ EVENT_PINGS = [
 
 # Shown at the top of the daily post on that date.
 TODAY_CALLOUTS = {
+    "2026-10-26": "📛 **Name reservation opens tomorrow at 1 PM Pacific / 3 PM Central.** 3 names total across all rulesets. Pick your first + last name ideas tonight (`/faq` has the rules).",
     "2026-10-27": "📛 **Name reservation opens today at 1 PM Pacific / 3 PM Central.** Skyborne pack owners can reserve **3 names total** across all rulesets, through Nov 3. On the PvP ruleset, make your Horde character first: your account gets locked to one faction there.",
     "2026-11-03": "⏰ **Last day of name reservation.**",
     "2026-11-04": "🚀 **It's launch day.**",
