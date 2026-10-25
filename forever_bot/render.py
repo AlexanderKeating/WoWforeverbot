@@ -10,7 +10,9 @@ from dataclasses import dataclass, field
 from datetime import date, datetime, timedelta, timezone
 from zoneinfo import ZoneInfo
 
+from . import classes as K
 from . import content as C
+from . import guides as G
 
 DESC_SOFT_CAP = 1900     # keep the main post ~2 phone screens
 EMBED_TOTAL_CAP = 5800   # Discord hard cap is 6000
@@ -72,7 +74,7 @@ def pick(seq, d: date, salt: int = 0, avoid: str = ""):
     seen = _words(avoid)
     for i in range(len(seq)):
         item = seq[(start + i) % len(seq)]
-        w = _words(item)
+        w = _words(item if isinstance(item, str) else " ".join(map(str, item)))
         if not seen or not w or len(w & seen) / len(w) < 0.4:
             return item
     return seq[start]
@@ -186,8 +188,10 @@ def build_checkin(cfg, now: datetime, snap: dict | None, slot: int,
     tip = pick(C.TIPS[topic], today, salt=slot * 11 + 2)
     dyk_pool = [t for tag, t in C.DID_YOU_KNOW if tag != "horde" or faction == "horde"]
     dyk = pick(dyk_pool, today, salt=3 + slot * 13, avoid=tip)
-    desc = "\n".join([head, "", f"💡 **{topic.capitalize()} tip:** {tip}", "", f"❓ **Did you know?** {dyk}",
-                      "", f"-# More: /tips {topic} · /help"])
+    cls, ctip = pick(K.SPOTLIGHT, today, salt=slot * 17 + 5)
+    desc = "\n".join([head, "", f"💡 **{topic.capitalize()} tip:** {tip}", "",
+                      f"🎯 **Class spotlight · {cls}:** {ctip}", "", f"❓ **Did you know?** {dyk}",
+                      "", f"-# More: /tips {topic} · /classtips {cls.lower()} · /help"])
     embeds, used, followup = _media(snap or {}, unseen_ids, now, include_news)
     return Post(content="", embeds=[{"title": title, "description": desc, "color": C.BRAND_COLOR}] + embeds,
                 followup=followup, used_ids=used, rollcall=False,
@@ -384,12 +388,15 @@ def countdown_embed(tz: str, now: datetime) -> dict:
 SPELLBOOK = {
     "quest": {
         "label": "Quest log", "emoji": "📜", "admin": False,
-        "blurb": "New to Azeroth? These three get you ready for Nov 4.",
+        "blurb": "New to Azeroth? Six quick steps to be ready for Nov 4.",
         "flavor": "A grizzled orc slams a scroll on the table. \"Read it. Then we ride.\"",
         "spells": [
             ("faq", "", "Step 1 · Instant", "What Forever is, what to buy (nothing), and which ruleset to pick."),
             ("tips", "topic:basics", "Step 2 · Instant · Private", "The essentials every new player should know."),
-            ("pickaclass", "", "Step 3 · Instant", "Tell the server what you're rolling. Change it anytime."),
+            ("whichclass", "", "Step 3 · Instant · Private", "Not sure what to play? A 5-question quiz."),
+            ("classtips", "class", "Step 4 · Instant · Private", "What's different about your class in Forever."),
+            ("keybinds", "[class] [topic]", "Step 5 · Instant · Private", "Stop clicking: what to bind and where."),
+            ("pickaclass", "", "Step 6 · Instant", "Tell the server what you're rolling. Change it anytime."),
         ],
     },
     "countdown": {
@@ -409,6 +416,11 @@ SPELLBOOK = {
             ("tips", "[topic]", "Instant · Private", "Tips by topic: basics, leveling, pvp, camping, professions, travel."),
             ("faq", "", "Instant", "Quick answers to the questions everyone asks."),
             ("tourney", "", "Instant", "The $100K Forever Open: top 8, class win rates, and why Warlocks won."),
+            ("classtips", "class", "Instant · Private", "Forever changes, leveling and PvP tips, and key talents for any class."),
+            ("keybinds", "[class] [topic]", "Instant · Private", "Keybind basics, what each class should bind first, and controller setup."),
+            ("macros", "class", "Instant · Private", "Copy-paste macros like mouseover heals and interrupts."),
+            ("rotation", "class", "Instant · Private", "Simple leveling priorities for every spec."),
+            ("whichclass", "", "Instant · Private", "A quick quiz that suggests a class for you."),
         ],
         "extra": "🔎 **Deep dive** buttons on daily posts open a private, detailed breakdown of that day's topic.",
     },
@@ -417,7 +429,8 @@ SPELLBOOK = {
         "blurb": "See who's rolling what before launch night.",
         "flavor": "Every warband needs a healer. Somebody please play a healer.",
         "spells": [
-            ("pickaclass", "", "Instant · Private", "Pick your class. The counts on the daily post update live."),
+            ("pickaclass", "", "Instant · Private", "Pick your class. You get its Forever tips right away."),
+            ("classtips", "class", "Instant · Private", "Tips for any class, even ones you're not playing."),
         ],
         "extra": "You can also tap a class button right on the daily post.",
     },
@@ -435,6 +448,7 @@ SPELLBOOK = {
             ("resume", "", "Instant", "Undo /hold."),
             ("skipnews", "", "Instant · Lasts today", "Post today without the news section."),
             ("status", "", "Instant · Private", "Current settings and which sources are working."),
+            ("pinpost", "[channel]", "Instant", "Post a \"start here\" card to pin. It updates itself after every post."),
         ],
     },
 }
@@ -467,6 +481,155 @@ def spellbook_embed(page: str, ids: dict | None, is_admin: bool, now: datetime |
     footer = f"Spellbook · page {pages.index(page) + 1} of {len(pages)} · Tap a blue command to cast it"
     return {"title": f"{sec['emoji']} {sec['label']}", "description": "\n".join(lines).strip()[:4000],
             "color": 0xC69B6D, "footer": {"text": footer}}
+
+
+# ======================================================================= /classtips
+def tourney_line(cls: str) -> str | None:
+    for c, won, played, series in C.TOURNEY["winrates"]:
+        if c == cls:
+            return f"{won}–{played - won} in duels vs other classes ({round(won / played * 100)}%) · series {series}"
+    return None
+
+
+def classtips_embed(cls: str, faction: str = "horde") -> dict | None:
+    d = K.CLASSES.get(cls)
+    if not d:
+        return None
+    bullets = lambda xs: "\n".join(f"• {x}" for x in xs)[:1024]
+    fields = [
+        {"name": "🧙 What's new in Forever", "value": bullets(d["new"]), "inline": False},
+        {"name": "🌱 Leveling", "value": bullets(d["leveling"]), "inline": False},
+        {"name": "⚔️ PvP" + (" (Horde)" if faction == "horde" else ""), "value": bullets(d["pvp"]), "inline": False},
+        {"name": "⭐ Talents worth knowing", "value": bullets(d["talents"]), "inline": False},
+    ]
+    tl = tourney_line(cls)
+    footer = (f"Beta tournament finals (level 30): {tl} · " if tl else "") + "Beta info; Blizzard may still tune things. Buttons: keybinds, macros, rotation"
+    race_label = "Horde races" if faction == "horde" else "Races"
+    return {"title": f"{cls} in WoW: Forever", "color": K.COLORS.get(cls, C.BRAND_COLOR),
+            "description": f"{d['role']}\n-# {race_label}: {d['races']}", "fields": fields,
+            "footer": {"text": footer[:2048]}}
+
+
+# ======================================================================= keybinds / macros / rotations
+def _b(xs):
+    return "\n".join(f"• {x}" for x in xs)[:1024]
+
+
+def keybinds_embed(cls: str | None = None, topic: str = "basics") -> dict:
+    if topic == "controller":
+        return {"title": "🎮 Playing WoW: Forever on a controller", "color": C.GREEN,
+                "description": "\n".join(f"• {x}" for x in G.CONTROLLER)[:4000],
+                "footer": {"text": "Gamepad UI is labeled Alpha; details may change."}}
+    if cls and cls in G.CLASS_GUIDES:
+        g = G.CLASS_GUIDES[cls]
+        first = "\n".join(f"• **{a}**: {why}" for a, why in g["bind_first"])[:1024]
+        grid = "```\n" + "\n".join(f"{k:<12}{a}" for k, a in g["layout"]) + "\n```"
+        return {"title": f"⌨️ {cls} keybinds", "color": K.COLORS.get(cls, C.BRAND_COLOR),
+                "description": "Start here, then adjust to your hands. The point is: **never click these in a fight.**",
+                "fields": [{"name": "Bind these first", "value": first, "inline": False},
+                           {"name": "A starter layout to copy", "value": grid[:1024], "inline": False}],
+                "footer": {"text": "Some abilities unlock later or come from talents. /keybinds for general tips · /macros for mouseover macros"}}
+    B = G.KEYBIND_BASICS
+    return {"title": "⌨️ Keybinds 101", "color": C.GREEN,
+            "description": G.KEYBIND_BASICS["howto"],
+            "fields": [{"name": "🌱 The basics", "value": _b(B["new"]), "inline": False},
+                       {"name": "🗺️ Where to put things", "value": _b(B["layout"]), "inline": False},
+                       {"name": "🎯 Targeting", "value": _b(B["targeting"]), "inline": False}],
+            "footer": {"text": "/keybinds class:<yours> for what to bind first · /keybinds topic:controller for gamepad"}}
+
+
+def macros_embed(cls: str) -> dict | None:
+    ms = G.MACROS.get(cls)
+    if not ms:
+        return None
+    fields = []
+    for title, text, what, verified in ms:
+        tag = "" if verified else " · ⚠️ test in-game"
+        fields.append({"name": f"{title}{tag}", "value": f"```\n{text}\n```{what}"[:1024], "inline": False})
+    return {"title": f"🧩 {cls} macros", "color": K.COLORS.get(cls, C.BRAND_COLOR), "description": G.MACRO_HOWTO,
+            "fields": fields,
+            "footer": {"text": "⚠️ = standard Classic macro syntax not yet confirmed for Forever. Others use syntax confirmed working in Forever."}}
+
+
+def rotation_embed(cls: str) -> dict | None:
+    rs = G.ROTATIONS.get(cls)
+    if not rs:
+        return None
+    fields = [{"name": spec, "value": "\n".join(f"{i}. {step}" for i, step in enumerate(steps, 1))[:1024], "inline": False}
+              for spec, steps in rs]
+    return {"title": f"🔁 {cls}: what to press", "color": K.COLORS.get(cls, C.BRAND_COLOR),
+            "description": "Simple leveling priorities. Not min-maxed; just a solid place to start.",
+            "fields": fields,
+            "footer": {"text": "Numbers in parentheses = talent points needed. Beta info; Blizzard may still tune things."}}
+
+
+def quiz_embed(qi: int) -> dict:
+    q, opts = G.QUIZ[qi]
+    return {"title": f"🧭 Which class fits you? · {qi + 1}/{len(G.QUIZ)}", "description": f"**{q}**",
+            "color": C.BRAND_COLOR, "footer": {"text": "Just for fun. Every class is viable in Forever."}}
+
+
+def quiz_result_embed(answers: list[int], faction: str = "horde") -> dict:
+    ranked = G.score_quiz(answers)
+    top, runner = ranked[0][0], ranked[1][0] if len(ranked) > 1 else None
+    d = K.CLASSES[top]
+    lines = [f"**Your match: {top}**", d["role"], f"-# Horde races: {d['races']}" if faction == "horde" else ""]
+    if runner:
+        lines += ["", f"**Also worth a look: {runner}**", K.CLASSES[runner]["role"]]
+    lines += ["", "Use the buttons for tips, or run `/pickaclass` to join the roll call."]
+    return {"title": "🧭 Your Forever class", "description": "\n".join(l for l in lines if l is not None),
+            "color": K.COLORS.get(top, C.BRAND_COLOR)}
+
+
+# ======================================================================= pinned "start here" card
+def _schedule_text(times: list[tuple[int, int]], tz: str) -> str:
+    def fmt(h, m):
+        ap = "AM" if h < 12 else "PM"
+        h12 = h % 12 or 12
+        return f"{h12}:{m:02d} {ap}" if m else f"{h12} {ap}"
+    zone = {"America/Chicago": "Central", "America/New_York": "Eastern", "America/Denver": "Mountain",
+            "America/Los_Angeles": "Pacific", "America/Phoenix": "Arizona"}.get(tz, tz.split("/")[-1].replace("_", " "))
+    first = fmt(*times[0])
+    rest = ", ".join(fmt(*t) for t in times[1:])
+    return f"Full post daily at **{first}**" + (f", check-ins at **{rest}**" if rest else "") + f" ({zone} time)"
+
+
+def pinned_embed(cfg, times, now: datetime, latest_url: str | None = None, ping_role_id: int | None = None) -> dict:
+    kind, days = phase(cfg.tz, now)
+    if kind == "launch":
+        head = f"**Launch:** <t:{ts(C.LAUNCH)}:F> · <t:{ts(C.LAUNCH)}:R>"
+    elif kind == "raids":
+        head = f"**WoW: Forever is live.** Raids open {_fmt_date(_d(C.RAIDS_DATE))}."
+    else:
+        head = "**WoW: Forever is live and raids are open.**"
+    today = local_today(cfg.tz, now)
+    dates = []
+    for iso, text in C.KEY_DATES:
+        d = _d(iso)
+        if text == "Launch":
+            dates.append(f"{'~~' if C.LAUNCH < now else ''}<t:{ts(C.LAUNCH)}:D> · Launch{'~~' if C.LAUNCH < now else ''}")
+        else:
+            strike = "~~" if d < today else ""
+            dates.append(f"{strike}{_fmt_date(d)} · {text}{strike}")
+    lines = [
+        head, "",
+        "**📅 What happens here**",
+        _schedule_text(times, cfg.tz) + ".",
+        "Each full post has the day's topic for new players 🌱 and veterans 🧙, a pro tip, a 🔎 deep dive, "
+        "news, top clips, and a class roll call.", "",
+        "**🧭 New here? Start with**",
+        "`/faq` → `/whichclass` → `/classtips` → `/keybinds` → `/pickaclass`", "",
+        "**🗓️ Key dates**", *dates, "",
+        "**📖 Everything else:** `/help` opens the full command spellbook.",
+    ]
+    if ping_role_id:
+        lines += ["", f"**🔔 Pings:** the daily post pings <@&{ping_role_id}>. Use the button below to opt in or out."]
+    if latest_url:
+        lines += ["", f"**Latest post:** [jump to it]({latest_url})"]
+    title = (f"⏳ WoW: Forever · {days} day{'s' if days != 1 else ''} to go" if kind == "launch" and days
+             else "⏳ WoW: Forever · start here")
+    return {"title": title, "description": "\n".join(lines)[:4000], "color": C.BRAND_COLOR,
+            "footer": {"text": "Pin this message · it updates itself after every post"}}
 
 
 def health_text(snap: dict | None) -> str:

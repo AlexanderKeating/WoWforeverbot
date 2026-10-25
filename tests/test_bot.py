@@ -284,6 +284,78 @@ def test_logging_redacts_and_formats():
     del os.environ["YOUTUBE_API_KEY"]
 
 
+def test_classtips_all_classes():
+    from forever_bot import classes as K
+    assert set(K.CLASSES) == set(C.CLASSES)
+    for cls in C.CLASSES:
+        e = R.classtips_embed(cls)
+        assert e and len(e["description"]) < 4096
+        assert all(0 < len(f["value"]) <= 1024 and len(f["name"]) <= 256 for f in e["fields"])
+        total = len(e["title"]) + len(e["description"]) + len(e["footer"]["text"]) + sum(
+            len(f["name"]) + len(f["value"]) for f in e["fields"])
+        assert total < 6000
+        assert R.tourney_line(cls)  # every class has finals data
+    assert R.tourney_line("Warlock").startswith("26–7")
+    assert R.classtips_embed("Deathknight") is None
+
+
+def test_pinned_card():
+    cfg = Cfg()
+    for when in (datetime(2026, 10, 25, 18, tzinfo=timezone.utc), datetime(2026, 11, 10, tzinfo=timezone.utc),
+                 datetime(2026, 12, 20, tzinfo=timezone.utc)):
+        e = R.pinned_embed(cfg, [(12, 0), (19, 0)], when, "https://discord.com/channels/1/2/3", 555)
+        assert len(e["description"]) < 4096 and "<@&555>" in e["description"] and "jump to it" in e["description"]
+    assert "**12 PM**" in R._schedule_text([(12, 0), (19, 0)], "America/Chicago")
+    assert "7 PM" in R._schedule_text([(12, 0), (19, 0)], "America/Chicago")
+
+
+def test_every_command_in_spellbook():
+    os.environ.setdefault("DB_PATH", os.path.join(tempfile.mkdtemp(), "b.db"))
+    from forever_bot import bot as B
+    names = {c.name for c in B.bot.tree.get_commands()} - {"help", "spellbook"}
+    listed = {sp[0] for page in R.SPELLBOOK.values() for sp in page["spells"]}
+    assert names <= listed, names - listed
+    assert listed <= names | set(), listed - names
+
+
+def test_guides_all_classes():
+    import re as _re
+    from forever_bot import guides as G
+    for cls in C.CLASSES:
+        for e in (R.keybinds_embed(cls), R.macros_embed(cls), R.rotation_embed(cls)):
+            assert e and len(e["description"]) < 4096
+            assert all(0 < len(f["value"]) <= 1024 and len(f["name"]) <= 256 for f in e["fields"])
+            total = len(e["title"]) + len(e["description"]) + len(e.get("footer", {}).get("text", "")) + sum(
+                len(f["name"]) + len(f["value"]) for f in e["fields"])
+            assert total < 6000, (cls, e["title"], total)
+        for title, text, what, verified in G.MACROS[cls]:
+            assert len(text) <= 255, (cls, title)
+        assert _re.fullmatch(r"[A-Za-z]{4,10}", cls)  # fits the class-guide button id pattern
+    for t in ("basics", "controller"):
+        assert len(R.keybinds_embed(None, t)["description"]) < 4096
+
+
+def test_quiz():
+    import itertools
+    from forever_bot import guides as G
+    tops = set()
+    for combo in itertools.product(*[range(len(opts)) for _, opts in G.QUIZ]):
+        ranked = G.score_quiz(list(combo))
+        tops.add(ranked[0][0])
+    assert tops == set(C.CLASSES), set(C.CLASSES) - tops  # every class can win
+    for _, opts in G.QUIZ:
+        assert 2 <= len(opts) <= 5 and all(len(lbl) <= 80 for lbl, _ in opts)
+    e = R.quiz_result_embed([0] * len(G.QUIZ))
+    assert "Your match" in e["description"]
+
+
+def test_event_pings():
+    stamps = [datetime.fromisoformat(i) for i, _, _ in C.EVENT_PINGS]
+    assert stamps == sorted(stamps) and all(s.tzinfo for s in stamps)
+    assert len({k for _, k, _ in C.EVENT_PINGS}) == len(C.EVENT_PINGS)
+    assert datetime.fromisoformat(C.EVENT_PINGS[1][0]) == datetime(2026, 10, 27, 20, tzinfo=timezone.utc)  # 1 PM PDT
+
+
 def test_store_roundtrip():
     st = tmp_store()
     st.set_class(1, 10, "Mage")

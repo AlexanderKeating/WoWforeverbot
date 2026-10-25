@@ -18,7 +18,9 @@ CREATE TABLE IF NOT EXISTS guilds (
     faction TEXT NOT NULL DEFAULT 'horde',
     enabled INTEGER NOT NULL DEFAULT 1,
     hold_date TEXT,
-    news_off_date TEXT
+    news_off_date TEXT,
+    pin_channel_id INTEGER,
+    pin_message_id INTEGER
 );
 CREATE TABLE IF NOT EXISTS posts (
     guild_id INTEGER, kind TEXT, key TEXT, posted_at REAL,
@@ -50,6 +52,8 @@ class GuildConfig:
     enabled: bool = True
     hold_date: str | None = None
     news_off_date: str | None = None
+    pin_channel_id: int | None = None
+    pin_message_id: int | None = None
 
 
 class Store:
@@ -59,7 +63,15 @@ class Store:
         self.db.row_factory = sqlite3.Row
         self.db.execute("PRAGMA journal_mode=WAL")
         self.db.executescript(SCHEMA)
+        self._migrate()
         self.db.commit()
+
+    def _migrate(self):
+        """Add columns introduced after v1.0 to existing databases."""
+        have = {r[1] for r in self.db.execute("PRAGMA table_info(guilds)")}
+        for col, typ in (("pin_channel_id", "INTEGER"), ("pin_message_id", "INTEGER")):
+            if col not in have:
+                self.db.execute(f"ALTER TABLE guilds ADD COLUMN {col} {typ}")
 
     def _x(self, sql, args=()):
         with self._lock:
@@ -88,14 +100,16 @@ class Store:
     def upsert_guild(self, cfg: GuildConfig):
         self._x(
             """INSERT INTO guilds (guild_id, channel_id, staging_channel_id, ping_role_id, post_time, tz,
-                                   faction, enabled, hold_date, news_off_date)
-               VALUES (?,?,?,?,?,?,?,?,?,?)
+                                   faction, enabled, hold_date, news_off_date, pin_channel_id, pin_message_id)
+               VALUES (?,?,?,?,?,?,?,?,?,?,?,?)
                ON CONFLICT(guild_id) DO UPDATE SET channel_id=excluded.channel_id,
                  staging_channel_id=excluded.staging_channel_id, ping_role_id=excluded.ping_role_id,
                  post_time=excluded.post_time, tz=excluded.tz, faction=excluded.faction,
-                 enabled=excluded.enabled, hold_date=excluded.hold_date, news_off_date=excluded.news_off_date""",
+                 enabled=excluded.enabled, hold_date=excluded.hold_date, news_off_date=excluded.news_off_date,
+                 pin_channel_id=excluded.pin_channel_id, pin_message_id=excluded.pin_message_id""",
             (cfg.guild_id, cfg.channel_id, cfg.staging_channel_id, cfg.ping_role_id, cfg.post_time,
-             cfg.tz, cfg.faction, int(cfg.enabled), cfg.hold_date, cfg.news_off_date),
+             cfg.tz, cfg.faction, int(cfg.enabled), cfg.hold_date, cfg.news_off_date,
+             cfg.pin_channel_id, cfg.pin_message_id),
         )
 
     def remove_guild(self, guild_id: int):
