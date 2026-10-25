@@ -31,6 +31,12 @@ NEWS_MAX_AGE_HOURS = 48
 UA = "ForeverCountdownBot/1.0 (+discord countdown bot)"
 
 
+def real_secret(v: str | None) -> str:
+    """Treat placeholders typed into a host's env form ('none', 'skip', '-') as not set."""
+    v = (v or "").strip()
+    return "" if v.lower() in ("", "none", "skip", "-", "n/a", "na", "later", "todo", "x") else v
+
+
 # ======================================================================= text helpers
 def normalize(text: str) -> str:
     """lowercase, strip accents and punctuation (keeps '+'), collapse spaces."""
@@ -239,7 +245,7 @@ class Twitch:
     API = "https://api.twitch.tv/helix"
 
     def __init__(self, client_id: str, client_secret: str):
-        self.cid, self.secret = client_id, client_secret
+        self.cid, self.secret = real_secret(client_id), real_secret(client_secret)
         self._token, self._token_exp = None, 0.0
         self._games = None  # (forever_ids, fallback_id, resolved_at)
         self._users = {}    # login -> (id, display)
@@ -362,7 +368,7 @@ class YouTube:
     QUERY = '"wow forever"|"world of warcraft forever"|"wow: forever"'
 
     def __init__(self, api_key: str):
-        self.key = api_key
+        self.key = real_secret(api_key)
         self._last, self._last_at = None, 0.0
 
     @property
