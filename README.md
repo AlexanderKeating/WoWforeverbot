@@ -91,7 +91,17 @@ Works in any number of servers. Each server picks its own channel, ping role, po
 4. Click the key → **API restrictions → Restrict key → YouTube Data API v3** → Save.
    No billing needed; the free 10,000 units/day covers this (the bot uses about 1,250).
 
-### 3. Deploy on Railway (~$5/mo Hobby plan)
+### 3. Deploy on Render (~$7.25/mo)
+1. <https://render.com> → sign up with GitHub → add a payment method (workers have no free tier).
+2. **New → Blueprint** → connect **WoWforeverbot**. Render reads `render.yaml` and creates a background
+   worker with a 1 GB disk at `/data`.
+3. Fill in the secrets it asks for: `DISCORD_TOKEN` (required), Twitch and YouTube keys (optional; leave
+   blank and add later under the service's **Environment** tab).
+4. **Apply**. Open the service → **Logs** and wait for `ready as …`.
+
+Every push to `main` redeploys automatically.
+
+### 3 (alternative). Deploy on Railway (~$5/mo Hobby plan)
 1. Put this folder in a GitHub repo (private is fine).
 2. <https://railway.com> → **New Project** → **Deploy from GitHub repo** → pick it. It builds from the Dockerfile.
 3. Service → **Variables**: add `DISCORD_TOKEN`, `TWITCH_CLIENT_ID`, `TWITCH_CLIENT_SECRET`, `YOUTUBE_API_KEY`,

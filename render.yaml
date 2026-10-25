@@ -1,0 +1,27 @@
+# Render Blueprint: dashboard → New → Blueprint → pick this repo.
+# Secrets marked sync:false are asked for during setup (never stored in the repo).
+services:
+  - type: worker
+    name: forever-countdown
+    runtime: docker
+    plan: starter
+    region: ohio
+    dockerfilePath: ./Dockerfile
+    autoDeploy: true
+    disk:
+      name: data
+      mountPath: /data
+      sizeGB: 1
+    envVars:
+      - key: DISCORD_TOKEN
+        sync: false
+      - key: TWITCH_CLIENT_ID
+        sync: false
+      - key: TWITCH_CLIENT_SECRET
+        sync: false
+      - key: YOUTUBE_API_KEY
+        sync: false
+      - key: DB_PATH
+        value: /data/forever.db
+      - key: LOG_LEVEL
+        value: INFO
