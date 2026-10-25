@@ -68,21 +68,20 @@ TWITCH_GAME_NAMES = [
 TWITCH_FALLBACK_GAME = "World of Warcraft"
 
 # Pinned streamers (Twitch logins). Their clips get a boost; the category feed finds everyone else.
-STREAMERS = ["summit1g", "xaryu", "esfandtv", "sodapoppin", "zackrawrr", "tipsout", "pikabooirl"]
+# "tipsout" removed: login not found on Twitch (Oct 25). Check the event=twitch_login_not_found log line.
+STREAMERS = ["summit1g", "xaryu", "esfandtv", "sodapoppin", "zackrawrr", "pikabooirl"]
 
 # Optional YouTube channels: {display name: channel_id starting "UC"}. Leave empty to skip.
 YOUTUBE_CHANNELS: dict[str, str] = {}
 
 # News sources. Each tries feed URLs in order, then RSS autodiscovery on the homepage.
+# Removed after first live run (Oct 25): Blizzard (no public RSS; Wowhead mirrors blue posts),
+# Icy Veins (403s bots; not worth working around).
 NEWS_SOURCES = [
-    {"name": "Blizzard", "feeds": ["https://news.blizzard.com/en-us/rss/world-of-warcraft", "https://news.blizzard.com/en-us/feed"],
-     "home": "https://news.blizzard.com/en-us/world-of-warcraft", "trusted": True},
     {"name": "Wowhead", "feeds": ["https://www.wowhead.com/news/rss/all", "https://www.wowhead.com/news/rss/classic"],
      "home": "https://www.wowhead.com/news", "trusted": False},
     {"name": "Warcraft Tavern", "feeds": ["https://www.warcrafttavern.com/feed/", "https://www.warcrafttavern.com/forever/feed/"],
      "home": "https://www.warcrafttavern.com/forever/news/", "trusted": False},
-    {"name": "Icy Veins", "feeds": ["https://www.icy-veins.com/forums/rss/1-icy-veins-news.xml/"],
-     "home": "https://www.icy-veins.com/wow-forever/news/", "trusted": False},
     {"name": "MassivelyOP", "feeds": ["https://massivelyop.com/feed/"],
      "home": "https://massivelyop.com/", "trusted": False},
 ]

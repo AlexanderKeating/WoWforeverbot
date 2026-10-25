@@ -109,6 +109,16 @@ class Store:
     def mark_posted(self, guild_id: int, kind: str, key: str):
         self._x("INSERT OR IGNORE INTO posts VALUES (?,?,?,?)", (guild_id, kind, key, time.time()))
 
+    def recent_posts(self, guild_id: int, limit: int = 5) -> list[tuple[str, str, float]]:
+        rows = self._x("SELECT kind, key, posted_at FROM posts WHERE guild_id=? ORDER BY posted_at DESC LIMIT ?",
+                       (guild_id, limit)).fetchall()
+        return [(r["kind"], r["key"], r["posted_at"]) for r in rows]
+
+    def stats(self) -> dict:
+        one = lambda q: self._x(q).fetchone()[0]
+        return {"guilds": one("SELECT COUNT(*) FROM guilds WHERE enabled=1 AND channel_id IS NOT NULL"),
+                "posts": one("SELECT COUNT(*) FROM posts"), "rollcall": one("SELECT COUNT(*) FROM rollcall")}
+
     # ---------------------------------------------------------- seen items (news/clips)
     def unseen(self, guild_id: int, item_ids: list[str]) -> set[str]:
         if not item_ids:

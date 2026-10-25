@@ -21,6 +21,7 @@ from discord.ext import commands, tasks
 from . import content as C
 from . import render as R
 from .fetchers import Twitch, YouTube, refresh_all
+from .logsetup import Timer, ev, setup_logging
 from .store import GuildConfig, Store
 
 try:
@@ -29,9 +30,13 @@ try:
 except ImportError:
     pass
 
-logging.basicConfig(level=os.getenv("LOG_LEVEL", "INFO"),
-                    format="%(asctime)s %(levelname)s %(name)s: %(message)s")
-log = logging.getLogger("forever")
+setup_logging()
+log = logging.getLogger("forever.bot")
+slog = logging.getLogger("forever.sched")
+clog = logging.getLogger("forever.cmd")
+
+VERSION = (os.getenv("RENDER_GIT_COMMIT") or os.getenv("RAILWAY_GIT_COMMIT_SHA") or os.getenv("GIT_SHA") or "dev")[:7]
+STARTED = time.time()
 
 POST_GRACE = timedelta(hours=3)        # bot was down at post time? still post within 3h
 STAGING_LEAD = timedelta(minutes=60)
@@ -192,6 +197,7 @@ class ForeverBot(commands.Bot):
         self.snap: dict | None = None
         self._refresh_lock = asyncio.Lock()
         self.cmd_ids: dict[str, int] = {}
+        self._said: set = set()  # (guild, day, slot, reason) already logged: keeps the 60s loop from spamming
 
     async def setup_hook(self):
         self.add_view(RollcallView(self))  # persistent: buttons keep working after restarts
@@ -199,6 +205,11 @@ class ForeverBot(commands.Bot):
         cached = self.store.cache_get("_snapshot")[0]
         if cached:
             self.snap = cached
+        st = self.store.stats()
+        ev(log, "startup", version=VERSION, discord_py=discord.__version__, db=os.getenv("DB_PATH", "forever.db"),
+           twitch=self.twitch.configured, youtube=self.youtube.configured, dev_guild=bool(os.getenv("DEV_GUILD_ID")),
+           configured_guilds=st["guilds"], posts_logged=st["posts"], rollcall_entries=st["rollcall"],
+           cached_snapshot=bool(cached), launch=C.LAUNCH.isoformat())
         dev = os.getenv("DEV_GUILD_ID")
         if dev:
             g = discord.Object(id=int(dev))
@@ -207,17 +218,41 @@ class ForeverBot(commands.Bot):
         try:
             synced = await self.tree.sync()
             self.cmd_ids = {c.name: c.id for c in synced}  # for clickable </cmd:id> mentions in /help
+            ev(log, "commands_synced", count=len(synced))
         except discord.HTTPException as e:
-            log.warning("command sync failed: %s", e)
+            ev(log, "commands_sync_failed", logging.ERROR, error=str(e)[:200])
         self.refresh_loop.start()
         self.schedule_loop.start()
         self.launch_loop.start()
+        self.heartbeat_loop.start()
 
     async def on_ready(self):
-        log.info("ready as %s in %d servers", self.user, len(self.guilds))
+        ev(log, "ready", user=str(self.user), guilds=len(self.guilds), latency_ms=self.latency * 1000,
+           servers=",".join(f"{g.name}({g.id})" for g in self.guilds[:10]) or "-")
+
+    async def on_resumed(self):
+        ev(log, "gateway_resumed")
+
+    async def on_disconnect(self):
+        ev(log, "gateway_disconnected", logging.WARNING, hint="discord.py reconnects automatically")
+
+    async def on_guild_join(self, guild):
+        ev(log, "guild_join", guild=guild.id, name=guild.name, members=guild.member_count, total=len(self.guilds))
 
     async def on_guild_remove(self, guild):
         self.store.remove_guild(guild.id)
+        ev(log, "guild_remove", guild=guild.id, name=guild.name, total=len(self.guilds))
+
+    async def on_app_command_completion(self, interaction: discord.Interaction, command):
+        ev(clog, "command", name=command.qualified_name, guild=interaction.guild_id, user=interaction.user.id,
+           ms=(discord.utils.utcnow() - interaction.created_at).total_seconds() * 1000)
+
+    def say_once(self, logger, dedupe: tuple, event: str, level=logging.INFO, /, **fields):
+        if dedupe not in self._said:
+            self._said.add(dedupe)
+            if len(self._said) > 5000:
+                self._said.clear()
+            ev(logger, event, level, **fields)
 
     # ---------------------------------------------------------- data
     async def refresh(self, force=False):
@@ -227,9 +262,10 @@ class ForeverBot(commands.Bot):
             try:
                 self.snap = await asyncio.wait_for(refresh_all(self.store, self.twitch, self.youtube), timeout=120)
                 self.store.cache_put("_snapshot", self.snap)
-                log.info("refreshed: %s", self.snap["health"])
+            except asyncio.TimeoutError:
+                ev(log, "refresh_timeout", logging.ERROR, timeout_s=120, keeping="previous snapshot")
             except Exception as e:  # noqa: BLE001
-                log.exception("refresh failed entirely: %s", e)
+                ev(log, "refresh_crashed", logging.ERROR, exc_info=e, keeping="previous snapshot")
             return self.snap
 
     @tasks.loop(minutes=30)
@@ -263,33 +299,53 @@ class ForeverBot(commands.Bot):
         elif post.deep_key:
             view = discord.ui.View(timeout=None)
             view.add_item(DeepDiveButton(post.deep_key))
-        await channel.send(content=post.content or None,
-                           embeds=[discord.Embed.from_dict(e) for e in post.embeds],
-                           view=view,
-                           allowed_mentions=mentions)
+        msg = await channel.send(content=post.content or None,
+                                 embeds=[discord.Embed.from_dict(e) for e in post.embeds],
+                                 view=view,
+                                 allowed_mentions=mentions)
+        follow_id = None
         if post.followup:
             try:
-                await channel.send(post.followup, allowed_mentions=discord.AllowedMentions.none())
+                follow_id = (await channel.send(post.followup, allowed_mentions=discord.AllowedMentions.none())).id
             except discord.HTTPException as e:
-                log.warning("followup failed in %s: %s", channel.guild.id, e)
+                ev(log, "followup_failed", logging.WARNING, guild=channel.guild.id, channel=channel.id,
+                   status=getattr(e, "status", None), error=str(e)[:160])
+        return msg.id, follow_id
 
     async def post_daily(self, cfg: GuildConfig, now: datetime, force=False, slot: int = 0) -> str:
         if self.snap is None or time.time() - self.snap.get("fetched_at", 0) > SNAP_MAX_AGE:
             await self.refresh(force=True)
+        t = Timer().__enter__()
         post = self.build(cfg, now, slot)
         if post is None:
             return "Nothing to post: the countdown is finished."
         if not force and self.store.was_posted(cfg.guild_id, "daily", post.key):
+            ev(slog, "post_skipped", logging.DEBUG, guild=cfg.guild_id, key=post.key, reason="already_posted")
             return "Already posted for this time slot."
         channel = self.get_channel(cfg.channel_id)
         problem = self._can_post(channel)
         if problem:
+            self.say_once(slog, (cfg.guild_id, post.key, "noperm"), "post_blocked", logging.ERROR,
+                          guild=cfg.guild_id, channel=cfg.channel_id, key=post.key, reason=problem)
             await self.notify_staging(cfg, f"⚠️ Couldn't post the daily countdown: {problem}.")
             return problem
-        await self.send_post(channel, post, cfg.ping_role_id)
+        try:
+            msg_id, follow_id = await self.send_post(channel, post, cfg.ping_role_id)
+        except discord.HTTPException as e:
+            ev(slog, "post_failed", logging.ERROR, exc_info=e, guild=cfg.guild_id, channel=cfg.channel_id,
+               key=post.key, status=getattr(e, "status", None), code=getattr(e, "code", None))
+            await self.notify_staging(cfg, f"⚠️ Discord rejected the countdown post: {str(e)[:150]}")
+            return f"Discord rejected the post: {str(e)[:150]}"
         self.store.mark_posted(cfg.guild_id, "daily", post.key)
         self.store.mark_seen(cfg.guild_id, post.used_ids)
-        log.info("posted %s to guild %s", post.key, cfg.guild_id)
+        n_news = sum(1 for i in post.used_ids if i.startswith("news:"))
+        n_clips = sum(1 for i in post.used_ids if i.startswith("twitch:"))
+        n_vids = sum(1 for i in post.used_ids if i.startswith("yt:"))
+        ev(slog, "post_sent", guild=cfg.guild_id, guild_name=getattr(channel.guild, "name", "?"), channel=channel.id,
+           key=post.key, slot=slot, type="full" if slot == 0 else "checkin", forced=force,
+           chars=sum(len(e.get("description", "")) for e in post.embeds), embeds=len(post.embeds),
+           news=n_news, clips=n_clips, videos=n_vids, ping=bool(post.content), message=msg_id,
+           followup=follow_id, ms=t.elapsed_ms)
         return "Posted."
 
     async def notify_staging(self, cfg: GuildConfig, text: str):
@@ -297,8 +353,10 @@ class ForeverBot(commands.Bot):
         if ch and not self._can_post(ch):
             try:
                 await ch.send(text, allowed_mentions=discord.AllowedMentions.none())
-            except discord.HTTPException:
-                pass
+            except discord.HTTPException as e:
+                ev(log, "staging_notify_failed", logging.WARNING, guild=cfg.guild_id, error=str(e)[:120])
+        else:
+            ev(log, "staging_unavailable", logging.DEBUG, guild=cfg.guild_id, note=text[:120])
 
     @tasks.loop(seconds=60)
     async def schedule_loop(self):
@@ -307,7 +365,7 @@ class ForeverBot(commands.Bot):
             try:
                 await self._tick_guild(cfg, now)
             except Exception as e:  # noqa: BLE001 -- one bad server never blocks the rest
-                log.exception("guild %s tick failed: %s", cfg.guild_id, e)
+                ev(slog, "tick_crashed", logging.ERROR, exc_info=e, guild=cfg.guild_id)
             await asyncio.sleep(0.5)  # gentle fan-out
 
     async def _tick_guild(self, cfg: GuildConfig, now: datetime):
@@ -322,14 +380,22 @@ class ForeverBot(commands.Bot):
             await self.refresh()
             post = self.build(cfg, now + (first - local_now), 0)  # render as of post time
             ch = self.get_channel(cfg.staging_channel_id)
-            if post and not self._can_post(ch):
+            problem = self._can_post(ch)
+            if post and not problem:
                 extra = f" · then {len(times) - 1} check-in(s) at {fmt_times(times[1:])}" if len(times) > 1 else ""
-                await ch.send(f"👀 **Preview** · posts <t:{int(first.timestamp())}:R>{extra} · `/hold` to skip "
-                              f"today, `/skipnews` to drop news\n{R.health_text(self.snap)}",
-                              allowed_mentions=discord.AllowedMentions.none())
-                await self.send_post(ch, post)
+                try:
+                    await ch.send(f"👀 **Preview** · posts <t:{int(first.timestamp())}:R>{extra} · `/hold` to skip "
+                                  f"today, `/skipnews` to drop news\n{R.health_text(self.snap)}",
+                                  allowed_mentions=discord.AllowedMentions.none())
+                    await self.send_post(ch, post)
+                    ev(slog, "staging_preview_sent", guild=cfg.guild_id, channel=ch.id, posts_at=first.isoformat())
+                except discord.HTTPException as e:
+                    ev(slog, "staging_preview_failed", logging.WARNING, guild=cfg.guild_id, error=str(e)[:160])
+            elif problem:
+                ev(slog, "staging_preview_blocked", logging.WARNING, guild=cfg.guild_id, reason=problem)
             self.store.mark_posted(cfg.guild_id, "staging", today.isoformat())
         if cfg.hold_date == today.isoformat():
+            self.say_once(slog, (cfg.guild_id, today, "hold"), "day_on_hold", guild=cfg.guild_id, day=today.isoformat())
             return
         kind, _ = R.phase(cfg.tz, now)
         if kind == "done":
@@ -337,9 +403,17 @@ class ForeverBot(commands.Bot):
         # each slot: post if due, within grace, and before the next slot starts
         for slot, due in enumerate(dues):
             window_end = min(due + POST_GRACE, dues[slot + 1] if slot + 1 < len(dues) else due + POST_GRACE)
-            if due <= local_now < window_end and not self.store.was_posted(
-                    cfg.guild_id, "daily", f"{kind}:{today.isoformat()}:{slot}"):
+            key = f"{kind}:{today.isoformat()}:{slot}"
+            if due <= local_now < window_end and not self.store.was_posted(cfg.guild_id, "daily", key):
+                late_min = (local_now - due).total_seconds() / 60
+                if late_min > 5:
+                    self.say_once(slog, (cfg.guild_id, key, "late"), "slot_late", logging.WARNING, guild=cfg.guild_id,
+                                  key=key, late_min=late_min, hint="bot was offline or busy at post time")
                 await self.post_daily(cfg, now, slot=slot)
+            elif local_now >= window_end and not self.store.was_posted(cfg.guild_id, "daily", key):
+                self.say_once(slog, (cfg.guild_id, key, "missed"), "slot_missed", logging.WARNING, guild=cfg.guild_id,
+                              key=key, due=due.isoformat(), window_end=window_end.isoformat(),
+                              hint="bot was offline for the whole window; /postnow to send it")
 
     @tasks.loop(seconds=30)
     async def launch_loop(self):
@@ -352,7 +426,10 @@ class ForeverBot(commands.Bot):
                 if self.store.was_posted(cfg.guild_id, "milestone", str(minutes)):
                     continue
                 ch = self.get_channel(cfg.channel_id)
-                if self._can_post(ch):
+                problem = self._can_post(ch)
+                if problem:
+                    self.say_once(slog, (cfg.guild_id, "milestone", minutes), "milestone_blocked", logging.ERROR,
+                                  guild=cfg.guild_id, minutes=minutes, reason=problem)
                     continue
                 try:
                     text = R.milestone_text(minutes, cfg.faction)
@@ -361,13 +438,49 @@ class ForeverBot(commands.Bot):
                                   allowed_mentions=discord.AllowedMentions(
                                       roles=[discord.Object(cfg.ping_role_id)]) if cfg.ping_role_id else discord.AllowedMentions.none())
                     self.store.mark_posted(cfg.guild_id, "milestone", str(minutes))
+                    ev(slog, "milestone_sent", guild=cfg.guild_id, minutes_before=minutes)
                 except discord.HTTPException as e:
-                    log.warning("milestone %s guild %s: %s", minutes, cfg.guild_id, e)
+                    ev(slog, "milestone_failed", logging.ERROR, guild=cfg.guild_id, minutes_before=minutes,
+                       status=getattr(e, "status", None), error=str(e)[:160])
                 await asyncio.sleep(0.5)
+
+    def next_post(self, cfg: GuildConfig, now: datetime):
+        """Next scheduled (slot, datetime) for this server, looking up to 2 days ahead."""
+        local_now = now.astimezone(ZoneInfo(cfg.tz))
+        for add in (0, 1, 2):
+            day = (local_now + timedelta(days=add)).date()
+            for slot, hm in enumerate(guild_times(cfg)):
+                due = post_dt(cfg, day, hm)
+                if due > local_now:
+                    return slot, due
+        return None
+
+    @tasks.loop(minutes=30)
+    async def heartbeat_loop(self):
+        now = now_utc()
+        cfgs = self.store.all_guilds()
+        nxt = [n for c in cfgs if (n := self.next_post(c, now))]
+        soonest = min((d for _, d in nxt), default=None)
+        snap_age = (time.time() - self.snap["fetched_at"]) / 60 if self.snap else None
+        ev(log, "heartbeat", version=VERSION, uptime_h=(time.time() - STARTED) / 3600, guilds=len(self.guilds),
+           configured=len(cfgs), latency_ms=self.latency * 1000, snapshot_age_min=snap_age,
+           next_post=soonest.isoformat() if soonest else "-",
+           loops_ok=all(l.is_running() for l in (self.refresh_loop, self.schedule_loop, self.launch_loop)))
+        for name, loop in (("refresh", self.refresh_loop), ("schedule", self.schedule_loop), ("launch", self.launch_loop)):
+            if not loop.is_running():
+                ev(log, "loop_stopped", logging.ERROR, loop=name, action="restarting")
+                loop.restart()
+
+    @refresh_loop.error
+    @schedule_loop.error
+    @launch_loop.error
+    async def _loop_error(self, error):
+        ev(log, "loop_crashed", logging.ERROR, exc_info=error, note="heartbeat will restart it")
 
     @refresh_loop.before_loop
     @schedule_loop.before_loop
     @launch_loop.before_loop
+    @heartbeat_loop.before_loop
     async def _wait_ready(self):
         await self.wait_until_ready()
 
@@ -540,10 +653,29 @@ async def skipnews_cmd(interaction: discord.Interaction):
 @admin
 async def status_cmd(interaction: discord.Interaction):
     cfg = bot.store.get_guild(interaction.guild_id)
-    setup = (f"Channel <#{cfg.channel_id}> · {len(guild_times(cfg))}x a day at {fmt_times(guild_times(cfg))} {cfg.tz} · {cfg.faction}"
-             f"{' · ON HOLD today' if cfg.hold_date == R.local_today(cfg.tz, now_utc()).isoformat() else ''}"
-             if cfg and cfg.channel_id else "Not set up. Run `/setup`.")
-    await interaction.response.send_message(f"{setup}\n{R.health_text(bot.snap)}", ephemeral=True,
+    now = now_utc()
+    lines = []
+    if cfg and cfg.channel_id:
+        lines.append(f"**Setup:** <#{cfg.channel_id}> · {len(guild_times(cfg))}x a day at {fmt_times(guild_times(cfg))} "
+                     f"{cfg.tz} · {cfg.faction}"
+                     f"{' · ⏸️ ON HOLD today' if cfg.hold_date == R.local_today(cfg.tz, now).isoformat() else ''}")
+        nxt = bot.next_post(cfg, now)
+        if nxt:
+            slot, due = nxt
+            lines.append(f"**Next post:** <t:{int(due.timestamp())}:F> (<t:{int(due.timestamp())}:R>) · "
+                         f"{'full post' if slot == 0 else 'check-in'}")
+        recent = bot.store.recent_posts(cfg.guild_id, 4)
+        if recent:
+            lines.append("**Recent:** " + " · ".join(f"{k} `{key}` <t:{int(at)}:R>" for k, key, at in recent))
+        problem = bot._can_post(bot.get_channel(cfg.channel_id))
+        if problem:
+            lines.append(f"⚠️ **Can't post:** {problem}")
+    else:
+        lines.append("Not set up. Run `/setup`.")
+    lines.append(R.health_text(bot.snap))
+    lines.append(f"-# version `{VERSION}` · up {(time.time() - STARTED) / 3600:.1f}h · latency {bot.latency * 1000:.0f}ms · "
+                 f"{len(bot.guilds)} server(s)")
+    await interaction.response.send_message("\n".join(lines)[:1990], ephemeral=True,
                                             allowed_mentions=discord.AllowedMentions.none())
 
 
@@ -639,7 +771,11 @@ async def spellbook_cmd(interaction: discord.Interaction, page: app_commands.Cho
 
 @bot.tree.error
 async def on_app_error(interaction: discord.Interaction, error: app_commands.AppCommandError):
-    log.exception("command error: %s", error)
+    expected = isinstance(error, (app_commands.MissingPermissions, app_commands.CheckFailure))
+    ev(clog, "command_error", logging.WARNING if expected else logging.ERROR,
+       exc_info=None if expected else error, name=getattr(interaction.command, "qualified_name", "?"),
+       guild=interaction.guild_id, user=interaction.user.id, error=type(error).__name__,
+       detail=str(getattr(error, "original", error))[:200])
     msg = "You need Manage Server for that." if isinstance(error, app_commands.MissingPermissions) \
         else "Something went wrong. Try again in a minute."
     try:
@@ -654,8 +790,14 @@ async def on_app_error(interaction: discord.Interaction, error: app_commands.App
 def main():
     token = os.getenv("DISCORD_TOKEN")
     if not token:
+        ev(log, "startup_failed", logging.CRITICAL, reason="DISCORD_TOKEN is not set")
         raise SystemExit("DISCORD_TOKEN is not set. See .env.example.")
-    bot.run(token, log_handler=None)
+    try:
+        bot.run(token, log_handler=None)
+    except discord.LoginFailure:
+        ev(log, "startup_failed", logging.CRITICAL, reason="Discord rejected the token",
+           hint="reset the token in the Developer Portal and update DISCORD_TOKEN")
+        raise
 
 
 if __name__ == "__main__":

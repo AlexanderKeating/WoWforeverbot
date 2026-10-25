@@ -268,6 +268,22 @@ def test_youtube_top_videos():
         F.http_get = orig
 
 
+def test_logging_redacts_and_formats():
+    import json as _json
+    import logging as _logging
+    from forever_bot import logsetup as L
+    os.environ["YOUTUBE_API_KEY"] = "AIzaFAKEKEY1234567"
+    rec = _logging.LogRecord("forever.fetch", _logging.WARNING, __file__, 1,
+                             "GET https://x/?key=AIzaFAKEKEY1234567 failed", (), None)
+    assert L.RedactFilter().filter(rec) and "AIzaFAKEKEY" not in rec.getMessage() and "***" in rec.getMessage()
+    rec2 = _logging.LogRecord("forever.sched", _logging.INFO, __file__, 1, "post_sent", (), None)
+    rec2.fields = {"event": "post_sent", "guild": 1, "error": 'has "quotes" and spaces'}
+    line = L.TextFormatter().format(rec2)
+    assert "event=post_sent guild=1" in line and "error=\"has 'quotes' and spaces\"" in line
+    assert _json.loads(L.JsonFormatter().format(rec2))["event"] == "post_sent"
+    del os.environ["YOUTUBE_API_KEY"]
+
+
 def test_store_roundtrip():
     st = tmp_store()
     st.set_class(1, 10, "Mage")

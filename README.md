@@ -123,6 +123,30 @@ set `DEV_GUILD_ID` to your server's ID.
 
 ---
 
+## Debugging
+
+Every log line is one event with `key=value` fields. In Render → **Logs**, search for:
+
+| Search | Shows |
+|---|---|
+| `event=post_sent` | Every post: server, slot, size, news/clip/video counts, message id |
+| `event=refresh_done` | Each data refresh: sources ok/down/stale, item counts, duration |
+| `event=source_down` / `event=source_stale` | A news site, Twitch or YouTube failing, and whether cache covered it |
+| `event=feed_ok` | Which feed URL worked per site, entries vs kept vs off-topic |
+| `event=twitch_clips` / `event=youtube_search` | Raw vs kept counts and why items were dropped |
+| `event=slot_late` / `event=slot_missed` | Posts that went out late or not at all (bot was offline) |
+| `event=post_blocked` | Missing channel permissions |
+| `event=command` / `event=command_error` | Who ran what, and failures with tracebacks |
+| `event=heartbeat` | Every 30 min: uptime, servers, latency, next post, loops healthy |
+| `level=ERROR` | Anything that needs attention |
+| `guild=<server id>` | Everything for one server |
+
+Settings: `LOG_LEVEL=DEBUG` adds every HTTP request with status and timing; `LOG_FORMAT=json` emits JSON lines
+for log tools. Tokens and API keys are scrubbed from every line.
+
+In Discord, `/status` shows the schedule, next post, recent posts, permission problems, source health and the
+running version.
+
 ## Editing what it says
 
 Everything is in `forever_bot/content.py`: daily rundowns, pro tips, deep dives, tips by topic, did-you-knows, tournament data, FAQ,

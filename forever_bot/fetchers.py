@@ -21,6 +21,7 @@ import aiohttp
 import feedparser
 
 from . import content as C
+from .logsetup import Timer, ev, new_run_id
 
 log = logging.getLogger("forever.fetch")
 
@@ -128,17 +129,24 @@ async def http_get(session: aiohttp.ClientSession, url: str, *, params=None, hea
                    want_json=False):
     """GET with timeout, retries, exponential backoff and 429 handling. Raises FetchError."""
     last = None
+    host = urlsplit(url).netloc
     for attempt in range(RETRIES):
+        t0 = time.perf_counter()
         try:
             async with session.get(url, params=params, headers={"User-Agent": UA, **(headers or {})},
                                    timeout=TIMEOUT) as r:
+                ms = (time.perf_counter() - t0) * 1000
+                ev(log, "http", logging.DEBUG, host=host, path=urlsplit(url).path[:80], status=r.status,
+                   ms=ms, attempt=attempt + 1)
                 if r.status == 429:
                     wait = min(float(r.headers.get("Retry-After", 2 ** attempt * 2) or 2), 30)
                     last = f"429 rate limited ({url})"
+                    ev(log, "http_retry", logging.WARNING, host=host, status=429, wait_s=wait, attempt=attempt + 1)
                     await asyncio.sleep(wait)
                     continue
                 if r.status >= 500:
                     last = f"{r.status} server error ({url})"
+                    ev(log, "http_retry", logging.WARNING, host=host, status=r.status, attempt=attempt + 1)
                     await asyncio.sleep(2 ** attempt)
                     continue
                 if r.status == 401:
@@ -152,6 +160,8 @@ async def http_get(session: aiohttp.ClientSession, url: str, *, params=None, hea
             raise
         except (aiohttp.ClientError, asyncio.TimeoutError, ValueError) as e:
             last = f"{type(e).__name__}: {e} ({url})"
+            ev(log, "http_retry", logging.WARNING, host=host, error=type(e).__name__, detail=str(e)[:120],
+               ms=(time.perf_counter() - t0) * 1000, attempt=attempt + 1)
             await asyncio.sleep(2 ** attempt)
     raise FetchError(last or f"failed ({url})")
 
@@ -203,6 +213,8 @@ async def fetch_news_source(session, src: dict) -> list[dict]:
             try:
                 page = await http_get(session, src["home"])
                 candidates = [u for u in discover_feeds(page, src["home"]) if u not in tried]
+                ev(log, "feed_autodiscovery", source=src["name"], found=len(candidates),
+                   feeds=",".join(candidates)[:200] or "-")
             except FetchError as e:
                 errors.append(f"home: {e}")
                 candidates = []
@@ -213,16 +225,21 @@ async def fetch_news_source(session, src: dict) -> list[dict]:
             try:
                 text = await http_get(session, url)
                 items = parse_feed(text, src["name"])
-                matched = []
+                matched, off_topic, too_old = [], 0, 0
                 for it in items:
                     if not is_forever(it.pop("_match_text")):
+                        off_topic += 1
                         continue
                     age = _age_hours(it["published"])
                     if age is not None and age > NEWS_MAX_AGE_HOURS:
+                        too_old += 1
                         continue
                     matched.append(it)
+                ev(log, "feed_ok", source=src["name"], feed=url, phase="known" if phase == 0 else "discovered",
+                   entries=len(items), kept=len(matched), off_topic=off_topic, too_old=too_old)
                 return matched
             except FetchError as e:
+                ev(log, "feed_failed", logging.DEBUG, source=src["name"], feed=url, error=str(e)[:120])
                 errors.append(str(e))
     raise FetchError("; ".join(errors[-3:]) or "no usable feed")
 
@@ -302,7 +319,8 @@ class Twitch:
                     break
         if not forever_ids and not fallback:
             raise FetchError("no Twitch category found")
-        log.info("twitch categories: forever=%s fallback=%s", forever_ids, fallback)
+        ev(log, "twitch_categories", forever_ids=",".join(sorted(forever_ids)) or "none", fallback_id=fallback,
+           mode="forever_category" if forever_ids else "wow_category_title_match")
         self._games = (forever_ids, fallback, time.time())
         return forever_ids, fallback
 
@@ -314,7 +332,7 @@ class Twitch:
             self._users.update(found)
             for l in need[i:i + 100]:
                 if l not in found:
-                    log.warning("twitch login not found: %s (renamed or banned?)", l)
+                    ev(log, "twitch_login_not_found", logging.WARNING, login=l, hint="renamed or banned? edit STREAMERS in content.py")
                     self._users[l] = (None, l)
         return {l: self._users[l.lower()] for l in logins if self._users.get(l.lower(), (None,))[0]}
 
@@ -327,7 +345,7 @@ class Twitch:
             try:
                 j = await self.get(session, "clips", {**params, "started_at": since, "first": 20})
             except FetchError as e:
-                log.warning("clips %s: %s", params, e)
+                ev(log, "twitch_clips_failed", logging.WARNING, params=str(params), error=str(e)[:120])
                 return
             for c in (j or {}).get("data", []):
                 raw.setdefault(c["id"], c)
@@ -341,12 +359,16 @@ class Twitch:
         tasks += [grab({"broadcaster_id": uid}, True) for uid, _ in users.values()]
         await asyncio.gather(*tasks)
 
-        out = []
+        out, drop_topic, drop_clean = [], 0, 0
         for cid, c in raw.items():
             title = (c.get("title") or "").strip()
             gid = c.get("game_id")
             relevant = gid in forever_ids or is_forever(title) or (not forever_ids and gid == fallback and is_forever(title))
-            if not relevant or not title or not is_clean(title):
+            if not relevant or not title:
+                drop_topic += 1
+                continue
+            if not is_clean(title):
+                drop_clean += 1
                 continue
             score = c.get("view_count", 0) * (1.5 if cid in pinned else 1.0)
             out.append({"id": "twitch:" + cid, "url": c["url"], "title": title,
@@ -355,6 +377,9 @@ class Twitch:
         out.sort(key=lambda x: x["_score"], reverse=True)
         for o in out:
             o.pop("_score", None)
+        ev(log, "twitch_clips", raw=len(raw), pinned_streamers=len(users), from_pinned=len(pinned),
+           kept=len(out), dropped_off_topic=drop_topic, dropped_profanity=drop_clean,
+           top=(out[0]["author"] + ":" + str(out[0]["views"])) if out else "-")
         return out[:limit]
 
 
@@ -381,11 +406,15 @@ class YouTube:
         except FetchError as e:
             if str(e).startswith("403"):  # quota used up or key restricted: back off until next window
                 self._last_at = time.time()
+                ev(log, "youtube_403", logging.ERROR, path=path,
+                   hint="quota used up, or key not enabled/restricted for YouTube Data API v3")
                 raise FetchError("403 (quota exceeded or key not enabled for YouTube Data API v3)")
             raise
 
     async def top_videos(self, session, limit=5) -> list[dict]:
         if self._last is not None and time.time() - self._last_at < self.SEARCH_EVERY:
+            ev(log, "youtube_cached", logging.DEBUG, videos=len(self._last),
+               next_search_min=(self.SEARCH_EVERY - (time.time() - self._last_at)) / 60)
             return self._last
         since = (datetime.now(timezone.utc) - timedelta(hours=24)).strftime("%Y-%m-%dT%H:%M:%SZ")
         s = await self._get(session, "search", {
@@ -401,8 +430,8 @@ class YouTube:
             v = await self._get(session, "videos", {"part": "snippet,statistics,contentDetails", "id": ",".join(ids)})
             stats = {x["id"]: x for x in (v or {}).get("items", [])}
         except FetchError as e:
-            log.warning("youtube stats failed, ranking by search order: %s", e)
-        out = []
+            ev(log, "youtube_stats_failed", logging.WARNING, error=str(e)[:120], fallback="search order")
+        out, drop = [], {"off_topic": 0, "profanity": 0, "short": 0}
         for rank, it in enumerate(items):
             vid = it["id"]["videoId"]
             full = stats.get(vid, {})
@@ -410,9 +439,14 @@ class YouTube:
             title = html.unescape(sn.get("title", "")).strip()
             desc = sn.get("description", "")
             dur = (full.get("contentDetails") or {}).get("duration", "")
-            if not title or not is_forever(title, desc, " ".join(sn.get("tags", []) or [])) or not is_clean(title):
+            if not title or not is_forever(title, desc, " ".join(sn.get("tags", []) or [])):
+                drop["off_topic"] += 1
+                continue
+            if not is_clean(title):
+                drop["profanity"] += 1
                 continue
             if re.fullmatch(r"PT(\d|[1-5]\d)S", dur or ""):  # skip Shorts (<60s)
+                drop["short"] += 1
                 continue
             views = int((full.get("statistics") or {}).get("viewCount", 0) or 0)
             out.append({"id": "yt:" + vid, "url": f"https://www.youtube.com/watch?v={vid}", "title": title,
@@ -422,6 +456,9 @@ class YouTube:
         for o in out:
             o.pop("_rank", None)
         self._last, self._last_at = out[:limit], time.time()
+        ev(log, "youtube_search", results=len(items), kept=len(out), quota_units=101,
+           **{f"dropped_{k}": v for k, v in drop.items()},
+           top=(out[0]["author"] + ":" + str(out[0]["views"])) if out else "-")
         return self._last
 
 
@@ -454,15 +491,22 @@ async def fetch_youtube(session) -> list[dict]:
 # ======================================================================= aggregate
 async def _guarded(store, key, coro_fn):
     """Run one source. Success -> cache. Failure -> last good result if fresh enough."""
+    t = Timer().__enter__()
     try:
         data = await coro_fn()
         store.cache_put(key, data)
+        ev(log, "source_ok", source=key, items=len(data), ms=t.elapsed_ms)
         return data, "ok"
     except Exception as e:  # noqa: BLE001 -- isolation is the point
-        log.warning("source %s failed: %s", key, e)
+        unexpected = not isinstance(e, FetchError)
         cached, at = store.cache_get(key)
         if cached is not None and at and time.time() - at < STALE_OK_HOURS * 3600:
-            return cached, f"stale ({int((time.time() - at) / 3600)}h old): {str(e)[:80]}"
+            age_h = int((time.time() - at) / 3600)
+            ev(log, "source_stale", logging.WARNING, exc_info=e if unexpected else None, source=key,
+               using_cache_h=age_h, items=len(cached), error=str(e)[:160], ms=t.elapsed_ms)
+            return cached, f"stale ({age_h}h old): {str(e)[:80]}"
+        ev(log, "source_down", logging.ERROR if unexpected else logging.WARNING, exc_info=e if unexpected else None,
+           source=key, error=str(e)[:160], ms=t.elapsed_ms)
         return [], f"down: {str(e)[:100]}"
 
 
@@ -491,6 +535,7 @@ async def _youtube_combined(session, yt):
 
 
 async def refresh_all(store, twitch: Twitch | None, youtube: "YouTube | None" = None) -> dict:
+    run, t = new_run_id(), Timer().__enter__()
     async with aiohttp.ClientSession() as session:
         jobs = {}
         for src in C.NEWS_SOURCES:
@@ -516,4 +561,10 @@ async def refresh_all(store, twitch: Twitch | None, youtube: "YouTube | None" = 
         snap["health"]["twitch"] = "not configured"
     if "youtube" not in snap["health"]:
         snap["health"]["youtube"] = "not configured"
+    h = snap["health"]
+    ev(log, "refresh_done", run=run, ms=t.elapsed_ms,
+       ok=sum(v == "ok" for v in h.values()), total=len(h),
+       down=",".join(k for k, v in h.items() if v.startswith("down")) or "-",
+       stale=",".join(k for k, v in h.items() if v.startswith("stale")) or "-",
+       news=len(snap["news"]), clips=len(snap["clips"]), videos=len(snap["videos"]))
     return snap
