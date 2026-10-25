@@ -44,6 +44,15 @@ SNAP_MAX_AGE = 45 * 60
 MILESTONE_WINDOW = timedelta(minutes=15)
 
 
+def perm_fix_hint(channel, problem: str) -> str:
+    if channel is None:
+        return "Run `/setup` again and pick a channel I can see."
+    return ("**Fix:** right-click the channel → **Edit Channel → Permissions → +** → add **"
+            f"{channel.guild.me.display_name}** → allow **View Channel, Send Messages, Embed Links** "
+            "(and Read Message History) → save. If the channel is synced to a private category, add me there. "
+            "Then run `/postnow`.")
+
+
 def now_utc() -> datetime:
     return datetime.now(timezone.utc)
 
@@ -327,8 +336,9 @@ class ForeverBot(commands.Bot):
         if problem:
             self.say_once(slog, (cfg.guild_id, post.key, "noperm"), "post_blocked", logging.ERROR,
                           guild=cfg.guild_id, channel=cfg.channel_id, key=post.key, reason=problem)
-            await self.notify_staging(cfg, f"⚠️ Couldn't post the daily countdown: {problem}.")
-            return problem
+            hint = perm_fix_hint(channel, problem)
+            await self.notify_staging(cfg, f"⚠️ Couldn't post the daily countdown: {problem}.\n{hint}")
+            return f"⚠️ I can't post in <#{cfg.channel_id}>: {problem}.\n{hint}"
         try:
             msg_id, follow_id = await self.send_post(channel, post, cfg.ping_role_id)
         except discord.HTTPException as e:
@@ -524,9 +534,11 @@ async def setup_cmd(interaction: discord.Interaction, channel: discord.TextChann
             "Unknown time zone. Use one like `America/Chicago`, `America/New_York`, `Europe/London`.", ephemeral=True)
     problem = bot._can_post(channel)
     if problem:
-        return await interaction.response.send_message(f"I can't post in {channel.mention}: {problem}.", ephemeral=True)
+        return await interaction.response.send_message(
+            f"I can't post in {channel.mention}: {problem}.\n{perm_fix_hint(channel, problem)}", ephemeral=True)
     if staging and bot._can_post(staging):
-        return await interaction.response.send_message(f"I can't post in {staging.mention}: {bot._can_post(staging)}.", ephemeral=True)
+        return await interaction.response.send_message(
+            f"I can't post in {staging.mention}: {bot._can_post(staging)}.\n{perm_fix_hint(staging, '')}", ephemeral=True)
     cfg = cfg_for(interaction)
     cfg.channel_id, cfg.ping_role_id = channel.id, ping_role.id if ping_role else None
     cfg.staging_channel_id = staging.id if staging else None
