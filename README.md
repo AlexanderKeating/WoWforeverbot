@@ -42,6 +42,8 @@ Works in any number of servers. Each server picks its own channel, ping role, po
 | Admins | `/skipnews` | Post today without the news section |
 | Admins | `/status` | Settings and source health |
 | Everyone | `/help` or `/spellbook` | A WoW-style spellbook of every command: flip pages with a dropdown, tap a command to use it. New players get a "Quest log" page; the Officer page only shows for admins |
+| Everyone | `/classtips class:<name> [share]` | Forever changes, leveling and Horde PvP tips, key talents and beta-tournament record for any class (private unless `share:true`) |
+| Admins | `/pinpost [channel]` | Posts a "start here" card to pin; it updates itself after every post. Includes a 🔔 ping opt-in button |
 | Everyone | `/tips [topic]` | Tips by topic: basics, leveling, pvp, camping, professions, travel (private) |
 | Everyone | `/countdown` `/tourney` `/faq` `/dates` `/pickaclass` | |
 
@@ -78,6 +80,13 @@ Works in any number of servers. Each server picks its own channel, ping role, po
    https://discord.com/oauth2/authorize?client_id=APP_ID&scope=bot+applications.commands&permissions=19456
    ```
    This is the link you share. It isn't listed anywhere unless you post it.
+
+   **Optional extras:** to let the bot pin its start-here card and run the 🔔 ping opt-in button, use this link
+   instead (adds **Manage Messages** and **Manage Roles**). After adding, drag the bot's role *above* your ping
+   role in Server Settings → Roles:
+   ```
+   https://discord.com/oauth2/authorize?client_id=APP_ID&scope=bot+applications.commands&permissions=268463104
+   ```
 
 ### 2. Twitch keys (for clips)
 1. <https://dev.twitch.tv/console> → **Register Your Application**.

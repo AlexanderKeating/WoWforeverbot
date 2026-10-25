@@ -18,6 +18,8 @@ import discord
 from discord import app_commands
 from discord.ext import commands, tasks
 
+from . import __version__
+from . import classes as K
 from . import content as C
 from . import render as R
 from .fetchers import Twitch, YouTube, refresh_all
@@ -151,6 +153,39 @@ class DeepDiveButton(discord.ui.DynamicItem[discord.ui.Button], template=r"dd:(?
         await interaction.response.send_message(embed=discord.Embed.from_dict(e), ephemeral=True)
 
 
+class PingToggleButton(discord.ui.DynamicItem[discord.ui.Button], template=r"ping:(?P<role>[0-9]{5,25})"):
+    """On the pinned card: lets members opt in/out of the ping role themselves."""
+
+    def __init__(self, role_id: int):
+        self.role_id = int(role_id)
+        super().__init__(discord.ui.Button(label="Toggle pings", emoji="🔔", style=discord.ButtonStyle.secondary,
+                                           custom_id=f"ping:{self.role_id}"))
+
+    @classmethod
+    async def from_custom_id(cls, interaction, item, match):
+        return cls(int(match["role"]))
+
+    async def callback(self, interaction: discord.Interaction):
+        guild = interaction.guild
+        role = guild.get_role(self.role_id) if guild else None
+        if not role:
+            return await interaction.response.send_message("That ping role doesn't exist anymore. Ask an admin to re-run `/pinpost`.", ephemeral=True)
+        member = interaction.user
+        try:
+            if role in getattr(member, "roles", []):
+                await member.remove_roles(role, reason="Forever Countdown: opted out of pings")
+                msg = f"🔕 Removed {role.mention}. You won't be pinged."
+            else:
+                await member.add_roles(role, reason="Forever Countdown: opted in to pings")
+                msg = f"🔔 Added {role.mention}. You'll get the daily ping."
+            ev(clog, "ping_toggle", guild=guild.id, user=member.id, role=role.id, now_has=role not in member.roles)
+        except discord.Forbidden:
+            ev(clog, "ping_toggle_forbidden", logging.WARNING, guild=guild.id, role=role.id)
+            msg = (f"I can't change {role.mention} yet. An admin needs to give me **Manage Roles** and drag my role "
+                   f"**above** {role.mention} in Server Settings → Roles.")
+        await interaction.response.send_message(msg, ephemeral=True, allowed_mentions=discord.AllowedMentions.none())
+
+
 def _deep_key_from(message) -> str | None:
     for row in getattr(message, "components", None) or []:
         for comp in getattr(row, "children", []):
@@ -181,14 +216,20 @@ class RollcallView(discord.ui.View):
             try:
                 self.bot.store.set_class(interaction.guild_id, interaction.user.id, cls)
                 counts = self.bot.store.class_counts(interaction.guild_id)
+                cfg = self.bot.store.get_guild(interaction.guild_id)
+                tips = R.classtips_embed(cls, cfg.faction if cfg else "horde")
+                extra = {"embed": discord.Embed.from_dict(tips)} if tips else {}
                 if interaction.message and interaction.message.author.id == self.bot.user.id:
                     await interaction.response.edit_message(
                         view=RollcallView(self.bot, counts, _deep_key_from(interaction.message)))
-                    await interaction.followup.send(f"Locked in: **{cls}**. Change anytime.", ephemeral=True)
+                    await interaction.followup.send(f"Locked in: **{cls}**. Change anytime. Here's what's new for you:",
+                                                    ephemeral=True, **extra)
                 else:
-                    await interaction.response.send_message(f"Locked in: **{cls}**.", ephemeral=True)
+                    await interaction.response.send_message(f"Locked in: **{cls}**.", ephemeral=True, **extra)
+                ev(clog, "rollcall", guild=interaction.guild_id, user=interaction.user.id, cls=cls,
+                   total=sum(counts.values()))
             except discord.HTTPException as e:
-                log.warning("rollcall update failed: %s", e)
+                ev(clog, "rollcall_failed", logging.WARNING, guild=interaction.guild_id, cls=cls, error=str(e)[:160])
                 if not interaction.response.is_done():
                     await interaction.response.send_message(f"Saved as **{cls}**.", ephemeral=True)
         return cb
@@ -210,12 +251,12 @@ class ForeverBot(commands.Bot):
 
     async def setup_hook(self):
         self.add_view(RollcallView(self))  # persistent: buttons keep working after restarts
-        self.add_dynamic_items(DeepDiveButton)
+        self.add_dynamic_items(DeepDiveButton, PingToggleButton)
         cached = self.store.cache_get("_snapshot")[0]
         if cached:
             self.snap = cached
         st = self.store.stats()
-        ev(log, "startup", version=VERSION, discord_py=discord.__version__, db=os.getenv("DB_PATH", "forever.db"),
+        ev(log, "startup", release=__version__, version=VERSION, discord_py=discord.__version__, db=os.getenv("DB_PATH", "forever.db"),
            twitch=self.twitch.configured, youtube=self.youtube.configured, dev_guild=bool(os.getenv("DEV_GUILD_ID")),
            configured_guilds=st["guilds"], posts_logged=st["posts"], rollcall_entries=st["rollcall"],
            cached_snapshot=bool(cached), launch=C.LAUNCH.isoformat())
@@ -356,7 +397,36 @@ class ForeverBot(commands.Bot):
            chars=sum(len(e.get("description", "")) for e in post.embeds), embeds=len(post.embeds),
            news=n_news, clips=n_clips, videos=n_vids, ping=bool(post.content), message=msg_id,
            followup=follow_id, ms=t.elapsed_ms)
+        await self.refresh_pin(cfg, f"https://discord.com/channels/{cfg.guild_id}/{channel.id}/{msg_id}")
         return "Posted."
+
+    def pin_view(self, cfg: GuildConfig):
+        if not cfg.ping_role_id:
+            return None
+        v = discord.ui.View(timeout=None)
+        v.add_item(PingToggleButton(cfg.ping_role_id))
+        return v
+
+    async def refresh_pin(self, cfg: GuildConfig, latest_url: str | None = None):
+        """Keep the pinned start-here card current. Never raises."""
+        if not (cfg.pin_channel_id and cfg.pin_message_id):
+            return
+        ch = self.get_channel(cfg.pin_channel_id)
+        try:
+            if ch is None:
+                raise LookupError("pin channel gone")
+            msg = ch.get_partial_message(cfg.pin_message_id)
+            embed = R.pinned_embed(cfg, guild_times(cfg), now_utc(), latest_url, cfg.ping_role_id)
+            await msg.edit(embed=discord.Embed.from_dict(embed), view=self.pin_view(cfg))
+            ev(slog, "pin_refreshed", logging.DEBUG, guild=cfg.guild_id, message=cfg.pin_message_id)
+        except (discord.NotFound, LookupError):
+            ev(slog, "pin_missing", logging.WARNING, guild=cfg.guild_id, message=cfg.pin_message_id,
+               action="forgetting it; run /pinpost to make a new one")
+            cfg.pin_channel_id = cfg.pin_message_id = None
+            self.store.upsert_guild(cfg)
+        except discord.HTTPException as e:
+            ev(slog, "pin_refresh_failed", logging.WARNING, guild=cfg.guild_id, status=getattr(e, "status", None),
+               error=str(e)[:160])
 
     async def notify_staging(self, cfg: GuildConfig, text: str):
         ch = self.get_channel(cfg.staging_channel_id) if cfg.staging_channel_id else None
@@ -472,7 +542,7 @@ class ForeverBot(commands.Bot):
         nxt = [n for c in cfgs if (n := self.next_post(c, now))]
         soonest = min((d for _, d in nxt), default=None)
         snap_age = (time.time() - self.snap["fetched_at"]) / 60 if self.snap else None
-        ev(log, "heartbeat", version=VERSION, uptime_h=(time.time() - STARTED) / 3600, guilds=len(self.guilds),
+        ev(log, "heartbeat", release=__version__, version=VERSION, uptime_h=(time.time() - STARTED) / 3600, guilds=len(self.guilds),
            configured=len(cfgs), latency_ms=self.latency * 1000, snapshot_age_min=snap_age,
            next_post=soonest.isoformat() if soonest else "-",
            loops_ok=all(l.is_running() for l in (self.refresh_loop, self.schedule_loop, self.launch_loop)))
@@ -600,6 +670,7 @@ async def frequency_cmd(interaction: discord.Interaction, per_day: app_commands.
         return await interaction.response.send_message(err, ephemeral=True)
     cfg.post_time = fmt_times(parsed).replace(" ", "")
     bot.store.upsert_guild(cfg)
+    await bot.refresh_pin(cfg)
     note = " The first is the full post; the rest are short check-ins with a new tip, a fact, and only fresh news and clips." \
         if len(parsed) > 1 else ""
     await interaction.response.send_message(
@@ -685,7 +756,7 @@ async def status_cmd(interaction: discord.Interaction):
     else:
         lines.append("Not set up. Run `/setup`.")
     lines.append(R.health_text(bot.snap))
-    lines.append(f"-# version `{VERSION}` · up {(time.time() - STARTED) / 3600:.1f}h · latency {bot.latency * 1000:.0f}ms · "
+    lines.append(f"-# v{__version__} (`{VERSION}`) · up {(time.time() - STARTED) / 3600:.1f}h · latency {bot.latency * 1000:.0f}ms · "
                  f"{len(bot.guilds)} server(s)")
     await interaction.response.send_message("\n".join(lines)[:1990], ephemeral=True,
                                             allowed_mentions=discord.AllowedMentions.none())
@@ -718,6 +789,58 @@ async def dates_cmd(interaction: discord.Interaction):
 async def tips_cmd(interaction: discord.Interaction, topic: app_commands.Choice[str] | None = None):
     await interaction.response.send_message(
         embed=discord.Embed.from_dict(R.tips_embed(topic.value if topic else "basics")), ephemeral=True)
+
+
+@bot.tree.command(name="classtips", description="Forever changes and tips for a class")
+@app_commands.describe(cls="Which class?", share="Post it for everyone instead of just you")
+@app_commands.rename(cls="class")
+@app_commands.choices(cls=[app_commands.Choice(name=c, value=c) for c in K.CLASSES])
+async def classtips_cmd(interaction: discord.Interaction, cls: app_commands.Choice[str], share: bool = False):
+    c = bot.store.get_guild(interaction.guild_id) if interaction.guild_id else None
+    e = R.classtips_embed(cls.value, c.faction if c else "horde")
+    await interaction.response.send_message(embed=discord.Embed.from_dict(e), ephemeral=not share)
+
+
+@bot.tree.command(name="pinpost", description="Post a 'start here' card to pin (it keeps itself updated)")
+@app_commands.guild_only()
+@admin
+@app_commands.describe(channel="Where to post it (defaults to your countdown channel)")
+async def pinpost_cmd(interaction: discord.Interaction, channel: discord.TextChannel | None = None):
+    cfg = bot.store.get_guild(interaction.guild_id)
+    if not cfg or not cfg.channel_id:
+        return await interaction.response.send_message("Run `/setup` first.", ephemeral=True)
+    target = channel or bot.get_channel(cfg.channel_id)
+    problem = bot._can_post(target)
+    if problem:
+        return await interaction.response.send_message(
+            f"I can't post there: {problem}.\n{perm_fix_hint(target, problem)}", ephemeral=True)
+    old = (cfg.pin_channel_id, cfg.pin_message_id)
+    embed = R.pinned_embed(cfg, guild_times(cfg), now_utc(), None, cfg.ping_role_id)
+    msg = await target.send(embed=discord.Embed.from_dict(embed), view=bot.pin_view(cfg),
+                            allowed_mentions=discord.AllowedMentions.none())
+    cfg.pin_channel_id, cfg.pin_message_id = target.id, msg.id
+    bot.store.upsert_guild(cfg)
+    ev(clog, "pinpost", guild=cfg.guild_id, channel=target.id, message=msg.id, replaced=old[1])
+    note = ""
+    if old[1] and old[1] != msg.id:
+        note = "\n-# The old card won't update anymore; you can unpin and delete it."
+    perms = target.permissions_for(interaction.guild.me)
+    can_pin = perms.manage_messages
+    if can_pin:
+        try:
+            await msg.pin(reason="Forever Countdown start-here card")
+            pinned = "✅ Posted and pinned."
+        except discord.HTTPException:
+            pinned = "✅ Posted. Pin it: hover the message → **⋯** → **Pin Message**."
+    else:
+        pinned = "✅ Posted. Pin it: hover the message → **⋯** → **Pin Message**."
+    ping_note = ""
+    if cfg.ping_role_id and not interaction.guild.me.guild_permissions.manage_roles:
+        ping_note = ("\n-# The 🔔 button needs me to have **Manage Roles**, with my role above the ping role. "
+                     "Without that, members will see a message telling them to ask an admin.")
+    await interaction.response.send_message(
+        f"{pinned} It updates itself after every post, so you never need to repost it.{note}{ping_note}",
+        ephemeral=True)
 
 
 @bot.tree.command(name="pickaclass", description="Join the roll call: what class are you playing?")
