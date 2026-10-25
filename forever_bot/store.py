@@ -1,0 +1,159 @@
+"""SQLite storage. One small file; survives restarts so nothing double-posts."""
+import json
+import sqlite3
+import threading
+import time
+from dataclasses import dataclass
+
+from . import content as C
+
+SCHEMA = """
+CREATE TABLE IF NOT EXISTS guilds (
+    guild_id INTEGER PRIMARY KEY,
+    channel_id INTEGER,
+    staging_channel_id INTEGER,
+    ping_role_id INTEGER,
+    post_time TEXT NOT NULL DEFAULT '12:00',
+    tz TEXT NOT NULL DEFAULT 'America/Chicago',
+    faction TEXT NOT NULL DEFAULT 'horde',
+    enabled INTEGER NOT NULL DEFAULT 1,
+    hold_date TEXT,
+    news_off_date TEXT
+);
+CREATE TABLE IF NOT EXISTS posts (
+    guild_id INTEGER, kind TEXT, key TEXT, posted_at REAL,
+    PRIMARY KEY (guild_id, kind, key)
+);
+CREATE TABLE IF NOT EXISTS seen (
+    guild_id INTEGER, item_id TEXT, seen_at REAL,
+    PRIMARY KEY (guild_id, item_id)
+);
+CREATE TABLE IF NOT EXISTS rollcall (
+    guild_id INTEGER, user_id INTEGER, cls TEXT, updated_at REAL,
+    PRIMARY KEY (guild_id, user_id)
+);
+CREATE TABLE IF NOT EXISTS cache (
+    source TEXT PRIMARY KEY, payload TEXT, fetched_at REAL
+);
+"""
+
+
+@dataclass
+class GuildConfig:
+    guild_id: int
+    channel_id: int | None = None
+    staging_channel_id: int | None = None
+    ping_role_id: int | None = None
+    post_time: str = C.DEFAULT_POST_TIME
+    tz: str = C.DEFAULT_TZ
+    faction: str = "horde"
+    enabled: bool = True
+    hold_date: str | None = None
+    news_off_date: str | None = None
+
+
+class Store:
+    def __init__(self, path: str):
+        self._lock = threading.Lock()
+        self.db = sqlite3.connect(path, check_same_thread=False)
+        self.db.row_factory = sqlite3.Row
+        self.db.execute("PRAGMA journal_mode=WAL")
+        self.db.executescript(SCHEMA)
+        self.db.commit()
+
+    def _x(self, sql, args=()):
+        with self._lock:
+            cur = self.db.execute(sql, args)
+            self.db.commit()
+            return cur
+
+    # ---------------------------------------------------------- guilds
+    def get_guild(self, guild_id: int) -> GuildConfig | None:
+        row = self._x("SELECT * FROM guilds WHERE guild_id=?", (guild_id,)).fetchone()
+        if not row:
+            return None
+        d = dict(row)
+        d["enabled"] = bool(d["enabled"])
+        return GuildConfig(**d)
+
+    def all_guilds(self) -> list[GuildConfig]:
+        rows = self._x("SELECT * FROM guilds WHERE enabled=1 AND channel_id IS NOT NULL").fetchall()
+        out = []
+        for r in rows:
+            d = dict(r)
+            d["enabled"] = bool(d["enabled"])
+            out.append(GuildConfig(**d))
+        return out
+
+    def upsert_guild(self, cfg: GuildConfig):
+        self._x(
+            """INSERT INTO guilds (guild_id, channel_id, staging_channel_id, ping_role_id, post_time, tz,
+                                   faction, enabled, hold_date, news_off_date)
+               VALUES (?,?,?,?,?,?,?,?,?,?)
+               ON CONFLICT(guild_id) DO UPDATE SET channel_id=excluded.channel_id,
+                 staging_channel_id=excluded.staging_channel_id, ping_role_id=excluded.ping_role_id,
+                 post_time=excluded.post_time, tz=excluded.tz, faction=excluded.faction,
+                 enabled=excluded.enabled, hold_date=excluded.hold_date, news_off_date=excluded.news_off_date""",
+            (cfg.guild_id, cfg.channel_id, cfg.staging_channel_id, cfg.ping_role_id, cfg.post_time,
+             cfg.tz, cfg.faction, int(cfg.enabled), cfg.hold_date, cfg.news_off_date),
+        )
+
+    def remove_guild(self, guild_id: int):
+        self._x("UPDATE guilds SET enabled=0 WHERE guild_id=?", (guild_id,))
+
+    # ---------------------------------------------------------- posts (dedupe)
+    def was_posted(self, guild_id: int, kind: str, key: str) -> bool:
+        return self._x("SELECT 1 FROM posts WHERE guild_id=? AND kind=? AND key=?",
+                       (guild_id, kind, key)).fetchone() is not None
+
+    def mark_posted(self, guild_id: int, kind: str, key: str):
+        self._x("INSERT OR IGNORE INTO posts VALUES (?,?,?,?)", (guild_id, kind, key, time.time()))
+
+    # ---------------------------------------------------------- seen items (news/clips)
+    def unseen(self, guild_id: int, item_ids: list[str]) -> set[str]:
+        if not item_ids:
+            return set()
+        q = ",".join("?" * len(item_ids))
+        rows = self._x(f"SELECT item_id FROM seen WHERE guild_id=? AND item_id IN ({q})",
+                       (guild_id, *item_ids)).fetchall()
+        return set(item_ids) - {r["item_id"] for r in rows}
+
+    def mark_seen(self, guild_id: int, item_ids: list[str]):
+        now = time.time()
+        with self._lock:
+            self.db.executemany("INSERT OR IGNORE INTO seen VALUES (?,?,?)",
+                                [(guild_id, i, now) for i in item_ids])
+            self.db.commit()
+
+    def prune_seen(self, older_than_days: int = 60):
+        self._x("DELETE FROM seen WHERE seen_at < ?", (time.time() - older_than_days * 86400,))
+
+    # ---------------------------------------------------------- roll call
+    def set_class(self, guild_id: int, user_id: int, cls: str):
+        self._x("INSERT INTO rollcall VALUES (?,?,?,?) ON CONFLICT(guild_id,user_id) "
+                "DO UPDATE SET cls=excluded.cls, updated_at=excluded.updated_at",
+                (guild_id, user_id, cls, time.time()))
+
+    def class_counts(self, guild_id: int) -> dict[str, int]:
+        rows = self._x("SELECT cls, COUNT(*) n FROM rollcall WHERE guild_id=? GROUP BY cls",
+                       (guild_id,)).fetchall()
+        counts = {c: 0 for c in C.CLASSES}
+        for r in rows:
+            if r["cls"] in counts:
+                counts[r["cls"]] = r["n"]
+        return counts
+
+    # ---------------------------------------------------------- source cache
+    def cache_put(self, source: str, payload):
+        self._x("INSERT INTO cache VALUES (?,?,?) ON CONFLICT(source) DO UPDATE SET "
+                "payload=excluded.payload, fetched_at=excluded.fetched_at",
+                (source, json.dumps(payload), time.time()))
+
+    def cache_get(self, source: str):
+        row = self._x("SELECT payload, fetched_at FROM cache WHERE source=?", (source,)).fetchone()
+        if not row:
+            return None, None
+        try:
+            return json.loads(row["payload"]), row["fetched_at"]
+        except (ValueError, TypeError):
+            return None, None
