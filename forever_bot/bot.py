@@ -1030,11 +1030,11 @@ async def mysettings_cmd(interaction: discord.Interaction, detail: app_commands.
 
 
 # ------------------------------------------------------------------ 1.3 Plus One mode
-class PlusOneButton(discord.ui.DynamicItem[discord.ui.Button], template=r"po:(?P<what>kit|duo|dying|words|card|plain|share)"):
+class PlusOneButton(discord.ui.DynamicItem[discord.ui.Button], template=r"po:(?P<what>kit|duo|dying|words|card|plain|plain_off|share)"):
     """Buttons on the /draggedalong hub. Survive restarts."""
     LABELS = {"kit": ("🧭", "Survival kit"), "duo": ("💞", "Pick a class together"), "dying": ("🆘", "I'm dying"),
               "words": ("📖", "What does that mean?"), "card": ("💌", "A card for my partner"),
-              "plain": ("🌿", "Plain words everywhere"), "share": ("📨", "Post this card here")}
+              "plain": ("🌿", "Plain words on/off"), "plain_off": ("↩️", "Undo"), "share": ("📨", "Post this card here")}
 
     def __init__(self, what: str):
         self.what = what
@@ -1071,11 +1071,22 @@ class PlusOneButton(discord.ui.DynamicItem[discord.ui.Button], template=r"po:(?P
                 e["footer"] = {"text": f"Shared by {interaction.user.display_name} · Plus One mode · /draggedalong"}
                 await interaction.response.send_message(embed=discord.Embed.from_dict(e),
                                                         allowed_mentions=discord.AllowedMentions.none())
-            elif w == "plain":
-                bot.store.set_user_detail(interaction.user.id, "plain")
-                await interaction.response.send_message(
-                    "🌿 Done. My private replies to you now skip the veteran stuff and explain the jargon as it comes up. "
-                    "Switch back anytime with `/mysettings`.", ephemeral=True)
+            elif w == "plain":  # toggle: pressing it again turns Plain words off
+                if bot.store.get_user_detail(interaction.user.id) == "plain":
+                    bot.store.set_user_detail(interaction.user.id, None)
+                    await interaction.response.send_message(
+                        "↩️ Plain words is off. You're back to this server's normal replies.", ephemeral=True)
+                else:
+                    bot.store.set_user_detail(interaction.user.id, "plain")
+                    v = discord.ui.View(timeout=None)
+                    v.add_item(PlusOneButton("plain_off"))
+                    await interaction.response.send_message(
+                        "🌿 Done. My private replies to you now skip the veteran stuff and explain the jargon as it comes up.\n"
+                        "-# Tapped it by accident? Undo below, or use `/mysettings` anytime.", view=v, ephemeral=True)
+            elif w == "plain_off":
+                bot.store.set_user_detail(interaction.user.id, None)
+                await interaction.response.edit_message(
+                    content="↩️ Undone. You're back to this server's normal replies.", view=None)
         except discord.HTTPException as e:
             ev(clog, "plusone_failed", logging.WARNING, what=w, error=str(e)[:150])
             if not interaction.response.is_done():

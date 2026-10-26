@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.3.1 (2026-10-26)
+- 🌿 Plain words button on `/draggedalong` is now a toggle (press again to turn it off), and its confirmation has an ↩️ Undo button.
+
 ## 1.3.0 (2026-10-26)
 **Plus One mode**, for people whose partner, friend or roommate talked them into WoW.
 - `/draggedalong`: a private hub with the night-one survival kit and six buttons:
