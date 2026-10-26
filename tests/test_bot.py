@@ -1,5 +1,6 @@
 """Offline tests: python -m pytest tests -q   (or python tests/test_bot.py)"""
 import asyncio
+import json
 import os
 import sys
 import tempfile
@@ -157,6 +158,41 @@ def test_twitch_category_fallback_and_filtering():
     titles = [c["title"] for c in clips]
     assert titles == ["xar duel", "huge 1v3"]  # pinned boost 80*1.5 > 100; profanity + off-game dropped
     assert "search/categories" in calls
+
+
+def test_twitch_loose_clips_before_category_exists():
+    tw = F.Twitch("id", "secret")
+    tw._token, tw._token_exp = "t", time.time() + 999
+
+    async def fake_get(session, path, params):
+        if path == "games":
+            return {"data": [{"id": "18122", "name": "World of Warcraft"}]}
+        if path == "search/categories":
+            return {"data": []}  # no Forever category yet
+        if path == "users":
+            return {"data": [{"id": "u1", "login": "xaryu", "display_name": "Xaryu"}]}
+        if path == "clips":
+            p = dict(params) if isinstance(params, list) else params
+            if p.get("game_id") == "18122":
+                return {"data": [{"id": "r1", "url": "r", "title": "random wow clip", "broadcaster_name": "Rando",
+                                  "view_count": 9000, "game_id": "18122"}]}
+            if p.get("broadcaster_id") == "u1":
+                return {"data": [
+                    {"id": "x1", "url": "a", "title": "insane duel", "broadcaster_name": "Xaryu", "view_count": 300, "game_id": "18122"},
+                    {"id": "x2", "url": "b", "title": "another one", "broadcaster_name": "Xaryu", "view_count": 200, "game_id": "18122"},
+                    {"id": "x3", "url": "c", "title": "valorant ace", "broadcaster_name": "Xaryu", "view_count": 999, "game_id": "516575"},
+                    {"id": "x4", "url": "d", "title": "Forever beta talents", "broadcaster_name": "Xaryu", "view_count": 50, "game_id": "18122"}]}
+            return {"data": []}
+        raise AssertionError(path)
+
+    tw.get = fake_get
+    clips = asyncio.run(tw.top_clips(None))
+    assert [c["title"] for c in clips] == ["Forever beta talents", "insane duel"]  # Forever first; one loose per streamer
+    assert not clips[0].get("loose") and clips[1]["loose"]
+    snap = {"news": [], "clips": clips, "videos": []}
+    cfg = Cfg()
+    out = json.dumps(R.build_daily(cfg, at_post_time(date(2026, 10, 27), cfg), snap, {}, slot=0).__dict__, default=str)
+    assert "WoW clips from streamers we follow" in out and "Not necessarily Forever" in out
 
 
 # ------------------------------------------------------------- rendering
@@ -433,6 +469,52 @@ def test_more_detail_button_answers():
     key = next(iter(C.DEEP_DIVES))
     asyncio.run(B.DeepDiveButton(key).callback(inter))
     assert sent.get("ephemeral") and sent.get("embed") is not None
+
+
+def test_plusone_mode():
+    import json
+    from forever_bot import plusone as P
+    from forever_bot import bot as B
+    def size(e):
+        assert len(e.get("description") or "") <= 4096
+        assert all(len(f["value"]) <= 1024 and len(f["name"]) <= 256 for f in e.get("fields", []))
+        assert len(json.dumps(e)) < 6000
+    size(P.survival_kit_embed()); size(P.partner_card_embed()); size(P.glossary_embed(None))
+    assert len(P.hub_intro()) < 2000
+    # glossary: direct, alias, miss, autocomplete
+    assert P.lookup("Zug Zug")[0] == "zug zug" and P.lookup("rezz")[0] == "rez" and P.lookup("ganked")[0] == "gank"
+    assert P.lookup("xyzzy")[0] is None
+    assert all(t in P.GLOSSARY for t in P.STARTER_TERMS) and all(v in P.GLOSSARY for v in P.ALIASES.values())
+    assert len(P.glossary_choices("")) <= 25 and P.glossary_choices("ag")[0] == "aggro"
+    for t in P.GLOSSARY:
+        size(P.glossary_embed(t))
+        assert len(t) <= 100
+    # panic: every class, every kind, custom_id fits
+    for c in P.HORDE_CLASSES:
+        assert c in P.PANIC
+        for k in P.PANIC_KINDS:
+            size(P.panic_embed(c, k)); assert len(f"pd:{c}:{k}") <= 100
+    # duo quiz: every combination gives a real Horde class, never the same class unless it's the only fit
+    for partner in P.HORDE_CLASSES + [None]:
+        for style in P.STYLES:
+            for comfort in P.COMFORT:
+                pick, why, alt = P.duo_pick(partner, style, comfort)
+                assert pick in P.HORDE_CLASSES and why
+                size(P.duo_embed(partner, style, comfort))
+    # plain words: drops veteran parts, explains jargon once, stays within limits
+    for cls in P.HORDE_CLASSES:
+        e = P.plainify(R.classtips_embed(cls, "horde", "plain"))
+        size(e); assert not any(f["name"].startswith("🧙") for f in e.get("fields", []))
+    for k in C.DEEP_DIVES:
+        e = P.plainify(R.deep_dive_embed(k, "plain")); size(e)
+        assert "🧙" not in (e.get("description") or "")
+    out = P.plain_text("Watch the DPS and the DPS", set())
+    assert out.count("damage dealers") == 1
+    assert P.plain_text("[DPS guide](https://x.com/DPS)", set()) == "[DPS guide](https://x.com/DPS)"
+    # commands registered and listed
+    names = {c.name for c in B.bot.tree.get_commands()}
+    assert {"draggedalong", "whatdoesthatmean"} <= names and len(names) <= 100
+    assert R.LEVEL_LABEL["plain"] == "Plain words"
 
 
 if __name__ == "__main__":

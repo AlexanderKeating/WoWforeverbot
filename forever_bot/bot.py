@@ -22,6 +22,7 @@ from . import __version__
 from . import classes as K
 from . import content as C
 from . import guides as G
+from . import plusone as P
 from . import render as R
 from .fetchers import Twitch, YouTube, refresh_all
 from .logsetup import Timer, ev, setup_logging
@@ -156,15 +157,20 @@ class DeepDiveButton(discord.ui.DynamicItem[discord.ui.Button], template=r"dd:(?
             e, lvl = None, "standard"
         if not e:
             return await interaction.response.send_message("That deep dive isn't available anymore. Try `/tips`.", ephemeral=True)
-        await interaction.response.send_message(embed=discord.Embed.from_dict(e), ephemeral=True)
+        await interaction.response.send_message(embed=E(e, lvl), ephemeral=True)
         ev(clog, "more_detail", guild=interaction.guild_id, user=interaction.user.id, key=self.key, detail=lvl)
+
+
+def E(d: dict, lvl: str | None = None) -> discord.Embed:
+    """Embed from a render dict, in plain words when the person picked Plus One's level."""
+    return discord.Embed.from_dict(P.plainify(d) if lvl == "plain" else d)
 
 
 def level_for(interaction: discord.Interaction) -> str:
     """Person's own setting, else the server's post verbosity, else Standard."""
     try:
         mine = bot.store.get_user_detail(interaction.user.id)
-        if mine:
+        if mine in R.LEVELS or mine == "plain":
             return mine
         c = bot.store.get_guild(interaction.guild_id) if interaction.guild_id else None
         return R.norm_level(c.verbosity if c else None)
@@ -195,7 +201,9 @@ class ClassGuideButton(discord.ui.DynamicItem[discord.ui.Button], template=r"cg:
 
     async def callback(self, interaction: discord.Interaction):
         c = bot.store.get_guild(interaction.guild_id) if interaction.guild_id else None
-        e = guide_embed(self.cls, self.kind, c.faction if c else "horde", level_for(interaction))
+        lvl = level_for(interaction)
+        e = guide_embed(self.cls, self.kind, c.faction if c else "horde", lvl)
+        e = P.plainify(e) if (e and lvl == "plain") else e
         if not e:
             return await interaction.response.send_message("I don't have that one. Try `/help`.", ephemeral=True)
         await interaction.response.send_message(embed=discord.Embed.from_dict(e), view=class_guide_view(self.cls, exclude=self.kind),
@@ -241,7 +249,7 @@ class QuizView(discord.ui.View):
             if runner:
                 v.add_item(ClassGuideButton(runner, "tips", f"{runner} tips"))
             await interaction.response.edit_message(
-                embed=discord.Embed.from_dict(R.quiz_result_embed(answers, self.faction, self.level)), view=v)
+                embed=E(R.quiz_result_embed(answers, self.faction, self.level), self.level), view=v)
             ev(clog, "quiz_done", guild=interaction.guild_id, user=interaction.user.id, top=top, runner=runner,
                answers="".join(map(str, answers)))
         return cb
@@ -311,8 +319,9 @@ class RollcallView(discord.ui.View):
                 self.bot.store.set_class(interaction.guild_id, interaction.user.id, cls)
                 counts = self.bot.store.class_counts(interaction.guild_id)
                 cfg = self.bot.store.get_guild(interaction.guild_id)
-                tips = R.classtips_embed(cls, cfg.faction if cfg else "horde", level_for(interaction))
-                extra = {"embed": discord.Embed.from_dict(tips)} if tips else {}
+                lvl = level_for(interaction)
+                tips = R.classtips_embed(cls, cfg.faction if cfg else "horde", lvl)
+                extra = {"embed": E(tips, lvl)} if tips else {}
                 if interaction.message and interaction.message.author.id == self.bot.user.id:
                     await interaction.response.edit_message(
                         view=RollcallView(self.bot, counts, _deep_key_from(interaction.message)))
@@ -345,7 +354,7 @@ class ForeverBot(commands.Bot):
 
     async def setup_hook(self):
         self.add_view(RollcallView(self))  # persistent: buttons keep working after restarts
-        self.add_dynamic_items(DeepDiveButton, PingToggleButton, ClassGuideButton)
+        self.add_dynamic_items(DeepDiveButton, PingToggleButton, ClassGuideButton, PlusOneButton, PanicButton)
         cached = self.store.cache_get("_snapshot")[0]
         if cached:
             self.snap = cached
@@ -908,7 +917,7 @@ async def dates_cmd(interaction: discord.Interaction):
 @app_commands.choices(topic=[app_commands.Choice(name=t.capitalize(), value=t) for t in R.TIP_TOPICS])
 async def tips_cmd(interaction: discord.Interaction, topic: app_commands.Choice[str] | None = None):
     await interaction.response.send_message(
-        embed=discord.Embed.from_dict(R.tips_embed(topic.value if topic else "basics", level_for(interaction))), ephemeral=True)
+        embed=E(R.tips_embed(topic.value if topic else "basics", lvl := level_for(interaction)), lvl), ephemeral=True)
 
 
 @bot.tree.command(name="classtips", description="Forever changes and tips for a class")
@@ -917,8 +926,9 @@ async def tips_cmd(interaction: discord.Interaction, topic: app_commands.Choice[
 @app_commands.choices(cls=[app_commands.Choice(name=c, value=c) for c in K.CLASSES])
 async def classtips_cmd(interaction: discord.Interaction, cls: app_commands.Choice[str], share: bool = False):
     c = bot.store.get_guild(interaction.guild_id) if interaction.guild_id else None
-    e = R.classtips_embed(cls.value, c.faction if c else "horde", level_for(interaction))
-    await interaction.response.send_message(embed=discord.Embed.from_dict(e), ephemeral=not share,
+    lvl = level_for(interaction)
+    e = R.classtips_embed(cls.value, c.faction if c else "horde", lvl)
+    await interaction.response.send_message(embed=E(e, lvl if not share else "standard"), ephemeral=not share,
                                             view=class_guide_view(cls.value, exclude="tips"))
 
 
@@ -933,7 +943,9 @@ CLASS_CHOICES = [app_commands.Choice(name=c, value=c) for c in K.CLASSES]
 async def keybinds_cmd(interaction: discord.Interaction, cls: app_commands.Choice[str] | None = None,
                        topic: app_commands.Choice[str] | None = None):
     t = topic.value if topic else "basics"
-    e = R.keybinds_embed(cls.value if cls and t != "controller" else None, t, level_for(interaction))
+    lvl = level_for(interaction)
+    e = R.keybinds_embed(cls.value if cls and t != "controller" else None, t, lvl)
+    e = P.plainify(e) if lvl == "plain" else e
     view = class_guide_view(cls.value, exclude="keys") if cls and t != "controller" else None
     await interaction.response.send_message(embed=discord.Embed.from_dict(e), ephemeral=True,
                                             **({"view": view} if view else {}))
@@ -953,7 +965,7 @@ async def macros_cmd(interaction: discord.Interaction, cls: app_commands.Choice[
 @app_commands.rename(cls="class")
 @app_commands.choices(cls=CLASS_CHOICES)
 async def rotation_cmd(interaction: discord.Interaction, cls: app_commands.Choice[str]):
-    await interaction.response.send_message(embed=discord.Embed.from_dict(R.rotation_embed(cls.value, level_for(interaction))), ephemeral=True,
+    await interaction.response.send_message(embed=E(R.rotation_embed(cls.value, lvl := level_for(interaction)), lvl), ephemeral=True,
                                             view=class_guide_view(cls.value, exclude="rot"))
 
 
@@ -993,8 +1005,10 @@ async def verbosity_cmd(interaction: discord.Interaction, level: app_commands.Ch
 
 
 @bot.tree.command(name="mysettings", description="How much detail you want in the bot's replies to you")
-@app_commands.describe(detail="Brief, Standard or Detailed (or reset to the server's default)")
-@app_commands.choices(detail=LEVEL_CHOICES + [app_commands.Choice(name="Reset: use the server's default", value="reset")])
+@app_commands.describe(detail="Brief, Standard, Detailed or Plain words (or reset to the server's default)")
+@app_commands.choices(detail=LEVEL_CHOICES + [
+    app_commands.Choice(name="Plain words: new to WoW, explain everything", value="plain"),
+    app_commands.Choice(name="Reset: use the server's default", value="reset")])
 async def mysettings_cmd(interaction: discord.Interaction, detail: app_commands.Choice[str] | None = None):
     mine = bot.store.get_user_detail(interaction.user.id)
     c = bot.store.get_guild(interaction.guild_id) if interaction.guild_id else None
@@ -1013,6 +1027,160 @@ async def mysettings_cmd(interaction: discord.Interaction, detail: app_commands.
     ev(clog, "mysettings", user=interaction.user.id, detail=detail.value)
     await interaction.response.send_message(msg + "\n-# Channel posts follow the server's setting; tap 📖 More detail "
                                             "on any post to see it at your level.", ephemeral=True)
+
+
+# ------------------------------------------------------------------ 1.3 Plus One mode
+class PlusOneButton(discord.ui.DynamicItem[discord.ui.Button], template=r"po:(?P<what>kit|duo|dying|words|card|plain|share)"):
+    """Buttons on the /draggedalong hub. Survive restarts."""
+    LABELS = {"kit": ("🧭", "Survival kit"), "duo": ("💞", "Pick a class together"), "dying": ("🆘", "I'm dying"),
+              "words": ("📖", "What does that mean?"), "card": ("💌", "A card for my partner"),
+              "plain": ("🌿", "Plain words everywhere"), "share": ("📨", "Post this card here")}
+
+    def __init__(self, what: str):
+        self.what = what
+        emoji, label = self.LABELS[what]
+        style = discord.ButtonStyle.primary if what in ("kit", "dying") else discord.ButtonStyle.secondary
+        super().__init__(discord.ui.Button(label=label, emoji=emoji, style=style, custom_id=f"po:{what}"))
+
+    @classmethod
+    async def from_custom_id(cls, interaction, item, match):
+        return cls(match["what"])
+
+    async def callback(self, interaction: discord.Interaction):
+        w = self.what
+        try:
+            if w == "kit":
+                await interaction.response.send_message(embed=discord.Embed.from_dict(P.survival_kit_embed()), ephemeral=True)
+            elif w == "words":
+                await interaction.response.send_message(embed=discord.Embed.from_dict(P.glossary_embed(None)), ephemeral=True)
+            elif w == "dying":
+                await interaction.response.send_message("🆘 **Okay, deep breath.** What are you playing?", view=PanicClassView(),
+                                                        ephemeral=True)
+            elif w == "duo":
+                await interaction.response.send_message(
+                    "💞 **Pick a class together.** Three quick picks, then I'll suggest something that pairs well with your partner.",
+                    view=DuoQuizView(interaction.user.id), ephemeral=True)
+            elif w == "card":
+                v = discord.ui.View(timeout=None)
+                v.add_item(PlusOneButton("share"))
+                await interaction.response.send_message(
+                    "Here's a card for the person who brought you. Tap **Post this card here** to share it in this channel "
+                    "(it won't ping anyone).", embed=discord.Embed.from_dict(P.partner_card_embed()), view=v, ephemeral=True)
+            elif w == "share":
+                e = P.partner_card_embed()
+                e["footer"] = {"text": f"Shared by {interaction.user.display_name} · Plus One mode · /draggedalong"}
+                await interaction.response.send_message(embed=discord.Embed.from_dict(e),
+                                                        allowed_mentions=discord.AllowedMentions.none())
+            elif w == "plain":
+                bot.store.set_user_detail(interaction.user.id, "plain")
+                await interaction.response.send_message(
+                    "🌿 Done. My private replies to you now skip the veteran stuff and explain the jargon as it comes up. "
+                    "Switch back anytime with `/mysettings`.", ephemeral=True)
+        except discord.HTTPException as e:
+            ev(clog, "plusone_failed", logging.WARNING, what=w, error=str(e)[:150])
+            if not interaction.response.is_done():
+                await interaction.response.send_message("Something went wrong on my end. Try again in a moment.", ephemeral=True)
+            return
+        ev(clog, "plusone", guild=interaction.guild_id, user=interaction.user.id, what=w)
+
+
+def plusone_hub_view() -> discord.ui.View:
+    v = discord.ui.View(timeout=None)
+    for w in ("kit", "dying", "duo", "words", "card", "plain"):
+        v.add_item(PlusOneButton(w))
+    return v
+
+
+class PanicButton(discord.ui.DynamicItem[discord.ui.Button], template=r"pd:(?P<cls>[A-Za-z]{1,12}):(?P<kind>heal|escape|help)"):
+    def __init__(self, cls: str, kind: str):
+        self.cls, self.kind = cls, kind
+        emoji, label = P.PANIC_KINDS[kind]
+        style = {"heal": discord.ButtonStyle.success, "escape": discord.ButtonStyle.primary,
+                 "help": discord.ButtonStyle.secondary}[kind]
+        super().__init__(discord.ui.Button(label=label, emoji=emoji, style=style, custom_id=f"pd:{cls}:{kind}"))
+
+    @classmethod
+    async def from_custom_id(cls, interaction, item, match):
+        return cls(match["cls"], match["kind"])
+
+    async def callback(self, interaction: discord.Interaction):
+        await interaction.response.edit_message(content=None, embed=discord.Embed.from_dict(P.panic_embed(self.cls, self.kind)),
+                                                view=panic_buttons(self.cls))
+        ev(clog, "panic", user=interaction.user.id, cls=self.cls, kind=self.kind)
+
+
+def panic_buttons(cls: str) -> discord.ui.View:
+    v = discord.ui.View(timeout=None)
+    for k in P.PANIC_KINDS:
+        v.add_item(PanicButton(cls, k))
+    return v
+
+
+class PanicClassView(discord.ui.View):
+    def __init__(self):
+        super().__init__(timeout=600)
+
+    @discord.ui.select(placeholder="My class is…", options=[discord.SelectOption(label=c, value=c) for c in P.HORDE_CLASSES])
+    async def pick(self, interaction: discord.Interaction, select: discord.ui.Select):
+        cls = select.values[0]
+        await interaction.response.edit_message(
+            content=f"🆘 **{cls}.** Tap the one you need. These stay here, so you can come back mid-fight.",
+            embed=None, view=panic_buttons(cls))
+
+
+class DuoQuizView(discord.ui.View):
+    def __init__(self, user_id: int):
+        super().__init__(timeout=900)
+        self.user_id, self.partner, self.style, self.comfort = user_id, None, None, None
+
+    async def interaction_check(self, interaction: discord.Interaction) -> bool:
+        return interaction.user.id == self.user_id
+
+    @discord.ui.select(placeholder="1. What does your partner play?", row=0,
+                       options=[discord.SelectOption(label=c, value=c) for c in P.HORDE_CLASSES]
+                       + [discord.SelectOption(label="Not sure yet", value="none", emoji="🤷")])
+    async def partner_sel(self, interaction, select):
+        self.partner = None if select.values[0] == "none" else select.values[0]
+        await interaction.response.defer()
+
+    @discord.ui.select(placeholder="2. How do you want to fight?", row=1,
+                       options=[discord.SelectOption(label=lbl, value=k, emoji=em) for k, (em, lbl) in P.STYLES.items()])
+    async def style_sel(self, interaction, select):
+        self.style = select.values[0]
+        await interaction.response.defer()
+
+    @discord.ui.select(placeholder="3. How do you feel about dying?", row=2,
+                       options=[discord.SelectOption(label=lbl, value=k, emoji=em) for k, (em, lbl) in P.COMFORT.items()])
+    async def comfort_sel(self, interaction, select):
+        self.comfort = select.values[0]
+        await interaction.response.defer()
+
+    @discord.ui.button(label="Pick for us", emoji="💞", style=discord.ButtonStyle.primary, row=3)
+    async def go(self, interaction, button):
+        if not self.style or not self.comfort:
+            return await interaction.response.send_message("Pick an answer for questions 2 and 3 first.", ephemeral=True)
+        e = P.duo_embed(self.partner, self.style, self.comfort)
+        await interaction.response.edit_message(content=None, embed=discord.Embed.from_dict(e), view=None)
+        ev(clog, "duo_quiz", user=interaction.user.id, partner=self.partner, style=self.style, comfort=self.comfort)
+
+
+@bot.tree.command(name="draggedalong", description="New to WoW because someone you love made you? Start here.")
+async def draggedalong_cmd(interaction: discord.Interaction):
+    await interaction.response.send_message(P.hub_intro(), embed=discord.Embed.from_dict(P.survival_kit_embed()),
+                                            view=plusone_hub_view(), ephemeral=True)
+    ev(clog, "draggedalong", guild=interaction.guild_id, user=interaction.user.id)
+
+
+async def _glossary_ac(interaction: discord.Interaction, current: str):
+    return [app_commands.Choice(name=t, value=t) for t in P.glossary_choices(current)]
+
+
+@bot.tree.command(name="whatdoesthatmean", description="Explain a WoW word or bit of slang, in plain English")
+@app_commands.describe(term="The word you heard (leave empty for the first-week starter list)")
+@app_commands.autocomplete(term=_glossary_ac)
+async def whatdoesthatmean_cmd(interaction: discord.Interaction, term: str | None = None):
+    await interaction.response.send_message(embed=discord.Embed.from_dict(P.glossary_embed(term)), ephemeral=True)
+    ev(clog, "glossary", user=interaction.user.id, term=(term or "-")[:30], found=bool(P.lookup(term)[0]) if term else True)
 
 
 @bot.tree.command(name="pinpost", description="Post a 'start here' card to pin (it keeps itself updated)")

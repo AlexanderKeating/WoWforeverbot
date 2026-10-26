@@ -359,27 +359,44 @@ class Twitch:
         tasks += [grab({"broadcaster_id": uid}, True) for uid, _ in users.values()]
         await asyncio.gather(*tasks)
 
-        out, drop_topic, drop_clean = [], 0, 0
+        out, loose, drop_topic, drop_clean = [], [], 0, 0
         for cid, c in raw.items():
             title = (c.get("title") or "").strip()
             gid = c.get("game_id")
-            relevant = gid in forever_ids or is_forever(title) or (not forever_ids and gid == fallback and is_forever(title))
-            if not relevant or not title:
+            strict = gid in forever_ids or is_forever(title)
+            # 1.3: until Twitch has a Forever category, also accept WoW-category clips from the
+            # streamers we follow. They're labeled as WoW clips, never as Forever.
+            is_loose = (not strict and C.CLIPS_LOOSE_UNTIL_CATEGORY and not forever_ids
+                        and cid in pinned and fallback and gid == fallback)
+            if not title or not (strict or is_loose):
                 drop_topic += 1
                 continue
             if not is_clean(title):
                 drop_clean += 1
                 continue
             score = c.get("view_count", 0) * (1.5 if cid in pinned else 1.0)
-            out.append({"id": "twitch:" + cid, "url": c["url"], "title": title,
-                        "author": c.get("broadcaster_name") or "", "views": c.get("view_count", 0),
-                        "published": c.get("created_at"), "_score": score})
-        out.sort(key=lambda x: x["_score"], reverse=True)
+            item = {"id": "twitch:" + cid, "url": c["url"], "title": title,
+                    "author": c.get("broadcaster_name") or "", "views": c.get("view_count", 0),
+                    "published": c.get("created_at"), "_score": score}
+            if is_loose:
+                item["loose"] = True
+            (out if strict else loose).append(item)
+        for lst in (out, loose):
+            lst.sort(key=lambda x: x["_score"], reverse=True)
+        # Forever clips first; top up with at most C.CLIPS_LOOSE_MAX WoW clips, one per streamer
+        seen_authors = set()
+        for o in loose:
+            if len(out) >= limit or sum(1 for x in out if x.get("loose")) >= C.CLIPS_LOOSE_MAX:
+                break
+            if o["author"] in seen_authors:
+                continue
+            seen_authors.add(o["author"])
+            out.append(o)
         for o in out:
             o.pop("_score", None)
         ev(log, "twitch_clips", raw=len(raw), pinned_streamers=len(users), from_pinned=len(pinned),
-           kept=len(out), dropped_off_topic=drop_topic, dropped_profanity=drop_clean,
-           top=(out[0]["author"] + ":" + str(out[0]["views"])) if out else "-")
+           kept=len(out), loose=sum(1 for x in out if x.get("loose")), dropped_off_topic=drop_topic,
+           dropped_profanity=drop_clean, top=(out[0]["author"] + ":" + str(out[0]["views"])) if out else "-")
         return out[:limit]
 
 

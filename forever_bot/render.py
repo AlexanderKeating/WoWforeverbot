@@ -18,7 +18,7 @@ DESC_SOFT_CAP = 2800     # main post: fuller vets lines (1.1.2); hard limit is 4
 EMBED_TOTAL_CAP = 5800   # Discord hard cap is 6000
 CONTENT_CAP = 1900       # Discord hard cap is 2000
 LEVELS = ("brief", "standard", "detailed")
-LEVEL_LABEL = {"brief": "Brief", "standard": "Standard", "detailed": "Detailed"}
+LEVEL_LABEL = {"brief": "Brief", "standard": "Standard", "detailed": "Detailed", "plain": "Plain words"}
 
 
 def norm_level(level: str | None) -> str:
@@ -164,9 +164,16 @@ def _media(snap, unseen_ids, now, include_news):
             used += [n["id"] for n in fresh]
     clips = [c for c in snap.get("clips", []) if unseen_ids is None or c["id"] in unseen_ids][:MAX_CLIPS]
     if clips:
-        follow.append("🎬 **Top clips, last 24h**")
-        for c in clips:
-            follow.append(f"{esc(c['title'])} · {esc(c['author'])} · {c['views']:,} views\n{c['url']}")
+        strict = [c for c in clips if not c.get("loose")]
+        loose = [c for c in clips if c.get("loose")]
+        if strict:
+            follow.append("🎬 **Top Forever clips, last 24h**")
+            for c in strict:
+                follow.append(f"{esc(c['title'])} · {esc(c['author'])} · {c['views']:,} views\n{c['url']}")
+        if loose:
+            follow.append("🎬 **WoW clips from streamers we follow**\n-# Not necessarily Forever. Forever clips take over once Twitch adds its category.")
+            for c in loose:
+                follow.append(f"{esc(c['title'])} · {esc(c['author'])} · {c['views']:,} views\n{c['url']}")
         used += [c["id"] for c in clips]
     vids = [v for v in snap.get("videos", []) if unseen_ids is None or v["id"] in unseen_ids][:MAX_VIDEOS] if C.SHOW_YOUTUBE else []
     for v in vids:
@@ -468,6 +475,16 @@ SPELLBOOK = {
         ],
         "extra": "🔎 **Deep dive** buttons on daily posts open a private, detailed breakdown of that day's topic.",
     },
+    "plusone": {
+        "label": "Plus One mode", "emoji": "💞", "admin": False,
+        "blurb": "For anyone whose partner, best friend or roommate said \"you'll love it\". Private and jargon-free.",
+        "flavor": "Someone promised to show you everything. We'll fill in the gaps.",
+        "spells": [
+            ("draggedalong", "", "Instant · Private", "The survival kit, plus panic buttons, a class quiz for two, and a card for your partner."),
+            ("whatdoesthatmean", "[term]", "Instant · Private", "Explains WoW words and slang, from aggro to zug zug."),
+        ],
+        "extra": "Want every private reply in plain words? `/mysettings` → **Plain words**.",
+    },
     "rollcall": {
         "label": "Roll call", "emoji": "⚔️", "admin": False,
         "blurb": "See who's rolling what before launch night.",
@@ -697,7 +714,8 @@ def pinned_embed(cfg, times, now: datetime, latest_url: str | None = None, ping_
         "Each full post has the day's topic for new players 🌱 and veterans 🧙, a pro tip, a 🔎 deep dive, "
         "news, top clips, and a class roll call.", "",
         "**🧭 New here? Start with**",
-        "`/faq` → `/whichclass` → `/classtips` → `/keybinds` → `/pickaclass`", "",
+        "`/faq` → `/whichclass` → `/classtips` → `/keybinds` → `/pickaclass`",
+        "💞 Never played, and someone you love talked you into it? `/draggedalong`", "",
         "**🗓️ Key dates**", *dates, "",
         "**📖 Everything else:** `/help` opens the full command spellbook. Set how much detail you get with `/mysettings`.",
     ]

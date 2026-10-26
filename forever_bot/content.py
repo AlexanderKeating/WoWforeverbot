@@ -70,6 +70,10 @@ FOREVER_ALIASES = [
 FOREVER_WEAK = ["forever"]
 WOW_CONTEXT = ["wow", "warcraft", "azeroth", "horde", "alliance", "blizzard", "raid", "dungeon", "classic"]
 
+# Until Twitch adds a Forever category, also show WoW-category clips from STREAMERS (labeled as WoW).
+CLIPS_LOOSE_UNTIL_CATEGORY = True
+CLIPS_LOOSE_MAX = 2
+
 # Twitch category names to try, in order. First hit wins; WoW main category is the fallback.
 TWITCH_GAME_NAMES = [
     "World of Warcraft: Forever", "World of Warcraft Forever", "WoW: Forever", "WoW Forever",
