@@ -153,20 +153,18 @@ RUNDOWNS = {
          "vets": "Expect queues. Group with friends early so you land on the same layer."},
 }
 
-NEWBIE_TIPS = [
-    "On the PvP ruleset, players from the other faction can attack you out in the world. Quest in pairs in contested zones.",
-    "Your hearthstone takes you back to the inn you set it at. Set it somewhere useful before a long trip.",
-    "Train new spells at your class trainer every couple of levels. It's easy to forget.",
-    "Pick up two gathering professions early (like Herbalism and Mining). They pay for your first mount.",
-    "Out of mana or health? Eat and drink between fights instead of pushing on.",
-    "Dungeons need a tank, a healer and three damage dealers. If you're new, ask a guildie to run one with you.",
-    "Elite mobs (gold dragon on the portrait) are meant for groups. Don't solo them early.",
-    "Talents unlock at level 10. Each class has three trees; you don't have to copy a guide, but it helps.",
-    "Lost in a city? Ask any guard. They'll mark the bank, trainers and more on your map.",
-    "No mount until level 40. Save about 100 gold for riding plus your first mount.",
-    "Stop clicking your abilities. Put them on keys around WASD. /keybinds shows you how.",
-    "Battlegrounds give Honor whether you win or lose, but winning gives more.",
-    "Transmog is opt-in. If someone's gear looks weird, they might just have it on.",
+NEWBIE_TIPS = [  # 1.2.2: "**do this** → benefit", no tips a Horde PvP player already knows
+    "**Set your hearthstone at the inn closest to where you'll quest next, not where you are** → your hearth back ends your night next to tomorrow's quests.",
+    "**Visit your class trainer on every even level** → new ranks and spells come every couple of levels, and missing them is the most common reason a new character feels weak.",
+    "**Pick up two gathering professions from level 1 (Herbalism and Mining is a classic pair)** → you sell what you pick up along the way, and that's what pays for your mount at 40.",
+    "**Start setting gold aside early for level 40** → riding plus your first mount costs about 100 gold, and that's the biggest purchase you'll make while leveling.",
+    "**Skip mobs with a gold dragon on their portrait unless you're grouped** → they're elites built for groups, and they're the most common early death.",
+    "**Spend your first talent points at 10, then check a guide before you hit 20** → Forever reworked the talent trees, so a build from the original game won't carry over.",
+    "**Ask a city guard for directions** → they put a mark on your map for the bank, trainers, flight master and more.",
+    "**Move your abilities onto keys around WASD this week, before launch** → you'll be able to move and fight at the same time. `/keybinds` shows a starting layout for your class.",
+    "**Queue a battleground even when your team looks outmatched** → you earn Honor win or lose, and a win only adds more on top.",
+    "**Don't judge gear by how it looks** → transmog is opt-in, so a player in starter-looking clothes might be wearing their best gear under it.",
+    "**Run your first dungeons with a guildmate who knows the route** → you'll learn the pulls and the loot rules without losing a group to a wipe.",
 ]
 
 # tag: "new" | "vet" | "horde" (horde = only shown when server faction is horde)

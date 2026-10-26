@@ -1,5 +1,5 @@
 """
-Forever Countdown: a multi-server Discord bot. Run: python -m forever_bot.bot
+Forever Sherpa: a multi-server Discord bot. Run: python -m forever_bot.bot
 
 Loops
   refresh   every 30 min: fetch news/clips/videos once, shared by every server
@@ -267,10 +267,10 @@ class PingToggleButton(discord.ui.DynamicItem[discord.ui.Button], template=r"pin
         member = interaction.user
         try:
             if role in getattr(member, "roles", []):
-                await member.remove_roles(role, reason="Forever Countdown: opted out of pings")
+                await member.remove_roles(role, reason="Forever Sherpa: opted out of pings")
                 msg = f"🔕 Removed {role.mention}. You won't be pinged."
             else:
-                await member.add_roles(role, reason="Forever Countdown: opted in to pings")
+                await member.add_roles(role, reason="Forever Sherpa: opted in to pings")
                 msg = f"🔔 Added {role.mention}. You'll get the daily ping."
             ev(clog, "ping_toggle", guild=guild.id, user=member.id, role=role.id, now_has=role not in member.roles)
         except discord.Forbidden:
@@ -1042,7 +1042,7 @@ async def pinpost_cmd(interaction: discord.Interaction, channel: discord.TextCha
     can_pin = perms.manage_messages
     if can_pin:
         try:
-            await msg.pin(reason="Forever Countdown start-here card")
+            await msg.pin(reason="Forever Sherpa start-here card")
             pinned = "✅ Posted and pinned."
         except discord.HTTPException:
             pinned = "✅ Posted. Pin it: hover the message → **⋯** → **Pin Message**."

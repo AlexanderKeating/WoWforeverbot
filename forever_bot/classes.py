@@ -229,3 +229,116 @@ CLASSES = {
 
 # One-liners for the rotating "Class spotlight" in check-ins: (class, tip)
 SPOTLIGHT = [(c, t) for c, d in CLASSES.items() for t in d["leveling"][:2]]
+
+
+# 1.2.2: leveling and PvP tips as "**do this** → benefit". Same facts as above, reworded.
+# Beta-tournament records stay as plain facts (they're context, not instructions).
+_DO = {
+    "Warrior": {
+        "leveling": [
+            "**Victory Rush right after every kill** → a free 10% heal each fight, so you stop to eat far less.",
+            "**Charge in Battle Stance, then swap to whatever the fight needs** → Tactical Mastery keeps 10 Rage, so swapping no longer resets you.",
+            "**Keep Rend and Thunder Clap in your rotation** → both scale with Attack Power now, so they get better as your gear does.",
+        ],
+        "pvp": [
+            "**Hunt mounted players with Spearing Strike (Arms)** → it dismounts them and hits for double damage on riders.",
+            "**Queue battlegrounds with a healer on your hip** → in the level-30 beta duels, warriors struggled against kiting classes on their own.",
+        ],
+    },
+    "Paladin": {
+        "leveling": [
+            "**Bind Holy Strike as soon as you get it at 6** → you finally have a real button to press, not just auto-attack.",
+            "**Judge on cooldown** → Judgement no longer eats your Seal, so there's no reason to save it.",
+            "**Run Seal of Fury while soloing, not just tanking** → its absorb shield means fewer stops between pulls.",
+        ],
+        "pvp": [
+            "**Try a shockadin build if you want burst** → Holy Shock is a 21-point talent on a 10-second cooldown now.",
+            "**Save Will of the Forsaken (Undead) for a Fear, Charm or Sleep** → breaking a Warlock's Fear is the trade that wins duels.",
+            "Paladins went 16–13 vs other classes in the beta tournament finals, with four undefeated qualifiers.",
+        ],
+    },
+    "Hunter": {
+        "leveling": [
+            "**Tame for the family ability, not the look** → Boar Charge, Spider Web, Turtle Shell Shield and Wolf Furious Howl each solve a different problem.",
+            "**Drop a Frost Trap mid-fight and back off** → traps work in combat now, so you can fix a bad pull without running first.",
+            "**Upgrade your own gear before your pet's food** → pets scale with your gear, so every upgrade counts twice.",
+        ],
+        "pvp": [
+            "**Scatter Shot an Undead when you need them locked down** → they can't use Will of the Forsaken while Scatter Shotted.",
+            "**Play group PvP from max range** → hunters went 7–11 in beta finals duels, but range is your edge in battlegrounds.",
+        ],
+    },
+    "Rogue": {
+        "leveling": [
+            "**Run poisons and a Sharpening Stone together** → they stack now, so it's free damage.",
+            "**Sap and sneak past packs you don't need** → you skip fights that give little XP and keep moving.",
+            "**Don't pass on a good axe** → Hack and Slash gives axes a chance at an extra attack, like swords.",
+        ],
+        "pvp": [
+            "**Sap the healer, then stay stealthed** → you pick the fight and the target.",
+            "**Use Distract only when you're ready to commit** → it lowers stealth detection but tells nearby players a Rogue is around.",
+            "Rogues went 5–11 vs other classes in the beta tournament finals.",
+        ],
+    },
+    "Priest": {
+        "leveling": [
+            "**Level as Shadow and stay in Shadowform** → Shadow spells cost half the mana, so you drink far less.",
+            "**Fade the moment a dungeon pull turns on you** → its threat drop is doubled now.",
+            "**Stack Renews with other Priests** → Renew from several Priests can sit on one target now.",
+        ],
+        "pvp": [
+            "**Fear Ward yourself before engaging a Warlock** → every Priest has it now, and Warlocks won the beta tournament.",
+            "**Only Shadow Word: Death when it will kill** → it's an instant finisher, but it costs you if they live.",
+            "Priests went 9–12 vs other classes in the beta tournament finals.",
+        ],
+    },
+    "Shaman": {
+        "leveling": [
+            "**Set up a Call of the Elements preset at 20** → one cast drops all four totems.",
+            "**Imbue your weapon once when you log in** → imbues last an hour now, not 5 minutes.",
+            "**Pair Rockbiter with Spirit Weapons as Enhancement** → you can off-tank small groups.",
+        ],
+        "pvp": [
+            "**Move your totems with Totemic Projection mid-fight** → keep them on the fight instead of re-dropping them.",
+            "**Take Earthbound (Elemental, 21)** → Earthbind Totem roots nearby enemies for 5 seconds.",
+            "Shamans went 19–11 vs other classes in the beta tournament finals and took 3rd and 4th.",
+        ],
+    },
+    "Mage": {
+        "leveling": [
+            "**Plan smaller pulls than the old AoE kites** → Cone of Cold is shorter, so huge kite-pulls are riskier.",
+            "**Learn Comprehension, the new minor tradeskill** → you can read the scrolls monsters drop.",
+            "**Frost Nova, then Ice Lance** → Ice Lance hits frozen targets for big damage.",
+        ],
+        "pvp": [
+            "**Root first, then Ice Lance on Fingers of Frost** → that combo is your burst window.",
+            "**Undead Mages: hold Will of the Forsaken for Warlock fears** → that's the fight you'll see most.",
+            "Mages went 4–12 vs other classes in the beta tournament finals, and all four lost in the same round.",
+        ],
+    },
+    "Warlock": {
+        "leveling": [
+            "**Grab your free mount at 40 from Strahad Farsan in Ratchet** → save the gold for training and gear.",
+            "**Let Drain Soul finish its ticks** → it guarantees a Soul Shard if it runs long enough.",
+            "**Stack some Spirit** → Life Tap scales with it, so you sit to drink less.",
+        ],
+        "pvp": [
+            "**Plan your fight around Fear getting answered** → Undead Will of the Forsaken it and every Priest has Fear Ward, so don't open with it.",
+            "Warlocks went 26–7 vs other classes in the beta tournament finals and took 1st and 2nd. That was level-30 dueling; at 60, more trinkets and Fear answers will change things.",
+        ],
+    },
+    "Druid": {
+        "leveling": [
+            "**Drink potions and open doors without leaving form** → Feral stays in form instead of paying mana to shift back.",
+            "**Keep upgrading your weapon as Feral** → weapons matter in forms now.",
+            "**Tauren: War Stomp in bear form** → racials work while shapeshifted (90-second cooldown).",
+        ],
+        "pvp": [
+            "**Barkskin without leaving form** → it works while shapeshifted now.",
+            "**Root indoors too** → Entangling Roots works inside buildings and caves now.",
+            "Druids went 12–14 vs other classes in the beta tournament finals; Minpojke finished top 6.",
+        ],
+    },
+}
+for _c, _parts in _DO.items():
+    CLASSES[_c].update(_parts)
