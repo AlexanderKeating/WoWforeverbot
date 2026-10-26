@@ -45,7 +45,7 @@ LATER = [("Winter 2026", "Hardcore ruleset"), ("Spring / Summer 2027", "Major co
 # One-off pings to every server at an exact time (UTC). (iso datetime, key, text)
 EVENT_PINGS = [
     ("2026-10-27T19:30:00+00:00", "names-30m", "📛 **Name reservation opens in 30 minutes** (1 PM Pacific / 3 PM Central). "
-     "3 names total across all rulesets. Have your first + last name ideas ready, and on PvP make your **Horde** character first."),
+     "3 names total across all rulesets. Have your first + last name combos ready."),
     ("2026-10-27T20:00:00+00:00", "names-open", "📛 **Name reservation is open now.** First come, first served. Go get your name."),
     ("2026-11-03T16:00:00+00:00", "names-last", "⏰ **Last day of name reservation.** If you haven't locked in your name yet, today's the day."),
 ]
@@ -53,7 +53,7 @@ EVENT_PINGS = [
 # Shown at the top of the daily post on that date.
 TODAY_CALLOUTS = {
     "2026-10-26": "📛 **Name reservation opens tomorrow at 1 PM Pacific / 3 PM Central.** 3 names total across all rulesets. Pick your first + last name ideas tonight (`/faq` has the rules).",
-    "2026-10-27": "📛 **Name reservation opens today at 1 PM Pacific / 3 PM Central.** Skyborne pack owners can reserve **3 names total** across all rulesets, through Nov 3. On the PvP ruleset, make your Horde character first: your account gets locked to one faction there.",
+    "2026-10-27": "📛 **Name reservation opens today at 1 PM Pacific / 3 PM Central.** Skyborne pack owners can reserve **3 names total** across all rulesets, through Nov 3. Create your characters now rather than on launch night: if a faction gets crowded on PvP, Blizzard can pause *new* characters.",
     "2026-11-03": "⏰ **Last day of name reservation.**",
     "2026-11-04": "🚀 **It's launch day.**",
 }
@@ -421,7 +421,8 @@ FAQ = [
 _VETS_LONG = {
     9: ("There are no realm lists in Forever. Each ruleset (Normal, PvP, Roleplay) is one big shared world per region, "
         "and Blizzard splits it into layers when it gets crowded so busy zones stay playable. On the PvP ruleset your whole "
-        "account is locked to one faction, which is why your Horde character should be the first one you make. There's no "
+        "account is locked to one faction, and Blizzard can pause new characters for an overloaded faction, so "
+        "creation limits only ever block *new* characters. There's no "
         "grouping across rulesets and no character transfers at launch, so wherever your first character lands is where your "
         "friends need to be. Hardcore arrives later as its own ruleset, and a Hardcore character that dies can move to another "
         "ruleset, PvP included."),
@@ -465,8 +466,7 @@ _VETS_LONG = {
         "Hardcore arrives in winter, and major updates are planned for spring and summer 2027, including a \"revamped iconic "
         "raid.\""),
     1: ("Beta and stress-test characters are wiped, so everyone starts fresh. Expect queues and layering on launch night: group "
-        "up with friends early so the game puts you on the same layer. On PvP, make your Horde character before any alt so "
-        "the faction lock lands on the right side. Once you're in, set your hearthstone at a quest hub, grab every flight path "
+        "up with friends early so the game puts you on the same layer. Once you're in, set your hearthstone at a quest hub, grab every flight path "
         "you pass, and learn Cooking early so you can use campfires."),
     0: ("Servers open at the same moment worldwide. Starting zones will be packed, and only the first player or group to tag a "
         "mob gets credit, so group up with people hunting the same thing instead of racing them. Do \"The Great Outdoors\" "
@@ -560,8 +560,8 @@ DEEP_DIVES.update({
 # ======================================================================= 1.1.2: "do this → benefit" format
 # Pro tips and deep dives lead with an action, then the payoff.
 PRO_TIPS.update({
-    9: "**Agree on PvP + Horde with your friends before anyone makes a character** → your whole account lands on the right side of the PvP faction lock, and nobody gets stranded.",
-    8: "**Write down two or three first + last name combos tonight** → when reservation opens at 3 PM Central, you're claiming names in seconds instead of brainstorming while they get taken.",
+    9: "**Treat your first level 60 as an investment, even on an alt ruleset** → every 1–60 finish unlocks Legacy perks for all your alts, and Legacy is shared across Normal, PvP and Roleplay, so a Normal-ruleset character still powers up your PvP account.",
+    8: "**Pick one surname and use it for your whole roster** → names only have to be unique as a first + last pair, so a shared \"family name\" is easier to claim than a rare first name, and guildies can spot your alts at a glance.",
     7: "**Plan to head to Riverglades in your mid-30s** → 150+ fresh quests built for 35–45, right when the classic zones start running dry.",
     6: "**Run dungeons with people within a few levels of you** → nobody's kill XP gets cut by a high-level party member, and quest turn-ins stay full value either way.",
     5: "**Pick Skyborne if you want a Horde Shaman with built-in mobility** → Wind Blessed haste and Walk on Air on a 90-second cooldown, on a class the Horde already loves.",
@@ -574,19 +574,18 @@ PRO_TIPS.update({
 
 DEEP_DIVES.update({
     9: ("Rulesets in practice", [
-        "**Make your PvP Horde character before any other on PvP** → the first character decides your account's faction there, so this locks you in on the right side.",
-        "**Put Alliance alts on Normal or Roleplay** → those rulesets don't lock factions, so you can try both without touching your PvP account.",
-        "**Agree on one ruleset with your friends up front** → there's no cross-ruleset grouping and no transfers at launch, so this is the only way to guarantee you can play together.",
-        "**Create your character early, ideally during reservation** → Blizzard can briefly pause new characters for an overloaded faction on PvP (like Season of Discovery), and early characters aren't affected.",
-        "**Play alts on other rulesets without worry** → collections and Legacy points are shared across rulesets (except Hardcore), so that time still counts.",
-        "**Try Hardcore when it arrives** → if a Hardcore character dies, it can move to another ruleset, PvP included, so it's not all-or-nothing.",
+        "**Create your character during reservation, not on launch night** → Blizzard can pause new characters for an overloaded faction on PvP (like Season of Discovery did), and that only affects characters that don't exist yet.",
+        "**Level an alt on Normal or Roleplay guilt-free** → collections and Legacy points are shared across rulesets (except Hardcore), so that time still powers up your PvP account.",
+        "**If a friend \"vanishes\" in a busy city, invite them** → the world is split into layers when crowded, and grouping pulls you onto the same one.",
+        "**Treat Hardcore as a free second shot when it arrives** → a Hardcore character that dies can transfer to another ruleset, PvP included, so a death isn't the end of that character.",
+        "**Don't count on a transfer to fix a mistake** → there's no cross-ruleset grouping and no character transfers at launch, so double-check the ruleset at character creation.",
     ]),
     8: ("Name reservation checklist", [
         "**Be online at 3 PM Central on Oct 27** → the best names go first, and it's first come, first served. The bot pings 30 minutes before.",
         "**Reserve on the account you'll actually play** → the reservation is tied to the Battle.net account that bought the Skyborne pack.",
         "**Spend your 3 names on launch characters** → the 3 are shared across all rulesets, so two PvP names leaves just one for Normal or Roleplay.",
         "**If a first name is taken, change the surname, not the spelling** → names are first + last and unique per region, and \"Grommash Ashfall\" ages better than \"Grommashh.\"",
-        "**Make your PvP Horde character first** → that sets your account's PvP faction the right way.",
+        "**Use one surname across your roster** → only the full name has to be unique, so a shared \"family name\" is easy to claim and makes your alts recognizable.",
     ]),
     7: ("Zone guide", [
         "**Level a Skyborne on Zephras Isle (1–12)** → a whole starting story of Highborne exiles and wind spirits before you reach the main continents.",
@@ -635,7 +634,7 @@ DEEP_DIVES.update({
     ]),
     1: ("Launch-night game plan", [
         "**Pre-install tonight from the Battle.net game version menu** → you're not stuck downloading at 5 PM.",
-        "**Create PvP, then Horde, then your reserved name, before any alt** → the faction lock goes the right way.",
+        "**Learn First Aid in your first few levels** → bandages from the cloth you're already looting cut your downtime between pulls, on any class.",
         "**Invite your friends before you leave the starting area** → groups land on the same layer, so you can actually see each other.",
         "**Group with strangers hunting the same mobs** → only the first group to tag gets credit, so groups level faster than solo racers.",
         "**Set your hearthstone at a hub, take every flight path, and learn Cooking** → faster travel and campfires from day one.",
@@ -645,6 +644,6 @@ DEEP_DIVES.update({
         "**Do \"The Great Outdoors\" around level 5** → camping and campfire buffs.",
         "**Pick two gathering professions, like Herbalism and Mining** → they pay for your level-40 mount, about 100 gold.",
         "**Visit your class trainer every couple of levels** → new spells are easy to miss.",
-        "**Travel with friends in contested zones** → on PvP, Alliance can attack you anywhere outside cities.",
+        "**Take the starter profession quest** → it hands you Mining, Skinning or Herbalism plus 2 free skill points, a head start on your mount gold.",
     ]),
 })
