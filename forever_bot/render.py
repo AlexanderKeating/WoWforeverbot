@@ -289,7 +289,7 @@ def build_daily(cfg, now: datetime, snap: dict | None, counts: dict | None,
     while sum(len(e.get("title", "")) + len(e.get("description", "")) for e in embeds) > EMBED_TOTAL_CAP and len(embeds) > 1:
         embeds.pop()
 
-    ping = f"<@&{cfg.ping_role_id}>" if cfg.ping_role_id else ""
+    ping = f"<@&{cfg.ping_role_id}>" if (C.NOTIFY and cfg.ping_role_id) else ""
     return Post(content=ping, embeds=embeds, followup=followup, used_ids=used,
                 rollcall=counts is not None, key=f"{kind}:{today.isoformat()}:0", deep_key=deep_key)
 

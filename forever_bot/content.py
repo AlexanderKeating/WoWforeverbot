@@ -87,6 +87,11 @@ YOUTUBE_CHANNELS: dict[str, str] = {}
 # the fetch code and YOUTUBE_API_KEY handling are kept.
 SHOW_YOUTUBE = False
 
+# Notifications. Off since 1.1.2: no @role pings, and no standalone reminder / launch-countdown posts
+# (daily posts already carry that info). Set True to bring back pings, the name-reservation alerts,
+# launch-night countdown posts, and the 🔔 opt-in button on the pinned card.
+NOTIFY = False
+
 # News sources. Each tries feed URLs in order, then RSS autodiscovery on the homepage.
 # Removed after first live run (Oct 25): Blizzard (no public RSS; Wowhead mirrors blue posts),
 # Icy Veins (403s bots; not worth working around).
