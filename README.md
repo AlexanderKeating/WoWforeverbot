@@ -44,6 +44,8 @@ Works in any number of servers. Each server picks its own channel, ping role, po
 | Admins | `/pinpost [channel]` | Posts a "start here" card to pin; it updates itself after every post. Includes a 🔔 ping opt-in button |
 | Everyone | `/keybinds [class] [topic]` · `/macros class` · `/rotation class` | Keybind basics + class starter layouts + controller setup; copy-paste macros; leveling priorities per spec |
 | Everyone | `/whichclass` | 5-question quiz that suggests a class |
+| Everyone | `/mysettings [detail]` | Brief, Standard or Detailed for everything the bot sends you privately |
+| Admins | `/verbosity [level]` | Brief, Standard or Detailed channel posts |
 | Everyone | `/tips [topic]` | Tips by topic: basics, leveling, pvp, camping, professions, travel (private) |
 | Everyone | `/countdown` `/tourney` `/faq` `/dates` `/pickaclass` | |
 

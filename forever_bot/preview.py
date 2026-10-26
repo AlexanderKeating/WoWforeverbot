@@ -39,6 +39,7 @@ class Cfg:
     faction: str = "horde"
     ping_role_id: int | None = 1234
     post_time: str = C.DEFAULT_POST_TIME
+    verbosity: str = "standard"
 
 
 def at_post_time(d: date, cfg: Cfg) -> datetime:
@@ -84,8 +85,9 @@ def main():
     ap.add_argument("--live", action="store_true")
     ap.add_argument("--faction", default="horde")
     ap.add_argument("--slot", type=int, default=0, help="0 = full post, 1+ = check-in")
+    ap.add_argument("--level", default="standard", choices=["brief", "standard", "detailed"])
     a = ap.parse_args()
-    cfg = Cfg(faction=a.faction)
+    cfg = Cfg(faction=a.faction, verbosity=a.level)
     snap = asyncio.run(live_snap()) if a.live else SAMPLE
     counts = {c: 0 for c in C.CLASSES}
     if a.all:

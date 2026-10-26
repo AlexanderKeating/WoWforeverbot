@@ -356,6 +356,52 @@ def test_event_pings():
     assert datetime.fromisoformat(C.EVENT_PINGS[1][0]) == datetime(2026, 10, 27, 20, tzinfo=timezone.utc)  # 1 PM PDT
 
 
+def test_detail_levels():
+    from forever_bot import guides as G
+    cfg = Cfg()
+    d = date(2026, 10, 24)
+    while d <= date(2026, 12, 9):
+        sizes = []
+        for lvl in R.LEVELS:
+            cfg.verbosity = lvl
+            for slot in (0, 1):
+                p = R.build_daily(cfg, at_post_time(d, cfg), SAMPLE, {}, slot=slot)
+                total = sum(len(e["title"]) + len(e["description"]) for e in p.embeds)
+                assert total < 6000 and len(p.embeds[0]["description"]) <= 4096, (d, lvl, slot)
+                if slot == 0:
+                    sizes.append(len(p.embeds[0]["description"]))
+        assert sizes[0] < sizes[1] <= sizes[2], (d, sizes)  # brief < standard <= detailed
+        d += timedelta(days=1)
+    cfg.verbosity = "brief"
+    brief = R.build_daily(cfg, at_post_time(date(2026, 10, 26), cfg), SAMPLE, {}).embeds[0]["description"]
+    assert "🧙" not in brief and "Did you know" not in brief and "🌱" in brief and "Pro tip" in brief
+    for key in C.DEEP_DIVES:
+        lens = [len(R.deep_dive_embed(str(key), l)["description"]) for l in R.LEVELS]
+        assert lens[0] < lens[1] <= lens[2] and lens[2] < 4096, (key, lens)
+    for cls in C.CLASSES:
+        for l in R.LEVELS:
+            for e in (R.classtips_embed(cls, "horde", l), R.keybinds_embed(cls, "basics", l), R.rotation_embed(cls, l)):
+                total = len(e["title"]) + len(e["description"]) + len(e["footer"]["text"]) + sum(
+                    len(f["name"]) + len(f["value"]) for f in e["fields"])
+                assert total < 6000 and all(len(f["value"]) <= 1024 for f in e["fields"]), (cls, l, e["title"])
+        assert len(R.classtips_embed(cls, "horde", "brief")["fields"]) < len(R.classtips_embed(cls, "horde", "detailed")["fields"])
+    for t in R.TIP_TOPICS:
+        assert len(R.tips_embed(t, "brief")["description"]) <= len(R.tips_embed(t, "detailed")["description"])
+    assert "Also worth a look" not in R.quiz_result_embed([0] * len(G.QUIZ), "horde", "brief")["description"]
+    assert "Your top 4" in R.quiz_result_embed([0] * len(G.QUIZ), "horde", "detailed")["description"]
+    assert R.norm_level("weird") == "standard"
+
+
+def test_user_detail_store():
+    st = tmp_store()
+    assert st.get_user_detail(1) is None
+    st.set_user_detail(1, "brief")
+    st.set_user_detail(1, "detailed")
+    assert st.get_user_detail(1) == "detailed"
+    st.set_user_detail(1, None)
+    assert st.get_user_detail(1) is None
+
+
 def test_store_roundtrip():
     st = tmp_store()
     st.set_class(1, 10, "Mage")
