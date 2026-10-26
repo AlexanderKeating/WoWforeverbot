@@ -480,7 +480,7 @@ DEEP_DIVES.update({
     9: ("Rulesets in practice", [
         "**Three rulesets at launch: Normal, PvP and Roleplay.** Hardcore comes later. Each one is a single huge world for your region, split into layers when it's busy, so you'll keep seeing the same community instead of being scattered across realms.",
         "**PvP locks your account to one faction.** The first character you make on PvP decides it. Normal and Roleplay don't lock you, so that's where Alliance alts go.",
-        "**No cross-ruleset grouping, no transfers at launch.** You can't run a dungeon with a friend on another ruleset, and you can't move your character later, so agree on PvP Horde before anyone logs in.",
+        "**No cross-ruleset grouping, no transfers at launch.** You can't run a dungeon with a friend on another ruleset, and character transfers aren't available at launch, so agree on PvP Horde before anyone logs in.",
         "**Some progress follows you everywhere.** Collections and Legacy points are shared across rulesets (except Hardcore), so time on an alt elsewhere isn't wasted.",
         "**Hardcore has an escape hatch.** If a Hardcore character dies, it can transfer to another ruleset, including PvP.",
         "**Faction balance is managed.** Like Season of Discovery, Blizzard can temporarily pause new characters for an overloaded faction on PvP, so creating your character early matters.",
