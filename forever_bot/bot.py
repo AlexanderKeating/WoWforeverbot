@@ -477,7 +477,7 @@ class ForeverBot(commands.Bot):
         return "Posted."
 
     def pin_view(self, cfg: GuildConfig):
-        if not cfg.ping_role_id:
+        if not (C.NOTIFY and cfg.ping_role_id):
             return None
         v = discord.ui.View(timeout=None)
         v.add_item(PingToggleButton(cfg.ping_role_id))
@@ -492,7 +492,7 @@ class ForeverBot(commands.Bot):
             if ch is None:
                 raise LookupError("pin channel gone")
             msg = ch.get_partial_message(cfg.pin_message_id)
-            embed = R.pinned_embed(cfg, guild_times(cfg), now_utc(), latest_url, cfg.ping_role_id)
+            embed = R.pinned_embed(cfg, guild_times(cfg), now_utc(), latest_url, cfg.ping_role_id if C.NOTIFY else None)
             await msg.edit(embed=discord.Embed.from_dict(embed), view=self.pin_view(cfg))
             ev(slog, "pin_refreshed", logging.DEBUG, guild=cfg.guild_id, message=cfg.pin_message_id)
         except (discord.NotFound, LookupError):
@@ -573,6 +573,8 @@ class ForeverBot(commands.Bot):
 
     @tasks.loop(seconds=30)
     async def launch_loop(self):
+        if not C.NOTIFY:
+            return  # 1.1.2: no standalone reminder / countdown posts
         now = now_utc()
         for iso, key, text in C.EVENT_PINGS:
             at = datetime.fromisoformat(iso)
@@ -958,7 +960,7 @@ async def pinpost_cmd(interaction: discord.Interaction, channel: discord.TextCha
         return await interaction.response.send_message(
             f"I can't post there: {problem}.\n{perm_fix_hint(target, problem)}", ephemeral=True)
     old = (cfg.pin_channel_id, cfg.pin_message_id)
-    embed = R.pinned_embed(cfg, guild_times(cfg), now_utc(), None, cfg.ping_role_id)
+    embed = R.pinned_embed(cfg, guild_times(cfg), now_utc(), None, cfg.ping_role_id if C.NOTIFY else None)
     msg = await target.send(embed=discord.Embed.from_dict(embed), view=bot.pin_view(cfg),
                             allowed_mentions=discord.AllowedMentions.none())
     cfg.pin_channel_id, cfg.pin_message_id = target.id, msg.id
@@ -978,7 +980,7 @@ async def pinpost_cmd(interaction: discord.Interaction, channel: discord.TextCha
     else:
         pinned = "✅ Posted. Pin it: hover the message → **⋯** → **Pin Message**."
     ping_note = ""
-    if cfg.ping_role_id and not interaction.guild.me.guild_permissions.manage_roles:
+    if C.NOTIFY and cfg.ping_role_id and not interaction.guild.me.guild_permissions.manage_roles:
         ping_note = ("\n-# The 🔔 button needs me to have **Manage Roles**, with my role above the ping role. "
                      "Without that, members will see a message telling them to ask an admin.")
     await interaction.response.send_message(

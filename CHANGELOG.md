@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.1.2
+- **Notifications off** (`NOTIFY = False` in `content.py`): no @role pings on any post, no standalone
+  name-reservation or launch-countdown posts, and no 🔔 button on the pinned card. Daily posts still go out on schedule.
+- 🧙 veteran lines rewritten with fuller context: why each change matters, not just what changed.
+- ⚔️ pro tips and 🔎 deep dives now use "**do this** → what you get" so every point is actionable.
+
 ## 1.1.1
 - YouTube videos removed from posts (and no longer fetched). Twitch clips and news stay.
   Flip `SHOW_YOUTUBE` in `content.py` to bring them back.
