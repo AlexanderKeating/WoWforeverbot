@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.2.2 (2026-10-26)
+- Class cards: every leveling and PvP tip is now "**do this** → benefit". Beta tournament records stay as plain facts.
+- New-player tips rewritten the same way. Dropped the ones a Horde PvP player already knows (eat between fights, what a dungeon group is, world PvP exists).
+- Renamed the leftover "Forever Countdown" text to Forever Sherpa (audit-log reasons, pin reason, web user agent, README).
+
 ## 1.2.1 (2026-10-26)
 - Fixed: the 📖 More detail button showed "application didn't respond in time". A log line crashed before the reply was sent.
 - Fixed: `/verbosity` saved your choice but never confirmed it (same cause).

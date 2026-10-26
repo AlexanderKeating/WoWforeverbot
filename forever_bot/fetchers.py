@@ -29,7 +29,7 @@ TIMEOUT = aiohttp.ClientTimeout(total=20, connect=8)
 RETRIES = 3
 STALE_OK_HOURS = 36
 NEWS_MAX_AGE_HOURS = 48
-UA = "ForeverCountdownBot/1.0 (+discord countdown bot)"
+UA = "ForeverSherpaBot/1.2 (+discord bot)"
 
 
 def real_secret(v: str | None) -> str:

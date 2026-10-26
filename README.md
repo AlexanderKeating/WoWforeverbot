@@ -1,4 +1,4 @@
-# Forever Countdown
+# Forever Sherpa
 
 A Discord bot that counts down to **World of Warcraft: Forever** (Nov 4, 2026, 3 PM PST) and then to raid
 opening (Dec 9). One daily post per server, written for both brand-new players (🌱) and veterans (🧙), with
@@ -119,7 +119,7 @@ Every push to `main` redeploys automatically.
    `DB_PATH=/data/forever.db`.
 4. Service → right-click → **Attach Volume** → mount path `/data`. This keeps roll call and post history
    across deploys.
-5. Deploy. Logs should show `ready as ForeverCountdown#…`.
+5. Deploy. Logs should show `ready as <your bot name>#…`.
 
 ### 4. In each Discord server
 1. Open the invite link and add the bot.
