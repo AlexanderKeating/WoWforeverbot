@@ -517,6 +517,18 @@ def test_plusone_mode():
     assert R.LEVEL_LABEL["plain"] == "Plain words"
 
 
+def test_click_log_names():
+    import types
+    from forever_bot import bot as B
+    it = types.SimpleNamespace(message=None)
+    assert B._control_name("dd:professions", it) == "more_detail:professions"
+    assert B._control_name("pd:Hunter:heal", it) == "panic:Hunter:heal"
+    msg = types.SimpleNamespace(embeds=[types.SimpleNamespace(title="📖 Spellbook · Quest log")], content="")
+    assert B._control_name("a1b2c3", types.SimpleNamespace(message=msg)).startswith("other:📖 Spellbook")
+    inter = types.SimpleNamespace(data={"options": [{"type": 3, "name": "page", "value": "plusone"}]})
+    assert B._args(inter) == "page:plusone"
+
+
 if __name__ == "__main__":
     fns = [v for k, v in dict(globals()).items() if k.startswith("test_")]
     for fn in fns:

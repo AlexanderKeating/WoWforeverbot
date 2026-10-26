@@ -161,6 +161,41 @@ class DeepDiveButton(discord.ui.DynamicItem[discord.ui.Button], template=r"dd:(?
         ev(clog, "more_detail", guild=interaction.guild_id, user=interaction.user.id, key=self.key, detail=lvl)
 
 
+def _who(interaction: discord.Interaction) -> str:
+    u = interaction.user
+    return (getattr(u, "display_name", None) or getattr(u, "name", "") or "?")[:40]
+
+
+def _args(interaction: discord.Interaction) -> str | None:
+    """Command options as k=v, for the log (e.g. page=plusone, cls=Mage)."""
+    try:
+        opts = (interaction.data or {}).get("options") or []
+        flat = []
+        for o in opts:
+            if o.get("type") in (1, 2):  # subcommand / group
+                opts += o.get("options") or []
+                continue
+            flat.append(f"{o.get('name')}:{str(o.get('value'))[:30]}")
+        return ",".join(flat) or None
+    except Exception:  # noqa: BLE001
+        return None
+
+
+def _control_name(cid: str, interaction: discord.Interaction) -> str:
+    """Readable name for a button or dropdown. Our persistent ones have prefixes; ephemeral ones get
+    random ids, so fall back to the message they're on."""
+    names = {"dd": "more_detail", "cg": "class_guide", "po": "plusone", "pd": "panic", "ping": "ping_toggle",
+             "rc": "rollcall"}
+    head, _, rest = cid.partition(":")
+    if head in names and rest:
+        return f"{names[head]}:{rest}"[:60]
+    msg = getattr(interaction, "message", None)
+    title = ""
+    if msg and msg.embeds:
+        title = (msg.embeds[0].title or "")[:40]
+    return f"other:{title or (msg.content[:40] if msg and msg.content else 'unknown')}"
+
+
 def E(d: dict, lvl: str | None = None) -> discord.Embed:
     """Embed from a render dict, in plain words when the person picked Plus One's level."""
     return discord.Embed.from_dict(P.plainify(d) if lvl == "plain" else d)
@@ -398,7 +433,22 @@ class ForeverBot(commands.Bot):
 
     async def on_app_command_completion(self, interaction: discord.Interaction, command):
         ev(clog, "command", name=command.qualified_name, guild=interaction.guild_id, user=interaction.user.id,
+           who=_who(interaction), args=_args(interaction),
            ms=(discord.utils.utcnow() - interaction.created_at).total_seconds() * 1000)
+
+    async def on_interaction(self, interaction: discord.Interaction):
+        """1.3.2: one line for every button press and dropdown pick, on any message."""
+        try:
+            if interaction.type != discord.InteractionType.component:
+                return
+            data = interaction.data or {}
+            cid = str(data.get("custom_id", ""))
+            vals = data.get("values") or []
+            ev(clog, "click", guild=interaction.guild_id, user=interaction.user.id, who=_who(interaction),
+               control=_control_name(cid, interaction), picked=",".join(map(str, vals))[:80] or None,
+               kind="dropdown" if vals else "button")
+        except Exception:  # noqa: BLE001 - logging must never get in the way
+            pass
 
     def say_once(self, logger, dedupe: tuple, event: str, level=logging.INFO, /, **fields):
         if dedupe not in self._said:

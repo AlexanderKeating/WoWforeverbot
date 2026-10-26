@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.3.2 (2026-10-26)
+- Logging: every button press and dropdown pick now logs `event=click` with the control (e.g. `panic:Hunter:heal`, `more_detail:professions`, spellbook page picks), what was picked, and who.
+- `event=command` lines now include the person's display name (`who=`) and the options they used (`args=page:plusone`).
+
 ## 1.3.1 (2026-10-26)
 - 🌿 Plain words button on `/draggedalong` is now a toggle (press again to turn it off), and its confirmation has an ↩️ Undo button.
 
