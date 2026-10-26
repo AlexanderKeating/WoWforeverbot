@@ -1,5 +1,18 @@
 # Changelog
 
+## 1.2.0
+- **Detail levels: Brief, Standard, Detailed.**
+  - `/verbosity` (admins): how detailed this server's channel posts are.
+    Brief = countdown, 🌱 line, pro tip. Standard = adds 🧙 context, new-player tip, did-you-know.
+    Detailed = adds deep-dive highlights.
+  - `/mysettings` (everyone): your own level for everything the bot sends you privately, in every server.
+    Unset = follows the server's level.
+  - **📖 More detail** button (replaces 🔎 Deep dive) answers at the reader's level: Brief gets the essentials,
+    Standard adds the veteran context, Detailed adds the pro tip and every point.
+  - Class tips, keybinds, rotations, `/tips` and quiz results all scale with your level
+    (e.g. Detailed class cards add "bind these first" and a starter rotation).
+- Database migrates automatically (adds server verbosity and a per-user settings table).
+
 ## 1.1.2
 - **Notifications off** (`NOTIFY = False` in `content.py`): no @role pings on any post, no standalone
   name-reservation or launch-countdown posts, and no 🔔 button on the pinned card. Daily posts still go out on schedule.

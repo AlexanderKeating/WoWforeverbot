@@ -140,7 +140,7 @@ class DeepDiveButton(discord.ui.DynamicItem[discord.ui.Button], template=r"dd:(?
 
     def __init__(self, key: str):
         self.key = key
-        super().__init__(discord.ui.Button(label="Deep dive", emoji="🔎", style=discord.ButtonStyle.primary,
+        super().__init__(discord.ui.Button(label="More detail", emoji="📖", style=discord.ButtonStyle.primary,
                                            custom_id=f"dd:{key}", row=2))
 
     @classmethod
@@ -148,18 +148,32 @@ class DeepDiveButton(discord.ui.DynamicItem[discord.ui.Button], template=r"dd:(?
         return cls(match["key"])
 
     async def callback(self, interaction: discord.Interaction):
-        e = R.deep_dive_embed(self.key)
+        lvl = level_for(interaction)
+        e = R.deep_dive_embed(self.key, lvl)
+        ev(clog, "more_detail", guild=interaction.guild_id, user=interaction.user.id, key=self.key, level=lvl)
         if not e:
             return await interaction.response.send_message("That deep dive isn't available anymore. Try `/tips`.", ephemeral=True)
         await interaction.response.send_message(embed=discord.Embed.from_dict(e), ephemeral=True)
 
 
+def level_for(interaction: discord.Interaction) -> str:
+    """Person's own setting, else the server's post verbosity, else Standard."""
+    try:
+        mine = bot.store.get_user_detail(interaction.user.id)
+        if mine:
+            return mine
+        c = bot.store.get_guild(interaction.guild_id) if interaction.guild_id else None
+        return R.norm_level(c.verbosity if c else None)
+    except Exception:  # noqa: BLE001 -- never let a settings lookup break a reply
+        return "standard"
+
+
 GUIDE_KINDS = {"tips": ("Class tips", "🎯"), "keys": ("Keybinds", "⌨️"), "macros": ("Macros", "🧩"), "rot": ("Rotation", "🔁")}
 
 
-def guide_embed(cls: str, kind: str, faction: str = "horde") -> dict | None:
-    return {"tips": lambda: R.classtips_embed(cls, faction), "keys": lambda: R.keybinds_embed(cls),
-            "macros": lambda: R.macros_embed(cls), "rot": lambda: R.rotation_embed(cls)}.get(kind, lambda: None)()
+def guide_embed(cls: str, kind: str, faction: str = "horde", level: str = "standard") -> dict | None:
+    return {"tips": lambda: R.classtips_embed(cls, faction, level), "keys": lambda: R.keybinds_embed(cls, "basics", level),
+            "macros": lambda: R.macros_embed(cls), "rot": lambda: R.rotation_embed(cls, level)}.get(kind, lambda: None)()
 
 
 class ClassGuideButton(discord.ui.DynamicItem[discord.ui.Button], template=r"cg:(?P<cls>[A-Za-z]{4,10}):(?P<kind>tips|keys|macros|rot)"):
@@ -177,7 +191,7 @@ class ClassGuideButton(discord.ui.DynamicItem[discord.ui.Button], template=r"cg:
 
     async def callback(self, interaction: discord.Interaction):
         c = bot.store.get_guild(interaction.guild_id) if interaction.guild_id else None
-        e = guide_embed(self.cls, self.kind, c.faction if c else "horde")
+        e = guide_embed(self.cls, self.kind, c.faction if c else "horde", level_for(interaction))
         if not e:
             return await interaction.response.send_message("I don't have that one. Try `/help`.", ephemeral=True)
         await interaction.response.send_message(embed=discord.Embed.from_dict(e), view=class_guide_view(self.cls, exclude=self.kind),
@@ -196,9 +210,9 @@ def class_guide_view(cls: str, exclude: str | None = None) -> discord.ui.View:
 class QuizView(discord.ui.View):
     """/whichclass: one question at a time, private to the person taking it."""
 
-    def __init__(self, user_id: int, faction: str, answers: list[int] | None = None):
+    def __init__(self, user_id: int, faction: str, answers: list[int] | None = None, level: str = "standard"):
         super().__init__(timeout=600)
-        self.user_id, self.faction, self.answers = user_id, faction, answers or []
+        self.user_id, self.faction, self.answers, self.level = user_id, faction, answers or [], level
         q, opts = G.QUIZ[len(self.answers)]
         for i, (label, _) in enumerate(opts):
             b = discord.ui.Button(label=label[:80], style=discord.ButtonStyle.secondary, row=i // 3)
@@ -212,7 +226,7 @@ class QuizView(discord.ui.View):
             answers = self.answers + [i]
             if len(answers) < len(G.QUIZ):
                 await interaction.response.edit_message(embed=discord.Embed.from_dict(R.quiz_embed(len(answers))),
-                                                        view=QuizView(self.user_id, self.faction, answers))
+                                                        view=QuizView(self.user_id, self.faction, answers, self.level))
                 return
             ranked = G.score_quiz(answers)
             top = ranked[0][0]
@@ -223,7 +237,7 @@ class QuizView(discord.ui.View):
             if runner:
                 v.add_item(ClassGuideButton(runner, "tips", f"{runner} tips"))
             await interaction.response.edit_message(
-                embed=discord.Embed.from_dict(R.quiz_result_embed(answers, self.faction)), view=v)
+                embed=discord.Embed.from_dict(R.quiz_result_embed(answers, self.faction, self.level)), view=v)
             ev(clog, "quiz_done", guild=interaction.guild_id, user=interaction.user.id, top=top, runner=runner,
                answers="".join(map(str, answers)))
         return cb
@@ -293,7 +307,7 @@ class RollcallView(discord.ui.View):
                 self.bot.store.set_class(interaction.guild_id, interaction.user.id, cls)
                 counts = self.bot.store.class_counts(interaction.guild_id)
                 cfg = self.bot.store.get_guild(interaction.guild_id)
-                tips = R.classtips_embed(cls, cfg.faction if cfg else "horde")
+                tips = R.classtips_embed(cls, cfg.faction if cfg else "horde", level_for(interaction))
                 extra = {"embed": discord.Embed.from_dict(tips)} if tips else {}
                 if interaction.message and interaction.message.author.id == self.bot.user.id:
                     await interaction.response.edit_message(
@@ -842,7 +856,7 @@ async def status_cmd(interaction: discord.Interaction):
     lines = []
     if cfg and cfg.channel_id:
         lines.append(f"**Setup:** <#{cfg.channel_id}> · {len(guild_times(cfg))}x a day at {fmt_times(guild_times(cfg))} "
-                     f"{cfg.tz} · {cfg.faction}"
+                     f"{cfg.tz} · {cfg.faction} · posts: {R.LEVEL_LABEL[R.norm_level(cfg.verbosity)]}"
                      f"{' · ⏸️ ON HOLD today' if cfg.hold_date == R.local_today(cfg.tz, now).isoformat() else ''}")
         nxt = bot.next_post(cfg, now)
         if nxt:
@@ -890,7 +904,7 @@ async def dates_cmd(interaction: discord.Interaction):
 @app_commands.choices(topic=[app_commands.Choice(name=t.capitalize(), value=t) for t in R.TIP_TOPICS])
 async def tips_cmd(interaction: discord.Interaction, topic: app_commands.Choice[str] | None = None):
     await interaction.response.send_message(
-        embed=discord.Embed.from_dict(R.tips_embed(topic.value if topic else "basics")), ephemeral=True)
+        embed=discord.Embed.from_dict(R.tips_embed(topic.value if topic else "basics", level_for(interaction))), ephemeral=True)
 
 
 @bot.tree.command(name="classtips", description="Forever changes and tips for a class")
@@ -899,7 +913,7 @@ async def tips_cmd(interaction: discord.Interaction, topic: app_commands.Choice[
 @app_commands.choices(cls=[app_commands.Choice(name=c, value=c) for c in K.CLASSES])
 async def classtips_cmd(interaction: discord.Interaction, cls: app_commands.Choice[str], share: bool = False):
     c = bot.store.get_guild(interaction.guild_id) if interaction.guild_id else None
-    e = R.classtips_embed(cls.value, c.faction if c else "horde")
+    e = R.classtips_embed(cls.value, c.faction if c else "horde", level_for(interaction))
     await interaction.response.send_message(embed=discord.Embed.from_dict(e), ephemeral=not share,
                                             view=class_guide_view(cls.value, exclude="tips"))
 
@@ -915,7 +929,7 @@ CLASS_CHOICES = [app_commands.Choice(name=c, value=c) for c in K.CLASSES]
 async def keybinds_cmd(interaction: discord.Interaction, cls: app_commands.Choice[str] | None = None,
                        topic: app_commands.Choice[str] | None = None):
     t = topic.value if topic else "basics"
-    e = R.keybinds_embed(cls.value if cls and t != "controller" else None, t)
+    e = R.keybinds_embed(cls.value if cls and t != "controller" else None, t, level_for(interaction))
     view = class_guide_view(cls.value, exclude="keys") if cls and t != "controller" else None
     await interaction.response.send_message(embed=discord.Embed.from_dict(e), ephemeral=True,
                                             **({"view": view} if view else {}))
@@ -935,7 +949,7 @@ async def macros_cmd(interaction: discord.Interaction, cls: app_commands.Choice[
 @app_commands.rename(cls="class")
 @app_commands.choices(cls=CLASS_CHOICES)
 async def rotation_cmd(interaction: discord.Interaction, cls: app_commands.Choice[str]):
-    await interaction.response.send_message(embed=discord.Embed.from_dict(R.rotation_embed(cls.value)), ephemeral=True,
+    await interaction.response.send_message(embed=discord.Embed.from_dict(R.rotation_embed(cls.value, level_for(interaction))), ephemeral=True,
                                             view=class_guide_view(cls.value, exclude="rot"))
 
 
@@ -943,7 +957,58 @@ async def rotation_cmd(interaction: discord.Interaction, cls: app_commands.Choic
 async def whichclass_cmd(interaction: discord.Interaction):
     c = bot.store.get_guild(interaction.guild_id) if interaction.guild_id else None
     await interaction.response.send_message(embed=discord.Embed.from_dict(R.quiz_embed(0)), ephemeral=True,
-                                            view=QuizView(interaction.user.id, c.faction if c else "horde"))
+                                            view=QuizView(interaction.user.id, c.faction if c else "horde", level=level_for(interaction)))
+
+
+LEVEL_CHOICES = [app_commands.Choice(name="Brief: just the essentials", value="brief"),
+                 app_commands.Choice(name="Standard: the full picture", value="standard"),
+                 app_commands.Choice(name="Detailed: everything, with extra context", value="detailed")]
+
+
+@bot.tree.command(name="verbosity", description="How detailed this server's countdown posts are")
+@app_commands.guild_only()
+@admin
+@app_commands.describe(level="Brief, Standard or Detailed")
+@app_commands.choices(level=LEVEL_CHOICES)
+async def verbosity_cmd(interaction: discord.Interaction, level: app_commands.Choice[str] | None = None):
+    cfg = bot.store.get_guild(interaction.guild_id)
+    if not cfg or not cfg.channel_id:
+        return await interaction.response.send_message("Run `/setup` first.", ephemeral=True)
+    if not level:
+        return await interaction.response.send_message(
+            f"Posts here are **{R.LEVEL_LABEL[R.norm_level(cfg.verbosity)]}**. Pick a `level` to change it.\n"
+            "-# Brief: countdown, the beginner line and a pro tip. Standard: adds the veteran context, a new-player tip "
+            "and a did-you-know. Detailed: adds highlights from the deep dive.", ephemeral=True)
+    cfg.verbosity = level.value
+    bot.store.upsert_guild(cfg)
+    ev(clog, "verbosity_set", guild=cfg.guild_id, level=level.value, by=interaction.user.id)
+    await interaction.response.send_message(
+        f"✅ Posts here are now **{R.LEVEL_LABEL[level.value]}**, starting with the next one.\n"
+        "-# Everyone can still pick their own level for private replies with `/mysettings`, "
+        "and the 📖 More detail button on each post answers at their level.", ephemeral=True)
+
+
+@bot.tree.command(name="mysettings", description="How much detail you want in the bot's replies to you")
+@app_commands.describe(detail="Brief, Standard or Detailed (or reset to the server's default)")
+@app_commands.choices(detail=LEVEL_CHOICES + [app_commands.Choice(name="Reset: use the server's default", value="reset")])
+async def mysettings_cmd(interaction: discord.Interaction, detail: app_commands.Choice[str] | None = None):
+    mine = bot.store.get_user_detail(interaction.user.id)
+    c = bot.store.get_guild(interaction.guild_id) if interaction.guild_id else None
+    server = R.LEVEL_LABEL[R.norm_level(c.verbosity if c else None)]
+    if not detail:
+        now_txt = f"**{R.LEVEL_LABEL[mine]}** (your choice)" if mine else f"**{server}** (this server's default)"
+        return await interaction.response.send_message(
+            f"Your detail level: {now_txt}.\n-# Applies to 📖 More detail, `/classtips`, `/tips`, `/keybinds`, "
+            "`/rotation` and quiz results, in every server. Pick `detail` to change it.", ephemeral=True)
+    if detail.value == "reset":
+        bot.store.set_user_detail(interaction.user.id, None)
+        msg = f"Reset. You'll get each server's default (here: **{server}**)."
+    else:
+        bot.store.set_user_detail(interaction.user.id, detail.value)
+        msg = f"✅ You'll get **{R.LEVEL_LABEL[detail.value]}** replies from now on, in every server."
+    ev(clog, "mysettings", user=interaction.user.id, detail=detail.value)
+    await interaction.response.send_message(msg + "\n-# Channel posts follow the server's setting; tap 📖 More detail "
+                                            "on any post to see it at your level.", ephemeral=True)
 
 
 @bot.tree.command(name="pinpost", description="Post a 'start here' card to pin (it keeps itself updated)")

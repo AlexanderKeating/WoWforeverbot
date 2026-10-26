@@ -20,7 +20,11 @@ CREATE TABLE IF NOT EXISTS guilds (
     hold_date TEXT,
     news_off_date TEXT,
     pin_channel_id INTEGER,
-    pin_message_id INTEGER
+    pin_message_id INTEGER,
+    verbosity TEXT NOT NULL DEFAULT 'standard'
+);
+CREATE TABLE IF NOT EXISTS users (
+    user_id INTEGER PRIMARY KEY, detail TEXT, updated_at REAL
 );
 CREATE TABLE IF NOT EXISTS posts (
     guild_id INTEGER, kind TEXT, key TEXT, posted_at REAL,
@@ -54,6 +58,7 @@ class GuildConfig:
     news_off_date: str | None = None
     pin_channel_id: int | None = None
     pin_message_id: int | None = None
+    verbosity: str = "standard"
 
 
 class Store:
@@ -69,7 +74,8 @@ class Store:
     def _migrate(self):
         """Add columns introduced after v1.0 to existing databases."""
         have = {r[1] for r in self.db.execute("PRAGMA table_info(guilds)")}
-        for col, typ in (("pin_channel_id", "INTEGER"), ("pin_message_id", "INTEGER")):
+        for col, typ in (("pin_channel_id", "INTEGER"), ("pin_message_id", "INTEGER"),
+                         ("verbosity", "TEXT NOT NULL DEFAULT 'standard'")):
             if col not in have:
                 self.db.execute(f"ALTER TABLE guilds ADD COLUMN {col} {typ}")
 
@@ -100,16 +106,17 @@ class Store:
     def upsert_guild(self, cfg: GuildConfig):
         self._x(
             """INSERT INTO guilds (guild_id, channel_id, staging_channel_id, ping_role_id, post_time, tz,
-                                   faction, enabled, hold_date, news_off_date, pin_channel_id, pin_message_id)
-               VALUES (?,?,?,?,?,?,?,?,?,?,?,?)
+                                   faction, enabled, hold_date, news_off_date, pin_channel_id, pin_message_id, verbosity)
+               VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)
                ON CONFLICT(guild_id) DO UPDATE SET channel_id=excluded.channel_id,
                  staging_channel_id=excluded.staging_channel_id, ping_role_id=excluded.ping_role_id,
                  post_time=excluded.post_time, tz=excluded.tz, faction=excluded.faction,
                  enabled=excluded.enabled, hold_date=excluded.hold_date, news_off_date=excluded.news_off_date,
-                 pin_channel_id=excluded.pin_channel_id, pin_message_id=excluded.pin_message_id""",
+                 pin_channel_id=excluded.pin_channel_id, pin_message_id=excluded.pin_message_id,
+                 verbosity=excluded.verbosity""",
             (cfg.guild_id, cfg.channel_id, cfg.staging_channel_id, cfg.ping_role_id, cfg.post_time,
              cfg.tz, cfg.faction, int(cfg.enabled), cfg.hold_date, cfg.news_off_date,
-             cfg.pin_channel_id, cfg.pin_message_id),
+             cfg.pin_channel_id, cfg.pin_message_id, cfg.verbosity or "standard"),
         )
 
     def remove_guild(self, guild_id: int):
@@ -151,6 +158,18 @@ class Store:
 
     def prune_seen(self, older_than_days: int = 60):
         self._x("DELETE FROM seen WHERE seen_at < ?", (time.time() - older_than_days * 86400,))
+
+    # ---------------------------------------------------------- per-user detail level
+    def set_user_detail(self, user_id: int, detail: str | None):
+        if detail is None:
+            self._x("DELETE FROM users WHERE user_id=?", (user_id,))
+        else:
+            self._x("INSERT INTO users VALUES (?,?,?) ON CONFLICT(user_id) DO UPDATE SET detail=excluded.detail, "
+                    "updated_at=excluded.updated_at", (user_id, detail, time.time()))
+
+    def get_user_detail(self, user_id: int) -> str | None:
+        row = self._x("SELECT detail FROM users WHERE user_id=?", (user_id,)).fetchone()
+        return row["detail"] if row else None
 
     # ---------------------------------------------------------- roll call
     def set_class(self, guild_id: int, user_id: int, cls: str):
