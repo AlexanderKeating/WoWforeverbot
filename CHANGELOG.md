@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.1.2
+- 🧙 veteran lines and 🔎 deep dives rewritten with fuller context: why each change matters, not just what changed.
+
 ## 1.1.1
 - YouTube videos removed from posts (and no longer fetched). Twitch clips and news stay.
   Flip `SHOW_YOUTUBE` in `content.py` to bring them back.

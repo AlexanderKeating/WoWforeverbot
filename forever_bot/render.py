@@ -14,7 +14,7 @@ from . import classes as K
 from . import content as C
 from . import guides as G
 
-DESC_SOFT_CAP = 1900     # keep the main post ~2 phone screens
+DESC_SOFT_CAP = 2800     # main post: fuller vets lines (1.1.2); hard limit is 4096
 EMBED_TOTAL_CAP = 5800   # Discord hard cap is 6000
 CONTENT_CAP = 1900       # Discord hard cap is 2000
 MAX_NEWS = 3
