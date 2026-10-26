@@ -1,6 +1,10 @@
 # Changelog
 
-## 1.1.0 (in progress, branch `release/1.1`)
+## 1.1.1
+- YouTube videos removed from posts (and no longer fetched). Twitch clips and news stay.
+  Flip `SHOW_YOUTUBE` in `content.py` to bring them back.
+
+## 1.1.0 (2026-10-25)
 - **Class tips for all nine classes** (`/classtips class:<name>`): what's new in Forever, leveling tips,
   Horde PvP tips, talents worth knowing, and each class's beta-tournament record. Private by default;
   `share:true` posts it for everyone.

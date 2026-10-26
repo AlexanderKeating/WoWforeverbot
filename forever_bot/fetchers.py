@@ -542,7 +542,7 @@ async def refresh_all(store, twitch: Twitch | None, youtube: "YouTube | None" = 
             jobs["news:" + src["name"]] = (lambda s=src: fetch_news_source(session, s))
         if twitch and twitch.configured:
             jobs["twitch"] = lambda: twitch.top_clips(session)
-        if (youtube and youtube.configured) or C.YOUTUBE_CHANNELS:
+        if C.SHOW_YOUTUBE and ((youtube and youtube.configured) or C.YOUTUBE_CHANNELS):
             jobs["youtube"] = lambda: _youtube_combined(session, youtube)
         keys = list(jobs)
         results = await asyncio.gather(*(_guarded(store, k, jobs[k]) for k in keys))
@@ -560,7 +560,7 @@ async def refresh_all(store, twitch: Twitch | None, youtube: "YouTube | None" = 
     if not (twitch and twitch.configured):
         snap["health"]["twitch"] = "not configured"
     if "youtube" not in snap["health"]:
-        snap["health"]["youtube"] = "not configured"
+        snap["health"]["youtube"] = "off" if not C.SHOW_YOUTUBE else "not configured"
     h = snap["health"]
     ev(log, "refresh_done", run=run, ms=t.elapsed_ms,
        ok=sum(v == "ok" for v in h.values()), total=len(h),

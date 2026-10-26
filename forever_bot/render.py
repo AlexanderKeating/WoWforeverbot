@@ -155,7 +155,7 @@ def _media(snap, unseen_ids, now, include_news):
         for c in clips:
             follow.append(f"{esc(c['title'])} · {esc(c['author'])} · {c['views']:,} views\n{c['url']}")
         used += [c["id"] for c in clips]
-    vids = [v for v in snap.get("videos", []) if unseen_ids is None or v["id"] in unseen_ids][:MAX_VIDEOS]
+    vids = [v for v in snap.get("videos", []) if unseen_ids is None or v["id"] in unseen_ids][:MAX_VIDEOS] if C.SHOW_YOUTUBE else []
     for v in vids:
         views = f" · {v['views']:,} views" if v.get("views") else ""
         follow.append(f"📺 **{esc(v['title'])}** · {esc(v['author'])}{views}")
@@ -635,7 +635,7 @@ def pinned_embed(cfg, times, now: datetime, latest_url: str | None = None, ping_
 def health_text(snap: dict | None) -> str:
     if not snap:
         return "⚠️ No data fetched yet."
-    h = snap.get("health", {})
+    h = {k: v for k, v in snap.get("health", {}).items() if v != "off"}
     ok = sum(1 for v in h.values() if v == "ok")
     bad = [f"`{k}` {v}" for k, v in h.items() if v != "ok"]
     when = datetime.fromtimestamp(snap.get("fetched_at", 0), tz=timezone.utc)

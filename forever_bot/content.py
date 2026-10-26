@@ -83,6 +83,10 @@ STREAMERS = ["summit1g", "xaryu", "esfandtv", "sodapoppin", "zackrawrr", "pikabo
 # Optional YouTube channels: {display name: channel_id starting "UC"}. Leave empty to skip.
 YOUTUBE_CHANNELS: dict[str, str] = {}
 
+# YouTube videos in posts. Turned off in 1.1.1 (picks weren't great). Set True to bring them back;
+# the fetch code and YOUTUBE_API_KEY handling are kept.
+SHOW_YOUTUBE = False
+
 # News sources. Each tries feed URLs in order, then RSS autodiscovery on the homepage.
 # Removed after first live run (Oct 25): Blizzard (no public RSS; Wowhead mirrors blue posts),
 # Icy Veins (403s bots; not worth working around).

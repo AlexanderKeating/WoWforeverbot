@@ -21,8 +21,6 @@ Works in any number of servers. Each server picks its own channel, ping role, po
   - Day 10: the Forever Open tournament recap with the class win-rate table
   - New-player tip and a did-you-know
   - **📰 Since yesterday:** up to 3 Forever headlines, title + link only, never reworded
-  - **📺 Top video:** the most-viewed Forever video of the last 24h on YouTube (Shorts skipped), with the
-    creator's own title and the start of their description
   - **🎬 Top clips:** up to 2 Twitch clips from the last 24h, title exactly as the streamer wrote it, as a
     separate message so Discord shows playable previews
   - Roll call buttons for all 9 classes, with live counts
