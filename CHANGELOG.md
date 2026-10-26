@@ -1,7 +1,8 @@
 # Changelog
 
 ## 1.1.2
-- 🧙 veteran lines and 🔎 deep dives rewritten with fuller context: why each change matters, not just what changed.
+- 🧙 veteran lines rewritten with fuller context: why each change matters, not just what changed.
+- ⚔️ pro tips and 🔎 deep dives now use "**do this** → what you get" so every point is actionable.
 
 ## 1.1.1
 - YouTube videos removed from posts (and no longer fetched). Twitch clips and news stay.

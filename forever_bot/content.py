@@ -555,3 +555,96 @@ DEEP_DIVES.update({
         "**PvP awareness:** on the PvP ruleset, Alliance can attack you anywhere outside cities. Travel with friends in contested zones.",
     ]),
 })
+
+
+# ======================================================================= 1.1.2: "do this → benefit" format
+# Pro tips and deep dives lead with an action, then the payoff.
+PRO_TIPS.update({
+    9: "**Agree on PvP + Horde with your friends before anyone makes a character** → your whole account lands on the right side of the PvP faction lock, and nobody gets stranded.",
+    8: "**Write down two or three first + last name combos tonight** → when reservation opens at 3 PM Central, you're claiming names in seconds instead of brainstorming while they get taken.",
+    7: "**Plan to head to Riverglades in your mid-30s** → 150+ fresh quests built for 35–45, right when the classic zones start running dry.",
+    6: "**Run dungeons with people within a few levels of you** → nobody's kill XP gets cut by a high-level party member, and quest turn-ins stay full value either way.",
+    5: "**Pick Skyborne if you want a Horde Shaman with built-in mobility** → Wind Blessed haste and Walk on Air on a 90-second cooldown, on a class the Horde already loves.",
+    4: "**Capture bases first in Darkspear Islands, then run the flag to a base you hold** → steady points from the bases, plus a flag that actually scores instead of getting stuck.",
+    3: "**Put down a Cozy Sleeping Bag before you log out in the field** → it counts as a rested area, so you keep earning rested XP overnight.",
+    2: "**Start saving gold now, even while leveling** → 1,000g Journeyman Riding at 60 won't stall your gearing for Dec 9 raids.",
+    1: "**Quest with friends instead of having a higher-level friend kill things for you** → quest XP isn't reduced by grouping, but kill XP is.",
+    0: "**Group up with people hunting the same mobs** → shared tags mean everyone gets credit instead of racing for kills in packed starting zones.",
+})
+
+DEEP_DIVES.update({
+    9: ("Rulesets in practice", [
+        "**Make your PvP Horde character before any other on PvP** → the first character decides your account's faction there, so this locks you in on the right side.",
+        "**Put Alliance alts on Normal or Roleplay** → those rulesets don't lock factions, so you can try both without touching your PvP account.",
+        "**Agree on one ruleset with your friends up front** → there's no cross-ruleset grouping and no transfers at launch, so this is the only way to guarantee you can play together.",
+        "**Create your character early, ideally during reservation** → Blizzard can briefly pause new characters for an overloaded faction on PvP (like Season of Discovery), and early characters aren't affected.",
+        "**Play alts on other rulesets without worry** → collections and Legacy points are shared across rulesets (except Hardcore), so that time still counts.",
+        "**Try Hardcore when it arrives** → if a Hardcore character dies, it can move to another ruleset, PvP included, so it's not all-or-nothing.",
+    ]),
+    8: ("Name reservation checklist", [
+        "**Be online at 3 PM Central on Oct 27** → the best names go first, and it's first come, first served. The bot pings 30 minutes before.",
+        "**Reserve on the account you'll actually play** → the reservation is tied to the Battle.net account that bought the Skyborne pack.",
+        "**Spend your 3 names on launch characters** → the 3 are shared across all rulesets, so two PvP names leaves just one for Normal or Roleplay.",
+        "**If a first name is taken, change the surname, not the spelling** → names are first + last and unique per region, and \"Grommash Ashfall\" ages better than \"Grommashh.\"",
+        "**Make your PvP Horde character first** → that sets your account's PvP faction the right way.",
+    ]),
+    7: ("Zone guide", [
+        "**Level a Skyborne on Zephras Isle (1–12)** → a whole starting story of Highborne exiles and wind spirits before you reach the main continents.",
+        "**Head to Riverglades around 35** → 150+ new quests on the Eastern Kingdoms coast and the outdoor dungeon Krol'dok Stronghold, so you skip the classic mid-level slump.",
+        "**Explore Shen'dralas** → the ruins between Mulgore and Desolace are finally open, with links into Maraudon and Razorfen Downs.",
+        "**Set up camp in Mount Hyjal at 60** → it holds Darkwhisper Gorge, the Hyjal Summit raid, and an entrance to Barrow Deeps, so it'll be your endgame home.",
+    ]),
+    6: ("Dungeon tips", [
+        "**Bring one tank, one healer and three damage dealers, and talk before you pull** → a 10-second plan beats a 10-minute run back from the graveyard.",
+        "**Group with people within a few levels of you** → higher-level members reduce everyone's kill XP.",
+        "**Travel to Hall of Thanes as a group** → Horde have to sneak in under Ironforge, through Alliance territory.",
+        "**Camp a night at Krol'dok Stronghold (40–55)** → it's outdoors, it changes at night when the cultists start chanting, and the wide level range keeps it useful for a long time.",
+        "**Go see Alcaz Prison (48–53)** → it's enterable for the first time ever, Defias against naga, in the prison where King Varian was said to be held.",
+        "**Farm Blackmaw Hold and Shaper's Terrace at 55–60** → they're your best gear sources before Dec 9 raids.",
+    ]),
+    5: ("Skyborne for Horde", [
+        "**Roll Skyborne on Horde if you want Shaman** → Horde Skyborne work with the Earthen Ring, which unlocks Shaman for them.",
+        "**Pick Skyborne for a mobile character** → Wind Blessed gives 3% haste, Walk on Air is on a 90-second cooldown, and Skysight and Read Leyline can be cast while moving.",
+        "**Try a Skyborne Druid** → you get druid forms built just for the race.",
+        "**Buy your mount from Genn Fairweather on Zephras Isle** → Galestriders are sold there, at Fairweather Stables.",
+        "**Get the Skyborne Heroic Pack or higher** → it's required to play the race.",
+    ]),
+    4: ("PvP deep dive", [
+        "**Queue from the Darkspear Raiders base at Merchant Coast** → there's a portal straight into Darkspear Islands. Battlemasters in the capitals and the Barrens work too.",
+        "**Hold bases, then carry the center flag to one you own** → the four bases earn steady points, the flag scores bonus points, and first to 2,000 wins.",
+        "**Turn in Marks of Honor for Darkspear reputation** → it unlocks vendor trinkets, rings, cloaks, weapons and armor, and Exalted opens a tabard questline.",
+        "**Play whichever battleground you enjoy** → Honor is normalized across battlegrounds, so there's no penalty for skipping Alterac Valley.",
+        "**Play a few games every week instead of marathons** → Rank Points have a weekly cap, so consistency beats grinding. Weekly tasks add bonus Honor, Rank Points and Legacy Points.",
+        "**Aim for rank 2 first** → that's the PvP trinket. Later ranks unlock cloaks (3), a necklace (4), mounts (11) and epic weapons (14).",
+    ]),
+    3: ("Camping and leveling speed", [
+        "**Do \"The Great Outdoors\" around level 5 and learn Cooking** → you unlock campfires, the base for every camp buff.",
+        "**Level Cooking to 90, then 200** → your campfire holds 5, then 10 camp items instead of 3.",
+        "**Camp with friends** → each player adds one item, so a group fire stacks more buffs.",
+        "**Grab a Leatherworking Camp Tent** → a 1-hour rested-XP buff that survives death.",
+        "**Log out on a Cozy Sleeping Bag** → it counts as a rested area, so you earn rested XP while offline, which doubles your kill XP when you're back.",
+        "**Eat Well Fed food before a grind** → +5% kill XP for about 15 minutes.",
+    ]),
+    2: ("Gearing toward Dec 9", [
+        "**Save 1,000 gold by 60** → that's Journeyman Riding, and epic mounts are 200 gold each.",
+        "**Get Honored with your home faction** → 10% off riding and mounts. Add the Bartering Legacy talent for up to another 10% off mounts.",
+        "**Have an Alchemist and an Herbalist in your group** → steady potions are what win early raids.",
+        "**Use camp buffs to cover missing classes** → they don't stack with matching class buffs, but they fill gaps.",
+        "**Play Warlock or Horde Paladin for a free mount** → Warlocks get a level-40 quest from Strahad Farsan in Ratchet, and Horde Paladins have their own.",
+        "**Chase the Hyjal Summit legendary** → the 20-player raid drops Forever's first legendary weapon.",
+    ]),
+    1: ("Launch-night game plan", [
+        "**Pre-install tonight from the Battle.net game version menu** → you're not stuck downloading at 5 PM.",
+        "**Create PvP, then Horde, then your reserved name, before any alt** → the faction lock goes the right way.",
+        "**Invite your friends before you leave the starting area** → groups land on the same layer, so you can actually see each other.",
+        "**Group with strangers hunting the same mobs** → only the first group to tag gets credit, so groups level faster than solo racers.",
+        "**Set your hearthstone at a hub, take every flight path, and learn Cooking** → faster travel and campfires from day one.",
+    ]),
+    0: ("First hour checklist", [
+        "**Click every flight master you pass** → long flights only work once you've unlocked the stops in between.",
+        "**Do \"The Great Outdoors\" around level 5** → camping and campfire buffs.",
+        "**Pick two gathering professions, like Herbalism and Mining** → they pay for your level-40 mount, about 100 gold.",
+        "**Visit your class trainer every couple of levels** → new spells are easy to miss.",
+        "**Travel with friends in contested zones** → on PvP, Alliance can attack you anywhere outside cities.",
+    ]),
+})
