@@ -92,9 +92,18 @@ class _DropVoiceWarnings(logging.Filter):
 
 
 def ev(logger: logging.Logger, event: str, level: int = logging.INFO, exc_info=None, **fields):
-    """Log one structured event: ev(log, "post_sent", guild=1, key="launch:2026-10-25:0")."""
-    if logger.isEnabledFor(level):
-        logger.log(level, event, extra={"fields": {"event": event, **fields}}, exc_info=exc_info)
+    """Log one structured event: ev(log, "post_sent", guild=1, key="launch:2026-10-25:0").
+    Never raises: a bad log call must not break the reply that follows it."""
+    try:
+        if not isinstance(level, int):  # someone passed level= as a data field
+            fields["level_field"], level = level, logging.INFO
+        if logger.isEnabledFor(level):
+            logger.log(level, event, extra={"fields": {"event": event, **fields}}, exc_info=exc_info)
+    except Exception:  # noqa: BLE001
+        try:
+            logger.warning("log call failed for event %s", event)
+        except Exception:  # noqa: BLE001
+            pass
 
 
 def new_run_id() -> str:

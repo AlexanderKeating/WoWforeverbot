@@ -417,6 +417,24 @@ def test_store_roundtrip():
     assert st.was_posted(1, "daily", "k")
 
 
+def test_more_detail_button_answers():
+    """Regression for 1.2.0: a log call crashed the 📖 button before it replied."""
+    import logging, types
+    from forever_bot import bot as B
+    from forever_bot import logsetup
+    logsetup.ev(logging.getLogger("t"), "x", level="standard")  # must not raise
+    B.bot.store = tmp_store()
+    sent = {}
+
+    class Resp:
+        async def send_message(self, *a, **k):
+            sent.update(k)
+    inter = types.SimpleNamespace(guild_id=1, user=types.SimpleNamespace(id=5), response=Resp())
+    key = next(iter(C.DEEP_DIVES))
+    asyncio.run(B.DeepDiveButton(key).callback(inter))
+    assert sent.get("ephemeral") and sent.get("embed") is not None
+
+
 if __name__ == "__main__":
     fns = [v for k, v in dict(globals()).items() if k.startswith("test_")]
     for fn in fns:

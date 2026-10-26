@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.2.1 (2026-10-26)
+- Fixed: the 📖 More detail button showed "application didn't respond in time". A log line crashed before the reply was sent.
+- Fixed: `/verbosity` saved your choice but never confirmed it (same cause).
+- Logging can no longer break a reply, and there's a regression test for the button.
+
 ## 1.2.0
 - **Detail levels: Brief, Standard, Detailed.**
   - `/verbosity` (admins): how detailed this server's channel posts are.

@@ -148,12 +148,16 @@ class DeepDiveButton(discord.ui.DynamicItem[discord.ui.Button], template=r"dd:(?
         return cls(match["key"])
 
     async def callback(self, interaction: discord.Interaction):
-        lvl = level_for(interaction)
-        e = R.deep_dive_embed(self.key, lvl)
-        ev(clog, "more_detail", guild=interaction.guild_id, user=interaction.user.id, key=self.key, level=lvl)
+        try:
+            lvl = level_for(interaction)
+            e = R.deep_dive_embed(self.key, lvl)
+        except Exception as exc:  # noqa: BLE001 - always answer inside Discord's 3-second window
+            ev(clog, "more_detail_failed", logging.ERROR, exc_info=exc, key=self.key)
+            e, lvl = None, "standard"
         if not e:
             return await interaction.response.send_message("That deep dive isn't available anymore. Try `/tips`.", ephemeral=True)
         await interaction.response.send_message(embed=discord.Embed.from_dict(e), ephemeral=True)
+        ev(clog, "more_detail", guild=interaction.guild_id, user=interaction.user.id, key=self.key, detail=lvl)
 
 
 def level_for(interaction: discord.Interaction) -> str:
@@ -981,7 +985,7 @@ async def verbosity_cmd(interaction: discord.Interaction, level: app_commands.Ch
             "and a did-you-know. Detailed: adds highlights from the deep dive.", ephemeral=True)
     cfg.verbosity = level.value
     bot.store.upsert_guild(cfg)
-    ev(clog, "verbosity_set", guild=cfg.guild_id, level=level.value, by=interaction.user.id)
+    ev(clog, "verbosity_set", guild=cfg.guild_id, detail=level.value, by=interaction.user.id)
     await interaction.response.send_message(
         f"✅ Posts here are now **{R.LEVEL_LABEL[level.value]}**, starting with the next one.\n"
         "-# Everyone can still pick their own level for private replies with `/mysettings`, "
