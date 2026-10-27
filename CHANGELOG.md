@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.5.2 (2026-10-27) · hotfix
+- Servers that added only Forever Sherpa's commands (not the bot) now get a clear message with the full invite link when they run `/setup`, `/preview`, `/postnow`, `/frequency`, `/verbosity` or `/pinpost`, instead of an error. Two servers hit this on day one.
+
 ## 1.5.1 (2026-10-27) · hotfix
 - `/setup` (and `/pinpost`) on a channel the bot can't see, usually a private one, now explains how to add Forever Sherpa to that channel instead of "Something went wrong." Two new servers hit this on day one.
 
