@@ -206,6 +206,15 @@ class Store:
                 counts[r["cls"]] = r["n"]
         return counts
 
+    def rollcall_list(self, guild_id: int) -> dict[str, list[int]]:
+        """Class -> user ids who picked it in this server, most recent pick first (1.4.3 /rollcall)."""
+        rows = self._x("SELECT cls, user_id FROM rollcall WHERE guild_id=? ORDER BY updated_at DESC",
+                       (guild_id,)).fetchall()
+        out: dict[str, list[int]] = {}
+        for r in rows:
+            out.setdefault(r["cls"], []).append(int(r["user_id"]))
+        return out
+
     # ---------------------------------------------------------- source cache
     def cache_put(self, source: str, payload):
         self._x("INSERT INTO cache VALUES (?,?,?) ON CONFLICT(source) DO UPDATE SET "

@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.4.3 (2026-10-27) · hotfix
+- New `/rollcall`: who's playing what in this server, grouped by class (names shown, nobody pinged). Private by default; `share:True` posts it in the channel.
+
 ## 1.4.2 (2026-10-27)
 - Faction-neutral by default. Posts, More detail, `/tips` and `/faq` no longer assume Horde unless the server picks Horde in `/setup`. Labeled Horde-only facts (racials, Horde Skyborne, vendors) stay as-is.
 - Existing servers that never chose a faction (they got the old Horde default) were reset to neutral once. `/setup faction:Horde` brings Horde wording back.
