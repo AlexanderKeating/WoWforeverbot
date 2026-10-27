@@ -670,3 +670,144 @@ DEEP_DIVES.update({
         "**Take the starter profession quest** → it hands you Mining, Skinning or Herbalism plus 2 free skill points, a head start on your mount gold.",
     ]),
 })
+
+
+# ------------------------------------------------------------------ 1.5: more depth
+# Sources (Oct 27): Blizzard "How PvP Progression in WoW: Forever Works" (Oct 7) and the Legacy System
+# article; Warcraft Tavern guides to Professions, Legacy and Camping. Faction-neutral throughout.
+# Perk numbers come from beta and can change, so tips name perks without quoting their values.
+TIPS["leveling"] += [
+    "**Eat cooked food before a long quest session** → most cooked food gives an XP bonus that stacks with camp and sleeping-bag buffs.",
+    "**Plan your first Legacy Point for level 25** → that's when most players unlock the Legacy System (Y) and its account-wide perks.",
+    "**Take a break from your main by leveling a second class to 25** → Legacy gives a point for reaching 25, 45 and 60 on every class, and it all feeds your account.",
+    "**Log out in an inn, a city, or on a Cozy Sleeping Bag** → you come back with rested XP instead of starting cold.",
+]
+TIPS["pvp"] += [
+    "**Check the PvP tab on your character pane (C)** → it shows your rank, your Rank Points and which rewards you can buy right now.",
+    "**Aim for Rank 2 early** → that's where the PvP trinket unlocks.",
+    "**Buy the blue Honor set first, then look for Emboldened Seals** → the epic set is your blue piece plus a seal, and seals have rank requirements.",
+    "**Do your Field of Honor journey tasks every week** → they pay Honor and Rank Points, and three per season also give a Legacy Point.",
+    "**Queue on a battleground's holiday week** → holiday-week battlegrounds give bonus Honor and Rank Points.",
+    "**Play the battleground you actually enjoy** → Honor rates were evened out, so Alterac Valley isn't the only efficient pick anymore.",
+]
+TIPS["camping"] += [
+    "**Pack Flint and Tinder and some Simple Wood** → a Basic Campfire needs only Cooking 1, holds 3 camp items and burns for about 10 minutes.",
+    "**Sit (/sit) at the camp for a full minute** → camp buffs only kick in after you've rested there for a minute.",
+    "**Pick camp items your group's classes don't already cover** → camp buffs are a bit weaker than class buffs and don't stack with them.",
+    "**Ask your Engineer for a Repair Bot** → the second-tier Engineering camp item works as a repair vendor in the middle of nowhere.",
+    "**Add your item, then let a friend add theirs** → each character places one camp item (then waits an hour), but everyone at the camp shares every buff.",
+]
+TIPS["professions"] += [
+    "**Do the starting-zone profession quest** → it hands you a book for Mining, Skinning or Herbalism plus 2 free skill points.",
+    "**Watch the colored arrows on nodes and recipes** → orange, yellow, green and gray show your skill-up chance before you spend materials.",
+    "**Track a recipe while you farm** → it turns into a shopping list in your objectives.",
+    "**Think twice before dropping a profession** → unlearning wipes all progress, and you start over from 1.",
+    "**Find the special Artisan trainer at level 35** → regular trainers stop at Expert, and Artisan takes you from 225 to 300.",
+    "**Grab an early reagent bag** → small gathering bags show up early, and Tailors can make a 6-slot Linen Reagent Bag for the separate reagent slot.",
+]
+TIPS["travel"] += [
+    "**Pick up Frequent Flier in your Legacy tree if you fly a lot** → it makes flight paths cheaper and faster.",
+    "**Run, don't wait, after a death** → the Legacy perk The Quick and the Dead speeds up your ghost, and your helpful spells cost nothing for a minute after you come back.",
+]
+TIPS["gold"] = [
+    "**Sell your gray items to any vendor** → it's free gold, and it clears bag space.",
+    "**Pick two gathering professions while leveling** → you sell what you pick up along the way, and that pays for your mount at 40.",
+    "**Look at Bartering in the Legacy Professions tree** → it lowers vendor prices on everything you buy.",
+    "**Take Reagent Economy in the Legacy Resourcefulness tree** → your class abilities stop needing vendor reagents, which adds up fast on reagent-heavy classes.",
+    "**Use an Engineer's Reagent Bot at camp** → you can buy reagents and sell loot without riding back to town.",
+]
+TIPS["legacy"] = [
+    "**Open the Legacy System with Y** → it unlocks with your first Legacy Point, usually at level 25. Hitting 150 in a crafting profession or exploring the whole map works too.",
+    "**Spend points with your main in mind** → each character can spend up to 16 points at launch across three trees: Professions, Adventure and Resourcefulness.",
+    "**Clear one dungeon from each difficulty group** → finishing a Novice, an Experienced and a Master dungeon is worth a Legacy Point each.",
+    "**Level a crafting profession to 150, 225 and 300** → each milestone is a Legacy Point, and there are 18 to collect across six crafting professions.",
+    "**Grab Talented in the Adventure tree on new alts** → your talent points start arriving before level 10.",
+    "**Pick Well Rested if you play in short sessions** → you build rested XP faster and can bank more of it.",
+    "**Planning to try Hardcore when it arrives? Earn some points there** → Hardcore points count on every ruleset, but points from Normal, PvP or Roleplay don't carry into Hardcore.",
+]
+
+DEEP_DIVES["legacy"] = ("The Legacy System", [
+    "**What it is:** Forever's replacement for achievements. 65 challenges, each worth one Legacy Point, earned across your whole Battle.net account.",
+    "**Unlock:** your first point, usually at level 25. 150 in a crafting profession or exploring the entire world map also counts. Open it with **Y**.",
+    "**Spending:** each character can spend up to 16 points at launch across three trees: Professions, Adventure and Resourcefulness.",
+    "**Where points come from:** Classes 27 (levels 25, 45 and 60 on all nine) · Tradeskills 18 · PvP 12 · Dungeons 3 · Raids 3 · Adventure 2.",
+    "**Rewards:** points also unlock account-wide cosmetics. At launch: a Replica Ironforge Air Rifle toy, a Spectral Bear Cub pet, a Spectral Bear Tabard and the Reins of the Spectral Bear mount.",
+    "**Hardcore:** points earned there count everywhere, but not the other way around. PvP challenges are swapped for Hardcore-only ones.",
+])
+DEEP_DIVES["camping"] = ("Camping 101", [
+    "**Light a fire:** Cooking plus Flint and Tinder and wood. Basic Campfire (Cooking 1, 3 items) · Journeyman (Cooking 140, 5 items) · Expert (Cooking 220, 10 items). Each burns for about 10 minutes.",
+    "**Add items:** every profession crafts three camp items. Each character can place one per camp (then waits an hour), and anyone can add to the same fire.",
+    "**Get the buff:** sit within range for at least a minute. Buffs from different items combine into one Camp Benefits buff.",
+    "**What they do:** stat buffs a bit weaker than class buffs (they don't stack with them), plus utility: the Leatherworking Camp Tent gives rested XP, Engineering bots sell reagents and repair, and Herbalism and Mining can grow nodes.",
+    "**Cozy Sleeping Bag:** earned through a quest chain across both continents. It stacks with camp buffs, and you can eat cooked food on it for even more XP.",
+])
+POST_LAUNCH_TOPICS += ["legacy", "camping"]
+
+DID_YOU_KNOW += [
+    ("new", "Forever replaces achievements with the Legacy System: 65 challenges, each worth one account-wide point."),
+    ("vet", "PvP Rank 11 unlocks mounts, and Rank 14 unlocks epic weapons."),
+    ("vet", "Forever adds over 600 new recipes, mostly using materials from the original game."),
+    ("new", "Every profession in Forever has its own crafting menu, even the gathering ones."),
+    ("vet", "You can link a profession in chat to show off every recipe you know and what it needs."),
+    ("new", "Exploring the entire world map earns a Legacy Point."),
+    ("vet", "Shamans get three PvP gear sets in Forever: healer, melee and caster."),
+    ("new", "Several players can add items to the same campfire, and everyone resting there gets every buff."),
+    ("vet", "Each profession's top camp item is a full workstation, like the Fishing Hut or the Master Forge."),
+]
+
+
+# ------------------------------------------------------------------ 1.5: /dungeons
+# Source: Blizzard's dungeon preview (news.blizzard.com/en-us/article/24301455), Oct 2026.
+# (name, levels, where, note)
+DUNGEONS = [
+    ("Hall of Thanes", "13–18", "Beneath Ironforge, Dun Morogh",
+     "Alliance walk in from their capital. Horde groups have to travel through Alliance territory."),
+    ("Ruins of Lordaeron", "15–20", "The ruined city above the Undercity, Tirisfal Glades",
+     "Horde walk in from the Undercity. Alliance groups have to travel through Horde territory."),
+    ("Excavation Site", "24–29", "Whelgar's Excavation, Wetlands (near Thelgen Rock and Dun Algaz)",
+     "Titan constructs guard a time-frozen dig site."),
+    ("City of Dalaran", "28–33", "Alterac Mountains, in through the sewers",
+     "Start with the quest from Emissary Jacques in Southshore (Alliance) or Magus Wordeen Voidglare in Tarren Mill (Horde)."),
+    ("The Drowned City", "35–40", "Off the Stranglethorn Vale coast, west of Grom'gol",
+     "Dive underwater to find the entrance. Bring water breathing if you have it."),
+    ("Krol'dok Stronghold", "40–45", "Riverglades",
+     "An ogre fortress kidnapping travelers. Pairs well with questing in Riverglades."),
+    ("Alcaz Prison", "48–53", "Alcaz Island, off Dustwallow Marsh",
+     "The Defias and naga fight over the prison, and some famous prisoners are inside."),
+    ("Blackmaw Hold", "55–60", "Behind a sealed gate in Azshara", "A furbolg city falling to corruption."),
+    ("Shaper's Terrace", "58–60", "Northern hills of Un'Goro Crater",
+     "Gather Un'Goro power crystals before you go; the consoles inside use them."),
+]
+RAIDS_INFO = "**Raids open Dec 9:** Barrow Deeps (10 players) and Hyjal Summit (20 players)."
+
+
+# ------------------------------------------------------------------ 1.5: /addons
+# Sources (checked Oct 27): Kami-Labs' Forever addon directory (data as of Oct 20, beta build 1.60.1),
+# Gfinity's CurseForge picks, AllThingsHow's manual install guide. Forever runs on the modern client,
+# so Classic versions of addons don't load, and the combat log is closed to addons.
+ADDON_PICKS = [
+    ("Questie", "Quest givers, objectives and turn-ins on your map. Use the Forever version: it knows the new zones."),
+    ("Leatrix Plus", "Dozens of small comforts: auto-repair, auto-sell grays, more camera zoom and more. Get the Forever edition."),
+    ("OpenMap or Leatrix Maps", "A better world map. Pick one, not both: map addons conflict."),
+    ("Baganator or Bagnon", "All your bags in one window, with search."),
+    ("Auctionator", "Makes the Auction House usable. Pick this over TradeSkillMaster for now."),
+    ("Deadly Boss Mods", "Boss warnings and timers, with modules for Forever's new dungeons."),
+    ("Details!", "Damage and healing meter. It shows Blizzard's own numbers, since addons can't read the combat log."),
+    ("BugSack", "Catches addon errors quietly instead of popping them up mid-fight."),
+]
+ADDON_BUILTIN = ("**Already in the game, no addon needed:** Edit Mode (move and resize your UI), the Cooldown Manager "
+                 "(turn it on under Options → Gameplay Enhancements), a built-in damage meter and click casting.")
+ADDON_AVOID = [
+    "**WeakAuras** doesn't support Forever's client. The built-in Cooldown Manager covers most of what it did.",
+    "**Classic versions of addons won't load.** Forever runs on the modern client, so grab the Forever or retail version.",
+    "**Combat-log addons** (most old damage meters, OmniCC-style cooldown trackers, arena frames) can't read combat data in Forever.",
+    "Run only **one** world map addon and **one** minimap addon at a time.",
+]
+ADDON_INSTALL = [
+    "**Find your game folder:** open Battle.net, pick WoW: Forever, click the gear next to Play, then **Show in Explorer** (Finder on Mac).",
+    "**Open Interface → AddOns** inside the Forever game folder. Create both folders if they're missing.",
+    "**Download the addon** from CurseForge or Wago (choose *Download file* if you're not using an app), and unzip it.",
+    "**Copy the addon folder** (not the zip) into AddOns, so you end up with `...\\Interface\\AddOns\\Questie`.",
+    "**In game:** press Esc → AddOns, tick the addon, then click Reload UI. If it still doesn't show, restart the game.",
+    "**Using the CurseForge app?** Pick World of Warcraft, then the Forever install if it's listed. If not, use the steps above.",
+]

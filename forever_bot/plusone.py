@@ -328,7 +328,7 @@ WHY = {
     "Hunter": "Your pet fights up front while you shoot from far back. Often called the easiest class to learn.",
     "Rogue": "Sneaky, stealthy and fast. You pick when fights start, which is a nice kind of control.",
     "Priest": "The classic healer. Groups love you, and you get to save your partner's life on a regular basis.",
-    "Shaman": "Heals, fights and drops helpful totems. Flexible, and a Horde-only favorite.",
+    "Shaman": "Heals, fights and drops helpful totems. Flexible, a Horde favorite, and new for Dwarves on Alliance.",
     "Mage": "Big spells from far away, and you make your own food and water. Squishy but powerful.",
     "Warlock": "Comes with a demon pet that takes hits for you, plus spells that drain enemies. Warlocks won the beta tournament, for what it's worth.",
     "Druid": "Shapeshifts: bear to be sturdy, cat to fight, plus healing spells. Something for every mood.",

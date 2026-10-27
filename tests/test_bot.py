@@ -586,6 +586,16 @@ def test_faction_neutral_default():
     assert R.fit_faction("We're on **PvP, Horde**.", "alliance") == "Pick the one your group agreed on."
 
 
+def test_rotation_never_stuck():
+    from datetime import timedelta
+    for n in range(1, 30):
+        seq = [f"tip {i}" for i in range(n)]
+        got = {R.pick(seq, date(2026, 11, 5) + timedelta(days=i)) for i in range(n)}
+        assert len(got) == n, n
+    cfg = Cfg()
+    keys = {R.build_daily(cfg, at_post_time(date(2026, 11, 5) + timedelta(days=i), cfg), SAMPLE, {}, slot=0).deep_key
+            for i in range(7)}
+    assert keys == set(C.POST_LAUNCH_TOPICS)
 def test_rollcall_list():
     st = tmp_store()
     st.set_class(1, 10, "Mage"); st.set_class(1, 11, "Mage"); st.set_class(1, 12, "Rogue"); st.set_class(2, 13, "Priest")
@@ -597,6 +607,26 @@ def test_rollcall_list():
     assert "Nobody" in R.rollcall_embed({})["description"]
     big = {"Warlock": list(range(100))}
     assert len(R.rollcall_embed(big)["fields"][0]["value"]) <= 1024
+
+
+def test_dungeons_addons_alliance():
+    import json
+    for lvl in R.LEVELS:
+        for e in [R.dungeons_embed(lvl)] + [R.addons_embed(t, lvl) for t in R.ADDON_TOPICS]:
+            assert len(json.dumps(e)) < 6000 and len(e.get("description", "")) <= 4096
+            assert all(len(f["value"]) <= 1024 for f in e.get("fields", []))
+    assert len(C.DUNGEONS) == 9
+    from forever_bot import classes as K
+    for cls in K.CLASSES:
+        for f in ("horde", "alliance", "neutral"):
+            e = R.classtips_embed(cls, f, "detailed")
+            assert len(json.dumps(e)) < 6000
+        al = R.classtips_embed(cls, "alliance", "standard")
+        assert "Alliance races" in al["description"] and "Undead (new" not in al["description"]
+        assert "Will of the Forsaken (Undead)" not in json.dumps(al)
+    assert "Dwarf" in R.classtips_embed("Shaman", "alliance")["description"]
+    from forever_bot import bot as B
+    assert {"dungeons", "addons", "rollcall"} <= {c.name for c in B.bot.tree.get_commands()}
 
 
 if __name__ == "__main__":

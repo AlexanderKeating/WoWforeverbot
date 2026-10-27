@@ -1356,6 +1356,26 @@ async def rollcall_cmd(interaction: discord.Interaction, share: bool = False):
                                             allowed_mentions=discord.AllowedMentions.none())
 
 
+@bot.tree.command(name="dungeons", description="Forever's nine new dungeons: levels and locations")
+@app_commands.describe(share="Post it in the channel for everyone (default: only you see it)")
+async def dungeons_cmd(interaction: discord.Interaction, share: bool = False):
+    lvl = level_for(interaction)
+    await interaction.response.send_message(embed=E(R.dungeons_embed(lvl), lvl if not share else "standard"),
+                                            ephemeral=not share)
+
+
+@bot.tree.command(name="addons", description="Starter addons for Forever, how to install them, and what to skip")
+@app_commands.describe(topic="Picks (default), install steps, or what to avoid",
+                       share="Post it in the channel for everyone (default: only you see it)")
+@app_commands.choices(topic=[app_commands.Choice(name="Starter picks", value="picks"),
+                             app_commands.Choice(name="How to install", value="install"),
+                             app_commands.Choice(name="What to skip", value="avoid")])
+async def addons_cmd(interaction: discord.Interaction, topic: app_commands.Choice[str] | None = None, share: bool = False):
+    lvl = level_for(interaction)
+    await interaction.response.send_message(
+        embed=E(R.addons_embed(topic.value if topic else "picks", lvl), lvl if not share else "standard"), ephemeral=not share)
+
+
 @bot.tree.command(name="pickaclass", description="Join the roll call: what class are you playing?")
 @app_commands.guild_only()
 async def pickaclass_cmd(interaction: discord.Interaction):
