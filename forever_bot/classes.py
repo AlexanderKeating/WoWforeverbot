@@ -342,3 +342,61 @@ _DO = {
 }
 for _c, _parts in _DO.items():
     CLASSES[_c].update(_parts)
+
+
+# 1.5: Alliance support. Race lists per Method's Forever race/class table (Dwarf Shaman, Human Hunter,
+# Gnome Priest and Alliance Skyborne Mage are new). Racials per Warcraft Tavern's racial ability guide
+# (Oct 2026). Class cards pick lines by the server's faction; neutral servers see both race lists.
+ALLIANCE = {
+    "Warrior": {"races": "Human · Dwarf · Night Elf · Gnome · Skyborne",
+                "pvp": ["**Human: save Will to Survive for the stun that matters** → it's a free PvP trinket on top of your real one."]},
+    "Paladin": {"races": "Human · Dwarf",
+                "role": "A plate-armored healer, tank or holy warrior. On Alliance, Humans and Dwarves can be Paladins.",
+                "pvp": ["**Dwarf: hit Stoneform when you're poisoned or bleeding** → it clears those and toughens you up, and it's on its own cooldown."]},
+    "Hunter": {"races": "Human (new) · Dwarf · Night Elf · Skyborne",
+               "pvp": ["**Night Elf: Shadowmeld to drop a fight** → it pulls you out of sight, which resets a bad engagement or dodges an incoming attack."]},
+    "Rogue": {"races": "Human · Dwarf · Night Elf · Gnome · Skyborne",
+              "pvp": ["**Gnome: Escape Artist out of roots and slows** → stick to your target instead of watching them walk away.",
+                      "**Human: use Perception against enemy Rogues** → it spots stealthers before they open on you."]},
+    "Priest": {"races": "Human · Dwarf · Night Elf · Gnome (new)",
+               "pvp": ["**Pick your race for its Priest spell** → every Alliance race gets a different one, like the Gnome's Confounding Flash crowd control or the Human's Divine Grace healing cooldown."]},
+    "Shaman": {"races": "Dwarf (new: the first Alliance Shamans)",
+               "role": "The hybrid: heal, throw lightning, or swing a big weapon, with totems that buff your group. New on Alliance: Dwarves can be Shamans.",
+               "pvp": ["**Dwarf: pair Stoneform with your totems** → it shrugs off poisons and bleeds while you hold your ground."]},
+    "Mage": {"races": "Human · Gnome · Skyborne (new)",
+             "pvp": ["**Gnome: Escape Artist the moment you're rooted** → a free Mage is a dangerous Mage. Save Blink for the next one."]},
+    "Warlock": {"races": "Human · Gnome",
+                "pvp": ["**Human: Will to Survive breaks the stun, then Fear back** → it's a free PvP trinket, so you get two escapes."]},
+    "Druid": {"races": "Night Elf · Skyborne",
+              "pvp": ["**Night Elf: Shadowmeld out of combat to drink or reset** → it pairs well with travel and cat forms for picking your fights."]},
+}
+HORDE_ROLE = {"Shaman": None}  # Horde role text already lives in CLASSES
+
+
+def class_view(cls: str, faction: str | None) -> dict:
+    """The class card data for a server's faction: horde, alliance, or neutral (both race lists)."""
+    base = dict(CLASSES[cls])
+    a = ALLIANCE.get(cls, {})
+    f = (faction or "neutral").lower()
+    horde_pvp = list(base["pvp"])
+    if f == "alliance":
+        base["races_label"], base["races"] = "Alliance races", a.get("races", "")
+        base["role"] = a.get("role", base["role"])
+        # drop Horde-race tips (Undead's Will of the Forsaken) and add Alliance racial tips
+        generic = [t for t in horde_pvp if not any(w in t for w in ("Undead", "Will of the Forsaken"))
+                   or "Expect" in t or "answered" in t or "Scatter Shot" in t]
+        base["pvp"] = a.get("pvp", [])[:2] + generic
+        base["pvp_label"] = "⚔️ PvP (Alliance)"
+    elif f == "horde":
+        base["races_label"] = "Horde races"
+        base["pvp_label"] = "⚔️ PvP (Horde)"
+    else:
+        base["races_label"] = "Races"
+        c = lambda x: x.replace(" · ", ", ")
+        base["races"] = f"Horde: {c(base['races'])} / Alliance: {c(a.get('races', ''))}"
+        if cls == "Shaman":
+            base["role"] = ALLIANCE["Shaman"]["role"].replace("New on Alliance: Dwarves can be Shamans.",
+                                                              "New in Forever: Dwarf Shamans on Alliance and Skyborne Shamans on Horde.")
+        base["pvp"] = horde_pvp + a.get("pvp", [])[:1]
+        base["pvp_label"] = "⚔️ PvP"
+    return base

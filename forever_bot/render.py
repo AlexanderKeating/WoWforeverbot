@@ -531,6 +531,8 @@ SPELLBOOK = {
             ("keybinds", "[class] [topic]", "Instant · Private", "Keybind basics, what each class should bind first, and controller setup."),
             ("macros", "class", "Instant · Private", "Copy-paste macros like mouseover heals and interrupts."),
             ("rotation", "class", "Instant · Private", "Simple leveling priorities for every spec."),
+            ("dungeons", "", "Instant · Private", "Forever's nine new dungeons: levels, where they are, and how to get in."),
+            ("addons", "[topic]", "Instant · Private", "Starter addons that work in Forever, how to install them, and what to skip."),
             ("whichclass", "", "Instant · Private", "A quick quiz that suggests a class for you."),
             ("mysettings", "[detail]", "Instant · Private", "Choose Brief, Standard or Detailed for everything the bot sends you."),
             ("mydata", "", "Instant · Private", "See everything the bot has stored about you (spoiler: very little)."),
@@ -620,15 +622,15 @@ def tourney_line(cls: str) -> str | None:
 
 def classtips_embed(cls: str, faction: str = "horde", level: str = "standard") -> dict | None:
     level = norm_level(level)
-    d = K.CLASSES.get(cls)
-    if not d:
+    if cls not in K.CLASSES:
         return None
+    d = K.class_view(cls, faction)  # 1.5: faction-aware races, role and PvP tips
     bullets = lambda xs: "\n".join(f"• {x}" for x in xs)[:1024]
     cut = (lambda xs, n: xs[:n]) if level == "brief" else (lambda xs, n: xs)
     fields = [
         {"name": "🧙 What's new in Forever", "value": bullets(cut(d["new"], 3)), "inline": False},
         {"name": "🌱 Leveling", "value": bullets(cut(d["leveling"], 2)), "inline": False},
-        {"name": "⚔️ PvP" + (" (Horde)" if faction == "horde" else ""), "value": bullets(cut(d["pvp"], 2)), "inline": False},
+        {"name": d["pvp_label"], "value": bullets(cut(d["pvp"], 2)), "inline": False},
     ]
     if level != "brief":
         fields.append({"name": "⭐ Talents worth knowing", "value": bullets(d["talents"]), "inline": False})
@@ -644,7 +646,7 @@ def classtips_embed(cls: str, faction: str = "horde", level: str = "standard") -
                            "inline": False})
     tl = tourney_line(cls)
     extra = (f"Beta finals (lvl 30): {tl}" if tl else "") + " · Beta info; may still be tuned"
-    race_label = "Horde races"  # the race lists cover Horde races only
+    race_label = d["races_label"]
     return {"title": f"{cls} in WoW: Forever", "color": K.COLORS.get(cls, C.BRAND_COLOR),
             "description": f"{d['role']}\n-# {race_label}: {d['races']}", "fields": fields,
             "footer": level_footer(level, extra.strip(" ·"))}
@@ -839,3 +841,41 @@ def rollcall_embed(groups: dict, guild_name: str | None = None) -> dict:
     return {"title": "⚔️ Roll call" + (f" · {guild_name}" if guild_name else ""), "color": C.BRAND_COLOR,
             "description": desc, "fields": fields[:25],
             "footer": {"text": "Pick or change yours with /pickaclass or the buttons on the daily post"}}
+
+
+# ======================================================================= 1.5: /dungeons and /addons
+def dungeons_embed(level: str = "standard") -> dict:
+    level = norm_level(level)
+    if level == "brief":
+        lines = [f"**{n}** · {lv} · {where}" for n, lv, where, _ in C.DUNGEONS]
+        return {"title": "🏰 Forever's new dungeons", "color": C.BRAND_COLOR,
+                "description": "\n".join(lines) + "\n\n" + C.RAIDS_INFO,
+                "footer": level_footer(level, "Levels and locations from Blizzard's preview")}
+    fields = [{"name": f"{n} · {lv}", "value": f"📍 {where}\n{note}"[:1024], "inline": False}
+              for n, lv, where, note in C.DUNGEONS]
+    return {"title": "🏰 Forever's new dungeons",
+            "color": C.BRAND_COLOR,
+            "description": "Nine brand-new dungeons, on top of the original ones.\n" + C.RAIDS_INFO,
+            "fields": fields, "footer": level_footer(level, "Levels and locations from Blizzard's preview")}
+
+
+ADDON_TOPICS = ("picks", "install", "avoid")
+
+
+def addons_embed(topic: str = "picks", level: str = "standard") -> dict:
+    level = norm_level(level)
+    topic = topic if topic in ADDON_TOPICS else "picks"
+    foot = level_footer(level, "Addon support changes with each patch · /addons topic:install for setup")
+    if topic == "install":
+        return {"title": "🧩 Installing addons for Forever", "color": C.BRAND_COLOR,
+                "description": "\n".join(f"{i}. {s}" for i, s in enumerate(C.ADDON_INSTALL, 1))
+                               + "\n\n-# Forever runs on the modern client, so get the Forever or retail version of each addon, not Classic.",
+                "footer": foot}
+    if topic == "avoid":
+        return {"title": "🧩 Addons to skip in Forever", "color": C.BRAND_COLOR,
+                "description": "\n".join(f"• {s}" for s in C.ADDON_AVOID) + "\n\n" + C.ADDON_BUILTIN, "footer": foot}
+    picks = C.ADDON_PICKS[:5] if level == "brief" else C.ADDON_PICKS
+    desc = "\n".join(f"**{n}**: {what}" for n, what in picks)
+    if level != "brief":
+        desc += "\n\n" + C.ADDON_BUILTIN
+    return {"title": "🧩 Starter addons for Forever", "color": C.BRAND_COLOR, "description": desc[:4000], "footer": foot}

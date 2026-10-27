@@ -609,6 +609,26 @@ def test_rollcall_list():
     assert len(R.rollcall_embed(big)["fields"][0]["value"]) <= 1024
 
 
+def test_dungeons_addons_alliance():
+    import json
+    for lvl in R.LEVELS:
+        for e in [R.dungeons_embed(lvl)] + [R.addons_embed(t, lvl) for t in R.ADDON_TOPICS]:
+            assert len(json.dumps(e)) < 6000 and len(e.get("description", "")) <= 4096
+            assert all(len(f["value"]) <= 1024 for f in e.get("fields", []))
+    assert len(C.DUNGEONS) == 9
+    from forever_bot import classes as K
+    for cls in K.CLASSES:
+        for f in ("horde", "alliance", "neutral"):
+            e = R.classtips_embed(cls, f, "detailed")
+            assert len(json.dumps(e)) < 6000
+        al = R.classtips_embed(cls, "alliance", "standard")
+        assert "Alliance races" in al["description"] and "Undead (new" not in al["description"]
+        assert "Will of the Forsaken (Undead)" not in json.dumps(al)
+    assert "Dwarf" in R.classtips_embed("Shaman", "alliance")["description"]
+    from forever_bot import bot as B
+    assert {"dungeons", "addons", "rollcall"} <= {c.name for c in B.bot.tree.get_commands()}
+
+
 if __name__ == "__main__":
     fns = [v for k, v in dict(globals()).items() if k.startswith("test_")]
     for fn in fns:

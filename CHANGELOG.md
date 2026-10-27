@@ -7,6 +7,10 @@ More depth, from Blizzard's PvP and Legacy posts plus Warcraft Tavern's professi
 - Post-launch posts now include a highlight from the day's deep dive (1 at Standard, 2 at Detailed).
 - 9 new did-you-knows (Legacy, PvP ranks, recipes, camping, Shaman PvP sets).
 - Fixed: daily rotation got stuck on one item when a list had exactly 7 (or 14, 21...) entries.
+- New `/dungeons`: Forever's nine new dungeons with level ranges, locations and how to get in (Blizzard's preview).
+- New `/addons`: starter picks that work on Forever, install steps, and what to skip (WeakAuras, Classic versions, combat-log addons).
+- Alliance support on class cards: Alliance race lists (Dwarf Shaman, Human Hunter, Gnome Priest, Alliance Skyborne Mage are new) and Alliance racial PvP tips. Neutral servers see both race lists.
+- Fixed: Plus One quiz called Shaman "Horde-only"; Dwarves can be Shamans on Alliance in Forever.
 ## 1.4.3 (2026-10-27) · hotfix
 - New `/rollcall`: who's playing what in this server, grouped by class (names shown, nobody pinged). Private by default; `share:True` posts it in the channel.
 

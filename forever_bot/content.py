@@ -754,3 +754,60 @@ DID_YOU_KNOW += [
     ("new", "Several players can add items to the same campfire, and everyone resting there gets every buff."),
     ("vet", "Each profession's top camp item is a full workstation, like the Fishing Hut or the Master Forge."),
 ]
+
+
+# ------------------------------------------------------------------ 1.5: /dungeons
+# Source: Blizzard's dungeon preview (news.blizzard.com/en-us/article/24301455), Oct 2026.
+# (name, levels, where, note)
+DUNGEONS = [
+    ("Hall of Thanes", "13–18", "Beneath Ironforge, Dun Morogh",
+     "Alliance walk in from their capital. Horde groups have to travel through Alliance territory."),
+    ("Ruins of Lordaeron", "15–20", "The ruined city above the Undercity, Tirisfal Glades",
+     "Horde walk in from the Undercity. Alliance groups have to travel through Horde territory."),
+    ("Excavation Site", "24–29", "Whelgar's Excavation, Wetlands (near Thelgen Rock and Dun Algaz)",
+     "Titan constructs guard a time-frozen dig site."),
+    ("City of Dalaran", "28–33", "Alterac Mountains, in through the sewers",
+     "Start with the quest from Emissary Jacques in Southshore (Alliance) or Magus Wordeen Voidglare in Tarren Mill (Horde)."),
+    ("The Drowned City", "35–40", "Off the Stranglethorn Vale coast, west of Grom'gol",
+     "Dive underwater to find the entrance. Bring water breathing if you have it."),
+    ("Krol'dok Stronghold", "40–45", "Riverglades",
+     "An ogre fortress kidnapping travelers. Pairs well with questing in Riverglades."),
+    ("Alcaz Prison", "48–53", "Alcaz Island, off Dustwallow Marsh",
+     "The Defias and naga fight over the prison, and some famous prisoners are inside."),
+    ("Blackmaw Hold", "55–60", "Behind a sealed gate in Azshara", "A furbolg city falling to corruption."),
+    ("Shaper's Terrace", "58–60", "Northern hills of Un'Goro Crater",
+     "Gather Un'Goro power crystals before you go; the consoles inside use them."),
+]
+RAIDS_INFO = "**Raids open Dec 9:** Barrow Deeps (10 players) and Hyjal Summit (20 players)."
+
+
+# ------------------------------------------------------------------ 1.5: /addons
+# Sources (checked Oct 27): Kami-Labs' Forever addon directory (data as of Oct 20, beta build 1.60.1),
+# Gfinity's CurseForge picks, AllThingsHow's manual install guide. Forever runs on the modern client,
+# so Classic versions of addons don't load, and the combat log is closed to addons.
+ADDON_PICKS = [
+    ("Questie", "Quest givers, objectives and turn-ins on your map. Use the Forever version: it knows the new zones."),
+    ("Leatrix Plus", "Dozens of small comforts: auto-repair, auto-sell grays, more camera zoom and more. Get the Forever edition."),
+    ("OpenMap or Leatrix Maps", "A better world map. Pick one, not both: map addons conflict."),
+    ("Baganator or Bagnon", "All your bags in one window, with search."),
+    ("Auctionator", "Makes the Auction House usable. Pick this over TradeSkillMaster for now."),
+    ("Deadly Boss Mods", "Boss warnings and timers, with modules for Forever's new dungeons."),
+    ("Details!", "Damage and healing meter. It shows Blizzard's own numbers, since addons can't read the combat log."),
+    ("BugSack", "Catches addon errors quietly instead of popping them up mid-fight."),
+]
+ADDON_BUILTIN = ("**Already in the game, no addon needed:** Edit Mode (move and resize your UI), the Cooldown Manager "
+                 "(turn it on under Options → Gameplay Enhancements), a built-in damage meter and click casting.")
+ADDON_AVOID = [
+    "**WeakAuras** doesn't support Forever's client. The built-in Cooldown Manager covers most of what it did.",
+    "**Classic versions of addons won't load.** Forever runs on the modern client, so grab the Forever or retail version.",
+    "**Combat-log addons** (most old damage meters, OmniCC-style cooldown trackers, arena frames) can't read combat data in Forever.",
+    "Run only **one** world map addon and **one** minimap addon at a time.",
+]
+ADDON_INSTALL = [
+    "**Find your game folder:** open Battle.net, pick WoW: Forever, click the gear next to Play, then **Show in Explorer** (Finder on Mac).",
+    "**Open Interface → AddOns** inside the Forever game folder. Create both folders if they're missing.",
+    "**Download the addon** from CurseForge or Wago (choose *Download file* if you're not using an app), and unzip it.",
+    "**Copy the addon folder** (not the zip) into AddOns, so you end up with `...\\Interface\\AddOns\\Questie`.",
+    "**In game:** press Esc → AddOns, tick the addon, then click Reload UI. If it still doesn't show, restart the game.",
+    "**Using the CurseForge app?** Pick World of Warcraft, then the Forever install if it's listed. If not, use the steps above.",
+]
