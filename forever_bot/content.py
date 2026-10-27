@@ -107,8 +107,8 @@ NOTIFY = False
 # No @role pings unless NOTIFY is also True. Launch-night countdown posts stay off.
 EVENT_POSTS = True
 
-# Policy pages (GitHub Pages from /docs). Linked from /mydata, /help and the Developer Portal.
-SITE_URL = "https://alexanderkeating.github.io/WoWforeverbot"
+# Policy pages live in the ForeverSherpa/foreversherpa.github.io repo (GitHub Pages).
+SITE_URL = "https://foreversherpa.github.io"
 TERMS_URL = SITE_URL + "/terms.html"
 PRIVACY_URL = SITE_URL + "/privacy.html"
 
