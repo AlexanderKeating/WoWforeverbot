@@ -586,6 +586,19 @@ def test_faction_neutral_default():
     assert R.fit_faction("We're on **PvP, Horde**.", "alliance") == "Pick the one your group agreed on."
 
 
+def test_rollcall_list():
+    st = tmp_store()
+    st.set_class(1, 10, "Mage"); st.set_class(1, 11, "Mage"); st.set_class(1, 12, "Rogue"); st.set_class(2, 13, "Priest")
+    g = st.rollcall_list(1)
+    assert sorted(g["Mage"]) == [10, 11] and g["Rogue"] == [12] and "Priest" not in g
+    e = R.rollcall_embed(g, "Test")
+    assert e["fields"][0]["name"] == "Mage · 2" and "<@10>" in e["fields"][0]["value"]
+    assert "3" in e["description"] and "healer" in e["description"]
+    assert "Nobody" in R.rollcall_embed({})["description"]
+    big = {"Warlock": list(range(100))}
+    assert len(R.rollcall_embed(big)["fields"][0]["value"]) <= 1024
+
+
 if __name__ == "__main__":
     fns = [v for k, v in dict(globals()).items() if k.startswith("test_")]
     for fn in fns:
