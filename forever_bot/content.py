@@ -43,11 +43,18 @@ PAST_DATES = [
 LATER = [("Winter 2026", "Hardcore ruleset"), ("Spring / Summer 2027", "Major content updates")]
 
 # One-off pings to every server at an exact time (UTC). (iso datetime, key, text)
-EVENT_PINGS = [
-    ("2026-10-27T19:30:00+00:00", "names-30m", "📛 **Name reservation opens in 30 minutes** (1 PM Pacific / 3 PM Central). "
-     "3 names total across all rulesets. Have your first + last name combos ready."),
-    ("2026-10-27T20:00:00+00:00", "names-open", "📛 **Name reservation is open now.** First come, first served. Go get your name."),
-    ("2026-11-03T16:00:00+00:00", "names-last", "⏰ **Last day of name reservation.** If you haven't locked in your name yet, today's the day."),
+EVENT_PINGS = [  # (UTC time, key, text). Times checked against Blizzard's announcement on Oct 27.
+    ("2026-10-27T19:30:00+00:00", "names-30m",
+     "📛 **Name reservation opens in 30 minutes** (<t:1793131200:t> your time · 1 PM Pacific / 3 PM Central).\n"
+     "Who: Skyborne Heroic or Epic pack owners, or the Warcraft Forever Collection, on the account that bought it.\n"
+     "You get **3 names total across all rulesets**. Names are first + last, and only the full pair has to be unique, "
+     "so have a few combos ready. Open Battle.net now so you're not stuck patching at 3."),
+    ("2026-10-27T20:00:00+00:00", "names-open",
+     "📛 **Name reservation is open now.** First come, first served, so go get your name.\n"
+     "-# PvP ruleset → Horde. Creating the character now also protects you if Blizzard pauses new characters "
+     "for a crowded faction on launch night. Runs through Nov 3."),
+    ("2026-11-03T16:00:00+00:00", "names-last",
+     "⏰ **Last day of name reservation.** If you haven't locked in your name yet, today's the day."),
 ]
 
 # Shown at the top of the daily post on that date.
@@ -95,6 +102,10 @@ SHOW_YOUTUBE = False
 # (daily posts already carry that info). Set True to bring back pings, the name-reservation alerts,
 # launch-night countdown posts, and the 🔔 opt-in button on the pinned card.
 NOTIFY = False
+
+# 1.3.3: the name-reservation alerts (EVENT_PINGS below) post again as plain channel messages.
+# No @role pings unless NOTIFY is also True. Launch-night countdown posts stay off.
+EVENT_POSTS = True
 
 # News sources. Each tries feed URLs in order, then RSS autodiscovery on the homepage.
 # Removed after first live run (Oct 25): Blizzard (no public RSS; Wowhead mirrors blue posts),

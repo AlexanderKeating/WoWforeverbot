@@ -650,13 +650,14 @@ class ForeverBot(commands.Bot):
 
     @tasks.loop(seconds=30)
     async def launch_loop(self):
-        if not C.NOTIFY:
-            return  # 1.1.2: no standalone reminder / countdown posts
         now = now_utc()
-        for iso, key, text in C.EVENT_PINGS:
-            at = datetime.fromisoformat(iso)
-            if at <= now < at + MILESTONE_WINDOW:
-                await self.send_event_ping(key, text)
+        if C.EVENT_POSTS or C.NOTIFY:  # 1.3.3: reservation alerts are back, without pings
+            for iso, key, text in C.EVENT_PINGS:
+                at = datetime.fromisoformat(iso)
+                if at <= now < at + MILESTONE_WINDOW:
+                    await self.send_event_ping(key, text)
+        if not C.NOTIFY:
+            return  # launch-night countdown posts stay off
         for minutes, _ in R.MILESTONES:
             at = C.LAUNCH - timedelta(minutes=minutes)
             if not (at <= now < at + MILESTONE_WINDOW):
@@ -693,12 +694,13 @@ class ForeverBot(commands.Bot):
                 self.say_once(slog, (cfg.guild_id, "event", key), "event_blocked", logging.ERROR,
                               guild=cfg.guild_id, event_key=key, reason=problem)
                 continue
-            ping = f"<@&{cfg.ping_role_id}> " if cfg.ping_role_id else ""
+            role = cfg.ping_role_id if C.NOTIFY else None
+            ping = f"<@&{role}> " if role else ""
             try:
                 await ch.send(ping + text, allowed_mentions=discord.AllowedMentions(
-                    roles=[discord.Object(cfg.ping_role_id)]) if cfg.ping_role_id else discord.AllowedMentions.none())
+                    roles=[discord.Object(role)]) if role else discord.AllowedMentions.none())
                 self.store.mark_posted(cfg.guild_id, "event", key)
-                ev(slog, "event_sent", guild=cfg.guild_id, event_key=key)
+                ev(slog, "event_sent", guild=cfg.guild_id, guild_name=getattr(ch.guild, "name", None), event_key=key, ping=bool(role))
             except discord.HTTPException as e:
                 ev(slog, "event_failed", logging.ERROR, guild=cfg.guild_id, event_key=key, error=str(e)[:160])
             await asyncio.sleep(0.5)

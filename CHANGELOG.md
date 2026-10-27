@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.3.3 (2026-10-27)
+- Name reservation alerts are back as plain channel posts (no @role pings): 30 minutes before (2:30 PM Central), when it opens (3 PM Central, Oct 27), and on the last day (Nov 3, 10 AM Central). Each posts once per server.
+- New `EVENT_POSTS` flag in content.py controls them separately from `NOTIFY`.
+
 ## 1.3.2 (2026-10-26)
 - Logging: every button press and dropdown pick now logs `event=click` with the control (e.g. `panic:Hunter:heal`, `more_detail:professions`, spellbook page picks), what was picked, and who.
 - `event=command` lines now include the person's display name (`who=`) and the options they used (`args=page:plusone`).

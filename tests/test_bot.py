@@ -529,6 +529,30 @@ def test_click_log_names():
     assert B._args(inter) == "page:plusone"
 
 
+def test_reservation_alerts_post_without_pings():
+    import types
+    from datetime import datetime, timezone
+    from forever_bot import bot as B
+    assert C.EVENT_POSTS and not C.NOTIFY
+    for iso, key, text in C.EVENT_PINGS:
+        assert datetime.fromisoformat(iso).tzinfo and len(text) < 1900
+    sent = []
+
+    class Ch:
+        guild = types.SimpleNamespace(name="Test")
+        async def send(self, content, allowed_mentions=None):
+            sent.append((content, allowed_mentions))
+    cfg = types.SimpleNamespace(guild_id=1, channel_id=2, ping_role_id=99)
+    st = tmp_store()
+    fake = types.SimpleNamespace(store=types.SimpleNamespace(all_guilds=lambda: [cfg], was_posted=st.was_posted,
+                                                             mark_posted=st.mark_posted),
+                                 get_channel=lambda _id: Ch(), _can_post=lambda ch: None,
+                                 say_once=lambda *a, **k: None)
+    asyncio.run(B.ForeverBot.send_event_ping(fake, "names-open", "hi"))
+    asyncio.run(B.ForeverBot.send_event_ping(fake, "names-open", "hi"))  # deduped
+    assert len(sent) == 1 and "<@&" not in sent[0][0]
+
+
 if __name__ == "__main__":
     fns = [v for k, v in dict(globals()).items() if k.startswith("test_")]
     for fn in fns:
