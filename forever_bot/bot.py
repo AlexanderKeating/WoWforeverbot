@@ -1246,6 +1246,53 @@ async def whatdoesthatmean_cmd(interaction: discord.Interaction, term: str | Non
     ev(clog, "glossary", user=interaction.user.id, term=(term or "-")[:30], found=bool(P.lookup(term)[0]) if term else True)
 
 
+# ------------------------------------------------------------------ 1.4 privacy
+class ForgetMeView(discord.ui.View):
+    def __init__(self, user_id: int):
+        super().__init__(timeout=300)
+        self.user_id = user_id
+
+    @discord.ui.button(label="Yes, delete my data", emoji="🗑️", style=discord.ButtonStyle.danger)
+    async def yes(self, interaction: discord.Interaction, button):
+        if interaction.user.id != self.user_id:
+            return await interaction.response.send_message("This button isn't for you.", ephemeral=True)
+        n = bot.store.forget_user(interaction.user.id)
+        ev(clog, "forgetme", user=interaction.user.id, rows=n)
+        await interaction.response.edit_message(
+            content=f"🗑️ Done. Deleted your detail setting and roll-call picks in every server ({n} item{'s' if n != 1 else ''}).\n"
+                    "-# Server activity logs at our host age out on their own within 30 days.", view=None)
+
+    @discord.ui.button(label="Cancel", style=discord.ButtonStyle.secondary)
+    async def no(self, interaction: discord.Interaction, button):
+        await interaction.response.edit_message(content="Cancelled. Nothing was deleted.", view=None)
+
+
+@bot.tree.command(name="mydata", description="See everything Forever Sherpa has stored about you")
+async def mydata_cmd(interaction: discord.Interaction):
+    d = bot.store.user_data(interaction.user.id)
+    lines = ["🔒 **What I have stored about you**", ""]
+    lines.append(f"**Detail level:** {R.LEVEL_LABEL.get(d['detail'], d['detail']) if d['detail'] else 'not set (you get each server’s default)'}")
+    if d["rollcall"]:
+        names = []
+        for gid, cls in d["rollcall"]:
+            g = bot.get_guild(gid)
+            names.append(f"{cls} in {g.name if g else 'a server I’ve left'}")
+        lines.append("**Roll-call picks:** " + "; ".join(names))
+    else:
+        lines.append("**Roll-call picks:** none")
+    lines += ["", "That's everything in my database. I can't read your messages, and I don't save anything you type.",
+              "-# Activity logs (which command or button, your Discord ID and display name) are kept by my host for up to "
+              "30 days for troubleshooting, then deleted. `/forgetme` deletes the rest now. Details: <" + C.PRIVACY_URL + ">"]
+    await interaction.response.send_message("\n".join(lines), ephemeral=True)
+
+
+@bot.tree.command(name="forgetme", description="Delete everything Forever Sherpa has stored about you")
+async def forgetme_cmd(interaction: discord.Interaction):
+    await interaction.response.send_message(
+        "This deletes your detail setting and your roll-call picks in **every** server. It can't be undone.",
+        view=ForgetMeView(interaction.user.id), ephemeral=True)
+
+
 @bot.tree.command(name="pinpost", description="Post a 'start here' card to pin (it keeps itself updated)")
 @app_commands.guild_only()
 @admin

@@ -553,6 +553,25 @@ def test_reservation_alerts_post_without_pings():
     assert len(sent) == 1 and "<@&" not in sent[0][0]
 
 
+def test_privacy_deletion():
+    st = tmp_store()
+    st.set_class(1, 10, "Mage"); st.set_class(2, 10, "Rogue"); st.set_class(1, 11, "Priest")
+    st.set_user_detail(10, "plain")
+    st.mark_posted(1, "daily", "k"); st.mark_seen(1, ["n1"])
+    d = st.user_data(10)
+    assert d["detail"] == "plain" and sorted(c for _, c in d["rollcall"]) == ["Mage", "Rogue"]
+    assert st.forget_user(10) == 3
+    assert st.user_data(10) == {"detail": None, "rollcall": []}
+    assert st.class_counts(1)["Priest"] == 1  # other people untouched
+    st.remove_guild(1)
+    assert st.class_counts(1).get("Priest", 0) == 0 and not st.was_posted(1, "daily", "k")
+    assert st.unseen(1, ["n1"]) == {"n1"}
+    from forever_bot import bot as B
+    names = {c.name for c in B.bot.tree.get_commands()}
+    assert {"mydata", "forgetme"} <= names
+    assert C.PRIVACY_URL.endswith("/privacy.html") and C.TERMS_URL.endswith("/terms.html")
+
+
 if __name__ == "__main__":
     fns = [v for k, v in dict(globals()).items() if k.startswith("test_")]
     for fn in fns:

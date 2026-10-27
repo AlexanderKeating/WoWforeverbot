@@ -120,7 +120,21 @@ class Store:
         )
 
     def remove_guild(self, guild_id: int):
-        self._x("UPDATE guilds SET enabled=0 WHERE guild_id=?", (guild_id,))
+        """Bot was removed from a server: delete everything stored for it (privacy policy, 1.4)."""
+        for t in ("guilds", "rollcall", "posts", "seen"):
+            self._x(f"DELETE FROM {t} WHERE guild_id=?", (guild_id,))
+
+    def forget_user(self, user_id: int) -> int:
+        """/forgetme: delete this person's settings and roll-call picks everywhere. Returns rows removed."""
+        n = self._x("DELETE FROM users WHERE user_id=?", (user_id,)).rowcount
+        n += self._x("DELETE FROM rollcall WHERE user_id=?", (user_id,)).rowcount
+        return n
+
+    def user_data(self, user_id: int) -> dict:
+        """Everything stored about one person, for /mydata."""
+        detail = self.get_user_detail(user_id)
+        picks = self._x("SELECT guild_id, cls FROM rollcall WHERE user_id=?", (user_id,)).fetchall()
+        return {"detail": detail, "rollcall": [(int(g), c) for g, c in picks]}
 
     # ---------------------------------------------------------- posts (dedupe)
     def was_posted(self, guild_id: int, kind: str, key: str) -> bool:

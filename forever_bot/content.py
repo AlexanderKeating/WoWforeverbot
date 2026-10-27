@@ -107,6 +107,11 @@ NOTIFY = False
 # No @role pings unless NOTIFY is also True. Launch-night countdown posts stay off.
 EVENT_POSTS = True
 
+# Policy pages (GitHub Pages from /docs). Linked from /mydata, /help and the Developer Portal.
+SITE_URL = "https://alexanderkeating.github.io/WoWforeverbot"
+TERMS_URL = SITE_URL + "/terms.html"
+PRIVACY_URL = SITE_URL + "/privacy.html"
+
 # News sources. Each tries feed URLs in order, then RSS autodiscovery on the homepage.
 # Removed after first live run (Oct 25): Blizzard (no public RSS; Wowhead mirrors blue posts),
 # Icy Veins (403s bots; not worth working around).

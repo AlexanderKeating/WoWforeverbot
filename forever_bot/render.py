@@ -472,8 +472,11 @@ SPELLBOOK = {
             ("rotation", "class", "Instant · Private", "Simple leveling priorities for every spec."),
             ("whichclass", "", "Instant · Private", "A quick quiz that suggests a class for you."),
             ("mysettings", "[detail]", "Instant · Private", "Choose Brief, Standard or Detailed for everything the bot sends you."),
+            ("mydata", "", "Instant · Private", "See everything the bot has stored about you (spoiler: very little)."),
+            ("forgetme", "", "Instant · Private", "Delete your settings and roll-call picks everywhere."),
         ],
-        "extra": "🔎 **Deep dive** buttons on daily posts open a private, detailed breakdown of that day's topic.",
+        "extra": "🔎 **Deep dive** buttons on daily posts open a private, detailed breakdown of that day's topic.\n"
+                 f"-# [Terms]({C.TERMS_URL}) · [Privacy]({C.PRIVACY_URL})",
     },
     "plusone": {
         "label": "Plus One mode", "emoji": "💞", "admin": False,

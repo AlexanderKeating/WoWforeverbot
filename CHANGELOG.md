@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.4.0 (2026-10-27)
+App Directory prep.
+- Terms of Service and Privacy Policy pages in `/docs`, served by GitHub Pages: /terms.html, /privacy.html, plus a small landing page with the invite link.
+- `/mydata`: shows everything stored about you. `/forgetme`: deletes your detail setting and roll-call picks in every server (with a confirm button).
+- Removing the bot from a server now deletes that server's settings, roll call, post history and seen-news records (before: only switched off).
+- Help spellbook links the Terms and Privacy pages.
+
 ## 1.3.3 (2026-10-27)
 - Name reservation alerts are back as plain channel posts (no @role pings): 30 minutes before (2:30 PM Central), when it opens (3 PM Central, Oct 27), and on the last day (Nov 3, 10 AM Central). Each posts once per server.
 - New `EVENT_POSTS` flag in content.py controls them separately from `NOTIFY`.
