@@ -629,6 +629,24 @@ def test_dungeons_addons_alliance():
     assert {"dungeons", "addons", "rollcall"} <= {c.name for c in B.bot.tree.get_commands()}
 
 
+def test_hidden_channel_error_explains_fix():
+    import types
+    from forever_bot import bot as B
+    sent = {}
+
+    class Resp:
+        def is_done(self):
+            return False
+        async def send_message(self, msg, ephemeral=False, **k):
+            sent["msg"] = msg
+    ch = types.SimpleNamespace(mention="<#5>", name="wowsherpa")
+    tr = types.SimpleNamespace(_error_display_name="TextChannel")
+    err = B.app_commands.TransformerError(ch, B.discord.AppCommandOptionType.channel, tr)
+    inter = types.SimpleNamespace(command=None, guild_id=1, user=types.SimpleNamespace(id=2), response=Resp())
+    asyncio.run(B.on_app_error(inter, err))
+    assert "can't see <#5>" in sent["msg"] and "View Channel" in sent["msg"]
+
+
 if __name__ == "__main__":
     fns = [v for k, v in dict(globals()).items() if k.startswith("test_")]
     for fn in fns:

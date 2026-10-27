@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.5.1 (2026-10-27) · hotfix
+- `/setup` (and `/pinpost`) on a channel the bot can't see, usually a private one, now explains how to add Forever Sherpa to that channel instead of "Something went wrong." Two new servers hit this on day one.
+
 ## 1.5.0 (2026-10-27)
 More depth, from Blizzard's PvP and Legacy posts plus Warcraft Tavern's profession, Legacy and camping guides.
 - 40 new tips: leveling +4, PvP +6, camping +5, professions +6, travel +2, and new **gold** (5) and **legacy** (7) topics in `/tips`.

@@ -1439,13 +1439,22 @@ async def spellbook_cmd(interaction: discord.Interaction, page: app_commands.Cho
 
 @bot.tree.error
 async def on_app_error(interaction: discord.Interaction, error: app_commands.AppCommandError):
-    expected = isinstance(error, (app_commands.MissingPermissions, app_commands.CheckFailure))
+    expected = isinstance(error, (app_commands.MissingPermissions, app_commands.CheckFailure, app_commands.TransformerError))
     ev(clog, "command_error", logging.WARNING if expected else logging.ERROR,
        exc_info=None if expected else error, name=getattr(interaction.command, "qualified_name", "?"),
        guild=interaction.guild_id, user=interaction.user.id, error=type(error).__name__,
        detail=str(getattr(error, "original", error))[:200])
     msg = "You need Manage Server for that." if isinstance(error, app_commands.MissingPermissions) \
         else "Something went wrong. Try again in a minute."
+    if isinstance(error, app_commands.TransformerError) and error.type == discord.AppCommandOptionType.channel:
+        # 1.5.1: the bot can't see the picked channel (usually private), so Discord can't hand it over
+        ch = getattr(error, "value", None)
+        where = getattr(ch, "mention", None) or f"#{getattr(ch, 'name', 'that channel')}"
+        msg = (f"🔒 I can't see {where} yet, so I can't post there.\n"
+               "**To fix it:** open that channel's settings → **Permissions** → **Add members or roles** → pick "
+               "**Forever Sherpa**, then allow **View Channel**, **Send Messages** and **Embed Links**. "
+               "Run `/setup` again after that.\n"
+               "-# Private channels hide themselves from bots until you add them like this.")
     try:
         if interaction.response.is_done():
             await interaction.followup.send(msg, ephemeral=True)
