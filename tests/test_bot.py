@@ -643,8 +643,31 @@ def test_hidden_channel_error_explains_fix():
     tr = types.SimpleNamespace(_error_display_name="TextChannel")
     err = B.app_commands.TransformerError(ch, B.discord.AppCommandOptionType.channel, tr)
     inter = types.SimpleNamespace(command=None, guild_id=1, user=types.SimpleNamespace(id=2), response=Resp())
-    asyncio.run(B.on_app_error(inter, err))
+    orig = B.bot_in_guild
+    B.bot_in_guild = lambda i: True
+    try:
+        asyncio.run(B.on_app_error(inter, err))
+    finally:
+        B.bot_in_guild = orig
     assert "can't see <#5>" in sent["msg"] and "View Channel" in sent["msg"]
+
+
+def test_commands_only_install_gets_invite_link():
+    import types
+    from forever_bot import bot as B
+    sent = {}
+
+    class Resp:
+        def is_done(self):
+            return False
+        async def send_message(self, msg, ephemeral=False, **k):
+            sent["msg"] = msg
+    inter = types.SimpleNamespace(command=None, guild_id=999999, user=types.SimpleNamespace(id=2), response=Resp())
+    assert not B.bot_in_guild(inter)  # bot isn't connected in tests, so no guilds
+    tr = types.SimpleNamespace(_error_display_name="TextChannel")
+    err = B.app_commands.TransformerError(types.SimpleNamespace(mention="<#5>"), B.discord.AppCommandOptionType.channel, tr)
+    asyncio.run(B.on_app_error(inter, err))
+    assert "isn't in this server" in sent["msg"] and "scope=bot" in sent["msg"]
 
 
 if __name__ == "__main__":

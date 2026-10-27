@@ -210,6 +210,20 @@ def faction_of(interaction: discord.Interaction) -> str:
         return "neutral"
 
 
+def bot_in_guild(interaction: discord.Interaction) -> bool:
+    """False when a server added only Forever Sherpa's commands, not the bot itself (1.5.2)."""
+    try:
+        return bot.get_guild(interaction.guild_id) is not None
+    except Exception:  # noqa: BLE001
+        return True
+
+
+def not_in_server_text() -> str:
+    return ("👋 Forever Sherpa's commands are here, but **the bot itself isn't in this server yet**, so it can't post "
+            "or see channels.\n**Fix:** a server admin opens this link and adds it to this server: "
+            f"<{C.BOT_INVITE_URL}>\nThen run `/setup` again. Nothing else to change.")
+
+
 def level_for(interaction: discord.Interaction) -> str:
     """Person's own setting, else the server's post verbosity, else Standard."""
     try:
@@ -784,6 +798,8 @@ async def setup_cmd(interaction: discord.Interaction, channel: discord.TextChann
                     ping_role: discord.Role | None = None, staging: discord.TextChannel | None = None,
                     post_time: str = C.DEFAULT_POST_TIME, timezone: str = C.DEFAULT_TZ,
                     faction: app_commands.Choice[str] | None = None):
+    if not bot_in_guild(interaction):
+        return await interaction.response.send_message(not_in_server_text(), ephemeral=True)
     times = parse_times(post_time)
     err = check_times(times)
     if err:
@@ -824,6 +840,8 @@ async def setup_cmd(interaction: discord.Interaction, channel: discord.TextChann
 @app_commands.guild_only()
 @admin
 async def preview_cmd(interaction: discord.Interaction):
+    if not bot_in_guild(interaction):
+        return await interaction.response.send_message(not_in_server_text(), ephemeral=True)
     await interaction.response.defer(ephemeral=True, thinking=True)
     await bot.refresh()
     cfg = cfg_for(interaction)
@@ -847,6 +865,8 @@ async def preview_cmd(interaction: discord.Interaction):
                                for n in sorted(FREQUENCY_PRESETS)])
 async def frequency_cmd(interaction: discord.Interaction, per_day: app_commands.Choice[int] | None = None,
                         times: str | None = None):
+    if not bot_in_guild(interaction):
+        return await interaction.response.send_message(not_in_server_text(), ephemeral=True)
     cfg = bot.store.get_guild(interaction.guild_id)
     if not cfg or not cfg.channel_id:
         return await interaction.response.send_message("Run `/setup` first.", ephemeral=True)
@@ -874,6 +894,8 @@ async def frequency_cmd(interaction: discord.Interaction, per_day: app_commands.
 @app_commands.guild_only()
 @admin
 async def postnow_cmd(interaction: discord.Interaction):
+    if not bot_in_guild(interaction):
+        return await interaction.response.send_message(not_in_server_text(), ephemeral=True)
     cfg = bot.store.get_guild(interaction.guild_id)
     if not cfg or not cfg.channel_id:
         return await interaction.response.send_message("Run `/setup` first.", ephemeral=True)
@@ -1050,6 +1072,8 @@ LEVEL_CHOICES = [app_commands.Choice(name="Brief: just the essentials", value="b
 @app_commands.describe(level="Brief, Standard or Detailed")
 @app_commands.choices(level=LEVEL_CHOICES)
 async def verbosity_cmd(interaction: discord.Interaction, level: app_commands.Choice[str] | None = None):
+    if not bot_in_guild(interaction):
+        return await interaction.response.send_message(not_in_server_text(), ephemeral=True)
     cfg = bot.store.get_guild(interaction.guild_id)
     if not cfg or not cfg.channel_id:
         return await interaction.response.send_message("Run `/setup` first.", ephemeral=True)
@@ -1309,6 +1333,8 @@ async def forgetme_cmd(interaction: discord.Interaction):
 @admin
 @app_commands.describe(channel="Where to post it (defaults to your countdown channel)")
 async def pinpost_cmd(interaction: discord.Interaction, channel: discord.TextChannel | None = None):
+    if not bot_in_guild(interaction):
+        return await interaction.response.send_message(not_in_server_text(), ephemeral=True)
     cfg = bot.store.get_guild(interaction.guild_id)
     if not cfg or not cfg.channel_id:
         return await interaction.response.send_message("Run `/setup` first.", ephemeral=True)
@@ -1446,7 +1472,9 @@ async def on_app_error(interaction: discord.Interaction, error: app_commands.App
        detail=str(getattr(error, "original", error))[:200])
     msg = "You need Manage Server for that." if isinstance(error, app_commands.MissingPermissions) \
         else "Something went wrong. Try again in a minute."
-    if isinstance(error, app_commands.TransformerError) and error.type == discord.AppCommandOptionType.channel:
+    if interaction.guild_id and not bot_in_guild(interaction):
+        msg = not_in_server_text()
+    elif isinstance(error, app_commands.TransformerError) and error.type == discord.AppCommandOptionType.channel:
         # 1.5.1: the bot can't see the picked channel (usually private), so Discord can't hand it over
         ch = getattr(error, "value", None)
         where = getattr(ch, "mention", None) or f"#{getattr(ch, 'name', 'that channel')}"

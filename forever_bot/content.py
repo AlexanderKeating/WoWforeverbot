@@ -111,6 +111,8 @@ EVENT_POSTS = True
 SITE_URL = "https://foreversherpa.github.io"
 TERMS_URL = SITE_URL + "/terms.html"
 PRIVACY_URL = SITE_URL + "/privacy.html"
+BOT_INVITE_URL = ("https://discord.com/oauth2/authorize?client_id=1563945999670706297"
+                  "&scope=bot+applications.commands&permissions=19456")
 
 # News sources. Each tries feed URLs in order, then RSS autodiscovery on the homepage.
 # Removed after first live run (Oct 25): Blizzard (no public RSS; Wowhead mirrors blue posts),
