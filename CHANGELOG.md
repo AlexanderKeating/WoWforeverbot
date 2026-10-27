@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.4.2 (2026-10-27)
+- Faction-neutral by default. Posts, More detail, `/tips` and `/faq` no longer assume Horde unless the server picks Horde in `/setup`. Labeled Horde-only facts (racials, Horde Skyborne, vendors) stay as-is.
+- Existing servers that never chose a faction (they got the old Horde default) were reset to neutral once. `/setup faction:Horde` brings Horde wording back.
+- Fixed: the name-reservation deep dive said the bot "pings"; it posts a heads-up, no pings.
+
 ## 1.4.1 (2026-10-27)
 - Terms and Privacy pages moved to https://foreversherpa.github.io (their own repo, ForeverSherpa/foreversherpa.github.io). Bot links updated; `/docs` removed from this repo.
 

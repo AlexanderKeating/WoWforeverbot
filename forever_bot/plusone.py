@@ -387,7 +387,7 @@ def partner_card_embed() -> dict:
         "description": "A few notes from Plus One HQ to the person who promised \"I'll show you everything.\"",
         "fields": [
             {"name": "🎒 Give them bags", "value": "The first big quality-of-life upgrade is bag space. A few bags from you is a better gift than gold.", "inline": False},
-            {"name": "🐢 Let them set the pace", "value": "Read the quests with them, at least at first. You've done Durotar a hundred times; they haven't.", "inline": False},
+            {"name": "🐢 Let them set the pace", "value": "Read the quests with them, at least at first. You've done the starting zone a hundred times; they haven't.", "inline": False},
             {"name": "🎁 Let them loot", "value": "Let them open the chests and pick up the shiny things. It's half the fun.", "inline": False},
             {"name": "🧠 One new thing a night", "value": "Night one is moving, quests and eating. Talents and keybinds can wait a few days.", "inline": False},
             {"name": "🛡️ Be their bodyguard", "value": "On a PvP server, they will get jumped. Stay close in contested zones and handle it calmly. Revenge is optional, but encouraged.", "inline": False},

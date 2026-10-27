@@ -52,7 +52,7 @@ class GuildConfig:
     ping_role_id: int | None = None
     post_time: str = C.DEFAULT_POST_TIME
     tz: str = C.DEFAULT_TZ
-    faction: str = "horde"
+    faction: str = "neutral"
     enabled: bool = True
     hold_date: str | None = None
     news_off_date: str | None = None
@@ -78,6 +78,12 @@ class Store:
                          ("verbosity", "TEXT NOT NULL DEFAULT 'standard'")):
             if col not in have:
                 self.db.execute(f"ALTER TABLE guilds ADD COLUMN {col} {typ}")
+        # 1.4.2: faction-neutral by default. Servers that never picked a faction got 'horde' as the old
+        # default, so reset them once. Anyone who wants Horde runs /setup faction:Horde.
+        if self.db.execute("PRAGMA user_version").fetchone()[0] < 2:
+            self.db.execute("UPDATE guilds SET faction='neutral' WHERE faction='horde'")
+            self.db.execute("PRAGMA user_version = 2")
+            self.db.commit()
 
     def _x(self, sql, args=()):
         with self._lock:

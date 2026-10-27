@@ -30,6 +30,58 @@ def level_footer(level: str, extra: str = "") -> dict:
     return {"text": (extra + " · " + t) if extra else t}
 
 
+# ------------------------------------------------------------------ 1.4.2 faction-neutral by default
+# Content was written for a Horde PvP server. Unless a server picks Horde in /setup, these swaps make
+# the advice faction-neutral. Labeled Horde-only facts (racials, Horde vendors) are left as they are.
+_FACTION_SWAPS = [
+    ("which is one more reason to lock in your Horde name early", "which is one more reason to lock in your name early"),
+    ("We're on **PvP, Horde**.", "Pick the one your group agreed on."),
+    ("pick **PvP ruleset → Horde**", "pick the **ruleset and faction** your group agreed on"),
+    ("PvP ruleset → Horde → your reserved name", "your ruleset → your faction → your reserved name"),
+    ("PvP ruleset → Horde. Creating", "Pick your ruleset and faction. Creating"),
+    ("Agree on PvP + Horde with your friends", "Agree on a ruleset and faction with your friends"),
+    ("One Alliance test character on the PvP ruleset locks your whole account out of Horde there.",
+     "One test character on the wrong faction on the PvP ruleset locks your whole account to that faction there."),
+    ("**Make your PvP Horde character first.**", "**Make your main PvP character first.**"),
+    ("make your Horde character first", "make your main character first"),
+    ("**Order matters on PvP:** make your Horde character first", "**Order matters on PvP:** make your main character first"),
+    ("agree on PvP Horde", "agree on a ruleset and faction"),
+    ("**Character creation:** PvP ruleset, then Horde, then your character.",
+     "**Character creation:** your ruleset, then your faction, then your character."),
+    ("**Create:** PvP ruleset → Horde → your reserved name.", "**Create:** your ruleset → your faction → your reserved name."),
+    ("On the PvP ruleset, Alliance can attack you", "On the PvP ruleset, the other faction can attack you"),
+    ("watch for Alliance in contested zones", "watch for the other faction in contested zones"),
+    ("Alliance can attack you anywhere outside cities", "the other faction can attack you anywhere outside cities"),
+    ("a big quest hub like the Crossroads,", "a big quest hub like the Crossroads or Lakeshire,"),
+    ("Undead vs a Warlock:", "Undead (Horde) vs a Warlock:"),
+    ("Darkspear Raiders base at Merchant Coast", "Darkspear Raiders base at Merchant Coast (Horde)"),
+    ("Pick the **PvP** ruleset and **Horde**.", "Pick a ruleset (Normal, PvP or Roleplay) and a faction with your group."),
+]
+
+
+def fit_faction(text, faction):
+    if not text or (faction or "").lower() == "horde":
+        return text
+    for a, b in _FACTION_SWAPS:
+        text = text.replace(a, b)
+    return text
+
+
+def fit_faction_embed(e, faction):
+    if not e or (faction or "").lower() == "horde":
+        return e
+    e = dict(e)
+    for k in ("title", "description"):
+        if e.get(k):
+            e[k] = fit_faction(e[k], faction)
+    if e.get("fields"):
+        e["fields"] = [{**f, "name": fit_faction(f["name"], faction), "value": fit_faction(f["value"], faction)}
+                       for f in e["fields"]]
+    if e.get("footer"):
+        e["footer"] = {**e["footer"], "text": fit_faction(e["footer"].get("text", ""), faction)}
+    return e
+
+
 MAX_NEWS = 3
 MAX_CLIPS = 2
 MAX_VIDEOS = 1
@@ -223,7 +275,7 @@ def build_checkin(cfg, now: datetime, snap: dict | None, slot: int,
                 key=f"{kind}:{today.isoformat()}:{slot}", deep_key=topic if topic in C.DEEP_DIVES else None)
 
 
-def build_daily(cfg, now: datetime, snap: dict | None, counts: dict | None,
+def _build_daily_raw(cfg, now: datetime, snap: dict | None, counts: dict | None,
                 unseen_ids: set | None = None, include_news: bool = True, slot: int = 0) -> Post | None:
     """cfg needs .tz .faction .ping_role_id. unseen_ids=None means 'treat everything as new'.
     slot 0 = the full daily post; slot 1+ = a short check-in."""
@@ -582,7 +634,7 @@ def classtips_embed(cls: str, faction: str = "horde", level: str = "standard") -
                            "inline": False})
     tl = tourney_line(cls)
     extra = (f"Beta finals (lvl 30): {tl}" if tl else "") + " · Beta info; may still be tuned"
-    race_label = "Horde races" if faction == "horde" else "Races"
+    race_label = "Horde races"  # the race lists cover Horde races only
     return {"title": f"{cls} in WoW: Forever", "color": K.COLORS.get(cls, C.BRAND_COLOR),
             "description": f"{d['role']}\n-# {race_label}: {d['races']}", "fields": fields,
             "footer": level_footer(level, extra.strip(" ·"))}
@@ -741,3 +793,15 @@ def health_text(snap: dict | None) -> str:
     when = datetime.fromtimestamp(snap.get("fetched_at", 0), tz=timezone.utc)
     head = f"{'✅' if not bad else '⚠️'} {ok}/{len(h)} sources OK · fetched <t:{ts(when)}:R>"
     return head + ("\n" + "\n".join(bad) if bad else "")
+
+
+def build_daily(cfg, *a, **k):
+    """Daily post or check-in, faction-neutral unless the server picked Horde (1.4.2)."""
+    post = _build_daily_raw(cfg, *a, **k)
+    if post is None:  # nothing to post (e.g. after the countdown ends)
+        return post
+    f = getattr(cfg, "faction", None)
+    post.embeds = [fit_faction_embed(e, f) for e in post.embeds]
+    post.content = fit_faction(post.content, f)
+    post.followup = fit_faction(post.followup, f)
+    return post

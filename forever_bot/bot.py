@@ -151,7 +151,7 @@ class DeepDiveButton(discord.ui.DynamicItem[discord.ui.Button], template=r"dd:(?
     async def callback(self, interaction: discord.Interaction):
         try:
             lvl = level_for(interaction)
-            e = R.deep_dive_embed(self.key, lvl)
+            e = R.fit_faction_embed(R.deep_dive_embed(self.key, lvl), faction_of(interaction))
         except Exception as exc:  # noqa: BLE001 - always answer inside Discord's 3-second window
             ev(clog, "more_detail_failed", logging.ERROR, exc_info=exc, key=self.key)
             e, lvl = None, "standard"
@@ -199,6 +199,15 @@ def _control_name(cid: str, interaction: discord.Interaction) -> str:
 def E(d: dict, lvl: str | None = None) -> discord.Embed:
     """Embed from a render dict, in plain words when the person picked Plus One's level."""
     return discord.Embed.from_dict(P.plainify(d) if lvl == "plain" else d)
+
+
+def faction_of(interaction: discord.Interaction) -> str:
+    """This server's faction setting; neutral outside servers or if unset (1.4.2)."""
+    try:
+        c = bot.store.get_guild(interaction.guild_id) if interaction.guild_id else None
+        return (c.faction if c else None) or "neutral"
+    except Exception:  # noqa: BLE001
+        return "neutral"
 
 
 def level_for(interaction: discord.Interaction) -> str:
@@ -769,7 +778,8 @@ admin = app_commands.default_permissions(manage_guild=True)
                        staging="Private channel for previews and alerts (optional)",
                        post_time="Post time(s), like 12pm or 12pm, 7pm (up to 4)", timezone="IANA zone, like America/Chicago",
                        faction="Which faction your server leans")
-@app_commands.choices(faction=[app_commands.Choice(name=n, value=n.lower()) for n in ("Horde", "Alliance", "Neutral")])
+@app_commands.choices(faction=[app_commands.Choice(name=n, value=v) for n, v in
+                               (("Horde", "horde"), ("Alliance", "alliance"), ("Both / not set (default)", "neutral"))])
 async def setup_cmd(interaction: discord.Interaction, channel: discord.TextChannel,
                     ping_role: discord.Role | None = None, staging: discord.TextChannel | None = None,
                     post_time: str = C.DEFAULT_POST_TIME, timezone: str = C.DEFAULT_TZ,
@@ -956,7 +966,7 @@ async def tourney_cmd(interaction: discord.Interaction):
 
 @bot.tree.command(name="faq", description="New to WoW: Forever? Start here")
 async def faq_cmd(interaction: discord.Interaction):
-    await interaction.response.send_message(embed=discord.Embed.from_dict(R.faq_embed()))
+    await interaction.response.send_message(embed=discord.Embed.from_dict(R.fit_faction_embed(R.faq_embed(), faction_of(interaction))))
 
 
 @bot.tree.command(name="dates", description="Key WoW: Forever dates")
@@ -969,7 +979,8 @@ async def dates_cmd(interaction: discord.Interaction):
 @app_commands.choices(topic=[app_commands.Choice(name=t.capitalize(), value=t) for t in R.TIP_TOPICS])
 async def tips_cmd(interaction: discord.Interaction, topic: app_commands.Choice[str] | None = None):
     await interaction.response.send_message(
-        embed=E(R.tips_embed(topic.value if topic else "basics", lvl := level_for(interaction)), lvl), ephemeral=True)
+        embed=E(R.fit_faction_embed(R.tips_embed(topic.value if topic else "basics", lvl := level_for(interaction)),
+                                    faction_of(interaction)), lvl), ephemeral=True)
 
 
 @bot.tree.command(name="classtips", description="Forever changes and tips for a class")

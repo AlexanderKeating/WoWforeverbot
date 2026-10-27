@@ -604,7 +604,7 @@ DEEP_DIVES.update({
         "**Don't count on a transfer to fix a mistake** → there's no cross-ruleset grouping and no character transfers at launch, so double-check the ruleset at character creation.",
     ]),
     8: ("Name reservation checklist", [
-        "**Be online at 3 PM Central on Oct 27** → the best names go first, and it's first come, first served. The bot pings 30 minutes before.",
+        "**Be online at 3 PM Central on Oct 27** → the best names go first, and it's first come, first served. The bot posts a heads-up 30 minutes before.",
         "**Reserve on the account you'll actually play** → the reservation is tied to the Battle.net account that bought the Skyborne pack.",
         "**Spend your 3 names on launch characters** → the 3 are shared across all rulesets, so two PvP names leaves just one for Normal or Roleplay.",
         "**If a first name is taken, change the surname, not the spelling** → names are first + last and unique per region, and \"Grommash Ashfall\" ages better than \"Grommashh.\"",

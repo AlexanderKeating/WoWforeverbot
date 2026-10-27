@@ -572,6 +572,20 @@ def test_privacy_deletion():
     assert C.PRIVACY_URL.endswith("/privacy.html") and C.TERMS_URL.endswith("/terms.html")
 
 
+def test_faction_neutral_default():
+    st = tmp_store()
+    from forever_bot.store import GuildConfig
+    assert GuildConfig(guild_id=1).faction == "neutral"
+    cfg = Cfg(); cfg.faction = "neutral"
+    p = R.build_daily(cfg, at_post_time(date(2026, 10, 27), cfg), SAMPLE, {}, slot=0)
+    txt = json.dumps(p.embeds)
+    assert "Horde name early" not in txt and "Horde main" not in txt
+    cfg.faction = "horde"
+    p = R.build_daily(cfg, at_post_time(date(2026, 10, 27), cfg), SAMPLE, {}, slot=0)
+    assert "Horde" in json.dumps(p.embeds)
+    assert R.fit_faction("We're on **PvP, Horde**.", "alliance") == "Pick the one your group agreed on."
+
+
 if __name__ == "__main__":
     fns = [v for k, v in dict(globals()).items() if k.startswith("test_")]
     for fn in fns:
