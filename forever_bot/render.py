@@ -555,6 +555,7 @@ SPELLBOOK = {
         "flavor": "Every warband needs a healer. Somebody please play a healer.",
         "spells": [
             ("pickaclass", "", "Instant · Private", "Pick your class. You get its Forever tips right away."),
+            ("rollcall", "[share]", "Instant · Private", "See who's playing what in this server. Add share:True to post it in the channel."),
             ("classtips", "class", "Instant · Private", "Tips for any class, even ones you're not playing."),
         ],
         "extra": "You can also tap a class button right on the daily post.",
@@ -814,3 +815,27 @@ def build_daily(cfg, *a, **k):
     post.content = fit_faction(post.content, f)
     post.followup = fit_faction(post.followup, f)
     return post
+
+
+def rollcall_embed(groups: dict, guild_name: str | None = None) -> dict:
+    """/rollcall: who's playing what. Mentions render as names and never ping (sent with no allowed mentions)."""
+    total = sum(len(v) for v in groups.values())
+    if not total:
+        return {"title": "⚔️ Roll call", "color": C.BRAND_COLOR,
+                "description": "Nobody's picked a class yet. Be the first: tap a class on the daily post or use `/pickaclass`."}
+    order = sorted(C.CLASSES, key=lambda c: (-len(groups.get(c, [])), c))
+    fields = []
+    for cls in order:
+        ids = groups.get(cls, [])
+        if not ids:
+            continue
+        shown = " ".join(f"<@{u}>" for u in ids[:40])
+        more = f" +{len(ids) - 40} more" if len(ids) > 40 else ""
+        fields.append({"name": f"{cls} · {len(ids)}", "value": (shown + more)[:1024], "inline": False})
+    empty = [c for c in C.CLASSES if not groups.get(c)]
+    desc = f"**{total}** {'person has' if total == 1 else 'people have'} picked a class."
+    if empty:
+        desc += f"\n-# Nobody yet: {', '.join(empty)}. Somebody please play a healer."  if any(c in empty for c in ("Priest", "Druid", "Shaman", "Paladin")) else f"\n-# Nobody yet: {', '.join(empty)}."
+    return {"title": "⚔️ Roll call" + (f" · {guild_name}" if guild_name else ""), "color": C.BRAND_COLOR,
+            "description": desc, "fields": fields[:25],
+            "footer": {"text": "Pick or change yours with /pickaclass or the buttons on the daily post"}}

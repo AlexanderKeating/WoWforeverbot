@@ -7,6 +7,8 @@ More depth, from Blizzard's PvP and Legacy posts plus Warcraft Tavern's professi
 - Post-launch posts now include a highlight from the day's deep dive (1 at Standard, 2 at Detailed).
 - 9 new did-you-knows (Legacy, PvP ranks, recipes, camping, Shaman PvP sets).
 - Fixed: daily rotation got stuck on one item when a list had exactly 7 (or 14, 21...) entries.
+## 1.4.3 (2026-10-27) · hotfix
+- New `/rollcall`: who's playing what in this server, grouped by class (names shown, nobody pinged). Private by default; `share:True` posts it in the channel.
 
 ## 1.4.2 (2026-10-27)
 - Faction-neutral by default. Posts, More detail, `/tips` and `/faq` no longer assume Horde unless the server picks Horde in `/setup`. Labeled Horde-only facts (racials, Horde Skyborne, vendors) stay as-is.

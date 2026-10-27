@@ -596,6 +596,17 @@ def test_rotation_never_stuck():
     keys = {R.build_daily(cfg, at_post_time(date(2026, 11, 5) + timedelta(days=i), cfg), SAMPLE, {}, slot=0).deep_key
             for i in range(7)}
     assert keys == set(C.POST_LAUNCH_TOPICS)
+def test_rollcall_list():
+    st = tmp_store()
+    st.set_class(1, 10, "Mage"); st.set_class(1, 11, "Mage"); st.set_class(1, 12, "Rogue"); st.set_class(2, 13, "Priest")
+    g = st.rollcall_list(1)
+    assert sorted(g["Mage"]) == [10, 11] and g["Rogue"] == [12] and "Priest" not in g
+    e = R.rollcall_embed(g, "Test")
+    assert e["fields"][0]["name"] == "Mage · 2" and "<@10>" in e["fields"][0]["value"]
+    assert "3" in e["description"] and "healer" in e["description"]
+    assert "Nobody" in R.rollcall_embed({})["description"]
+    big = {"Warlock": list(range(100))}
+    assert len(R.rollcall_embed(big)["fields"][0]["value"]) <= 1024
 
 
 if __name__ == "__main__":

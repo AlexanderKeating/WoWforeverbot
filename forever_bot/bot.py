@@ -1346,6 +1346,16 @@ async def pinpost_cmd(interaction: discord.Interaction, channel: discord.TextCha
         ephemeral=True)
 
 
+@bot.tree.command(name="rollcall", description="See who's playing what class in this server")
+@app_commands.guild_only()
+@app_commands.describe(share="Post it in the channel for everyone (default: only you see it)")
+async def rollcall_cmd(interaction: discord.Interaction, share: bool = False):
+    groups = bot.store.rollcall_list(interaction.guild_id)
+    e = R.rollcall_embed(groups, interaction.guild.name if interaction.guild else None)
+    await interaction.response.send_message(embed=discord.Embed.from_dict(e), ephemeral=not share,
+                                            allowed_mentions=discord.AllowedMentions.none())
+
+
 @bot.tree.command(name="pickaclass", description="Join the roll call: what class are you playing?")
 @app_commands.guild_only()
 async def pickaclass_cmd(interaction: discord.Interaction):
