@@ -578,6 +578,7 @@ SPELLBOOK = {
             ("skipnews", "", "Instant · Lasts today", "Post today without the news section."),
             ("status", "", "Instant · Private", "Current settings and which sources are working."),
             ("pinpost", "[channel]", "Instant", "Post a \"start here\" card to pin. It updates itself after every post."),
+            ("statusalerts", "[on]", "Instant", "Post Blizzard's Forever outage, maintenance and fix updates here (on by default)."),
         ],
     },
 }

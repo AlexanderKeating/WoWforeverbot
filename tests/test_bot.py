@@ -670,6 +670,52 @@ def test_commands_only_install_gets_invite_link():
     assert "isn't in this server" in sent["msg"] and "scope=bot" in sent["msg"]
 
 
+def test_status_watcher():
+    import json
+    from datetime import datetime, timezone, timedelta
+    from forever_bot import status as S
+    now = datetime(2026, 11, 4, 23, 30, tzinfo=timezone.utc)
+    iso = lambda h: (now - timedelta(hours=h)).isoformat().replace("+00:00", "Z")
+    posts = [
+        {"id": "a", "text": "We're investigating login issues affecting WoW: Forever. Updates to follow.", "created": iso(0.2), "url": "u"},
+        {"id": "b", "text": "The login issues in World of Warcraft: Forever have been resolved. Thanks for your patience!", "created": iso(0.1), "url": "u"},
+        {"id": "c", "text": "Overwatch matchmaking is down, we're on it.", "created": iso(0.1), "url": "u"},
+        {"id": "d", "text": "Battle.net login services are experiencing an outage.", "created": iso(0.3), "url": "u"},
+        {"id": "e", "text": "Happy launch day, WoW Forever players! Have fun out there.", "created": iso(0.1), "url": "u"},
+        {"id": "f", "text": "Scheduled maintenance for WoW: Forever begins at 7 AM PT.", "created": iso(10), "url": "u"},
+        {"id": "g", "text": "Weekly maintenance for World of Warcraft: Forever starts at 7 AM PT.", "created": iso(1), "url": "u"},
+    ]
+    ups = S.pick_updates(posts, seen={"zzz"}, now=now)
+    kinds = {u["id"]: u["kind"] for u in ups}
+    assert kinds == {"a": "problem", "b": "resolved", "d": "problem", "g": "maintenance"}, kinds  # no Overwatch, no 'all good', nothing old
+    assert [u["id"] for u in ups] == ["g", "d", "a", "b"]  # oldest first
+    assert S.pick_updates(posts, seen={"a", "b", "d", "g"}, now=now) == []
+    e = S.status_embed({**ups[0], "source": "Blizzard Support"}, "Blizzard Support")
+    assert len(json.dumps(e)) < 6000 and "Maintenance" in e["title"]
+    assert S.post_url("at://did:plc:x/app.bsky.feed.post/3abc", "support.blizzard.com").endswith("/post/3abc")
+
+    async def fake_get(session, url, params=None, want_json=False, **k):
+        return {"feed": [{"post": {"uri": "at://x/app.bsky.feed.post/1", "author": {"handle": "support.blizzard.com"},
+                                   "record": {"text": "WoW: Forever login issues, investigating.", "createdAt": iso(0.1)}}},
+                         {"reason": {"$type": "repost"}, "post": {"uri": "at://x/app.bsky.feed.post/2",
+                                                                  "record": {"text": "repost"}}}]}
+    orig = S.http_get
+    S.http_get = fake_get
+    try:
+        got = asyncio.run(S.fetch_bluesky(None, "support.blizzard.com"))
+        assert len(got) == 1 and got[0]["url"].endswith("/post/1")
+        st = tmp_store()
+        first = asyncio.run(S.check(None, st))  # first run still posts things from the last 2 hours
+        assert len(first) == 1
+        assert asyncio.run(S.check(None, st)) == []  # already seen
+    finally:
+        S.http_get = orig
+    st = tmp_store()
+    from forever_bot.store import GuildConfig
+    st.upsert_guild(GuildConfig(guild_id=5, channel_id=6, status_alerts=False))
+    assert st.get_guild(5).status_alerts is False
+
+
 if __name__ == "__main__":
     fns = [v for k, v in dict(globals()).items() if k.startswith("test_")]
     for fn in fns:
