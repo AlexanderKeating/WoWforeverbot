@@ -107,6 +107,13 @@ NOTIFY = False
 # No @role pings unless NOTIFY is also True. Launch-night countdown posts stay off.
 EVENT_POSTS = True
 
+# 1.6: WoW: Forever service status from Blizzard Support's Bluesky (free public API, no key).
+# Starts watch-only: logs event=status_would_post. Flip STATUS_POST_TO_CHANNELS once the logs look right.
+STATUS_SOURCES = [{"name": "Blizzard Support", "handle": "support.blizzard.com"}]
+STATUS_POST_TO_CHANNELS = False
+STATUS_CHECK_MINUTES = 5
+STATUS_MAX_AGE_H = 6
+
 # Policy pages live in the ForeverSherpa/foreversherpa.github.io repo (GitHub Pages).
 SITE_URL = "https://foreversherpa.github.io"
 TERMS_URL = SITE_URL + "/terms.html"

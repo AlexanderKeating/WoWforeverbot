@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.6.0 (2026-10-27)
+- **WoW: Forever status alerts.** Every 5 minutes the bot reads Blizzard Support's official Bluesky feed and keeps posts about Forever (or Battle.net-wide outages). Problems, maintenance and the follow-up "fixed" posts go to each server's countdown channel; "all good" posts never do. No pings.
+- Starts in **watch-only mode** (`STATUS_POST_TO_CHANNELS = False`): it logs `event=status_would_post` so the matching can be checked on real posts first.
+- New `/statusalerts [on]` (admins) to turn alerts off or on per server. On by default.
+
 ## 1.5.2 (2026-10-27) · hotfix
 - Servers that added only Forever Sherpa's commands (not the bot) now get a clear message with the full invite link when they run `/setup`, `/preview`, `/postnow`, `/frequency`, `/verbosity` or `/pinpost`, instead of an error. Two servers hit this on day one.
 

@@ -23,6 +23,7 @@ from . import classes as K
 from . import content as C
 from . import guides as G
 from . import plusone as P
+from . import status as S
 from . import render as R
 from .fetchers import Twitch, YouTube, refresh_all
 from .logsetup import Timer, ev, setup_logging
@@ -435,6 +436,7 @@ class ForeverBot(commands.Bot):
         self.refresh_loop.start()
         self.schedule_loop.start()
         self.launch_loop.start()
+        self.status_loop.start()
         self.heartbeat_loop.start()
 
     async def on_ready(self):
@@ -749,21 +751,50 @@ class ForeverBot(commands.Bot):
         ev(log, "heartbeat", release=__version__, version=VERSION, uptime_h=(time.time() - STARTED) / 3600, guilds=len(self.guilds),
            configured=len(cfgs), latency_ms=self.latency * 1000, snapshot_age_min=snap_age,
            next_post=soonest.isoformat() if soonest else "-",
-           loops_ok=all(l.is_running() for l in (self.refresh_loop, self.schedule_loop, self.launch_loop)))
-        for name, loop in (("refresh", self.refresh_loop), ("schedule", self.schedule_loop), ("launch", self.launch_loop)):
+           loops_ok=all(l.is_running() for l in (self.refresh_loop, self.schedule_loop, self.launch_loop, self.status_loop)))
+        for name, loop in (("refresh", self.refresh_loop), ("schedule", self.schedule_loop), ("launch", self.launch_loop),
+                           ("status", self.status_loop)):
             if not loop.is_running():
                 ev(log, "loop_stopped", logging.ERROR, loop=name, action="restarting")
                 loop.restart()
 
+    @tasks.loop(minutes=C.STATUS_CHECK_MINUTES)
+    async def status_loop(self):
+        """1.6: Forever service status. Posts only problems, maintenance and fixes; never 'all good'."""
+        import aiohttp
+        async with aiohttp.ClientSession() as session:
+            updates = await S.check(session, self.store)
+        for u in updates:
+            if not C.STATUS_POST_TO_CHANNELS:
+                ev(slog, "status_would_post", kind=u["kind"], source=u["source"], created=u["created"],
+                   text=u["text"][:160], url=u["url"])
+                continue
+            embed = discord.Embed.from_dict(S.status_embed(u, u["source"]))
+            for cfg in self.store.all_guilds():
+                if not cfg.status_alerts or self.store.was_posted(cfg.guild_id, "status", u["id"]):
+                    continue
+                ch = self.get_channel(cfg.channel_id)
+                if self._can_post(ch):
+                    continue
+                try:
+                    await ch.send(embed=embed, allowed_mentions=discord.AllowedMentions.none())
+                    self.store.mark_posted(cfg.guild_id, "status", u["id"])
+                    ev(slog, "status_sent", guild=cfg.guild_id, kind=u["kind"], url=u["url"])
+                except discord.HTTPException as e:
+                    ev(slog, "status_failed", logging.ERROR, guild=cfg.guild_id, error=str(e)[:150])
+                await asyncio.sleep(0.5)
+
     @refresh_loop.error
     @schedule_loop.error
     @launch_loop.error
+    @status_loop.error
     async def _loop_error(self, error):
         ev(log, "loop_crashed", logging.ERROR, exc_info=error, note="heartbeat will restart it")
 
     @refresh_loop.before_loop
     @schedule_loop.before_loop
     @launch_loop.before_loop
+    @status_loop.before_loop
     @heartbeat_loop.before_loop
     async def _wait_ready(self):
         await self.wait_until_ready()
@@ -1326,6 +1357,27 @@ async def forgetme_cmd(interaction: discord.Interaction):
     await interaction.response.send_message(
         "This deletes your detail setting and your roll-call picks in **every** server. It can't be undone.",
         view=ForgetMeView(interaction.user.id), ephemeral=True)
+
+
+@bot.tree.command(name="statusalerts", description="Turn WoW: Forever outage and maintenance alerts on or off here")
+@app_commands.guild_only()
+@admin
+@app_commands.describe(on="On posts Blizzard's outage, maintenance and fix updates in your countdown channel")
+async def statusalerts_cmd(interaction: discord.Interaction, on: bool | None = None):
+    cfg = bot.store.get_guild(interaction.guild_id)
+    if not cfg or not cfg.channel_id:
+        return await interaction.response.send_message("Run `/setup` first.", ephemeral=True)
+    if on is None:
+        state = "on" if cfg.status_alerts else "off"
+        return await interaction.response.send_message(
+            f"Forever status alerts are **{state}** here. When Blizzard Support reports a Forever outage, maintenance "
+            "or a fix, I post it in your countdown channel. Nothing is posted while everything's fine.\n"
+            "-# Change it with `/statusalerts on:True` or `on:False`.", ephemeral=True)
+    cfg.status_alerts = on
+    bot.store.upsert_guild(cfg)
+    ev(clog, "statusalerts_set", guild=cfg.guild_id, on=on, by=interaction.user.id)
+    await interaction.response.send_message(
+        f"✅ Forever status alerts are now **{'on' if on else 'off'}** here.", ephemeral=True)
 
 
 @bot.tree.command(name="pinpost", description="Post a 'start here' card to pin (it keeps itself updated)")
