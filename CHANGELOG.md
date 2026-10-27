@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.4.1 (2026-10-27)
+- Terms and Privacy pages moved to https://foreversherpa.github.io (their own repo, ForeverSherpa/foreversherpa.github.io). Bot links updated; `/docs` removed from this repo.
+
 ## 1.4.0 (2026-10-27)
 App Directory prep.
 - Terms of Service and Privacy Policy pages in `/docs`, served by GitHub Pages: /terms.html, /privacy.html, plus a small landing page with the invite link.
