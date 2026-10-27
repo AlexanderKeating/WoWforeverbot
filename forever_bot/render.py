@@ -135,7 +135,9 @@ def pick(seq, d: date, salt: int = 0, avoid: str = ""):
     `avoid`: text already in the post; skips items that mostly repeat it."""
     if not seq:
         return None
-    start = (d.toordinal() * 7 + salt) % len(seq)
+    n = len(seq)
+    # step 7 per day keeps the original rotation, but 7 must not share a factor with n or it gets stuck
+    start = ((d.toordinal() * 7 if n % 7 else d.toordinal()) + salt) % n
     seen = _words(avoid)
     for i in range(len(seq)):
         item = seq[(start + i) % len(seq)]
@@ -338,6 +340,13 @@ def _build_daily_raw(cfg, now: datetime, snap: dict | None, counts: dict | None,
         deep_key = topic
         lines += ["", f"**Today · {C.DEEP_DIVES[topic][0]}**",
                   f"⚔️ **Pro tip:** {pick(C.TIPS.get(topic, C.NEWBIE_TIPS), today, salt=1)}"]
+        # 1.5: a highlight or two from the topic's deep dive, so post-launch days have some substance
+        n_dd = {"brief": 0, "standard": 1}.get(level, 2)
+        if n_dd:
+            dd_items = C.DEEP_DIVES[topic][1]
+            first = pick(dd_items, today, salt=5)
+            picks = [first] + [x for x in dd_items if x != first][:n_dd - 1]
+            lines += ["", "🔎 **From the deep dive:**"] + [f"• {b}" for b in picks]
 
     # ---- tip + did you know (skipped in Brief)
     if level != "brief" and (days not in (0,) or kind == "raids"):

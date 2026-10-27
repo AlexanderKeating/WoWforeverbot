@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.5.0 (2026-10-27)
+More depth, from Blizzard's PvP and Legacy posts plus Warcraft Tavern's profession, Legacy and camping guides.
+- 40 new tips: leveling +4, PvP +6, camping +5, professions +6, travel +2, and new **gold** (5) and **legacy** (7) topics in `/tips`.
+- Two new post-launch topics with deep dives: **The Legacy System** and **Camping 101**. The rotation now covers 7 topics between launch and raids.
+- Post-launch posts now include a highlight from the day's deep dive (1 at Standard, 2 at Detailed).
+- 9 new did-you-knows (Legacy, PvP ranks, recipes, camping, Shaman PvP sets).
+- Fixed: daily rotation got stuck on one item when a list had exactly 7 (or 14, 21...) entries.
+
 ## 1.4.2 (2026-10-27)
 - Faction-neutral by default. Posts, More detail, `/tips` and `/faq` no longer assume Horde unless the server picks Horde in `/setup`. Labeled Horde-only facts (racials, Horde Skyborne, vendors) stay as-is.
 - Existing servers that never chose a faction (they got the old Horde default) were reset to neutral once. `/setup faction:Horde` brings Horde wording back.

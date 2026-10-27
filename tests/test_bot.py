@@ -586,6 +586,18 @@ def test_faction_neutral_default():
     assert R.fit_faction("We're on **PvP, Horde**.", "alliance") == "Pick the one your group agreed on."
 
 
+def test_rotation_never_stuck():
+    from datetime import timedelta
+    for n in range(1, 30):
+        seq = [f"tip {i}" for i in range(n)]
+        got = {R.pick(seq, date(2026, 11, 5) + timedelta(days=i)) for i in range(n)}
+        assert len(got) == n, n
+    cfg = Cfg()
+    keys = {R.build_daily(cfg, at_post_time(date(2026, 11, 5) + timedelta(days=i), cfg), SAMPLE, {}, slot=0).deep_key
+            for i in range(7)}
+    assert keys == set(C.POST_LAUNCH_TOPICS)
+
+
 if __name__ == "__main__":
     fns = [v for k, v in dict(globals()).items() if k.startswith("test_")]
     for fn in fns:
