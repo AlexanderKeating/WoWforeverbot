@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.6.1 (2026-10-27)
+- **Clips:** never two from the same streamer in one post (Forever clips included), near-duplicate titles are dropped, and clips under 20 views are skipped.
+- **Did you know:** 15 new lore and dungeon facts (Varian in Alcaz Prison, Dalaran's dome, Hyjal's old exploits, the Southshore vs Tarren Mill rivalry...). Retired 4 that just repeated tips.
+- **No repeats inside a post:** a fact about something the post already covers (same place, or the day's topic) is skipped; a pro tip that repeats the day's 🧙 paragraph is swapped for an on-topic line from that day's deep dive; check-in facts avoid the tip and class spotlight.
+- Horde-only Skyborne mount vendor tip is labeled on neutral servers; "Pvp tip" reads "PvP tip".
+
 ## 1.6.0 (2026-10-27)
 - **WoW: Forever status alerts.** Every 5 minutes the bot reads Blizzard Support's official Bluesky feed and keeps posts about Forever (or Battle.net-wide outages). Problems, maintenance and the follow-up "fixed" posts go to each server's countdown channel; "all good" posts never do. No pings.
 - Starts in **watch-only mode** (`STATUS_POST_TO_CHANNELS = False`): it logs `event=status_would_post` so the matching can be checked on real posts first.

@@ -1,3 +1,4 @@
+import re
 """
 Builds every message the bot sends. Pure functions (no Discord, no network) so the exact output
 can be previewed and tested offline. Embeds are plain dicts in Discord's JSON shape.
@@ -55,6 +56,7 @@ _FACTION_SWAPS = [
     ("a big quest hub like the Crossroads,", "a big quest hub like the Crossroads or Lakeshire,"),
     ("Undead vs a Warlock:", "Undead (Horde) vs a Warlock:"),
     ("Darkspear Raiders base at Merchant Coast", "Darkspear Raiders base at Merchant Coast (Horde)"),
+    ("**Buy your mount from Genn Fairweather on Zephras Isle**", "**Horde Skyborne: buy your mount from Genn Fairweather on Zephras Isle**"),
     ("Pick the **PvP** ruleset and **Horde**.", "Pick a ruleset (Normal, PvP or Roleplay) and a faction with your group."),
 ]
 
@@ -142,9 +144,25 @@ def pick(seq, d: date, salt: int = 0, avoid: str = ""):
     for i in range(len(seq)):
         item = seq[(start + i) % len(seq)]
         w = _words(item if isinstance(item, str) else " ".join(map(str, item)))
-        if not seen or not w or len(w & seen) / len(w) < 0.4:
+        if not seen or not w or len(w & seen) / len(w) < 0.3:
             return item
     return seq[start]
+
+
+_COMMON_NAMES = {"Forever", "Horde", "Alliance", "Blizzard", "World", "Warcraft", "Legacy", "Day", "Today", "Pro", "Roll",
+                 "More", "Did", "New", "The", "Your", "Next", "Name", "Names", "Nov", "Oct", "Dec", "PvP", "Every", "This"}
+
+
+def _proper_nouns(text: str) -> set:
+    """Capitalized names mid-sentence (Riverglades, Zephras, Darkspear...), minus everyday words."""
+    found = set(re.findall(r"(?<=[a-z,;:] )([A-Z][a-z'’]{3,})", text or ""))
+    return found - _COMMON_NAMES
+
+
+def too_similar(a: str, b: str, thresh: float = 0.35) -> bool:
+    """True if most of a's meaningful words already appear in b (1.6.1: no repeats inside one post)."""
+    wa, wb = _words(a), _words(b)
+    return bool(wa) and len(wa & wb) / len(wa) >= thresh
 
 
 def _words(text: str) -> set:
@@ -216,7 +234,12 @@ def _media(snap, unseen_ids, now, include_news):
             embeds.append({"title": "📰 New since last post", "description": "\n".join(body)[:4000],
                            "color": C.NEWS_COLOR})
             used += [n["id"] for n in fresh]
-    clips = [c for c in snap.get("clips", []) if unseen_ids is None or c["id"] in unseen_ids][:MAX_CLIPS]
+    clips, authors = [], set()
+    for c in snap.get("clips", []):  # 1.6.1: never two clips from the same streamer in one post
+        if (unseen_ids is None or c["id"] in unseen_ids) and c.get("author", "").lower() not in authors:
+            clips.append(c)
+            authors.add(c.get("author", "").lower())
+    clips = clips[:MAX_CLIPS]
     if clips:
         strict = [c for c in clips if not c.get("loose")]
         loose = [c for c in clips if c.get("loose")]
@@ -261,10 +284,11 @@ def build_checkin(cfg, now: datetime, snap: dict | None, slot: int,
     topic = pick(CHECKIN_TOPICS, today, salt=slot * 5)
     tip = pick(C.TIPS[topic], today, salt=slot * 11 + 2)
     dyk_pool = [t for tag, t in C.DID_YOU_KNOW if tag != "horde" or faction == "horde"]
-    dyk = pick(dyk_pool, today, salt=3 + slot * 13, avoid=tip)
     cls, ctip = pick(K.SPOTLIGHT, today, salt=slot * 17 + 5)
+    dyk = pick(dyk_pool, today, salt=3 + slot * 13, avoid=f"{tip}\n{ctip}")
     level = norm_level(getattr(cfg, "verbosity", None))
-    parts = [head, "", f"💡 **{topic.capitalize()} tip:** {tip}", "", f"🎯 **Class spotlight · {cls}:** {ctip}"]
+    label = {"pvp": "PvP"}.get(topic, topic.capitalize())
+    parts = [head, "", f"💡 **{label} tip:** {tip}", "", f"🎯 **Class spotlight · {cls}:** {ctip}"]
     if level != "brief":
         parts += ["", f"❓ **Did you know?** {dyk}"]
     if level == "detailed" and topic in C.DEEP_DIVES:
@@ -321,6 +345,14 @@ def _build_daily_raw(cfg, now: datetime, snap: dict | None, counts: dict | None,
         if level != "brief":
             lines.append(f"🧙 {rd['vets']}")
         pro = C.PRO_TIPS.get(days if days in C.RUNDOWNS else 11)
+        if pro and too_similar(pro, rd["vets"] + " " + rd["new"]):
+            # the day's pro tip repeats the rundown; use a different tip instead
+            # prefer an on-topic line from today's deep dive, then any tip
+            dd_today = C.DEEP_DIVES.get(days if days in C.DEEP_DIVES else 11)
+            ctx = "\n".join(lines)
+            alt = [b for b in (dd_today[1] if dd_today else []) if not too_similar(b, ctx)]
+            pro = alt[0] if alt else pick([t for k, v in C.TIPS.items() if k != "basics" for t in v], today,
+                                          salt=7, avoid=ctx)
         if pro:
             lines.append(f"⚔️ **Pro tip:** {pro}")
         dd = C.DEEP_DIVES.get(days if days in C.DEEP_DIVES else 11)
@@ -354,6 +386,11 @@ def _build_daily_raw(cfg, now: datetime, snap: dict | None, counts: dict | None,
         if tip:
             lines += ["", f"💡 **New player tip:** {tip}"]
     dyk_pool = [t for tag, t in C.DID_YOU_KNOW if tag != "horde" or faction == "horde"]
+    # 1.6.1: skip facts about a place or thing the post already covers (e.g. Riverglades twice)
+    names = _proper_nouns("\n".join(lines))
+    topic_words = {w for w in re.findall(r"[a-z]+", (rd or {}).get("title", "").lower()) if len(w) > 5}
+    dyk_pool = [t for t in dyk_pool if not (_proper_nouns(t) & names)
+                and not (topic_words & set(re.findall(r"[a-z]+", t.lower())))] or dyk_pool
     dyk = pick(dyk_pool, today, salt=3, avoid="\n".join(lines))
     if dyk and level != "brief":
         lines += ["", f"❓ **Did you know?** {dyk}"]

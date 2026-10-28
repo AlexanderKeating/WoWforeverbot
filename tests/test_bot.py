@@ -187,9 +187,10 @@ def test_twitch_loose_clips_before_category_exists():
 
     tw.get = fake_get
     clips = asyncio.run(tw.top_clips(None))
-    assert [c["title"] for c in clips] == ["Forever beta talents", "insane duel"]  # Forever first; one loose per streamer
-    assert not clips[0].get("loose") and clips[1]["loose"]
-    snap = {"news": [], "clips": clips, "videos": []}
+    assert [c["title"] for c in clips] == ["Forever beta talents"]  # 1.6.1: one clip per streamer, Forever first
+    assert not clips[0].get("loose")
+    snap = {"news": [], "clips": clips + [{"id": "twitch:l", "url": "l", "title": "loose one", "author": "Other",
+                                           "views": 90, "loose": True}], "videos": []}
     cfg = Cfg()
     out = json.dumps(R.build_daily(cfg, at_post_time(date(2026, 10, 27), cfg), snap, {}, slot=0).__dict__, default=str)
     assert "WoW clips from streamers we follow" in out and "Not necessarily Forever" in out
@@ -714,6 +715,26 @@ def test_status_watcher():
     from forever_bot.store import GuildConfig
     st.upsert_guild(GuildConfig(guild_id=5, channel_id=6, status_alerts=False))
     assert st.get_guild(5).status_alerts is False
+
+
+def test_no_repeats_inside_posts():
+    from datetime import timedelta
+    cfg = Cfg(); cfg.faction = "neutral"
+    for i in range(40):
+        d = date(2026, 10, 20) + timedelta(days=i)
+        for slot in (0, 1):
+            p = R.build_daily(cfg, at_post_time(d, cfg), {"news": [], "videos": [], "clips": [
+                {"id": "twitch:1", "url": "a", "title": "a", "author": "Xaryu", "views": 50},
+                {"id": "twitch:2", "url": "b", "title": "b", "author": "Xaryu", "views": 40}]}, {}, slot=slot)
+            if p is None:
+                continue
+            assert (p.followup or "").count("Xaryu") <= 1
+            desc = p.embeds[0]["description"]
+            lines = desc.split("\n")
+            pro = [l for l in lines if l.startswith("⚔️ **Pro tip:**")]
+            vets = [l for l in lines if l.startswith("🧙")]
+            if pro and vets:
+                assert not R.too_similar(pro[0].split("**Pro tip:**", 1)[1], vets[0], 0.5), (d, pro[0])
 
 
 if __name__ == "__main__":

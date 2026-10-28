@@ -383,12 +383,24 @@ class Twitch:
             (out if strict else loose).append(item)
         for lst in (out, loose):
             lst.sort(key=lambda x: x["_score"], reverse=True)
+        # 1.6.1: one Forever clip per streamer, skip near-duplicate titles and barely-watched clips
+        kept, authors, titles = [], set(), []
+        for o in out:
+            t = normalize(o["title"])
+            if o["author"].lower() in authors or o["views"] < C.CLIP_MIN_VIEWS:
+                continue
+            if any(t == x or (len(t) > 8 and (t in x or x in t)) for x in titles):
+                continue
+            kept.append(o)
+            authors.add(o["author"].lower())
+            titles.append(t)
+        out = kept
         # Forever clips first; top up with at most C.CLIPS_LOOSE_MAX WoW clips, one per streamer
         seen_authors = set()
         for o in loose:
             if len(out) >= limit or sum(1 for x in out if x.get("loose")) >= C.CLIPS_LOOSE_MAX:
                 break
-            if o["author"] in seen_authors:
+            if o["author"] in seen_authors or o["author"].lower() in authors:
                 continue
             seen_authors.add(o["author"])
             out.append(o)
