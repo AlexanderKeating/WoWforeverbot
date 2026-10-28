@@ -80,6 +80,7 @@ WOW_CONTEXT = ["wow", "warcraft", "azeroth", "horde", "alliance", "blizzard", "r
 # Until Twitch adds a Forever category, also show WoW-category clips from STREAMERS (labeled as WoW).
 CLIPS_LOOSE_UNTIL_CATEGORY = True
 CLIPS_LOOSE_MAX = 2
+CLIP_MIN_VIEWS = 20  # 1.6.1: skip clips almost nobody watched
 
 # Twitch category names to try, in order. First hit wins; WoW main category is the fallback.
 TWITCH_GAME_NAMES = [
@@ -819,4 +820,32 @@ ADDON_INSTALL = [
     "**Copy the addon folder** (not the zip) into AddOns, so you end up with `...\\Interface\\AddOns\\Questie`.",
     "**In game:** press Esc → AddOns, tick the addon, then click Reload UI. If it still doesn't show, restart the game.",
     "**Using the CurseForge app?** Pick World of Warcraft, then the Forever install if it's listed. If not, use the steps above.",
+]
+
+
+# 1.6.1: livelier did-you-knows: lore, history and dungeon trivia. Dungeon facts are from Blizzard's
+# dungeon preview; lore is long-standing Warcraft canon. Also retire a few that just restate tips.
+_DULL = {
+    "Several players can add items to the same campfire, and everyone resting there gets every buff.",
+    "Every profession in Forever has its own crafting menu, even the gathering ones.",
+    "Controllers are officially supported in Forever.",
+    "Honor gains are normalized across battlegrounds, so there's no reason to farm only Alterac Valley.",
+}
+DID_YOU_KNOW[:] = [x for x in DID_YOU_KNOW if x[1] not in _DULL]
+DID_YOU_KNOW += [
+    ("new", "In the original game, King Varian Wrynn was missing for years. In Forever, you'll find him as a prisoner in the new Alcaz Prison dungeon."),
+    ("new", "Dalaran sat sealed under a violet dome for the entire original game. Forever finally lets you inside, through the sewers."),
+    ("vet", "The Ruins of Lordaeron, the empty courtyard above the Undercity, are a full dungeon in Forever as the Forsaken try to reclaim them."),
+    ("vet", "Hall of Thanes is the tomb of Ironforge's dwarven kings, and Dark Iron intruders have broken in."),
+    ("new", "The Drowned City has no door: you dive underwater off the Stranglethorn coast, west of Grom'gol, to find it."),
+    ("vet", "Shaper's Terrace is a titan facility in Un'Goro, and its consoles run on power crystals you gather in the crater."),
+    ("vet", "Blackmaw Hold is a furbolg city hidden behind a sealed gate in Azshara, and the path inside may lead even deeper."),
+    ("new", "Mount Hyjal was blocked off in the original game. Players spent years sneaking in through map exploits just to look around. In Forever, it's the endgame zone."),
+    ("vet", "Krol'dok Stronghold's ogres kidnap travelers on the road, and the chanting only starts after dark."),
+    ("new", "Original WoW launched on Nov 23, 2004. Forever launches on Nov 4, 2026, almost 22 years later."),
+    ("vet", "Forever's 9 new dungeons span levels 13 to 60, so there's a new one to try at almost every stage of leveling."),
+    ("vet", "Dalaran's starting quest depends on your faction: Southshore for Alliance, Tarren Mill for Horde. Those two towns were the site of a famous world PvP rivalry in the original game."),
+    ("new", "You can earn Legacy Points without ever fighting: maxing crafting professions and exploring the whole world map both count."),
+    ("vet", "One of the account-wide Legacy rewards is a mount: the Reins of the Spectral Bear."),
+    ("vet", "Shen'dralas, the Highborne you met inside Dire Maul, finally get their own zone in Forever."),
 ]
