@@ -141,8 +141,8 @@ CLASSES = {
             "Totems: 1-second global cooldown, and buff totems last 5 minutes.",
             "**Call of the Elements** at 20: preset four totems and drop them all in one 3-second cast.",
             "**Totemic Projection** at 22 moves all your totems up to 30 yards.",
-            "Weapon imbues last **60 minutes** and stack with stones and oils. Windfury Totem is a party buff.",
-            "New signatures: Lava Burst (Elemental), Maelstrom Weapon (Enhancement), Riptide (Restoration). Elemental Mastery is gone.",
+            "Weapon imbues last **60 minutes** and stack with stones and oils. Windfury, Grace of Air and Strength of Earth totems buff your whole raid.",
+            "New signatures: Lava Burst (Elemental, 21), Maelstrom Weapon (Enhancement), Riptide (Restoration). Elemental Mastery is back as the 31-point talent.",
         ],
         "leveling": [
             "Set up a Call of the Elements preset at 20. One cast drops all four totems.",
@@ -152,19 +152,19 @@ CLASSES = {
         "pvp": [
             "Shamans went 19–11 vs other classes in the beta tournament finals and took 3rd and 4th.",
             "Totemic Projection lets you reposition every totem mid-fight.",
-            "**Earthbound** (Elemental, 21) makes Earthbind Totem root nearby enemies for 5 seconds.",
+            "**Earthbound** (Elemental, 16) makes Earthbind Totem root nearby enemies for 5 seconds.",
         ],
-        "talents": ["Shamanistic Focus (Enhancement, 11)", "Stormstrike (Enhancement, 16)", "Earthbound (Elemental, 21)",
-                    "Lava Burst (Elemental, 31)", "Water Shield (Restoration, 11)", "Riptide (Restoration, 31)"],
+        "talents": ["Shamanistic Focus (Enhancement, 11)", "Stormstrike (Enhancement, 16)", "Earthbound (Elemental, 16)",
+                    "Lava Burst (Elemental, 21)", "Elemental Mastery (Elemental, 31)", "Water Shield (Restoration, 11)", "Riptide (Restoration, 31)"],
     },
     "Mage": {
         "races": "Orc (new) · Troll · Undead",
         "role": "Ranged spell damage and crowd control, plus food, water and portals for the group.",
         "new": [
             "**Frostfire Bolt** at 40 counts as both Fire and Frost.",
-            "Arcane: **Arcane Blast** (11) and Missile Barrage (16).",
+            "Arcane: **Arcane Blast** (11), Missile Barrage (first row) and the new **Arcane Wrath** (16).",
             "Fire: **Heating Up** is Forever's Hot Streak; crits shorten your next Pyroblast.",
-            "Frost: **Ice Lance** (11) does 300% more to Frozen targets; **Fingers of Frost** makes targets count as Frozen.",
+            "Frost: **Ice Lance** (11) does 200% more to Frozen targets; **Fingers of Frost** makes targets count as Frozen.",
             "Cone of Cold lasts less time, to stop huge kite-pulls. Orc Mages are new.",
         ],
         "leveling": [
@@ -177,7 +177,7 @@ CLASSES = {
             "Frost combos (a root, then Ice Lance with Fingers of Frost) are built for burst.",
             "Undead Mages keep Will of the Forsaken against Warlock fears.",
         ],
-        "talents": ["Arcane Blast (Arcane, 11)", "Missile Barrage (Arcane, 16)", "Ice Lance (Frost, 11)",
+        "talents": ["Arcane Blast (Arcane, 11)", "Arcane Wrath (Arcane, 16)", "Ice Lance (Frost, 11)",
                     "Ice Block (Frost, 16)", "Cold Snap (Frost, 21)"],
     },
     "Warlock": {
@@ -300,7 +300,7 @@ _DO = {
         ],
         "pvp": [
             "**Move your totems with Totemic Projection mid-fight** → keep them on the fight instead of re-dropping them.",
-            "**Take Earthbound (Elemental, 21)** → Earthbind Totem roots nearby enemies for 5 seconds.",
+            "**Take Earthbound (Elemental, 16)** → Earthbind Totem roots nearby enemies for 5 seconds.",
             "Shamans went 19–11 vs other classes in the beta tournament finals and took 3rd and 4th.",
         ],
     },

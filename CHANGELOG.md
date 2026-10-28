@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.6.2 (2026-10-28) · facts check
+From Blizzard's Forever development notes (Oct 15/16 class update, Oct 26–27 racial pass), confirmed by Warcraft Tavern.
+- **Shaman:** Elemental Mastery is back (Elemental 31), Lava Burst is now the 21-point talent, Earthbound moved to 16. Windfury, Grace of Air and Strength of Earth totems are raid-wide, not party-only. Class card, talents and Elemental rotation updated.
+- **Mage:** Ice Lance does 200% more to Frozen targets (was 300%). Missile Barrage moved to the first row; Arcane Wrath is the new 16-point talent. Class card, talents and Frost rotation updated.
+- **Skyborne:** Wind Blessed is 2% haste (was 3%) in the Skyborne paragraph and deep dive.
+
 ## 1.6.1 (2026-10-27)
 - **Clips:** never two from the same streamer in one post (Forever clips included), near-duplicate titles are dropped, and clips under 20 views are skipped.
 - **Did you know:** 15 new lore and dungeon facts (Varian in Alcaz Prison, Dalaran's dome, Hyjal's old exploits, the Southshore vs Tarren Mill rivalry...). Retired 4 that just repeated tips.

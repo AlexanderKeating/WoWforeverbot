@@ -478,7 +478,7 @@ _VETS_LONG = {
     5: ("The Skyborne are Highborne exiles tied to Skywall who chose a side rather than being born into one. Horde Skyborne work "
         "with the Earthen Ring, which is how they unlock **Shaman**; Alliance Skyborne side with the Kirin Tor and unlock "
         "**Mage**. Either way they can also be Warriors, Hunters, Rogues or Druids, with druid forms of their own. Their "
-        "racials lean mobile: **Wind Blessed** gives 3% haste and **Walk on Air** is on a 90-second cooldown. They start on "
+        "racials lean mobile: **Wind Blessed** gives 2% haste and **Walk on Air** is on a 90-second cooldown. They start on "
         "Zephras Isle (1–12) and require the Skyborne Heroic Pack or higher."),
     4: ("PvP progress uses two separate currencies. **Honor** is what you spend on gear (a blue PvP set and an epic one), and "
         "Blizzard normalized Honor across battlegrounds so you're not stuck farming Alterac Valley. **Rank Points** climb a "
@@ -544,7 +544,7 @@ DEEP_DIVES.update({
     5: ("Skyborne for Horde", [
         "**Lore:** Highborne exiles tied to Skywall who allied with the wind spirits and later chose a faction. On Horde they work with the Earthen Ring.",
         "**Classes:** Shaman (Horde-only for Skyborne), plus Warrior, Hunter, Rogue and Druid. Druids get Skyborne-specific forms.",
-        "**Racials:** Wind Blessed (3% haste), Walk on Air (90-second cooldown), plus Skysight and Read Leyline, both castable while moving.",
+        "**Racials:** Wind Blessed (2% haste), Walk on Air (90-second cooldown), plus Skysight and Read Leyline, both castable while moving.",
         "**Start:** Zephras Isle, levels 1–12, with its own story before you reach Kalimdor or the Eastern Kingdoms.",
         "**Mounts:** Galestriders from Genn Fairweather at Fairweather Stables on Zephras Isle.",
         "**Requirement:** the Skyborne Heroic Pack or higher.",
@@ -636,7 +636,7 @@ DEEP_DIVES.update({
     ]),
     5: ("Skyborne for Horde", [
         "**Roll Skyborne on Horde if you want Shaman** → Horde Skyborne work with the Earthen Ring, which unlocks Shaman for them.",
-        "**Pick Skyborne for a mobile character** → Wind Blessed gives 3% haste, Walk on Air is on a 90-second cooldown, and Skysight and Read Leyline can be cast while moving.",
+        "**Pick Skyborne for a mobile character** → Wind Blessed gives 2% haste, Walk on Air is on a 90-second cooldown, and Skysight and Read Leyline can be cast while moving.",
         "**Try a Skyborne Druid** → you get druid forms built just for the race.",
         "**Buy your mount from Genn Fairweather on Zephras Isle** → Galestriders are sold there, at Fairweather Stables.",
         "**Get the Skyborne Heroic Pack or higher** → it's required to play the race.",
