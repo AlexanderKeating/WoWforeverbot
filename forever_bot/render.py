@@ -604,8 +604,8 @@ SPELLBOOK = {
         "blurb": "For people with Manage Server. Everything replies privately.",
         "flavor": "With great guild bank access comes great responsibility.",
         "spells": [
-            ("setup", "channel [ping_role] [staging] [post_time] [timezone] [faction]", "Channel · One time",
-             "Where and when the countdown posts."),
+            ("setup", "[channel] [ping_role] [staging] [post_time] [timezone] [faction]", "Channel · One time",
+             "Where and when the countdown posts. Leave channel empty to use the one you're in."),
             ("frequency", "[per_day] [times]", "Instant", "Post 1–4 times a day. The first post is full; the rest are check-ins."),
             ("verbosity", "[level]", "Instant", "How detailed channel posts are: Brief, Standard or Detailed."),
             ("preview", "", "Instant · Private", "See today's post plus data source health."),
@@ -630,11 +630,14 @@ def _cmd(name: str, ids: dict) -> str:
     return f"</{name}:{cid}>" if cid else f"`/{name}`"
 
 
-def spellbook_embed(page: str, ids: dict | None, is_admin: bool, now: datetime | None = None) -> dict:
+def spellbook_embed(page: str, ids: dict | None, is_admin: bool, now: datetime | None = None,
+                    unset: bool = False) -> dict:
     pages = spellbook_pages(is_admin)
     page = page if page in pages else pages[0]
     sec = SPELLBOOK[page]
     lines = [f"*{sec['flavor']}*", "", sec["blurb"], ""]
+    if unset:  # 1.7: until the server picks a channel, every page starts with how to do it
+        lines = [start_here_line(is_admin), ""] + lines
     for name, args, cast, what in sec["spells"]:
         arg = f" `{args}`" if args else ""
         lines.append(f"**{_cmd(name, ids)}**{arg}\n-# {cast}\n{what}")
@@ -917,3 +920,48 @@ def addons_embed(topic: str = "picks", level: str = "standard") -> dict:
     if level != "brief":
         desc += "\n\n" + C.ADDON_BUILTIN
     return {"title": "🧩 Starter addons for Forever", "color": C.BRAND_COLOR, "description": desc[:4000], "footer": foot}
+
+
+# ======================================================================= 1.7: make setup obvious
+# Shown only while a server has no countdown channel. Default schedule comes from content.py.
+def _default_when() -> str:
+    h, m = (int(x) for x in C.DEFAULT_POST_TIME.split(":"))
+    clock = "noon" if (h, m) == (12, 0) else f"{h % 12 or 12}{f':{m:02d}' if m else ''} {'AM' if h < 12 else 'PM'}"
+    zone = C.DEFAULT_TZ.split("/")[-1].replace("_", " ")
+    return f"{clock} {'Central' if C.DEFAULT_TZ == 'America/Chicago' else zone}"
+
+
+def start_here_line(is_admin: bool) -> str:
+    if is_admin:
+        return ("⭐ **Start here:** this server doesn't get the daily post yet. Click **📍 Post here** below, "
+                "or run `/setup` (leave the channel empty to use this one).")
+    return "⭐ **Heads-up:** this server doesn't get the daily post yet. Ask a server admin to run `/setup`."
+
+
+def setup_nudge_text(is_admin: bool) -> str:
+    if is_admin:
+        return ("📍 **This server isn't set up yet**, so nobody gets the daily Forever post. Click **Post here** "
+                f"to get it in this channel at {_default_when()}, or run `/setup` to pick the channel and time.")
+    return "-# 📍 This server doesn't get the daily Forever post yet. Ask a server admin to run `/setup`."
+
+
+def member_not_in_server_text() -> str:
+    return ("-# 📍 Forever Sherpa's commands work here, but the bot itself hasn't been added, so there's no daily "
+            "post. Ask a server admin to add it with the link in `/setup`.")
+
+
+def welcome_embed(now: datetime | None = None) -> dict:
+    """1.7: the bot's first message in a new server. Says what it does and how to turn it on."""
+    now = now or datetime.now(timezone.utc)
+    what = (f"the countdown to launch (<t:{ts(C.LAUNCH)}:R>), a tip, the news and the best clips"
+            if now < C.LAUNCH else "a tip or guide for the day, the news and the best clips")
+    return {
+        "title": "👋 Forever Sherpa is here",
+        "description": (
+            f"I post one daily rundown for **WoW: Forever**: {what}.\n\n"
+            f"**Admins:** click **📍 Post here** and the daily post lands in this channel at {_default_when()}. "
+            "Want a different channel, time or faction? Run `/setup` instead.\n"
+            "**Everyone:** `/help` opens the full spellbook, and `/pickaclass` adds you to the roll call."),
+        "color": C.BRAND_COLOR,
+        "footer": {"text": "Only people with Manage Server can use the button."},
+    }

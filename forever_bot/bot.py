@@ -225,6 +225,83 @@ def not_in_server_text() -> str:
             f"<{C.BOT_INVITE_URL}>\nThen run `/setup` again. Nothing else to change.")
 
 
+# ------------------------------------------------------------------ 1.7: make setup obvious
+NUDGE_EVERY_S = 6 * 3600  # remind the same person in the same server at most every 6 hours
+
+
+def is_set_up(guild_id) -> bool:
+    try:
+        c = bot.store.get_guild(guild_id)
+        return bool(c and c.channel_id)
+    except Exception:  # noqa: BLE001 - never nag because of a storage hiccup
+        return True
+
+
+def welcome_channel(guild, can_post):
+    """The server's system channel if the bot can post there, else the first text channel it can."""
+    first = [guild.system_channel] if getattr(guild, "system_channel", None) else []
+    for ch in first + sorted(guild.text_channels, key=lambda c: c.position):
+        if not can_post(ch):
+            return ch
+    return None
+
+
+class SetupHereButton(discord.ui.DynamicItem[discord.ui.Button], template=r"sh:here"):
+    """📍 Post here: one-click setup in the channel the button is in. Survives restarts."""
+
+    def __init__(self):
+        super().__init__(discord.ui.Button(label="Post here", emoji="📍", style=discord.ButtonStyle.success,
+                                           custom_id="sh:here"))
+
+    @classmethod
+    async def from_custom_id(cls, interaction, item, match):
+        return cls()
+
+    async def callback(self, interaction: discord.Interaction):
+        await quick_setup(interaction)
+
+
+def setup_here_view() -> discord.ui.View:
+    v = discord.ui.View(timeout=None)
+    v.add_item(SetupHereButton())
+    return v
+
+
+async def quick_setup(interaction: discord.Interaction):
+    """Set up the countdown in the current channel with the default time, zone and faction."""
+    async def say(m):
+        await interaction.response.send_message(m, ephemeral=True, allowed_mentions=discord.AllowedMentions.none())
+    if not interaction.guild_id:
+        return await say("This only works in a server.")
+    if not bot_in_guild(interaction):
+        return await say(not_in_server_text())
+    if not _is_admin(interaction):
+        return await say("Only someone with **Manage Server** can set me up. Ask an admin to click **📍 Post here** "
+                         "or run `/setup`.")
+    cfg = cfg_for(interaction)
+    if cfg.channel_id:
+        return await say(f"Already set up: the daily post goes in <#{cfg.channel_id}> at "
+                         f"**{fmt_times(guild_times(cfg))}** ({cfg.tz}). Run `/setup` to change it.")
+    ch = interaction.guild.get_channel(interaction.channel_id) if interaction.guild else None
+    if not isinstance(ch, discord.TextChannel):
+        return await say("Click this in a regular text channel, or run `/setup` and pick one.")
+    problem = bot._can_post(ch)
+    if problem:
+        return await say(f"I can't post in {ch.mention}: {problem}.\n{perm_fix_hint(ch, problem)}")
+    cfg.channel_id, cfg.enabled = ch.id, True
+    bot.store.upsert_guild(cfg)
+    ev(clog, "quick_setup", guild=interaction.guild_id, channel=ch.id, user=interaction.user.id, who=_who(interaction))
+    await say(f"✅ Done. The daily post goes in {ch.mention} at **{fmt_times(guild_times(cfg))}** ({cfg.tz}).\n"
+              "Try `/preview` to see today's post or `/postnow` to post it right away. "
+              "`/setup` changes the time, time zone, ping role or faction.")
+    msg = getattr(interaction, "message", None)
+    if msg is not None and not msg.flags.ephemeral:  # the welcome card: drop the button once it's done its job
+        try:
+            await msg.edit(view=None)
+        except discord.HTTPException:
+            pass
+
+
 def level_for(interaction: discord.Interaction) -> str:
     """Person's own setting, else the server's post verbosity, else Standard."""
     try:
@@ -410,10 +487,12 @@ class ForeverBot(commands.Bot):
         self._refresh_lock = asyncio.Lock()
         self.cmd_ids: dict[str, int] = {}
         self._said: set = set()  # (guild, day, slot, reason) already logged: keeps the 60s loop from spamming
+        self._nudged: dict[tuple, float] = {}  # (guild, user) -> last "not set up yet" reminder (1.7)
 
     async def setup_hook(self):
         self.add_view(RollcallView(self))  # persistent: buttons keep working after restarts
-        self.add_dynamic_items(DeepDiveButton, PingToggleButton, ClassGuideButton, PlusOneButton, PanicButton)
+        self.add_dynamic_items(DeepDiveButton, PingToggleButton, ClassGuideButton, PlusOneButton, PanicButton,
+                               SetupHereButton)
         cached = self.store.cache_get("_snapshot")[0]
         if cached:
             self.snap = cached
@@ -451,6 +530,20 @@ class ForeverBot(commands.Bot):
 
     async def on_guild_join(self, guild):
         ev(log, "guild_join", guild=guild.id, name=guild.name, members=guild.member_count, total=len(self.guilds))
+        await self.send_welcome(guild)
+
+    async def send_welcome(self, guild):
+        """1.7: say hello and offer one-click setup, so new servers don't have to find /setup on their own."""
+        if is_set_up(guild.id):
+            return
+        ch = welcome_channel(guild, self._can_post)
+        if ch is None:
+            return ev(log, "welcome_no_channel", logging.WARNING, guild=guild.id, name=guild.name)
+        try:
+            await ch.send(embed=discord.Embed.from_dict(R.welcome_embed(now_utc())), view=setup_here_view())
+            ev(log, "welcome_sent", guild=guild.id, channel=ch.id)
+        except discord.HTTPException as e:
+            ev(log, "welcome_failed", logging.WARNING, guild=guild.id, channel=ch.id, error=str(e)[:150])
 
     async def on_guild_remove(self, guild):
         self.store.remove_guild(guild.id)
@@ -460,6 +553,35 @@ class ForeverBot(commands.Bot):
         ev(clog, "command", name=command.qualified_name, guild=interaction.guild_id, user=interaction.user.id,
            who=_who(interaction), args=_args(interaction),
            ms=(discord.utils.utcnow() - interaction.created_at).total_seconds() * 1000)
+        await self.maybe_nudge(interaction, command)
+
+    async def maybe_nudge(self, interaction: discord.Interaction, command):
+        """1.7: in a server with no countdown channel yet, follow a command with a private setup reminder."""
+        try:
+            gid = interaction.guild_id
+            perms = getattr(command, "default_permissions", None)
+            if not gid or command.qualified_name in ("help", "spellbook", "forgetme") or (perms and perms.manage_guild):
+                return  # admin commands already explain themselves; /help shows its own banner
+            in_guild = bot_in_guild(interaction)
+            if in_guild and is_set_up(gid):
+                return
+            key, now = (gid, interaction.user.id), time.time()
+            if now - self._nudged.get(key, 0) < NUDGE_EVERY_S or not interaction.response.is_done():
+                return
+            self._nudged[key] = now
+            admin_ = _is_admin(interaction)
+            kw = {}
+            if not in_guild:
+                text = not_in_server_text() if admin_ else R.member_not_in_server_text()
+            else:
+                text = R.setup_nudge_text(admin_)
+                if admin_:
+                    kw["view"] = setup_here_view()
+            await interaction.followup.send(text, ephemeral=True, **kw)
+            ev(clog, "setup_nudge", guild=gid, user=interaction.user.id, after=command.qualified_name,
+               admin=admin_, bot_in_server=in_guild)
+        except Exception as e:  # noqa: BLE001 - a reminder must never break a command
+            ev(clog, "setup_nudge_failed", logging.WARNING, error=str(e)[:150])
 
     async def on_interaction(self, interaction: discord.Interaction):
         """1.3.2: one line for every button press and dropdown pick, on any message."""
@@ -819,18 +941,25 @@ admin = app_commands.default_permissions(manage_guild=True)
 @bot.tree.command(name="setup", description="Set the countdown channel, ping role and post time")
 @app_commands.guild_only()
 @admin
-@app_commands.describe(channel="Where the daily countdown posts", ping_role="Role to ping (optional)",
+@app_commands.describe(channel="Where the daily countdown posts (empty: this channel)", ping_role="Role to ping (optional)",
                        staging="Private channel for previews and alerts (optional)",
                        post_time="Post time(s), like 12pm or 12pm, 7pm (up to 4)", timezone="IANA zone, like America/Chicago",
                        faction="Which faction your server leans")
 @app_commands.choices(faction=[app_commands.Choice(name=n, value=v) for n, v in
                                (("Horde", "horde"), ("Alliance", "alliance"), ("Both / not set (default)", "neutral"))])
-async def setup_cmd(interaction: discord.Interaction, channel: discord.TextChannel,
+async def setup_cmd(interaction: discord.Interaction, channel: discord.TextChannel | None = None,
                     ping_role: discord.Role | None = None, staging: discord.TextChannel | None = None,
                     post_time: str = C.DEFAULT_POST_TIME, timezone: str = C.DEFAULT_TZ,
                     faction: app_commands.Choice[str] | None = None):
     if not bot_in_guild(interaction):
         return await interaction.response.send_message(not_in_server_text(), ephemeral=True)
+    if channel is None:  # 1.7: no channel picked means "this one"
+        here = interaction.guild.get_channel(interaction.channel_id) if interaction.guild else None
+        if not isinstance(here, discord.TextChannel):
+            return await interaction.response.send_message(
+                "I can't use this channel. Pick one with the `channel` option, or if this channel is private, "
+                "add Forever Sherpa to it first (channel settings → **Permissions**).", ephemeral=True)
+        channel = here
     times = parse_times(post_time)
     err = check_times(times)
     if err:
@@ -1465,9 +1594,9 @@ async def pickaclass_cmd(interaction: discord.Interaction):
 class SpellbookView(discord.ui.View):
     """Dropdown to flip spellbook pages. Ephemeral, so only the person who opened it sees it."""
 
-    def __init__(self, is_admin: bool, page: str):
+    def __init__(self, is_admin: bool, page: str, unset: bool = False):
         super().__init__(timeout=600)
-        self.is_admin = is_admin
+        self.is_admin, self.unset = is_admin, unset
         pages = R.spellbook_pages(is_admin)
         select = discord.ui.Select(placeholder="Turn the page…", options=[
             discord.SelectOption(label=R.SPELLBOOK[p]["label"], value=p, emoji=R.SPELLBOOK[p]["emoji"],
@@ -1476,26 +1605,35 @@ class SpellbookView(discord.ui.View):
         select.callback = self._flip
         self.add_item(select)
         self.select = select
+        if unset and is_admin:  # 1.7: one-click setup right from /help
+            self.add_item(SetupHereButton())
 
     async def _flip(self, interaction: discord.Interaction):
         page = self.select.values[0]
         for o in self.select.options:
             o.default = o.value == page
         await interaction.response.edit_message(
-            embed=discord.Embed.from_dict(R.spellbook_embed(page, bot.cmd_ids, self.is_admin, now_utc())), view=self)
+            embed=discord.Embed.from_dict(R.spellbook_embed(page, bot.cmd_ids, self.is_admin, now_utc(), self.unset)),
+            view=self)
 
 
 def _is_admin(interaction: discord.Interaction) -> bool:
-    perms = getattr(interaction.user, "guild_permissions", None)
-    return bool(interaction.guild_id and perms and perms.manage_guild)
+    if not interaction.guild_id:
+        return False
+    try:  # 1.7: Discord's resolved permissions also work when the bot isn't in the server (commands-only installs)
+        perms = getattr(interaction, "permissions", None) or interaction.user.guild_permissions
+        return bool(perms.manage_guild)
+    except Exception:  # noqa: BLE001
+        return False
 
 
 async def _open_spellbook(interaction: discord.Interaction, page: str | None):
     admin_ = _is_admin(interaction)
     page = page or "quest"
+    unset = bool(interaction.guild_id) and bot_in_guild(interaction) and not is_set_up(interaction.guild_id)
     await interaction.response.send_message(
-        embed=discord.Embed.from_dict(R.spellbook_embed(page, bot.cmd_ids, admin_, now_utc())),
-        view=SpellbookView(admin_, page), ephemeral=True)
+        embed=discord.Embed.from_dict(R.spellbook_embed(page, bot.cmd_ids, admin_, now_utc(), unset)),
+        view=SpellbookView(admin_, page, unset), ephemeral=True)
 
 
 _PAGE_CHOICES = [app_commands.Choice(name=v["label"], value=k) for k, v in R.SPELLBOOK.items()]

@@ -737,6 +737,121 @@ def test_no_repeats_inside_posts():
                 assert not R.too_similar(pro[0].split("**Pro tip:**", 1)[1], vets[0], 0.5), (d, pro[0])
 
 
+# ------------------------------------------------------------------ 1.7: make setup obvious
+def _fake_text_channel(cid=5, position=0):
+    from forever_bot import bot as B
+    ch = object.__new__(B.discord.TextChannel)
+    ch.id, ch.position, ch.name = cid, position, f"c{cid}"
+    import types
+    ch.guild = types.SimpleNamespace(me=types.SimpleNamespace(display_name="Forever Sherpa"))
+    return ch
+
+
+def test_welcome_and_nudge_text():
+    pre, post = datetime(2026, 10, 28, tzinfo=timezone.utc), datetime(2026, 11, 20, tzinfo=timezone.utc)
+    for when in (pre, post):
+        e = R.welcome_embed(when)
+        assert "Post here" in e["description"] and "/setup" in e["description"] and len(e["description"]) < 4096
+    assert "countdown to launch" in R.welcome_embed(pre)["description"]
+    assert "countdown to launch" not in R.welcome_embed(post)["description"]
+    assert "noon Central" in R.setup_nudge_text(True) and "Post here" in R.setup_nudge_text(True)
+    assert "admin" in R.setup_nudge_text(False) and "Post here" not in R.setup_nudge_text(False)
+    e = R.spellbook_embed("quest", {}, True, pre, unset=True)
+    assert e["description"].startswith("⭐ **Start here:**")
+    assert not R.spellbook_embed("quest", {}, True, pre)["description"].startswith("⭐")
+    setup = next(sp for sp in R.SPELLBOOK["officer"]["spells"] if sp[0] == "setup")
+    assert setup[1].startswith("[channel]")
+
+
+def test_welcome_picks_a_channel_it_can_post_in():
+    import types
+    from forever_bot import bot as B
+    a, b, sys_ch = _fake_text_channel(1, 0), _fake_text_channel(2, 1), _fake_text_channel(3, 2)
+    g = types.SimpleNamespace(system_channel=sys_ch, text_channels=[b, a, sys_ch])
+    assert B.welcome_channel(g, lambda ch: None) is sys_ch
+    assert B.welcome_channel(g, lambda ch: "no" if ch is sys_ch else None) is a  # falls back to the top channel
+    assert B.welcome_channel(g, lambda ch: "no") is None
+    assert B.welcome_channel(types.SimpleNamespace(system_channel=None, text_channels=[b]), lambda ch: None) is b
+
+
+def test_quick_setup_button():
+    import types
+    from forever_bot import bot as B
+    B.bot.store = tmp_store()
+    ch = _fake_text_channel(77)
+    sent = []
+
+    class Resp:
+        async def send_message(self, msg, **k):
+            sent.append(msg)
+
+    def inter(admin=True, gid=42):
+        return types.SimpleNamespace(
+            guild_id=gid, channel_id=77, guild=types.SimpleNamespace(get_channel=lambda i: ch if i == 77 else None),
+            user=types.SimpleNamespace(id=9, display_name="Al", guild_permissions=types.SimpleNamespace(manage_guild=admin)),
+            response=Resp(), message=None)
+    orig_in, orig_can = B.bot_in_guild, B.bot._can_post
+    B.bot_in_guild = lambda i: True
+    try:
+        B.bot._can_post = lambda c: None
+        asyncio.run(B.quick_setup(inter(admin=False)))
+        assert "Manage Server" in sent[-1] and not B.is_set_up(42)
+        asyncio.run(B.quick_setup(inter()))
+        assert sent[-1].startswith("✅") and "<#77>" in sent[-1]
+        cfg = B.bot.store.get_guild(42)
+        assert cfg.channel_id == 77 and cfg.post_time == C.DEFAULT_POST_TIME and cfg.tz == C.DEFAULT_TZ
+        asyncio.run(B.quick_setup(inter()))
+        assert sent[-1].startswith("Already set up")
+        B.bot._can_post = lambda c: "missing permissions: Send Messages"
+        asyncio.run(B.quick_setup(inter(gid=43)))
+        assert "can't post" in sent[-1] and not B.is_set_up(43)
+    finally:
+        B.bot_in_guild, B.bot._can_post = orig_in, orig_can
+
+
+def test_setup_nudge_once_and_only_when_unset():
+    import types
+    from forever_bot import bot as B
+    B.bot.store = tmp_store()
+    B.bot._nudged.clear()
+    out = []
+
+    class Resp:
+        def is_done(self):
+            return True
+
+    class Follow:
+        async def send(self, text, **k):
+            out.append((text, k))
+
+    def inter(uid=1, admin=True, gid=50):
+        return types.SimpleNamespace(guild_id=gid, response=Resp(), followup=Follow(),
+                                     user=types.SimpleNamespace(id=uid, guild_permissions=types.SimpleNamespace(manage_guild=admin)))
+    cmd = types.SimpleNamespace(qualified_name="countdown", default_permissions=None)
+    admin_cmd = types.SimpleNamespace(qualified_name="frequency", default_permissions=B.discord.Permissions(manage_guild=True))
+    orig = B.bot_in_guild
+    B.bot_in_guild = lambda i: True
+    try:
+        asyncio.run(B.bot.maybe_nudge(inter(), cmd))
+        assert len(out) == 1 and "Post here" in out[0][0] and "view" in out[0][1] and out[0][1]["ephemeral"]
+        asyncio.run(B.bot.maybe_nudge(inter(), cmd))  # same person, same server: not again for 6 hours
+        assert len(out) == 1
+        asyncio.run(B.bot.maybe_nudge(inter(uid=2, admin=False), cmd))
+        assert len(out) == 2 and "admin" in out[1][0] and "view" not in out[1][1]
+        asyncio.run(B.bot.maybe_nudge(inter(uid=3), admin_cmd))  # admin commands explain themselves
+        asyncio.run(B.bot.maybe_nudge(inter(uid=3), types.SimpleNamespace(qualified_name="help", default_permissions=None)))
+        assert len(out) == 2
+        from forever_bot.store import GuildConfig
+        B.bot.store.upsert_guild(GuildConfig(guild_id=60, channel_id=5))
+        asyncio.run(B.bot.maybe_nudge(inter(uid=4, gid=60), cmd))  # set up: silent
+        assert len(out) == 2
+        B.bot_in_guild = lambda i: False  # commands-only install: admins get the invite link
+        asyncio.run(B.bot.maybe_nudge(inter(uid=5, gid=70), cmd))
+        assert "scope=bot" in out[-1][0]
+    finally:
+        B.bot_in_guild = orig
+
+
 if __name__ == "__main__":
     fns = [v for k, v in dict(globals()).items() if k.startswith("test_")]
     for fn in fns:
