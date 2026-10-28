@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.7.0 (2026-10-28)
+Make setup obvious. On Oct 28 a new server tried seven commands in 22 minutes, never found `/setup`, and left.
+- **Welcome card on join.** The bot posts a short hello in the server's system channel (or the first channel it can post in) with a **📍 Post here** button. One click by someone with Manage Server sets up the daily post in that channel at the default time (noon Central). The button disappears once it's used.
+- **Setup reminder.** In a server that isn't set up yet, using a member command adds a private one-liner: admins get the **📍 Post here** button, everyone else is told to ask an admin. At most once every 6 hours per person. Commands-only installs get the invite link instead.
+- **`/setup` channel is optional.** Leave it empty to use the channel you're in.
+- **`/help` says "⭐ Start here"** at the top of every page until the server is set up, with the **📍 Post here** button for admins.
+- New log events: `welcome_sent`, `welcome_no_channel`, `welcome_failed`, `quick_setup`, `setup_nudge`.
+
 ## 1.6.1 (2026-10-27)
 - **Clips:** never two from the same streamer in one post (Forever clips included), near-duplicate titles are dropped, and clips under 20 views are skipped.
 - **Did you know:** 15 new lore and dungeon facts (Varian in Alcaz Prison, Dalaran's dome, Hyjal's old exploits, the Southshore vs Tarren Mill rivalry...). Retired 4 that just repeated tips.
