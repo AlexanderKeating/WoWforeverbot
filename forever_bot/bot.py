@@ -1173,6 +1173,7 @@ async def status_cmd(interaction: discord.Interaction):
     if cfg and cfg.channel_id:
         lines.append(f"**Setup:** <#{cfg.channel_id}> · {len(guild_times(cfg))}x a day at {fmt_times(guild_times(cfg))} "
                      f"{cfg.tz} · {cfg.faction} · posts: {R.LEVEL_LABEL[R.norm_level(cfg.verbosity)]}"
+                     f"{'' if cfg.clips else ' · clips off'}"
                      f"{' · ⏸️ ON HOLD today' if cfg.hold_date == R.local_today(cfg.tz, now).isoformat() else ''}")
         nxt = bot.next_post(cfg, now)
         if nxt:
@@ -1566,6 +1567,26 @@ async def statusalerts_cmd(interaction: discord.Interaction, on: bool | None = N
     ev(clog, "statusalerts_set", guild=cfg.guild_id, on=on, by=interaction.user.id)
     await interaction.response.send_message(
         f"✅ Forever status alerts are now **{'on' if on else 'off'}** here.", ephemeral=True)
+
+
+@bot.tree.command(name="clips", description="Turn Twitch clips in this server's posts on or off")
+@app_commands.guild_only()
+@admin
+@app_commands.describe(on="On adds up to 2 top Forever clips under each post. Off leaves them out.")
+async def clips_cmd(interaction: discord.Interaction, on: bool | None = None):
+    cfg = bot.store.get_guild(interaction.guild_id)
+    if not cfg or not cfg.channel_id:
+        return await interaction.response.send_message("Run `/setup` first.", ephemeral=True)
+    if on is None:
+        state = "on" if cfg.clips else "off"
+        return await interaction.response.send_message(
+            f"Clips are **{state}** here. When on, each post ends with up to 2 top Twitch clips from the last day.\n"
+            "-# Change it with `/clips on:False` or `on:True`.", ephemeral=True)
+    cfg.clips = on
+    bot.store.upsert_guild(cfg)
+    ev(clog, "clips_set", guild=cfg.guild_id, on=on, by=interaction.user.id)
+    await interaction.response.send_message(
+        f"✅ Clips are now **{'on' if on else 'off'}** here, starting with the next post.", ephemeral=True)
 
 
 @bot.tree.command(name="pinpost", description="Post a 'start here' card to pin (it keeps itself updated)")
