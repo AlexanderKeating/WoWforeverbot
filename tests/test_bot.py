@@ -852,6 +852,78 @@ def test_setup_nudge_once_and_only_when_unset():
         B.bot_in_guild = orig
 
 
+def test_mid_day_setup_skips_backfill_and_sends_short_first_post():
+    """1.7.1: Oct 28 a server set up at 12:36 PM got the noon full post 37 min late (another 146 min late),
+    and one left 11 minutes later. Mid-day setup now skips passed slots and sends a short first look."""
+    from forever_bot import bot as B
+    from forever_bot.store import GuildConfig
+    B.bot.store = tmp_store()
+    ch = _fake_text_channel(77)
+    sent, ticked = [], []
+
+    async def fake_send(channel, post, ping_role_id=None):
+        sent.append(post)
+        return 1, None
+
+    async def fake_post_daily(cfg, now, force=False, slot=0):
+        ticked.append(slot)
+        return "Posted."
+    B.bot.get_channel, B.bot._can_post = (lambda i: ch if i == 77 else None), (lambda c: None)
+    B.bot.send_post, B.bot.post_daily = fake_send, fake_post_daily
+    try:
+        cst = datetime(2026, 10, 28, 18, 36, tzinfo=timezone.utc)  # 1:36 PM Central, noon post already due
+        cfg = GuildConfig(guild_id=42, channel_id=77, enabled=True)
+        B.bot.store.upsert_guild(cfg)
+        assert B.bot.skip_passed_slots(cfg, cst) == [0]
+        asyncio.run(B.bot._tick_guild(cfg, cst))
+        assert ticked == []  # no stale backfill
+        key = asyncio.run(B.bot.send_first_post(cfg, cst))
+        assert key == "launch:2026-10-28:first" and len(sent) == 1
+        post = sent[0]
+        desc = post.embeds[0]["description"]
+        assert len(post.embeds) == 1 and post.followup is None and not post.used_ids  # no news, no clips
+        assert "First look" in desc and "<t:" in desc and len(desc) < 1500 and not post.rollcall
+        assert asyncio.run(B.bot.send_first_post(cfg, cst)) is None and len(sent) == 1  # once
+        # tomorrow's noon post still goes out normally
+        asyncio.run(B.bot._tick_guild(cfg, datetime(2026, 10, 29, 17, 1, tzinfo=timezone.utc)))
+        assert ticked == [0]
+
+        # set up before noon: nothing skipped, the regular post covers today
+        early = GuildConfig(guild_id=43, channel_id=77, enabled=True)
+        B.bot.store.upsert_guild(early)
+        assert B.bot.skip_passed_slots(early, datetime(2026, 10, 28, 15, 0, tzinfo=timezone.utc)) == []
+
+        # set up at 6:30 PM with a 7 PM check-in: skip noon, no first look (the check-in is minutes away)
+        two = GuildConfig(guild_id=44, channel_id=77, enabled=True, post_time="12pm,7pm")
+        B.bot.store.upsert_guild(two)
+        evening = datetime(2026, 10, 28, 23, 30, tzinfo=timezone.utc)
+        assert B.bot.skip_passed_slots(two, evening) == [0]
+        assert asyncio.run(B.bot.send_first_post(two, evening)) is None and len(sent) == 1
+
+        # the 📍 Post here button wires it up end to end
+        import types
+        replies = []
+
+        class Resp:
+            async def send_message(self, msg, **k):
+                replies.append(msg)
+        inter = types.SimpleNamespace(
+            guild_id=45, channel_id=77, guild=types.SimpleNamespace(get_channel=lambda i: ch if i == 77 else None),
+            user=types.SimpleNamespace(id=9, display_name="Al", guild_permissions=types.SimpleNamespace(manage_guild=True)),
+            response=Resp(), message=None)
+        orig_now, orig_in = B.now_utc, B.bot_in_guild
+        B.now_utc, B.bot_in_guild = (lambda: cst), (lambda i: True)
+        try:
+            asyncio.run(B.quick_setup(inter))
+        finally:
+            B.now_utc, B.bot_in_guild = orig_now, orig_in
+        assert replies[-1].startswith("✅") and len(sent) == 2 and sent[-1].key.endswith(":first")
+        assert B.bot.store.was_posted(45, "daily", "launch:2026-10-28:0")
+    finally:
+        for a in ("get_channel", "_can_post", "send_post", "post_daily"):
+            B.bot.__dict__.pop(a, None)
+
+
 if __name__ == "__main__":
     fns = [v for k, v in dict(globals()).items() if k.startswith("test_")]
     for fn in fns:
