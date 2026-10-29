@@ -221,8 +221,9 @@ class Post:
     deep_key: str | None = None
 
 
-def _media(snap, unseen_ids, now, include_news):
-    """News embed + clip/video follow-up, shared by the full post and check-ins."""
+def _media(snap, unseen_ids, now, include_news, include_clips=True):
+    """News embed + clip/video follow-up, shared by the full post and check-ins.
+    include_clips=False (1.8, /clips) leaves Twitch clips out."""
     embeds, used, follow = [], [], []
     if include_news:
         fresh = [n for n in snap.get("news", []) if unseen_ids is None or n["id"] in unseen_ids][:MAX_NEWS]
@@ -235,7 +236,7 @@ def _media(snap, unseen_ids, now, include_news):
                            "color": C.NEWS_COLOR})
             used += [n["id"] for n in fresh]
     clips, authors = [], set()
-    for c in snap.get("clips", []):  # 1.6.1: never two clips from the same streamer in one post
+    for c in (snap.get("clips", []) if include_clips else []):  # 1.6.1: never two clips from the same streamer in one post
         if (unseen_ids is None or c["id"] in unseen_ids) and c.get("author", "").lower() not in authors:
             clips.append(c)
             authors.add(c.get("author", "").lower())
@@ -295,7 +296,7 @@ def build_checkin(cfg, now: datetime, snap: dict | None, slot: int,
         parts += ["", f"🔎 **{C.DEEP_DIVES[topic][0]}:** {pick(C.DEEP_DIVES[topic][1], today, salt=slot)}"]
     parts += ["", footer or f"-# 📖 More detail below, at your level · /classtips {cls.lower()} · /help"]
     desc = "\n".join(parts)
-    embeds, used, followup = _media(snap or {}, unseen_ids, now, include_news)
+    embeds, used, followup = _media(snap or {}, unseen_ids, now, include_news, getattr(cfg, "clips", True))
     return Post(content="", embeds=[{"title": title, "description": desc, "color": C.BRAND_COLOR}] + embeds,
                 followup=followup, used_ids=used, rollcall=False,
                 key=f"{kind}:{today.isoformat()}:{slot}", deep_key=topic if topic in C.DEEP_DIVES else None)
@@ -423,7 +424,7 @@ def _build_daily_raw(cfg, now: datetime, snap: dict | None, counts: dict | None,
     used = []
 
     # ---- news embed (headlines + links only) and clips/videos follow-up
-    media_embeds, media_used, followup = _media(snap, unseen_ids, now, include_news)
+    media_embeds, media_used, followup = _media(snap, unseen_ids, now, include_news, getattr(cfg, "clips", True))
     embeds += media_embeds
     used += media_used
 
@@ -625,6 +626,7 @@ SPELLBOOK = {
             ("hold", "", "Instant · Lasts today", "Skip all of today's posts. /resume undoes it."),
             ("resume", "", "Instant", "Undo /hold."),
             ("skipnews", "", "Instant · Lasts today", "Post today without the news section."),
+            ("clips", "[on]", "Instant", "Turn the Twitch clips under each post on or off (on by default)."),
             ("status", "", "Instant · Private", "Current settings and which sources are working."),
             ("pinpost", "[channel]", "Instant", "Post a \"start here\" card to pin. It updates itself after every post."),
             ("statusalerts", "[on]", "Instant", "Post Blizzard's Forever outage, maintenance and fix updates here (on by default)."),
@@ -973,7 +975,14 @@ def welcome_embed(now: datetime | None = None) -> dict:
             f"I post one daily rundown for **WoW: Forever**: {what}.\n\n"
             f"**Admins:** click **📍 Post here** and the daily post lands in this channel at {_default_when()}. "
             "Want a different channel, time or faction? Run `/setup` instead.\n"
-            "**Everyone:** `/help` opens the full spellbook, and `/pickaclass` adds you to the roll call."),
+            "**Everyone:** `/help` opens the full spellbook, and `/pickaclass` adds you to the roll call.\n\n"
+            "**Make it fit your server** (admins):\n"
+            "• `/preview` shows today's post privately before anyone else sees it\n"
+            "• `/verbosity` picks Brief, Standard or Detailed posts\n"
+            "• `/clips` turns the Twitch clips off (or back on)\n"
+            "• `/frequency` sets 1 to 4 posts a day\n"
+            "• `/hold` skips today, `/skipnews` drops just the news\n"
+            "• `/statusalerts` turns outage and maintenance alerts on or off"),
         "color": C.BRAND_COLOR,
         "footer": {"text": "Only people with Manage Server can use the button."},
     }

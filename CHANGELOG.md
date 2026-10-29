@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.8.0 (2026-10-29)
+Let servers trim the post. On Oct 28 two servers left within 20 minutes of seeing their first post.
+- **New `/clips [on]`** (admins): turn the Twitch clips under each post off or back on. On by default. Applies to full posts, check-ins, `/preview` and `/postnow`. `/status` shows "clips off" when it's off.
+- **Welcome card lists the settings that matter.** New servers now see a short "Make it fit your server" list: `/preview`, `/verbosity`, `/clips`, `/frequency`, `/hold` and `/skipnews`, `/statusalerts`.
+- New log event: `clips_set`.
+
 ## 1.7.1 (2026-10-28)
 Gentler first day. On Oct 28 two servers set up after noon and got the noon full post backdated (37 and 146 minutes late, about 2,000 characters plus clips); one left 11 minutes later.
 - **No stale catch-up after setup.** Setting up (📍 Post here or a first `/setup`) after today's post time skips the slots that already passed instead of sending them late.

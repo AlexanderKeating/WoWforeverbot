@@ -930,3 +930,29 @@ if __name__ == "__main__":
         fn()
         print("ok", fn.__name__)
     print(f"{len(fns)} passed")
+
+
+# ------------------------------------------------------------------ 1.8: /clips
+def test_clips_can_be_turned_off():
+    snap = {"news": [], "videos": [], "clips": [
+        {"id": "twitch:1", "url": "https://clips.example/a", "title": "big pull", "author": "Xaryu", "views": 50}]}
+    d = date(2026, 10, 30)
+    for slot in (0, 1):
+        on, off = Cfg(), Cfg()
+        off.clips = False
+        p_on = R.build_daily(on, at_post_time(d, on), snap, {}, slot=slot)
+        p_off = R.build_daily(off, at_post_time(d, off), snap, {}, slot=slot)
+        assert "big pull" in (p_on.followup or "") and "twitch:1" in p_on.used_ids
+        assert "big pull" not in (p_off.followup or "") and "twitch:1" not in p_off.used_ids
+    st = tmp_store()
+    from forever_bot.store import GuildConfig
+    st.upsert_guild(GuildConfig(guild_id=7, channel_id=8))
+    assert st.get_guild(7).clips is True  # on by default
+    st.upsert_guild(GuildConfig(guild_id=7, channel_id=8, clips=False))
+    assert st.get_guild(7).clips is False and st.all_guilds()[0].clips is False
+
+
+def test_welcome_calls_out_key_admin_commands():
+    desc = R.welcome_embed(datetime(2026, 10, 30, tzinfo=timezone.utc))["description"]
+    for cmd in ("/preview", "/verbosity", "/clips", "/frequency", "/hold", "/statusalerts"):
+        assert cmd in desc, cmd
