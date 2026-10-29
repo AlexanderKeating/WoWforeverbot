@@ -267,7 +267,7 @@ CHECKIN_TOPICS = ["leveling", "pvp", "camping", "professions", "travel"]
 
 
 def build_checkin(cfg, now: datetime, snap: dict | None, slot: int,
-                  unseen_ids: set | None = None, include_news: bool = True) -> Post | None:
+                  unseen_ids: set | None = None, include_news: bool = True, footer: str | None = None) -> Post | None:
     """Later posts in the day: countdown, a fresh tip and fact, and only what's new. No repeats of the rundown."""
     kind, days = phase(cfg.tz, now)
     if kind == "done":
@@ -293,12 +293,24 @@ def build_checkin(cfg, now: datetime, snap: dict | None, slot: int,
         parts += ["", f"❓ **Did you know?** {dyk}"]
     if level == "detailed" and topic in C.DEEP_DIVES:
         parts += ["", f"🔎 **{C.DEEP_DIVES[topic][0]}:** {pick(C.DEEP_DIVES[topic][1], today, salt=slot)}"]
-    parts += ["", f"-# 📖 More detail below, at your level · /classtips {cls.lower()} · /help"]
+    parts += ["", footer or f"-# 📖 More detail below, at your level · /classtips {cls.lower()} · /help"]
     desc = "\n".join(parts)
     embeds, used, followup = _media(snap or {}, unseen_ids, now, include_news)
     return Post(content="", embeds=[{"title": title, "description": desc, "color": C.BRAND_COLOR}] + embeds,
                 followup=followup, used_ids=used, rollcall=False,
                 key=f"{kind}:{today.isoformat()}:{slot}", deep_key=topic if topic in C.DEEP_DIVES else None)
+
+
+def build_first_post(cfg, now: datetime, next_at: datetime | None) -> Post | None:
+    """1.7.1: what a server sees right after setting up mid-day, instead of a backdated full post.
+    Check-in sized, no news or clips; says when the real daily post comes."""
+    when = f"<t:{ts(next_at)}:F> (<t:{ts(next_at)}:R>)" if next_at else "on schedule"
+    post = build_checkin(cfg, now, None, 0, include_news=False,
+                         footer=f"-# 👋 First look. The full daily post starts {when} · /help")
+    if post is None:
+        return None
+    post.key = post.key.rsplit(":", 1)[0] + ":first"
+    return post
 
 
 def _build_daily_raw(cfg, now: datetime, snap: dict | None, counts: dict | None,

@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.7.1 (2026-10-28)
+Gentler first day. On Oct 28 two servers set up after noon and got the noon full post backdated (37 and 146 minutes late, about 2,000 characters plus clips); one left 11 minutes later.
+- **No stale catch-up after setup.** Setting up (📍 Post here or a first `/setup`) after today's post time skips the slots that already passed instead of sending them late.
+- **Short first look instead.** The channel gets a check-in-sized post right away (countdown, a tip, a class spotlight, a did-you-know; no news or clips) that says when the full daily post starts. Skipped if the next scheduled post is within an hour.
+- The late-post warning now says "bot restarted or was down at post time".
+- New log events: `setup_skipped_slots`, `first_post_skipped`, `first_post_blocked`, `first_post_failed`; the first look logs as `post_sent type=first`.
+
 ## 1.7.0 (2026-10-28)
 Make setup obvious. On Oct 28 a new server tried seven commands in 22 minutes, never found `/setup`, and left.
 - **Welcome card on join.** The bot posts a short hello in the server's system channel (or the first channel it can post in) with a **📍 Post here** button. One click by someone with Manage Server sets up the daily post in that channel at the default time (noon Central). The button disappears once it's used.

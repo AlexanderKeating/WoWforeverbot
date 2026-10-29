@@ -45,6 +45,7 @@ STARTED = time.time()
 
 POST_GRACE = timedelta(hours=3)        # bot was down at post time? still post within 3h
 STAGING_LEAD = timedelta(minutes=60)
+FIRST_POST_QUIET = timedelta(minutes=60)  # set up this close to the next post? skip the first look, it's coming
 SNAP_MAX_AGE = 45 * 60
 MILESTONE_WINDOW = timedelta(minutes=15)
 
@@ -290,6 +291,8 @@ async def quick_setup(interaction: discord.Interaction):
         return await say(f"I can't post in {ch.mention}: {problem}.\n{perm_fix_hint(ch, problem)}")
     cfg.channel_id, cfg.enabled = ch.id, True
     bot.store.upsert_guild(cfg)
+    now = now_utc()
+    skipped = bot.skip_passed_slots(cfg, now)  # before any await: no stale backfill
     ev(clog, "quick_setup", guild=interaction.guild_id, channel=ch.id, user=interaction.user.id, who=_who(interaction))
     await say(f"✅ Done. The daily post goes in {ch.mention} at **{fmt_times(guild_times(cfg))}** ({cfg.tz}).\n"
               "Try `/preview` to see today's post or `/postnow` to post it right away. "
@@ -300,6 +303,8 @@ async def quick_setup(interaction: discord.Interaction):
             await msg.edit(view=None)
         except discord.HTTPException:
             pass
+    if skipped:
+        await bot.send_first_post(cfg, now)
 
 
 def level_for(interaction: discord.Interaction) -> str:
@@ -700,6 +705,55 @@ class ForeverBot(commands.Bot):
         await self.refresh_pin(cfg, f"https://discord.com/channels/{cfg.guild_id}/{channel.id}/{msg_id}")
         return "Posted."
 
+    # ---------------------------------------------------------- first setup (1.7.1)
+    def skip_passed_slots(self, cfg: GuildConfig, now: datetime) -> list[int]:
+        """New server set up mid-day: mark today's already-passed slots as done so the scheduler doesn't
+        backfill a stale full post an hour or two late. Synchronous on purpose: call it right after saving
+        the config, before any await, so the scheduler can't sneak a backfill in between."""
+        kind, _ = R.phase(cfg.tz, now)
+        if kind == "done":
+            return []
+        today = R.local_today(cfg.tz, now)
+        local_now = now.astimezone(ZoneInfo(cfg.tz))
+        skipped = []
+        for slot, hm in enumerate(guild_times(cfg)):
+            key = f"{kind}:{today.isoformat()}:{slot}"
+            if post_dt(cfg, today, hm) <= local_now and not self.store.was_posted(cfg.guild_id, "daily", key):
+                self.store.mark_posted(cfg.guild_id, "daily", key)
+                skipped.append(slot)
+        if skipped:
+            ev(slog, "setup_skipped_slots", guild=cfg.guild_id, slots=",".join(map(str, skipped)),
+               reason="set up after post time")
+        return skipped
+
+    async def send_first_post(self, cfg: GuildConfig, now: datetime) -> str | None:
+        """Short 'first look' after a mid-day setup, so the channel isn't empty until tomorrow. Never raises."""
+        try:
+            nxt = self.next_post(cfg, now)
+            local_now = now.astimezone(ZoneInfo(cfg.tz))
+            if nxt and nxt[1] - local_now <= FIRST_POST_QUIET:
+                ev(slog, "first_post_skipped", guild=cfg.guild_id, reason="next post soon", next_post=nxt[1].isoformat())
+                return None
+            post = R.build_first_post(cfg, now, nxt[1] if nxt else None)
+            if post is None or self.store.was_posted(cfg.guild_id, "daily", post.key):
+                return None
+            channel = self.get_channel(cfg.channel_id)
+            problem = self._can_post(channel)
+            if problem:
+                ev(slog, "first_post_blocked", logging.WARNING, guild=cfg.guild_id, channel=cfg.channel_id, reason=problem)
+                return None
+            t = Timer().__enter__()
+            msg_id, _ = await self.send_post(channel, post)
+            self.store.mark_posted(cfg.guild_id, "daily", post.key)
+            ev(slog, "post_sent", guild=cfg.guild_id, guild_name=getattr(channel.guild, "name", "?"), channel=channel.id,
+               key=post.key, slot="-", type="first", forced=False,
+               chars=sum(len(e.get("description", "")) for e in post.embeds), embeds=len(post.embeds),
+               news=0, clips=0, videos=0, ping=False, message=msg_id, followup=None, ms=t.elapsed_ms)
+            return post.key
+        except Exception as e:  # noqa: BLE001 -- a welcome extra must never break setup
+            ev(slog, "first_post_failed", logging.WARNING, exc_info=e, guild=cfg.guild_id)
+            return None
+
     def pin_view(self, cfg: GuildConfig):
         if not (C.NOTIFY and cfg.ping_role_id):
             return None
@@ -788,7 +842,7 @@ class ForeverBot(commands.Bot):
                 late_min = (local_now - due).total_seconds() / 60
                 if late_min > 5:
                     self.say_once(slog, (cfg.guild_id, key, "late"), "slot_late", logging.WARNING, guild=cfg.guild_id,
-                                  key=key, late_min=late_min, hint="bot was offline or busy at post time")
+                                  key=key, late_min=late_min, hint="bot restarted or was down at post time")
                 await self.post_daily(cfg, now, slot=slot)
             elif local_now >= window_end and not self.store.was_posted(cfg.guild_id, "daily", key):
                 self.say_once(slog, (cfg.guild_id, key, "missed"), "slot_missed", logging.WARNING, guild=cfg.guild_id,
@@ -977,12 +1031,15 @@ async def setup_cmd(interaction: discord.Interaction, channel: discord.TextChann
         return await interaction.response.send_message(
             f"I can't post in {staging.mention}: {bot._can_post(staging)}.\n{perm_fix_hint(staging, '')}", ephemeral=True)
     cfg = cfg_for(interaction)
+    first_setup = not cfg.channel_id
     cfg.channel_id, cfg.ping_role_id = channel.id, ping_role.id if ping_role else None
     cfg.staging_channel_id = staging.id if staging else None
     cfg.post_time, cfg.tz, cfg.enabled = fmt_times(times).replace(" ", ""), timezone, True
     if faction:
         cfg.faction = faction.value
     bot.store.upsert_guild(cfg)
+    now = now_utc()
+    skipped = bot.skip_passed_slots(cfg, now) if first_setup else []  # before any await: no stale backfill
     if ping_role and not ping_role.mentionable and not channel.permissions_for(interaction.guild.me).mention_everyone:
         warn = f"\n⚠️ {ping_role.mention} isn't mentionable. Turn on *Allow anyone to @mention this role* or the ping won't fire."
     else:
@@ -994,6 +1051,8 @@ async def setup_cmd(interaction: discord.Interaction, channel: discord.TextChann
         f"{' Previews go to ' + staging.mention + '.' if staging else ''}\n"
         f"Try `/preview` to see today's post, or `/postnow` to post it right away.{warn}",
         ephemeral=True, allowed_mentions=discord.AllowedMentions.none())
+    if skipped:
+        await bot.send_first_post(cfg, now)
 
 
 @bot.tree.command(name="preview", description="Privately preview today's countdown post")
