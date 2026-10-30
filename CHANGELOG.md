@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.10.5 (2026-10-30)
+Owner DM when a server finishes its first setup (`/setup` or the 📍 Post here button): server name and size, channel, post times and time zone. Brings the bot in line with the privacy page's "Server alerts" row. Changing settings later doesn't DM.
+
 ## 1.10.4 (2026-10-30)
 What's new calls out the bot's new profile photo and banner. No 🆕 line in posts; no behavior changes.
 

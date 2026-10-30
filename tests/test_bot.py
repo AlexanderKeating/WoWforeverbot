@@ -31,6 +31,12 @@ def test_owner_alert_text():
     assert R._stayed(3 * 86400) == "3 days" and R._stayed(60) == "1 minute"
 
 
+def test_owner_setup_text():
+    t = R.owner_setup_text("Gryphons", 42, 6, 9, "countdown", "7:00 PM", "America/Chicago", "`/setup`")
+    assert "**Gryphons** (6 members) finished setup with `/setup`" in t
+    assert "**#countdown** at **7:00 PM** (America/Chicago)" in t and "**9** servers" in t and "42" in t
+
+
 def test_postnow_outcome():
     from forever_bot.bot import postnow_outcome as o
     assert o("Posted.") == "posted" and o("Already posted for this time slot.") == "already_posted"

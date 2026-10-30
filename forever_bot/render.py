@@ -1036,6 +1036,14 @@ def _stayed(seconds: float | None) -> str:
     return f"{h // 24} days"
 
 
+def owner_setup_text(name: str, guild_id: int, members: int | None, total: int, channel: str, times: str,
+                     tz: str, how: str) -> str:
+    """1.10.5: the owner DM when a server finishes setup (matches the privacy page: name, size, channel, time, zone)."""
+    who = f"**{name}**" + (f" ({members} members)" if members else "")
+    return (f"✅ {who} finished setup with {how}: posts in **#{channel}** at **{times}** ({tz}). "
+            f"Now in **{total}** servers.\n-# server id {guild_id}")
+
+
 def owner_alert_text(kind: str, name: str, guild_id: int, members: int | None, total: int,
                      stayed_s: float | None = None, was_set_up: bool | None = None) -> str:
     """1.10: the DM the bot owner gets when a server adds or removes the bot."""

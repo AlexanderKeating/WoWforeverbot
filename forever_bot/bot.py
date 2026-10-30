@@ -317,6 +317,15 @@ async def quick_setup(interaction: discord.Interaction):
             pass
     if skipped:
         await bot.send_first_post(cfg, now)
+    await notify_setup(interaction, cfg, ch.name, "the 📍 Post here button")
+
+
+async def notify_setup(interaction: discord.Interaction, cfg, channel_name: str, how: str):
+    """1.10.5: DM the owner when a server finishes its first setup."""
+    g = interaction.guild
+    await bot.notify_owner(R.owner_setup_text(getattr(g, "name", "?"), interaction.guild_id, getattr(g, "member_count", None),
+                                              len(bot.guilds), channel_name, fmt_times(guild_times(cfg)), cfg.tz, how),
+                           kind="setup", guild=interaction.guild_id)
 
 
 def level_for(interaction: discord.Interaction) -> str:
@@ -1130,6 +1139,8 @@ async def setup_cmd(interaction: discord.Interaction, channel: discord.TextChann
         ephemeral=True, allowed_mentions=discord.AllowedMentions.none())
     if skipped:
         await bot.send_first_post(cfg, now)
+    if first_setup:
+        await notify_setup(interaction, cfg, channel.name, "`/setup`")
 
 
 @bot.tree.command(name="preview", description="Privately preview today's countdown post")
