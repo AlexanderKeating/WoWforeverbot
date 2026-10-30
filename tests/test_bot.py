@@ -22,19 +22,14 @@ def tmp_store():
 
 # ------------------------------------------------------------- 1.10 owner alerts
 def test_owner_alert_text():
-    j = R.owner_alert_text("join", "Gryphons", 42, 6, 8)
-    assert "Added to **Gryphons** (6 members)" in j and "**8** servers" in j and "42" in j
-    r = R.owner_alert_text("remove", "Furs", 7, 4, 7, stayed_s=6 * 60 + 40, was_set_up=True)
-    assert "Removed from **Furs** (4 members) (after 6 minutes, was set up)" in r and "**7** servers" in r
-    assert "never set up" in R.owner_alert_text("remove", "X", 1, None, 7, was_set_up=False)
+    j = R.owner_alert_text("join", 6, 9)
+    assert j == "➕ Added to a server (6 members). Now in **9** servers."
+    assert R.owner_alert_text("setup", 6, 9) == "✅ A server (6 members) finished setup. Now in **9** servers."
+    r = R.owner_alert_text("remove", 4, 8, stayed_s=6 * 60 + 40, was_set_up=False)
+    assert r == "➖ Removed from a server (4 members) after 6 minutes, never set up. Now in **8** servers."
+    assert R.owner_alert_text("remove", None, 7) == "➖ Removed from a server. Now in **7** servers."
     assert R._stayed(30) == "under a minute" and R._stayed(3 * 3600) == "3 hours" and R._stayed(None) == ""
     assert R._stayed(3 * 86400) == "3 days" and R._stayed(60) == "1 minute"
-
-
-def test_owner_setup_text():
-    t = R.owner_setup_text("Gryphons", 42, 6, 9, "countdown", "7:00 PM", "America/Chicago", "`/setup`")
-    assert "**Gryphons** (6 members) finished setup with `/setup`" in t
-    assert "**#countdown** at **7:00 PM** (America/Chicago)" in t and "**9** servers" in t and "42" in t
 
 
 def test_postnow_outcome():

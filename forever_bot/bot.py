@@ -317,14 +317,12 @@ async def quick_setup(interaction: discord.Interaction):
             pass
     if skipped:
         await bot.send_first_post(cfg, now)
-    await notify_setup(interaction, cfg, ch.name, "the 📍 Post here button")
+    await notify_setup(interaction)
 
 
-async def notify_setup(interaction: discord.Interaction, cfg, channel_name: str, how: str):
+async def notify_setup(interaction: discord.Interaction):
     """1.10.5: DM the owner when a server finishes its first setup."""
-    g = interaction.guild
-    await bot.notify_owner(R.owner_setup_text(getattr(g, "name", "?"), interaction.guild_id, getattr(g, "member_count", None),
-                                              len(bot.guilds), channel_name, fmt_times(guild_times(cfg)), cfg.tz, how),
+    await bot.notify_owner(R.owner_alert_text("setup", getattr(interaction.guild, "member_count", None), len(bot.guilds)),
                            kind="setup", guild=interaction.guild_id)
 
 
@@ -558,7 +556,7 @@ class ForeverBot(commands.Bot):
     async def on_guild_join(self, guild):
         ev(log, "guild_join", guild=guild.id, name=guild.name, members=guild.member_count, total=len(self.guilds))
         await self.send_welcome(guild)
-        await self.notify_owner(R.owner_alert_text("join", guild.name, guild.id, guild.member_count, len(self.guilds)),
+        await self.notify_owner(R.owner_alert_text("join", guild.member_count, len(self.guilds)),
                                 kind="join", guild=guild.id)
 
     async def send_welcome(self, guild):
@@ -580,8 +578,7 @@ class ForeverBot(commands.Bot):
         ev(log, "guild_remove", guild=guild.id, name=guild.name, total=len(self.guilds))
         joined = getattr(getattr(guild, "me", None), "joined_at", None)
         stayed = (discord.utils.utcnow() - joined).total_seconds() if joined else None
-        await self.notify_owner(R.owner_alert_text("remove", guild.name, guild.id, guild.member_count, len(self.guilds),
-                                                   stayed_s=stayed, was_set_up=was_set_up),
+        await self.notify_owner(R.owner_alert_text("remove", guild.member_count, len(self.guilds), stayed_s=stayed, was_set_up=was_set_up),
                                 kind="remove", guild=guild.id)
 
     async def alert_owner_id(self) -> int | None:
@@ -1140,7 +1137,7 @@ async def setup_cmd(interaction: discord.Interaction, channel: discord.TextChann
     if skipped:
         await bot.send_first_post(cfg, now)
     if first_setup:
-        await notify_setup(interaction, cfg, channel.name, "`/setup`")
+        await notify_setup(interaction)
 
 
 @bot.tree.command(name="preview", description="Privately preview today's countdown post")

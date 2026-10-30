@@ -1036,20 +1036,22 @@ def _stayed(seconds: float | None) -> str:
     return f"{h // 24} days"
 
 
-def owner_setup_text(name: str, guild_id: int, members: int | None, total: int, channel: str, times: str,
-                     tz: str, how: str) -> str:
-    """1.10.5: the owner DM when a server finishes setup (matches the privacy page: name, size, channel, time, zone)."""
-    who = f"**{name}**" + (f" ({members} members)" if members else "")
-    return (f"✅ {who} finished setup with {how}: posts in **#{channel}** at **{times}** ({tz}). "
-            f"Now in **{total}** servers.\n-# server id {guild_id}")
-
-
-def owner_alert_text(kind: str, name: str, guild_id: int, members: int | None, total: int,
-                     stayed_s: float | None = None, was_set_up: bool | None = None) -> str:
-    """1.10: the DM the bot owner gets when a server adds or removes the bot."""
-    who = f"**{name}**" + (f" ({members} members)" if members else "")
+def owner_alert_text(kind: str, members: int | None, total: int, stayed_s: float | None = None,
+                     was_set_up: bool | None = None) -> str:
+    """1.10.6: the owner DM for a server adding the bot ("join"), finishing setup ("setup") or removing it ("remove").
+    Size and server count only: no server name, ID, channel or settings."""
+    size = f" ({members} members)" if members else ""
+    count = f"Now in **{total}** servers."
     if kind == "join":
-        return f"➕ Added to {who}. Now in **{total}** servers.\n-# server id {guild_id}"
+        return f"➕ Added to a server{size}. {count}"
+    if kind == "setup":
+        return f"✅ A server{size} finished setup. {count}"
+    bits = []
+    if stayed := _stayed(stayed_s):
+        bits.append(f"after {stayed}")
+    if was_set_up is not None:
+        bits.append("was set up" if was_set_up else "never set up")
+    return f"➖ Removed from a server{size}{' ' + ', '.join(bits) if bits else ''}. {count}"
     bits = []
     if stayed := _stayed(stayed_s):
         bits.append(f"after {stayed}")
