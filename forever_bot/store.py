@@ -23,7 +23,9 @@ CREATE TABLE IF NOT EXISTS guilds (
     pin_message_id INTEGER,
     verbosity TEXT NOT NULL DEFAULT 'standard',
     status_alerts INTEGER NOT NULL DEFAULT 1,
-    clips INTEGER NOT NULL DEFAULT 1
+    clips INTEGER NOT NULL DEFAULT 1,
+    updates INTEGER NOT NULL DEFAULT 1,
+    announced TEXT
 );
 CREATE TABLE IF NOT EXISTS users (
     user_id INTEGER PRIMARY KEY, detail TEXT, updated_at REAL
@@ -63,6 +65,8 @@ class GuildConfig:
     verbosity: str = "standard"
     status_alerts: bool = True
     clips: bool = True
+    updates: bool = True
+    announced: str | None = None
 
 
 class Store:
@@ -81,7 +85,8 @@ class Store:
         for col, typ in (("pin_channel_id", "INTEGER"), ("pin_message_id", "INTEGER"),
                          ("verbosity", "TEXT NOT NULL DEFAULT 'standard'"),
                          ("status_alerts", "INTEGER NOT NULL DEFAULT 1"),
-                         ("clips", "INTEGER NOT NULL DEFAULT 1")):
+                         ("clips", "INTEGER NOT NULL DEFAULT 1"),
+                         ("updates", "INTEGER NOT NULL DEFAULT 1"), ("announced", "TEXT")):
             if col not in have:
                 self.db.execute(f"ALTER TABLE guilds ADD COLUMN {col} {typ}")
         # 1.4.2: faction-neutral by default. Servers that never picked a faction got 'horde' as the old
@@ -106,6 +111,7 @@ class Store:
         d["enabled"] = bool(d["enabled"])
         d["status_alerts"] = bool(d.get("status_alerts", 1))
         d["clips"] = bool(d.get("clips", 1))
+        d["updates"] = bool(d.get("updates", 1))
         return GuildConfig(**d)
 
     def all_guilds(self) -> list[GuildConfig]:
@@ -116,23 +122,26 @@ class Store:
             d["enabled"] = bool(d["enabled"])
             d["status_alerts"] = bool(d.get("status_alerts", 1))
             d["clips"] = bool(d.get("clips", 1))
+            d["updates"] = bool(d.get("updates", 1))
             out.append(GuildConfig(**d))
         return out
 
     def upsert_guild(self, cfg: GuildConfig):
         self._x(
             """INSERT INTO guilds (guild_id, channel_id, staging_channel_id, ping_role_id, post_time, tz,
-                                   faction, enabled, hold_date, news_off_date, pin_channel_id, pin_message_id, verbosity, status_alerts, clips)
-               VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+                                   faction, enabled, hold_date, news_off_date, pin_channel_id, pin_message_id, verbosity, status_alerts, clips, updates, announced)
+               VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
                ON CONFLICT(guild_id) DO UPDATE SET channel_id=excluded.channel_id,
                  staging_channel_id=excluded.staging_channel_id, ping_role_id=excluded.ping_role_id,
                  post_time=excluded.post_time, tz=excluded.tz, faction=excluded.faction,
                  enabled=excluded.enabled, hold_date=excluded.hold_date, news_off_date=excluded.news_off_date,
                  pin_channel_id=excluded.pin_channel_id, pin_message_id=excluded.pin_message_id,
-                 verbosity=excluded.verbosity, status_alerts=excluded.status_alerts, clips=excluded.clips""",
+                 verbosity=excluded.verbosity, status_alerts=excluded.status_alerts, clips=excluded.clips,
+                 updates=excluded.updates, announced=excluded.announced""",
             (cfg.guild_id, cfg.channel_id, cfg.staging_channel_id, cfg.ping_role_id, cfg.post_time,
              cfg.tz, cfg.faction, int(cfg.enabled), cfg.hold_date, cfg.news_off_date,
-             cfg.pin_channel_id, cfg.pin_message_id, cfg.verbosity or "standard", int(cfg.status_alerts), int(cfg.clips)),
+             cfg.pin_channel_id, cfg.pin_message_id, cfg.verbosity or "standard", int(cfg.status_alerts), int(cfg.clips),
+             int(cfg.updates), cfg.announced),
         )
 
     def remove_guild(self, guild_id: int):
@@ -156,6 +165,11 @@ class Store:
     def was_posted(self, guild_id: int, kind: str, key: str) -> bool:
         return self._x("SELECT 1 FROM posts WHERE guild_id=? AND kind=? AND key=?",
                        (guild_id, kind, key)).fetchone() is not None
+
+    def set_announced(self, guild_id: int, version: str):
+        """1.9: remember the newest release this server has heard about (one column, so it can't undo
+        a settings change made while a post was sending)."""
+        self._x("UPDATE guilds SET announced=? WHERE guild_id=?", (version, guild_id))
 
     def mark_posted(self, guild_id: int, kind: str, key: str):
         self._x("INSERT OR IGNORE INTO posts VALUES (?,?,?,?)", (guild_id, kind, key, time.time()))

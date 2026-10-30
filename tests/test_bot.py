@@ -1012,3 +1012,48 @@ def test_tips_are_consistent():
     for a in (t for v in C.TIPS.values() for t in v):  # no near-duplicates across topics either
         for b in seen:
             assert a == b or not R.too_similar(a, b, 0.8), (a, b)
+
+
+# ------------------------------------------------------------------ 1.9: what's new
+def test_release_notes_and_update_line():
+    from forever_bot import __version__
+    assert C.RELEASE_NOTES[0]["version"] == __version__, "add player-facing notes for this release to RELEASE_NOTES"
+    vs = [C._vkey(r["version"]) for r in C.RELEASE_NOTES]
+    assert vs == sorted(vs, reverse=True)
+    latest = C.RELEASE_NOTES[0]["version"]
+    # servers that never heard of anything get the newest release with a line; up-to-date ones get nothing
+    got = C.latest_line_since(None)
+    assert got and got[0] == latest and "/clips" in got[1]
+    assert C.latest_line_since("1.8.0")[1] == got[1]
+    assert C.latest_line_since(latest) is None and C.latest_line_since("1.8.1") is None
+    for r in C.RELEASE_NOTES:
+        assert r["notes"] and (r["line"] is None or len(R.update_line(r["line"])) < 250)
+    cfg = Cfg()
+    for slot in (0, 1):
+        p = R.build_daily(cfg, at_post_time(date(2026, 10, 30), cfg), SAMPLE, {}, slot=slot)
+        before = p.embeds[0]["description"].split("\n")
+        R.add_update_line(p, got[1])
+        lines = p.embeds[0]["description"].split("\n")
+        assert lines[-1] == before[-1] and lines[-3].startswith("🆕") and len(lines) == len(before) + 2
+    e = R.whatsnew_embed()
+    assert e["url"] == C.WHATSNEW_URL and len(e["description"]) < 4000 and latest in e["description"]
+
+
+def test_store_remembers_announced_and_updates():
+    from forever_bot.store import GuildConfig
+    st = tmp_store()
+    st.upsert_guild(GuildConfig(guild_id=9, channel_id=1))
+    g = st.get_guild(9)
+    assert g.updates is True and g.announced is None
+    st.set_announced(9, "1.9.0")
+    st.upsert_guild(GuildConfig(guild_id=9, channel_id=1, updates=False, announced="1.9.0"))
+    g = st.get_guild(9)
+    assert g.updates is False and g.announced == "1.9.0" and st.all_guilds()[0].announced == "1.9.0"
+
+
+def test_whatsnew_page_builds():
+    sys.path.insert(0, os.path.join(os.path.dirname(os.path.dirname(__file__)), "tools"))
+    import build_whatsnew as W
+    html_ = W.page()
+    assert html_.startswith("<!doctype html>") and "<code>/clips</code>" in html_ and "`" not in html_
+    assert all(f'id="v{r["version"]}"' in html_ for r in C.RELEASE_NOTES)
