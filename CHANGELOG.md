@@ -1,5 +1,14 @@
 # Changelog
 
+## 1.9.0 (2026-10-30)
+Tell servers what changed, without extra messages.
+- **🆕 line in the next post after a release.** Releases with a `line` in `RELEASE_NOTES` add one short line above the post's footer, once per server. Existing servers get the 1.8.1 line (clips and time zones) in their next post. Servers set up from now on start up to date and don't get old news.
+- **New `/updates [on]`** (admins): turn those lines off or on. On by default.
+- **New `/whatsnew`**: the last three releases in plain words, linking to the full page.
+- **What's new page** at foreversherpa.github.io/whatsnew.html, built from the same notes with `python tools/build_whatsnew.py <path>`.
+- `RELEASE_NOTES` in `content.py` holds the player-facing notes; a test fails if the newest entry doesn't match `__version__`.
+- New log events: `update_line_sent`, `updates_set`.
+
 ## 1.8.1 (2026-10-29)
 Fewer dead ends. On Oct 29 an admin needed three tries at `/setup` because the time zone had to be exactly `America/Chicago`.
 - **Time zones the way people type them.** `/setup timezone:` takes `central`, `CST`, `Central Standard Time`, `america/chicago`, `New York`, `UK`, `CET`, `Helsinki`, `UTC-6` and more. The box suggests matches as you type, and the confirmation says what it read ("Read `central` as America/Chicago").

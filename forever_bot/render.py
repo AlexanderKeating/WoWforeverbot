@@ -570,6 +570,7 @@ SPELLBOOK = {
         "spells": [
             ("countdown", "", "Instant · No cooldown", "Time until launch, shown in your own time zone. After launch, time until raids."),
             ("dates", "", "Instant", "Every key date: name reservation, launch, raids, Hardcore."),
+            ("whatsnew", "", "Instant · Private", "What changed in Forever Sherpa lately."),
         ],
     },
     "learn": {
@@ -630,6 +631,7 @@ SPELLBOOK = {
             ("resume", "", "Instant", "Undo /hold."),
             ("skipnews", "", "Instant · Lasts today", "Post today without the news section."),
             ("clips", "[on]", "Instant", "Turn the Twitch clips under each post on or off (on by default)."),
+            ("updates", "[on]", "Instant", "A short 🆕 line in the next post after Forever Sherpa updates (on by default)."),
             ("status", "", "Instant · Private", "Current settings and which sources are working."),
             ("pinpost", "[channel]", "Instant", "Post a \"start here\" card to pin. It updates itself after every post."),
             ("statusalerts", "[on]", "Instant", "Post Blizzard's Forever outage, maintenance and fix updates here (on by default)."),
@@ -965,6 +967,35 @@ def setup_nudge_text(is_admin: bool) -> str:
 def member_not_in_server_text() -> str:
     return ("-# 📍 Forever Sherpa's commands work here, but the bot itself hasn't been added, so there's no daily "
             "post. Ask a server admin to add it with the link in `/setup`.")
+
+
+def update_line(line: str) -> str:
+    """1.9: the one-liner a server sees in its next post after a release."""
+    return f"🆕 **New in Forever Sherpa:** {line} · `/whatsnew`"
+
+
+def add_update_line(post, line: str):
+    """Put the 🆕 line just above the main embed's last line (the small footer)."""
+    if not post or not post.embeds:
+        return post
+    e = dict(post.embeds[0])
+    lines = e.get("description", "").split("\n")
+    at = len(lines) - 1 if lines and lines[-1].startswith("-#") else len(lines)
+    lines[at:at] = [update_line(line), ""]
+    e["description"] = "\n".join(lines)[:4000]
+    post.embeds = [e] + post.embeds[1:]
+    return post
+
+
+def whatsnew_embed(n: int = 3) -> dict:
+    parts = []
+    for r in C.RELEASE_NOTES[:n]:
+        d = date.fromisoformat(r["date"])
+        parts.append(f"**{r['title']}** · v{r['version']} · {d.strftime('%b')} {d.day}\n"
+                     + "\n".join(f"• {x}" for x in r["notes"]))
+    return {"title": "🆕 What's new in Forever Sherpa", "description": "\n\n".join(parts)[:4000],
+            "color": C.BRAND_COLOR, "url": C.WHATSNEW_URL,
+            "footer": {"text": "Full history: foreversherpa.github.io/whatsnew.html"}}
 
 
 def welcome_embed(now: datetime | None = None) -> dict:

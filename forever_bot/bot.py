@@ -301,6 +301,7 @@ async def quick_setup(interaction: discord.Interaction):
     if problem:
         return await say(f"I can't post in {ch.mention}: {problem}.\n{perm_fix_hint(ch, problem)}")
     cfg.channel_id, cfg.enabled = ch.id, True
+    cfg.announced = cfg.announced or C.RELEASE_NOTES[0]["version"]  # 1.9: new servers start up to date
     bot.store.upsert_guild(cfg)
     now = now_utc()
     skipped = bot.skip_passed_slots(cfg, now)  # before any await: no stale backfill
@@ -696,6 +697,9 @@ class ForeverBot(commands.Bot):
             hint = perm_fix_hint(channel, problem)
             await self.notify_staging(cfg, f"⚠️ Couldn't post the daily countdown: {problem}.\n{hint}")
             return f"⚠️ I can't post in <#{cfg.channel_id}>: {problem}.\n{hint}"
+        news = C.latest_line_since(cfg.announced) if cfg.updates else None  # 1.9: 🆕 line once per release
+        if news:
+            R.add_update_line(post, news[1])
         try:
             msg_id, follow_id = await self.send_post(channel, post, cfg.ping_role_id)
         except discord.HTTPException as e:
@@ -705,6 +709,9 @@ class ForeverBot(commands.Bot):
             return f"Discord rejected the post: {str(e)[:150]}"
         self.store.mark_posted(cfg.guild_id, "daily", post.key)
         self.store.mark_seen(cfg.guild_id, post.used_ids)
+        if news:
+            self.store.set_announced(cfg.guild_id, news[0])
+            ev(slog, "update_line_sent", guild=cfg.guild_id, version=news[0])
         n_news = sum(1 for i in post.used_ids if i.startswith("news:"))
         n_clips = sum(1 for i in post.used_ids if i.startswith("twitch:"))
         n_vids = sum(1 for i in post.used_ids if i.startswith("yt:"))
@@ -1073,6 +1080,8 @@ async def setup_cmd(interaction: discord.Interaction, channel: discord.TextChann
     cfg.post_time, cfg.tz, cfg.enabled = fmt_times(times).replace(" ", ""), timezone, True
     if faction:
         cfg.faction = faction.value
+    if first_setup:
+        cfg.announced = cfg.announced or C.RELEASE_NOTES[0]["version"]  # 1.9: new servers start up to date
     bot.store.upsert_guild(cfg)
     now = now_utc()
     skipped = bot.skip_passed_slots(cfg, now) if first_setup else []  # before any await: no stale backfill
@@ -1624,6 +1633,31 @@ async def clips_cmd(interaction: discord.Interaction, on: bool | None = None):
     ev(clog, "clips_set", guild=cfg.guild_id, on=on, by=interaction.user.id)
     await interaction.response.send_message(
         f"✅ Clips are now **{'on' if on else 'off'}** here, starting with the next post.", ephemeral=True)
+
+
+@bot.tree.command(name="updates", description="Turn the short 'new in Forever Sherpa' line in posts on or off")
+@app_commands.guild_only()
+@admin
+@app_commands.describe(on="On adds one short line to the next post after an update. Off leaves posts alone.")
+async def updates_cmd(interaction: discord.Interaction, on: bool | None = None):
+    cfg = bot.store.get_guild(interaction.guild_id)
+    if not cfg or not cfg.channel_id:
+        return await need_setup(interaction)
+    if on is None:
+        state = "on" if cfg.updates else "off"
+        return await interaction.response.send_message(
+            f"Update notes are **{state}** here. When on, the first post after a Forever Sherpa update gets one short "
+            f"🆕 line about what changed. Nothing else is ever sent.\n-# `/whatsnew` shows recent changes any time. "
+            f"Change it with `/updates on:False` or `on:True`.", ephemeral=True)
+    cfg.updates = on
+    bot.store.upsert_guild(cfg)
+    ev(clog, "updates_set", guild=cfg.guild_id, on=on, by=interaction.user.id)
+    await interaction.response.send_message(f"✅ Update notes are now **{'on' if on else 'off'}** here.", ephemeral=True)
+
+
+@bot.tree.command(name="whatsnew", description="What changed in Forever Sherpa lately")
+async def whatsnew_cmd(interaction: discord.Interaction):
+    await interaction.response.send_message(embed=discord.Embed.from_dict(R.whatsnew_embed()), ephemeral=True)
 
 
 @bot.tree.command(name="pinpost", description="Post a 'start here' card to pin (it keeps itself updated)")

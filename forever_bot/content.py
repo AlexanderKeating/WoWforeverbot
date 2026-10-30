@@ -833,3 +833,73 @@ DID_YOU_KNOW += [
     ("vet", "One of the account-wide Legacy rewards is a mount: the Reins of the Spectral Bear."),
     ("vet", "Shen'dralas, the Highborne you met inside Dire Maul, finally get their own zone in Forever."),
 ]
+
+
+# ------------------------------------------------------------------ 1.9: what's new
+# Player-facing release notes: /whatsnew, the 🆕 line in the next post after a release, and the
+# What's new page (foreversherpa.github.io/whatsnew.html). Newest first. "line" is the one-liner a
+# server sees in its next post; None means the release isn't worth interrupting anyone for.
+WHATSNEW_URL = SITE_URL + "/whatsnew.html"
+RELEASE_NOTES = [
+    {"version": "1.9.0", "date": "2026-10-30", "title": "What's new, right in your posts",
+     "line": None,
+     "notes": [
+         "After an update, the next post in your server gets one short 🆕 line about what changed. Admins can turn it off with `/updates`.",
+         "`/whatsnew` shows recent changes any time, and there's a What's new page on the website.",
+     ]},
+    {"version": "1.8.1", "date": "2026-10-29", "title": "Setup that understands you",
+     "line": "admins can turn clips off with `/clips`, and `/setup` now understands time zones like \"central\" or \"Helsinki\".",
+     "notes": [
+         "`/setup` understands time zones the way people type them: `central`, `CST`, `New York`, `UK`, `CET`, `Helsinki`, `UTC-6`. It also suggests matches as you type.",
+         "Post times can be written as `noon`, `7p`, `7:30 pm` or `19.30`.",
+         "If something still can't be read, the bot tells you what it got and what would work, and changes nothing.",
+         "Admin commands used before setup now offer the one-click 📍 Post here button.",
+         "Every tip was rewritten to say what to do and why, with duplicates merged and the best ones first.",
+     ]},
+    {"version": "1.8.0", "date": "2026-10-29", "title": "Turn clips off",
+     "line": "Admins can turn the Twitch clips off with `/clips`.",
+     "notes": [
+         "New `/clips` for admins: turn the Twitch clips under each post off, or back on.",
+         "The welcome card lists the settings that make the post fit your server.",
+     ]},
+    {"version": "1.7.1", "date": "2026-10-28", "title": "A gentler first day",
+     "line": None,
+     "notes": [
+         "Setting up after today's post time no longer sends a late catch-up post. You get a short first look instead, and the full post starts on schedule.",
+     ]},
+    {"version": "1.7.0", "date": "2026-10-28", "title": "One-click setup",
+     "line": None,
+     "notes": [
+         "When the bot joins a server it says hello with a 📍 Post here button. One click sets up the daily post.",
+         "`/setup` uses the channel you're in if you don't pick one.",
+         "`/help` shows a ⭐ Start here banner until the server is set up.",
+     ]},
+    {"version": "1.6.0", "date": "2026-10-27", "title": "Outage alerts and better clips",
+     "line": None,
+     "notes": [
+         "Blizzard's Forever outage, maintenance and fix updates can post in your channel. Admins control it with `/statusalerts`.",
+         "Clips: never two from the same streamer, no near-duplicates, and no clips under 20 views.",
+         "Fifteen new did-you-knows, and no more repeats inside one post.",
+     ]},
+    {"version": "1.5.0", "date": "2026-10-27", "title": "More depth",
+     "line": None,
+     "notes": [
+         "Forty new tips, plus new gold and Legacy topics in `/tips`.",
+         "New `/dungeons` (Forever's nine new dungeons) and `/addons` (starter picks that work on Forever).",
+         "Alliance race lists and racial tips on class cards.",
+     ]},
+]
+
+
+def latest_line_since(version: str | None) -> tuple[str, str] | None:
+    """(latest version, line) for the newest announced release after `version`, or None."""
+    for r in RELEASE_NOTES:
+        if version is not None and _vkey(r["version"]) <= _vkey(version):
+            return None
+        if r["line"]:
+            return RELEASE_NOTES[0]["version"], r["line"]
+    return None
+
+
+def _vkey(v: str) -> tuple:
+    return tuple(int(x) for x in v.split("."))
