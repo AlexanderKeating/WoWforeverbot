@@ -31,6 +31,28 @@ def test_owner_alert_text():
     assert R._stayed(3 * 86400) == "3 days" and R._stayed(60) == "1 minute"
 
 
+def test_owner_dm_on_real_bot():
+    os.environ["DB_PATH"] = os.path.join(tempfile.mkdtemp(), "b.db")
+    from types import SimpleNamespace
+    from forever_bot.bot import ForeverBot
+    b = ForeverBot()
+    sent = []
+
+    class U:
+        async def send(self, t):
+            sent.append(t)
+
+    async def app_info():
+        return SimpleNamespace(team=None, owner=SimpleNamespace(id=77))
+
+    b.application_info = app_info
+    b.get_user = lambda uid: U() if uid == 77 else None
+    os.environ.pop("OWNER_ID", None)
+    os.environ.pop("OWNER_ALERTS", None)
+    asyncio.run(b.notify_owner("hello", kind="join", guild=1))
+    assert sent == ["hello"]
+
+
 # ------------------------------------------------------------- matching
 def test_forever_matching_variants():
     yes = ["WoW: Forever launch time", "World of Warcraft: Forever beta", "#WoWForever is here",

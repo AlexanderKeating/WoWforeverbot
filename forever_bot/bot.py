@@ -575,8 +575,8 @@ class ForeverBot(commands.Bot):
                                                    stayed_s=stayed, was_set_up=was_set_up),
                                 kind="remove", guild=guild.id)
 
-    async def owner_id(self) -> int | None:
-        """OWNER_ID if set, else whoever owns the bot in the Discord Developer Portal."""
+    async def alert_owner_id(self) -> int | None:
+        """Who gets owner DMs. (Not `owner_id`: discord.py's Bot already has that attribute.) OWNER_ID if set, else whoever owns the bot in the Discord Developer Portal."""
         if self._owner_id is None:
             env = os.getenv("OWNER_ID", "").strip()
             if env.isdigit():
@@ -591,7 +591,7 @@ class ForeverBot(commands.Bot):
         if os.getenv("OWNER_ALERTS", "on").strip().lower() in ("off", "0", "false", "no"):
             return
         try:
-            uid = await self.owner_id()
+            uid = await self.alert_owner_id()
             user = self.get_user(uid) or await self.fetch_user(uid)
             await user.send(text)
             ev(log, "owner_dm_sent", **fields)

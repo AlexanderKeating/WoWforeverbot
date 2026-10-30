@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.10.2 (2026-10-30)
+Fix owner DMs. In 1.10.0 they failed with `'NoneType' object is not callable` (two joins on Oct 30): the method was named `owner_id`, which discord.py's `Bot` already sets to `None`. Renamed to `alert_owner_id`; a test now runs the DM path on a real `ForeverBot`.
+
 ## 1.10.1 (2026-10-30)
 Keep behind-the-scenes releases out of What's new.
 - Releases marked `"internal": True` in `RELEASE_NOTES` are left out of `/whatsnew` and the What's new page. 1.10.0 (owner alerts) and 1.10.1 are internal.
