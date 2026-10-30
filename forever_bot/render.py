@@ -57,7 +57,7 @@ _FACTION_SWAPS = [
     ("Undead vs a Warlock:", "Undead (Horde) vs a Warlock:"),
     ("Darkspear Raiders base at Merchant Coast", "Darkspear Raiders base at Merchant Coast (Horde)"),
     ("**Buy your mount from Genn Fairweather on Zephras Isle**", "**Horde Skyborne: buy your mount from Genn Fairweather on Zephras Isle**"),
-    ("Pick the **PvP** ruleset and **Horde**.", "Pick a ruleset (Normal, PvP or Roleplay) and a faction with your group."),
+    ("Pick the **PvP** ruleset and **Horde**.", "Pick a ruleset (Normal, PvP, Roleplay or Roleplay-PvP) and a faction with your group."),
 ]
 
 
