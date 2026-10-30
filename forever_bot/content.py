@@ -842,6 +842,9 @@ DID_YOU_KNOW += [
 # "internal": True keeps a behind-the-scenes release out of /whatsnew and the What's new page.
 WHATSNEW_URL = SITE_URL + "/whatsnew.html"
 RELEASE_NOTES = [
+    {"version": "1.10.2", "date": "2026-10-30", "title": "Owner alerts fix",
+     "line": None, "internal": True,
+     "notes": ["Behind the scenes: owner join and leave DMs now send."]},
     {"version": "1.10.1", "date": "2026-10-30", "title": "Internal releases stay out of What's new",
      "line": None, "internal": True,
      "notes": [
