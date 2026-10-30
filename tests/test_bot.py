@@ -20,6 +20,17 @@ def tmp_store():
     return Store(os.path.join(tempfile.mkdtemp(), "t.db"))
 
 
+# ------------------------------------------------------------- 1.10 owner alerts
+def test_owner_alert_text():
+    j = R.owner_alert_text("join", "Gryphons", 42, 6, 8)
+    assert "Added to **Gryphons** (6 members)" in j and "**8** servers" in j and "42" in j
+    r = R.owner_alert_text("remove", "Furs", 7, 4, 7, stayed_s=6 * 60 + 40, was_set_up=True)
+    assert "Removed from **Furs** (4 members) (after 6 minutes, was set up)" in r and "**7** servers" in r
+    assert "never set up" in R.owner_alert_text("remove", "X", 1, None, 7, was_set_up=False)
+    assert R._stayed(30) == "under a minute" and R._stayed(3 * 3600) == "3 hours" and R._stayed(None) == ""
+    assert R._stayed(3 * 86400) == "3 days" and R._stayed(60) == "1 minute"
+
+
 # ------------------------------------------------------------- matching
 def test_forever_matching_variants():
     yes = ["WoW: Forever launch time", "World of Warcraft: Forever beta", "#WoWForever is here",

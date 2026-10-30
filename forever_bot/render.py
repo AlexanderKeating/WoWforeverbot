@@ -1020,3 +1020,32 @@ def welcome_embed(now: datetime | None = None) -> dict:
         "color": C.BRAND_COLOR,
         "footer": {"text": "Only people with Manage Server can use the button."},
     }
+
+
+def _stayed(seconds: float | None) -> str:
+    if seconds is None or seconds < 0:
+        return ""
+    m = int(seconds // 60)
+    if m < 1:
+        return "under a minute"
+    if m < 60:
+        return f"{m} minute{'s' if m != 1 else ''}"
+    h = m // 60
+    if h < 48:
+        return f"{h} hour{'s' if h != 1 else ''}"
+    return f"{h // 24} days"
+
+
+def owner_alert_text(kind: str, name: str, guild_id: int, members: int | None, total: int,
+                     stayed_s: float | None = None, was_set_up: bool | None = None) -> str:
+    """1.10: the DM the bot owner gets when a server adds or removes the bot."""
+    who = f"**{name}**" + (f" ({members} members)" if members else "")
+    if kind == "join":
+        return f"➕ Added to {who}. Now in **{total}** servers.\n-# server id {guild_id}"
+    bits = []
+    if stayed := _stayed(stayed_s):
+        bits.append(f"after {stayed}")
+    if was_set_up is not None:
+        bits.append("was set up" if was_set_up else "never set up")
+    extra = f" ({', '.join(bits)})" if bits else ""
+    return f"➖ Removed from {who}{extra}. Now in **{total}** servers.\n-# server id {guild_id}"

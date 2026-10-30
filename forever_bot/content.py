@@ -841,6 +841,11 @@ DID_YOU_KNOW += [
 # server sees in its next post; None means the release isn't worth interrupting anyone for.
 WHATSNEW_URL = SITE_URL + "/whatsnew.html"
 RELEASE_NOTES = [
+    {"version": "1.10.0", "date": "2026-10-30", "title": "Owner alerts",
+     "line": None,
+     "notes": [
+         "Behind the scenes: the bot's owner now gets a DM when a server adds or removes the bot.",
+     ]},
     {"version": "1.9.1", "date": "2026-10-30", "title": "Facts check",
      "line": None,
      "notes": [

@@ -505,6 +505,7 @@ class ForeverBot(commands.Bot):
         self.cmd_ids: dict[str, int] = {}
         self._said: set = set()  # (guild, day, slot, reason) already logged: keeps the 60s loop from spamming
         self._nudged: dict[tuple, float] = {}  # (guild, user) -> last "not set up yet" reminder (1.7)
+        self._owner_id: int | None = None  # 1.10: who gets server join/leave DMs
 
     async def setup_hook(self):
         self.add_view(RollcallView(self))  # persistent: buttons keep working after restarts
@@ -548,6 +549,8 @@ class ForeverBot(commands.Bot):
     async def on_guild_join(self, guild):
         ev(log, "guild_join", guild=guild.id, name=guild.name, members=guild.member_count, total=len(self.guilds))
         await self.send_welcome(guild)
+        await self.notify_owner(R.owner_alert_text("join", guild.name, guild.id, guild.member_count, len(self.guilds)),
+                                kind="join", guild=guild.id)
 
     async def send_welcome(self, guild):
         """1.7: say hello and offer one-click setup, so new servers don't have to find /setup on their own."""
@@ -563,8 +566,37 @@ class ForeverBot(commands.Bot):
             ev(log, "welcome_failed", logging.WARNING, guild=guild.id, channel=ch.id, error=str(e)[:150])
 
     async def on_guild_remove(self, guild):
+        was_set_up = is_set_up(guild.id)
         self.store.remove_guild(guild.id)
         ev(log, "guild_remove", guild=guild.id, name=guild.name, total=len(self.guilds))
+        joined = getattr(getattr(guild, "me", None), "joined_at", None)
+        stayed = (discord.utils.utcnow() - joined).total_seconds() if joined else None
+        await self.notify_owner(R.owner_alert_text("remove", guild.name, guild.id, guild.member_count, len(self.guilds),
+                                                   stayed_s=stayed, was_set_up=was_set_up),
+                                kind="remove", guild=guild.id)
+
+    async def owner_id(self) -> int | None:
+        """OWNER_ID if set, else whoever owns the bot in the Discord Developer Portal."""
+        if self._owner_id is None:
+            env = os.getenv("OWNER_ID", "").strip()
+            if env.isdigit():
+                self._owner_id = int(env)
+            else:
+                app = await self.application_info()
+                self._owner_id = app.team.owner_id if app.team else app.owner.id
+        return self._owner_id
+
+    async def notify_owner(self, text: str, **fields):
+        """1.10: DM the owner about server joins and leaves. OWNER_ALERTS=off turns it off. Never raises."""
+        if os.getenv("OWNER_ALERTS", "on").strip().lower() in ("off", "0", "false", "no"):
+            return
+        try:
+            uid = await self.owner_id()
+            user = self.get_user(uid) or await self.fetch_user(uid)
+            await user.send(text)
+            ev(log, "owner_dm_sent", **fields)
+        except Exception as e:  # noqa: BLE001 - an alert to the owner must never break joining or leaving
+            ev(log, "owner_dm_failed", logging.WARNING, error=str(e)[:150], **fields)
 
     async def on_app_command_completion(self, interaction: discord.Interaction, command):
         ev(clog, "command", name=command.qualified_name, guild=interaction.guild_id, user=interaction.user.id,

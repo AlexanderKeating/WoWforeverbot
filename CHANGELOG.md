@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.10.0 (2026-10-30)
+Know right away when servers come and go. Four servers added the bot on Oct 30, and two left within minutes.
+- **Owner DMs on join and leave.** The bot DMs its owner when it's added to a server (name, members, new total) and when it's removed (how long it stayed, whether it was ever set up).
+- The owner is whoever owns the app in the Discord Developer Portal. `OWNER_ID` overrides it; `OWNER_ALERTS=off` turns the DMs off.
+- New log events: `owner_dm_sent`, `owner_dm_failed`.
+
 ## 1.9.1 (2026-10-30)
 Facts check. No behavior changes.
 - **Roleplay-PvP ruleset.** Blizzard added it for launch (Aggrend, Oct 22; ruleset article updated Oct 22). Ruleset lists in the day-9 rundown, the ruleset deep dive and the neutral FAQ now name it. Its faction rules aren't announced, so nothing says it locks a faction.
