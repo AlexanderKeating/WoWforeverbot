@@ -31,6 +31,14 @@ def test_owner_alert_text():
     assert R._stayed(3 * 86400) == "3 days" and R._stayed(60) == "1 minute"
 
 
+def test_postnow_outcome():
+    from forever_bot.bot import postnow_outcome as o
+    assert o("Posted.") == "posted" and o("Already posted for this time slot.") == "already_posted"
+    assert o("Nothing to post: the countdown is finished.") == "finished"
+    assert o("⚠️ I can't post in <#1>: missing perms.") == "blocked" and o("Discord rejected the post: x") == "failed"
+    assert o("something new") == "other"
+
+
 def test_owner_dm_on_real_bot():
     os.environ["DB_PATH"] = os.path.join(tempfile.mkdtemp(), "b.db")
     from types import SimpleNamespace
