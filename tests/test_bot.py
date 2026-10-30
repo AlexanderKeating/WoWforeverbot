@@ -438,6 +438,10 @@ def test_event_pings():
     assert stamps == sorted(stamps) and all(s.tzinfo for s in stamps)
     assert len({k for _, k, _ in C.EVENT_PINGS}) == len(C.EVENT_PINGS)
     assert datetime.fromisoformat(C.EVENT_PINGS[1][0]) == datetime(2026, 10, 27, 20, tzinfo=timezone.utc)  # 1 PM PDT
+    launch = [i for i, k, _ in C.EVENT_PINGS if k == "launch-open"]
+    assert launch and datetime.fromisoformat(launch[0]) == C.LAUNCH  # 3 PM PST
+    assert str(int(C.LAUNCH.timestamp())) in dict((k, t) for _, k, t in C.EVENT_PINGS)["launch-open"]
+    assert "horde" not in dict((k, t) for _, k, t in C.EVENT_PINGS)["launch-open"].lower()  # goes to every server
 
 
 def test_detail_levels():

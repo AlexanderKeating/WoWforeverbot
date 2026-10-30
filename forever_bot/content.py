@@ -55,6 +55,12 @@ EVENT_PINGS = [  # (UTC time, key, text). Times checked against Blizzard's annou
      "for a crowded faction on launch night. Runs through Nov 3."),
     ("2026-11-03T16:00:00+00:00", "names-last",
      "⏰ **Last day of name reservation.** If you haven't locked in your name yet, today's the day."),
+    # 1.11: one plain message when servers open (= LAUNCH, 3 PM Pacific / 5 PM Central). No ping.
+    ("2026-11-04T23:00:00+00:00", "launch-open",
+     "🚀 **WoW: Forever is live.** Servers are open now (<t:1793833200:t> your time).\n"
+     "Expect queues and crowded starting zones tonight. Group up with friends early so you land on the same layer, "
+     "and group with people hunting the same mobs instead of racing them.\n"
+     "-# Daily posts keep going: from tomorrow it's a topic a day and the countdown to raids."),
 ]
 
 # Shown at the top of the daily post on that date.
@@ -842,6 +848,9 @@ DID_YOU_KNOW += [
 # "internal": True keeps a behind-the-scenes release out of /whatsnew and the What's new page.
 WHATSNEW_URL = SITE_URL + "/whatsnew.html"
 RELEASE_NOTES = [
+    {"version": "1.11.0", "date": "2026-11-04", "title": "Launch night",
+     "line": None,
+     "notes": ["A short \"servers are open\" message posts once in each server when WoW: Forever goes live. No pings."]},
     {"version": "1.10.5", "date": "2026-10-30", "title": "Owner setup alerts",
      "line": None, "internal": True,
      "notes": ["Behind the scenes: the owner also gets a DM when a server finishes setup."]},

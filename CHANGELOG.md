@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.11.0 (launch release, on branch `release/launch` until Nov 4)
+Launch night.
+- **"Servers are open" post** at launch (Nov 4, 3 PM Pacific / 5 PM Central, 23:00 UTC): one plain message per server, no pings, sent once (event key `launch-open`, logs as `event_sent`). Until now nothing posted at the moment servers opened; the launch-day post goes out at each server's own post time.
+
 ## 1.10.5 (2026-10-30)
 Owner DM when a server finishes its first setup (`/setup` or the 📍 Post here button): server name and size, channel, post times and time zone. Brings the bot in line with the privacy page's "Server alerts" row. Changing settings later doesn't DM.
 
