@@ -1187,6 +1187,15 @@ async def frequency_cmd(interaction: discord.Interaction, per_day: app_commands.
         ephemeral=True)
 
 
+def postnow_outcome(reply: str) -> str:
+    """1.10.3: one word for what /postnow did, from post_daily's reply."""
+    for prefix, word in (("Posted.", "posted"), ("Already posted", "already_posted"), ("Nothing to post", "finished"),
+                         ("⚠️ I can't post", "blocked"), ("Discord rejected", "failed")):
+        if reply.startswith(prefix):
+            return word
+    return "other"
+
+
 @bot.tree.command(name="postnow", description="Post now (today's full post first, then check-ins)")
 @app_commands.guild_only()
 @admin
@@ -1204,10 +1213,19 @@ async def postnow_cmd(interaction: discord.Interaction):
     if bot.store.was_posted(cfg.guild_id, "daily", f"{kind}:{today}:0"):
         slot = max(1, current_slot(cfg, now))
         if slot >= len(guild_times(cfg)):
+            ev(clog, "postnow", guild=cfg.guild_id, user=interaction.user.id, outcome="already_up", slot=slot,
+               slots=len(guild_times(cfg)), key=f"{kind}:{today}:0")
             return await interaction.followup.send(
                 "Today's full post is already up, and you're on 1 post a day. Use `/frequency` to add check-ins.",
                 ephemeral=True)
-    msg = await bot.post_daily(cfg, now, slot=slot)
+    try:
+        msg = await bot.post_daily(cfg, now, slot=slot)
+    except Exception as e:
+        ev(clog, "postnow", logging.ERROR, exc_info=e, guild=cfg.guild_id, user=interaction.user.id,
+           outcome="error", slot=slot)
+        raise
+    ev(clog, "postnow", guild=cfg.guild_id, user=interaction.user.id, outcome=postnow_outcome(msg), slot=slot,
+       reply=msg[:80])
     await interaction.followup.send(msg, ephemeral=True)
 
 

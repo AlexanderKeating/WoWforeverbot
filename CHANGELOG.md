@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.10.3 (2026-10-30)
+Log what `/postnow` did. On Oct 30 two admins ran `/postnow` right after setup and the logs showed no `post_sent` and no reason.
+- New log event `postnow` with `outcome=` `posted`, `already_up` (today's full post counts as done and the server is on 1 post a day), `already_posted`, `finished`, `blocked`, `failed`, `error` or `other`, plus `slot` and the start of the reply.
+
 ## 1.10.2 (2026-10-30)
 Fix owner DMs. In 1.10.0 they failed with `'NoneType' object is not callable` (two joins on Oct 30): the method was named `owner_id`, which discord.py's `Bot` already sets to `None`. Renamed to `alert_owner_id`; a test now runs the DM path on a real `ForeverBot`.
 
