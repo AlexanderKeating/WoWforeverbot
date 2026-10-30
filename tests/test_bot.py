@@ -956,3 +956,45 @@ def test_welcome_calls_out_key_admin_commands():
     desc = R.welcome_embed(datetime(2026, 10, 30, tzinfo=timezone.utc))["description"]
     for cmd in ("/preview", "/verbosity", "/clips", "/frequency", "/hold", "/statusalerts"):
         assert cmd in desc, cmd
+
+
+# ------------------------------------------------------------------ 1.8.1: forgiving inputs
+def test_timezones_people_actually_type():
+    from forever_bot import inputs as I
+    cases = {"central": "America/Chicago", "Central": "America/Chicago", "CST": "America/Chicago",
+             "america/chicago": "America/Chicago", "America/Chicago": "America/Chicago",
+             "Central Standard Time": "America/Chicago", "eastern": "America/New_York", "New York": "America/New_York",
+             "pacific time": "America/Los_Angeles", "PST": "America/Los_Angeles", "Mountain": "America/Denver",
+             "Arizona": "America/Phoenix", "UK": "Europe/London", "london": "Europe/London", "CET": "Europe/Paris",
+             "Helsinki": "Europe/Helsinki", "finland": "Europe/Helsinki", "europe/helsinki": "Europe/Helsinki",
+             "Sydney": "Australia/Sydney", "utc": "UTC", "UTC-6": "Etc/GMT+6", "GMT+2": "Etc/GMT-2"}
+    for typed, want in cases.items():
+        assert I.resolve_tz(typed) == want, (typed, I.resolve_tz(typed))
+    for bad in ("", "asdf", "centrl", "UTC+99"):
+        assert I.resolve_tz(bad) is None, bad
+    assert I.suggest_tz("centrl")[0] == "America/Chicago"
+    assert "America/Chicago" in I.bad_tz_text("centrl") and "`centrl`" in I.bad_tz_text("centrl")
+    assert I.tz_choices("")[0][1] == "America/Chicago"
+    assert any(v == "Europe/Helsinki" for _, v in I.tz_choices("hel"))
+    assert I.tz_choices("central")[0][1] == "America/Chicago"
+    assert all(len(n) <= 100 and len(v) <= 100 for n, v in I.tz_choices("a")) and len(I.tz_choices("a")) <= 25
+
+
+def test_times_people_actually_type():
+    os.environ.setdefault("DB_PATH", os.path.join(tempfile.mkdtemp(), "b.db"))
+    from forever_bot import bot as B
+    ok = {"12pm": (12, 0), "12 PM": (12, 0), "7:30pm": (19, 30), "7p": (19, 0), "7 p.m.": (19, 0),
+          "19:30": (19, 30), "19.30": (19, 30), "1930": (19, 30), "730pm": (19, 30), "noon": (12, 0),
+          "Midnight": (0, 0), "12am": (0, 0), "19h30": (19, 30)}
+    for typed, want in ok.items():
+        assert B.parse_hhmm(typed) == want, (typed, B.parse_hhmm(typed))
+    for bad in ("13pm", "25:00", "abc", "0am", ""):
+        assert B.parse_hhmm(bad) is None, bad
+    assert B.parse_times("noon and 7p") == [(12, 0), (19, 0)]
+    assert B.parse_times("12 pm, 7 pm") == [(12, 0), (19, 0)]
+    assert "`lunch`" in B.check_times(None, "lunch")
+
+
+def test_no_dead_end_setup_replies():
+    src = open(os.path.join(os.path.dirname(__file__), "..", "forever_bot", "bot.py")).read()
+    assert 'Run `/setup` first."' not in src  # every one offers the Post here button now (need_setup)
