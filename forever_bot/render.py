@@ -969,6 +969,18 @@ def member_not_in_server_text() -> str:
             "post. Ask a server admin to add it with the link in `/setup`.")
 
 
+def owner_alert(kind: str, name: str, members: int | None = None, total: int | None = None,
+                channel: str | None = None, when: str | None = None, tz: str | None = None, how: str | None = None) -> str:
+    """1.9.1: the DM the bot's owner gets. No member names, only the server's own details."""
+    n = esc(name or "a server")
+    if kind == "join":
+        m = f" · {members} members" if members is not None else ""
+        return f"➕ Joined **{n}**{m} · now in {total} servers"
+    if kind == "leave":
+        return f"➖ Removed from **{n}** · now in {total} servers"
+    return f"✅ **{n}** finished setup ({how}) · posts in #{esc(channel or '?')} at {when} {tz}"
+
+
 def update_line(line: str) -> str:
     """1.9: the one-liner a server sees in its next post after a release."""
     return f"🆕 **New in Forever Sherpa:** {line} · `/whatsnew`"

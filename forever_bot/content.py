@@ -841,6 +841,11 @@ DID_YOU_KNOW += [
 # server sees in its next post; None means the release isn't worth interrupting anyone for.
 WHATSNEW_URL = SITE_URL + "/whatsnew.html"
 RELEASE_NOTES = [
+    {"version": "1.9.1", "date": "2026-10-30", "title": "Faster help on day one",
+     "line": None,
+     "notes": [
+         "Forever Sherpa's maintainer now gets a heads-up when the bot joins, leaves or finishes setup in a server (the server's name and size only), so first-day problems get spotted and fixed sooner.",
+     ]},
     {"version": "1.9.0", "date": "2026-10-30", "title": "What's new, right in your posts",
      "line": None,
      "notes": [

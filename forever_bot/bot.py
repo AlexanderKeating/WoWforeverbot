@@ -306,6 +306,8 @@ async def quick_setup(interaction: discord.Interaction):
     now = now_utc()
     skipped = bot.skip_passed_slots(cfg, now)  # before any await: no stale backfill
     ev(clog, "quick_setup", guild=interaction.guild_id, channel=ch.id, user=interaction.user.id, who=_who(interaction))
+    bot.alert_owner(R.owner_alert("setup", getattr(interaction.guild, "name", None), channel=ch.name, when=fmt_times(guild_times(cfg)),
+                                  tz=cfg.tz, how="📍 Post here"))
     await say(f"✅ Done. The daily post goes in {ch.mention} at **{fmt_times(guild_times(cfg))}** ({cfg.tz}).\n"
               "Try `/preview` to see today's post or `/postnow` to post it right away. "
               "`/setup` changes the time, time zone, ping role or faction.")
@@ -547,7 +549,33 @@ class ForeverBot(commands.Bot):
 
     async def on_guild_join(self, guild):
         ev(log, "guild_join", guild=guild.id, name=guild.name, members=guild.member_count, total=len(self.guilds))
+        self.alert_owner(R.owner_alert("join", guild.name, members=guild.member_count, total=len(self.guilds)))
         await self.send_welcome(guild)
+
+    # ---------------------------------------------------------- 1.9.1: owner alerts
+    async def _owner(self):
+        """Who gets join/leave/setup DMs: OWNER_ID if set, else the app's owner on the Developer Portal."""
+        if getattr(self, "_owner_user", None) is None:
+            oid = os.getenv("OWNER_ID")
+            if oid and oid.strip().isdigit():
+                self._owner_user = await self.fetch_user(int(oid))
+            else:
+                info = await self.application_info()
+                self._owner_user = info.team.owner if info.team and info.team.owner else info.owner
+        return self._owner_user
+
+    async def _send_owner_alert(self, text: str):
+        try:
+            owner = await self._owner()
+            await owner.send(text, allowed_mentions=discord.AllowedMentions.none())
+            ev(log, "owner_alert_sent", kind=text.split(" ", 1)[0])
+        except Exception as e:  # noqa: BLE001 — an alert must never break joins or setup
+            ev(log, "owner_alert_failed", logging.WARNING, error=f"{type(e).__name__}: {str(e)[:150]}")
+
+    def alert_owner(self, text: str | None):
+        """Fire and forget a DM to the bot's owner. Server members never see these."""
+        if text and os.getenv("OWNER_ALERTS", "on").lower() not in ("off", "0", "false", "no"):
+            asyncio.get_running_loop().create_task(self._send_owner_alert(text))
 
     async def send_welcome(self, guild):
         """1.7: say hello and offer one-click setup, so new servers don't have to find /setup on their own."""
@@ -565,6 +593,7 @@ class ForeverBot(commands.Bot):
     async def on_guild_remove(self, guild):
         self.store.remove_guild(guild.id)
         ev(log, "guild_remove", guild=guild.id, name=guild.name, total=len(self.guilds))
+        self.alert_owner(R.owner_alert("leave", guild.name, total=len(self.guilds)))
 
     async def on_app_command_completion(self, interaction: discord.Interaction, command):
         ev(clog, "command", name=command.qualified_name, guild=interaction.guild_id, user=interaction.user.id,
@@ -1096,6 +1125,9 @@ async def setup_cmd(interaction: discord.Interaction, channel: discord.TextChann
         f"{' Previews go to ' + staging.mention + '.' if staging else ''}\n"
         f"Try `/preview` to see today's post, or `/postnow` to post it right away.{warn}{tz_note}",
         ephemeral=True, allowed_mentions=discord.AllowedMentions.none())
+    if first_setup:
+        bot.alert_owner(R.owner_alert("setup", getattr(interaction.guild, "name", None), channel=channel.name, when=fmt_times(times),
+                                      tz=timezone, how="/setup"))
     if skipped:
         await bot.send_first_post(cfg, now)
 

@@ -1057,3 +1057,36 @@ def test_whatsnew_page_builds():
     html_ = W.page()
     assert html_.startswith("<!doctype html>") and "<code>/clips</code>" in html_ and "`" not in html_
     assert all(f'id="v{r["version"]}"' in html_ for r in C.RELEASE_NOTES)
+
+
+# ------------------------------------------------------------------ 1.9.1: owner alerts
+def test_owner_alert_text():
+    j = R.owner_alert("join", "WoW Forever & Friends", members=7, total=7)
+    assert j.startswith("➕") and "WoW Forever & Friends" in j and "7 members" in j and "now in 7 servers" in j
+    assert R.owner_alert("leave", "Occasional Gamers", total=6).startswith("➖")
+    s = R.owner_alert("setup", "Guild TBD", channel="forever", when="12:00", tz="America/Chicago", how="/setup")
+    assert s.startswith("✅") and "#forever" in s and "America/Chicago" in s
+    assert "**" not in R.owner_alert("join", "**bold**", members=1, total=1).replace("**\\*\\*bold\\*\\***", "")
+
+
+def test_owner_alerts_fire_and_can_be_turned_off():
+    os.environ.setdefault("DB_PATH", os.path.join(tempfile.mkdtemp(), "b.db"))
+    from forever_bot import bot as B
+    sent = []
+
+    async def fake(text):
+        sent.append(text)
+    orig = B.bot._send_owner_alert
+    B.bot._send_owner_alert = fake
+    try:
+        async def go():
+            B.bot.alert_owner("➕ hi")
+            B.bot.alert_owner(None)
+            os.environ["OWNER_ALERTS"] = "off"
+            B.bot.alert_owner("➕ muted")
+            os.environ.pop("OWNER_ALERTS")
+            await asyncio.sleep(0)
+        asyncio.run(go())
+    finally:
+        B.bot._send_owner_alert = orig
+    assert sent == ["➕ hi"]

@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.9.1 (2026-10-30)
+- **Owner alerts.** The bot DMs its owner when it joins a server (name, member count, new total), is removed from one, or a server finishes setup (`/setup` or 📍 Post here: channel, time, time zone). No member names. Server members never see these.
+- Goes to `OWNER_ID` if set, otherwise the app's owner on the Developer Portal. `OWNER_ALERTS=off` mutes them. Neither needs setting.
+- Alerts are fire-and-forget: a failed DM logs `owner_alert_failed` and never affects joins or setup. Sent ones log `owner_alert_sent`.
+- Privacy Policy says so.
+
 ## 1.9.0 (2026-10-30)
 Tell servers what changed, without extra messages.
 - **🆕 line in the next post after a release.** Releases with a `line` in `RELEASE_NOTES` add one short line above the post's footer, once per server. Existing servers get the 1.8.1 line (clips and time zones) in their next post. Servers set up from now on start up to date and don't get old news.
