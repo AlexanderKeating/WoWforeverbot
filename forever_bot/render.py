@@ -989,7 +989,7 @@ def add_update_line(post, line: str):
 
 def whatsnew_embed(n: int = 3) -> dict:
     parts = []
-    for r in C.RELEASE_NOTES[:n]:
+    for r in C.public_notes()[:n]:
         d = date.fromisoformat(r["date"])
         parts.append(f"**{r['title']}** · v{r['version']} · {d.strftime('%b')} {d.day}\n"
                      + "\n".join(f"• {x}" for x in r["notes"]))

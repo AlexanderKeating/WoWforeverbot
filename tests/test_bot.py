@@ -1047,7 +1047,11 @@ def test_release_notes_and_update_line():
         lines = p.embeds[0]["description"].split("\n")
         assert lines[-1] == before[-1] and lines[-3].startswith("🆕") and len(lines) == len(before) + 2
     e = R.whatsnew_embed()
-    assert e["url"] == C.WHATSNEW_URL and len(e["description"]) < 4000 and latest in e["description"]
+    public = C.public_notes()
+    assert e["url"] == C.WHATSNEW_URL and len(e["description"]) < 4000 and public[0]["version"] in e["description"]
+    for r in C.RELEASE_NOTES:
+        if r.get("internal"):
+            assert r not in public and f"v{r['version']} " not in e["description"] and r["line"] is None
 
 
 def test_store_remembers_announced_and_updates():
@@ -1067,4 +1071,5 @@ def test_whatsnew_page_builds():
     import build_whatsnew as W
     html_ = W.page()
     assert html_.startswith("<!doctype html>") and "<code>/clips</code>" in html_ and "`" not in html_
-    assert all(f'id="v{r["version"]}"' in html_ for r in C.RELEASE_NOTES)
+    assert all(f'id="v{r["version"]}"' in html_ for r in C.public_notes())
+    assert not any(f'id="v{r["version"]}"' in html_ for r in C.RELEASE_NOTES if r.get("internal"))

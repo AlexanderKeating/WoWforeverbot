@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.10.1 (2026-10-30)
+Keep behind-the-scenes releases out of What's new.
+- Releases marked `"internal": True` in `RELEASE_NOTES` are left out of `/whatsnew` and the What's new page. 1.10.0 (owner alerts) and 1.10.1 are internal.
+
 ## 1.10.0 (2026-10-30)
 Know right away when servers come and go. Four servers added the bot on Oct 30, and two left within minutes.
 - **Owner DMs on join and leave.** The bot DMs its owner when it's added to a server (name, members, new total) and when it's removed (how long it stayed, whether it was ever set up).
