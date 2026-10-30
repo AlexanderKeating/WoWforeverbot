@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.10.6 (2026-10-30)
+Leaner owner DMs: member count and the bot's server count only. No server name, ID, channel, post time or time zone. Removals still say how long the bot stayed and whether the server was set up. `owner_setup_text` is folded into `owner_alert_text("setup", ...)`.
+
 ## 1.10.5 (2026-10-30)
 Owner DM when a server finishes its first setup (`/setup` or the 📍 Post here button): server name and size, channel, post times and time zone. Brings the bot in line with the privacy page's "Server alerts" row. Changing settings later doesn't DM.
 
