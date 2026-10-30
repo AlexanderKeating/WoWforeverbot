@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.10.4 (2026-10-30)
+What's new calls out the bot's new profile photo and banner. No 🆕 line in posts; no behavior changes.
+
 ## 1.10.3 (2026-10-30)
 Log what `/postnow` did. On Oct 30 two admins ran `/postnow` right after setup and the logs showed no `post_sent` and no reason.
 - New log event `postnow` with `outcome=` `posted`, `already_up` (today's full post counts as done and the server is on 1 post a day), `already_posted`, `finished`, `blocked`, `failed`, `error` or `other`, plus `slot` and the start of the reply.
