@@ -842,6 +842,9 @@ DID_YOU_KNOW += [
 # "internal": True keeps a behind-the-scenes release out of /whatsnew and the What's new page.
 WHATSNEW_URL = SITE_URL + "/whatsnew.html"
 RELEASE_NOTES = [
+    {"version": "1.10.5", "date": "2026-10-30", "title": "Owner setup alerts",
+     "line": None, "internal": True,
+     "notes": ["Behind the scenes: the owner also gets a DM when a server finishes setup."]},
     {"version": "1.10.4", "date": "2026-10-30", "title": "A new look",
      "line": None,
      "notes": ["Forever Sherpa has a new profile photo and banner."]},
