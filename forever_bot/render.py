@@ -465,6 +465,9 @@ def deep_dive_embed(key: str, level: str = "standard") -> dict | None:
 
 
 TIP_TOPICS = list(C.TIPS)
+TIP_TITLES = {"basics": "🌱 New player tips", "leveling": "📈 Leveling tips", "pvp": "⚔️ PvP tips",
+              "camping": "🔥 Camping tips", "professions": "⚒️ Profession tips", "travel": "🧭 Travel tips",
+              "gold": "💰 Gold tips", "legacy": "🏛️ Legacy tips"}
 
 
 def tips_embed(topic: str, level: str = "standard") -> dict:
@@ -474,7 +477,7 @@ def tips_embed(topic: str, level: str = "standard") -> dict:
     desc = "\n".join(f"• {t}" for t in tips)
     if level == "detailed" and topic in C.DEEP_DIVES:
         desc += "\n\n" + "\n".join(f"• {b}" for b in C.DEEP_DIVES[topic][1])
-    return {"title": f"💡 Tips: {topic}", "description": desc[:4000], "color": C.GREEN,
+    return {"title": TIP_TITLES.get(topic, f"💡 Tips: {topic}"), "description": desc[:4000], "color": C.GREEN,
             "footer": level_footer(level, "Topics: " + " · ".join(TIP_TOPICS))}
 
 

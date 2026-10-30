@@ -12,7 +12,7 @@ import os
 import re
 import time
 from datetime import datetime, timedelta, timezone
-from zoneinfo import ZoneInfo, ZoneInfoNotFoundError
+from zoneinfo import ZoneInfo
 
 import discord
 from discord import app_commands
@@ -26,6 +26,7 @@ from . import plusone as P
 from . import status as S
 from . import render as R
 from .fetchers import Twitch, YouTube, refresh_all
+from . import inputs as I
 from .logsetup import Timer, ev, setup_logging
 from .store import GuildConfig, Store
 
@@ -64,10 +65,19 @@ def now_utc() -> datetime:
 
 
 def parse_hhmm(s: str):
-    m = re.fullmatch(r"\s*(\d{1,2})(?::(\d{2}))?\s*(am|pm)?\s*", (s or "").lower())
+    """'12pm', '7:30 PM', '7p', '7 p.m.', '19:30', '19.30', '1930', 'noon', 'midnight' -> (h, m) or None."""
+    t = re.sub(r"(?<=\d)\.(?=\d)", ":", (s or "").strip().lower())  # 19.30 -> 19:30
+    t = t.replace(".", "").replace(" ", "")  # 7 p.m. -> 7pm
+    t = {"noon": "12:00", "midday": "12:00", "midnight": "0:00"}.get(t, t)
+    t = re.sub(r"(?<=\d)(a|p)$", r"\1m", t)  # 7p -> 7pm
+    t = re.sub(r"^(\d{1,2})(\d{2})(am|pm)?$", r"\1:\2\3", t)  # 1930 -> 19:30, 730pm -> 7:30pm
+    t = re.sub(r"(?<=\d)h(?=\d{2}$)", ":", t)  # 19h30 -> 19:30
+    m = re.fullmatch(r"(\d{1,2})(?::(\d{2}))?(am|pm)?h?", t)
     if not m:
         return None
     h, mi, ap = int(m.group(1)), int(m.group(2) or 0), m.group(3)
+    if ap and not 1 <= h <= 12:  # "13pm" or "0am" is a typo, not a time
+        return None
     if ap == "pm" and h < 12:
         h += 12
     if ap == "am" and h == 12:
@@ -102,9 +112,10 @@ def parse_times(s: str):
     return out or None
 
 
-def check_times(times) -> str | None:
+def check_times(times, typed: str | None = None) -> str | None:
     if not times:
-        return "Times should look like `12:00` or `12pm, 7pm`."
+        got = f"I couldn't read `{typed.strip()[:60]}` as a time. " if typed and typed.strip() else ""
+        return got + "Times look like `12pm`, `7:30pm`, `19:00` or `noon`. For more than one: `12pm, 7pm`."
     if len(times) > MAX_POSTS_PER_DAY:
         return f"Up to {MAX_POSTS_PER_DAY} posts a day."
     for (h1, m1), (h2, m2) in zip(times, times[1:]):
@@ -979,6 +990,26 @@ class ForeverBot(commands.Bot):
 bot = ForeverBot()
 
 
+async def need_setup(interaction: discord.Interaction):
+    """1.8.1: every admin command that needs a channel says how to get one, with the one-click button."""
+    ev(clog, "needs_setup", guild=interaction.guild_id, user=interaction.user.id,
+       name=getattr(interaction.command, "qualified_name", "?"))
+    await interaction.response.send_message(
+        "📍 This server isn't set up yet, so there's no daily post to change. Click **Post here** to start it in "
+        f"this channel at {R._default_when()}, or run `/setup` to pick the channel, time and time zone. "
+        "Then run this command again.", view=setup_here_view(), ephemeral=True)
+
+
+def rejected(interaction: discord.Interaction, field: str, value) -> None:
+    """Log input we turned away, so confusing options show up in the logs."""
+    ev(clog, "input_rejected", guild=interaction.guild_id, user=interaction.user.id,
+       name=getattr(interaction.command, "qualified_name", "?"), field=field, value=str(value)[:60])
+
+
+async def _tz_ac(interaction: discord.Interaction, current: str):
+    return [app_commands.Choice(name=n, value=v) for n, v in I.tz_choices(current)]
+
+
 def cfg_for(interaction) -> GuildConfig:
     return bot.store.get_guild(interaction.guild_id) or GuildConfig(guild_id=interaction.guild_id)
 
@@ -997,10 +1028,12 @@ admin = app_commands.default_permissions(manage_guild=True)
 @admin
 @app_commands.describe(channel="Where the daily countdown posts (empty: this channel)", ping_role="Role to ping (optional)",
                        staging="Private channel for previews and alerts (optional)",
-                       post_time="Post time(s), like 12pm or 12pm, 7pm (up to 4)", timezone="IANA zone, like America/Chicago",
+                       post_time="Post time(s), like 12pm or 12pm, 7pm (up to 4)",
+                       timezone="Like Central, Eastern, UK, CET, Helsinki or America/Chicago (suggests as you type)",
                        faction="Which faction your server leans")
 @app_commands.choices(faction=[app_commands.Choice(name=n, value=v) for n, v in
                                (("Horde", "horde"), ("Alliance", "alliance"), ("Both / not set (default)", "neutral"))])
+@app_commands.autocomplete(timezone=_tz_ac)
 async def setup_cmd(interaction: discord.Interaction, channel: discord.TextChannel | None = None,
                     ping_role: discord.Role | None = None, staging: discord.TextChannel | None = None,
                     post_time: str = C.DEFAULT_POST_TIME, timezone: str = C.DEFAULT_TZ,
@@ -1015,14 +1048,17 @@ async def setup_cmd(interaction: discord.Interaction, channel: discord.TextChann
                 "add Forever Sherpa to it first (channel settings → **Permissions**).", ephemeral=True)
         channel = here
     times = parse_times(post_time)
-    err = check_times(times)
+    err = check_times(times, post_time)
     if err:
-        return await interaction.response.send_message(err, ephemeral=True)
-    try:
-        ZoneInfo(timezone)
-    except (ZoneInfoNotFoundError, ValueError):
-        return await interaction.response.send_message(
-            "Unknown time zone. Use one like `America/Chicago`, `America/New_York`, `Europe/London`.", ephemeral=True)
+        rejected(interaction, "post_time", post_time)
+        return await interaction.response.send_message(err + "\n-# Nothing was changed.", ephemeral=True)
+    tz = I.resolve_tz(timezone)
+    if not tz:
+        rejected(interaction, "timezone", timezone)
+        return await interaction.response.send_message(I.bad_tz_text(timezone) + "\n-# Nothing was changed.",
+                                                       ephemeral=True)
+    tz_note = f"\n-# Read time zone `{timezone.strip()[:40]}` as **{tz}**." if tz != timezone.strip() else ""
+    timezone = tz
     problem = bot._can_post(channel)
     if problem:
         return await interaction.response.send_message(
@@ -1049,7 +1085,7 @@ async def setup_cmd(interaction: discord.Interaction, channel: discord.TextChann
         f"{' The first is the full post; the rest are short check-ins.' if len(times) > 1 else ''}"
         f"{' Pinging ' + ping_role.mention + '.' if ping_role else ''}"
         f"{' Previews go to ' + staging.mention + '.' if staging else ''}\n"
-        f"Try `/preview` to see today's post, or `/postnow` to post it right away.{warn}",
+        f"Try `/preview` to see today's post, or `/postnow` to post it right away.{warn}{tz_note}",
         ephemeral=True, allowed_mentions=discord.AllowedMentions.none())
     if skipped:
         await bot.send_first_post(cfg, now)
@@ -1088,16 +1124,17 @@ async def frequency_cmd(interaction: discord.Interaction, per_day: app_commands.
         return await interaction.response.send_message(not_in_server_text(), ephemeral=True)
     cfg = bot.store.get_guild(interaction.guild_id)
     if not cfg or not cfg.channel_id:
-        return await interaction.response.send_message("Run `/setup` first.", ephemeral=True)
+        return await need_setup(interaction)
     if not per_day and not times:
         cur = guild_times(cfg)
         return await interaction.response.send_message(
             f"Posting **{len(cur)}x a day** at {fmt_times(cur)} ({cfg.tz}). Pick `per_day` or set `times` to change it.",
             ephemeral=True)
     parsed = parse_times(times) if times else parse_times(FREQUENCY_PRESETS[per_day.value])
-    err = check_times(parsed)
+    err = check_times(parsed, times)
     if err:
-        return await interaction.response.send_message(err, ephemeral=True)
+        rejected(interaction, "times", times)
+        return await interaction.response.send_message(err + "\n-# Nothing was changed.", ephemeral=True)
     cfg.post_time = fmt_times(parsed).replace(" ", "")
     bot.store.upsert_guild(cfg)
     await bot.refresh_pin(cfg)
@@ -1117,7 +1154,7 @@ async def postnow_cmd(interaction: discord.Interaction):
         return await interaction.response.send_message(not_in_server_text(), ephemeral=True)
     cfg = bot.store.get_guild(interaction.guild_id)
     if not cfg or not cfg.channel_id:
-        return await interaction.response.send_message("Run `/setup` first.", ephemeral=True)
+        return await need_setup(interaction)
     await interaction.response.defer(ephemeral=True, thinking=True)
     now = now_utc()
     kind, _ = R.phase(cfg.tz, now)
@@ -1296,7 +1333,7 @@ async def verbosity_cmd(interaction: discord.Interaction, level: app_commands.Ch
         return await interaction.response.send_message(not_in_server_text(), ephemeral=True)
     cfg = bot.store.get_guild(interaction.guild_id)
     if not cfg or not cfg.channel_id:
-        return await interaction.response.send_message("Run `/setup` first.", ephemeral=True)
+        return await need_setup(interaction)
     if not level:
         return await interaction.response.send_message(
             f"Posts here are **{R.LEVEL_LABEL[R.norm_level(cfg.verbosity)]}**. Pick a `level` to change it.\n"
@@ -1555,7 +1592,7 @@ async def forgetme_cmd(interaction: discord.Interaction):
 async def statusalerts_cmd(interaction: discord.Interaction, on: bool | None = None):
     cfg = bot.store.get_guild(interaction.guild_id)
     if not cfg or not cfg.channel_id:
-        return await interaction.response.send_message("Run `/setup` first.", ephemeral=True)
+        return await need_setup(interaction)
     if on is None:
         state = "on" if cfg.status_alerts else "off"
         return await interaction.response.send_message(
@@ -1576,7 +1613,7 @@ async def statusalerts_cmd(interaction: discord.Interaction, on: bool | None = N
 async def clips_cmd(interaction: discord.Interaction, on: bool | None = None):
     cfg = bot.store.get_guild(interaction.guild_id)
     if not cfg or not cfg.channel_id:
-        return await interaction.response.send_message("Run `/setup` first.", ephemeral=True)
+        return await need_setup(interaction)
     if on is None:
         state = "on" if cfg.clips else "off"
         return await interaction.response.send_message(
@@ -1598,7 +1635,7 @@ async def pinpost_cmd(interaction: discord.Interaction, channel: discord.TextCha
         return await interaction.response.send_message(not_in_server_text(), ephemeral=True)
     cfg = bot.store.get_guild(interaction.guild_id)
     if not cfg or not cfg.channel_id:
-        return await interaction.response.send_message("Run `/setup` first.", ephemeral=True)
+        return await need_setup(interaction)
     target = channel or bot.get_channel(cfg.channel_id)
     problem = bot._can_post(target)
     if problem:

@@ -1,5 +1,14 @@
 # Changelog
 
+## 1.8.1 (2026-10-29)
+Fewer dead ends. On Oct 29 an admin needed three tries at `/setup` because the time zone had to be exactly `America/Chicago`.
+- **Time zones the way people type them.** `/setup timezone:` takes `central`, `CST`, `Central Standard Time`, `america/chicago`, `New York`, `UK`, `CET`, `Helsinki`, `UTC-6` and more. The box suggests matches as you type, and the confirmation says what it read ("Read `central` as America/Chicago").
+- **Times the way people type them.** `post_time` and `/frequency times:` also take `noon`, `midnight`, `7p`, `7 p.m.`, `19.30`, `1930` and `19h30`.
+- **Clear errors.** A time zone or time that still can't be read is quoted back with suggestions ("Did you mean `America/Chicago`?") and "Nothing was changed."
+- **No more bare "Run `/setup` first."** Every admin command used before setup (`/pinpost`, `/frequency`, `/postnow`, `/verbosity`, `/statusalerts`, `/clips`) now explains why and offers the **📍 Post here** button.
+- **Tips pass.** Every tip now reads "**do this** → why". Merged duplicates (rested XP, Well Fed, camp buffs, recipe tracking, reagent bags, guard directions), put the strongest tips first (Brief shows 3), labeled the Horde-only racial tips, and made the PvP tips faction-neutral. `/tips` titles get their own icons. No new facts.
+- New log events: `input_rejected` (field and what was typed), `needs_setup`.
+
 ## 1.8.0 (2026-10-29)
 Let servers trim the post. On Oct 28 two servers left within 20 minutes of seeing their first post.
 - **New `/clips [on]`** (admins): turn the Twitch clips under each post off or back on. On by default. Applies to full posts, check-ins, `/preview` and `/postnow`. `/status` shows "clips off" when it's off.
