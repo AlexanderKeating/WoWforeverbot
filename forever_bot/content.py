@@ -5,7 +5,7 @@ Compiled Oct 24, 2026 from Blizzard posts and coverage (Warcraft Tavern, Icy Vei
 Wowhead, Kami Labs, timesaver.gg, Raider.IO bracket data).
 
 Forever is NOT retail and NOT Classic:
-  - no realms: one mega-realm per ruleset (Normal / PvP / RP; Hardcore later) per region
+  - no realms: one mega-realm per ruleset (Normal / PvP / RP / RP-PvP; Hardcore later) per region
   - PvP ruleset locks you to one faction per account
   - no cross-ruleset grouping, no character transfers at launch
   - PvP = Honor (currency) + Rank Points (14-rank personal track, weekly cap), no rating
@@ -152,7 +152,7 @@ RUNDOWNS = {
          "new": "Streamers ran a 1v1 dueling tournament on the beta, Horde side, PvP rules, level 30. 1,380 players checked in. A Warlock won $50,000.",
          "vets": "Warlockguy (20th seed, last lock in via tiebreakers) dropped G1, then beat Neepzen 3–1. Shamans took 3rd and 4th. #1 seed Korleone went out 9th–12th."},
     9: {"title": "Rulesets: there are no realms",
-         "new": "You don't pick a server. You pick a ruleset: Normal, PvP or Roleplay. Everyone on the same ruleset in your region plays in one big shared world. We're on **PvP, Horde**.",
+         "new": "You don't pick a server. You pick a ruleset: Normal, PvP, Roleplay or Roleplay-PvP. Everyone on the same ruleset in your region plays in one big shared world. We're on **PvP, Horde**.",
          "vets": "One mega-realm per ruleset per region, with layering. PvP ruleset = one faction per account. No cross-ruleset grouping, no transfers at launch. Hardcore comes later; dead Hardcore characters can move to another ruleset, PvP included."},
     8: {"title": "Names work differently", "callout_date": "2026-10-27",
          "new": "Every character gets a first and a last name. Someone else can have your first name, but not your full name.",
@@ -266,7 +266,7 @@ DEEP_DIVES = {
         "**Pick your class for fun first.** No arena is announced; Forever PvP is battlegrounds and world PvP.",
     ]),
     9: ("Rulesets in practice", [
-        "**Normal / PvP / Roleplay** at launch; **Hardcore** later. Each is one big world per region, split into layers when busy.",
+        "**Normal / PvP / Roleplay / Roleplay-PvP** at launch; **Hardcore** later. Each is one big world per region, split into layers when busy.",
         "**PvP = one faction per account.** Normal and RP don't lock you.",
         "**No cross-ruleset grouping** and **no transfers at launch**: your ruleset is where your friends must be.",
         "**Shared across rulesets:** collections and Legacy points (not Hardcore).",
@@ -418,7 +418,7 @@ FAQ = [
 # ======================================================================= 1.1.2: fuller vets lines + deep dives
 # Same facts as above, written to explain why each change matters instead of listing it.
 _VETS_LONG = {
-    9: ("There are no realm lists in Forever. Each ruleset (Normal, PvP, Roleplay) is one big shared world per region, "
+    9: ("There are no realm lists in Forever. Each ruleset (Normal, PvP, Roleplay, Roleplay-PvP) is one big shared world per region, "
         "and Blizzard splits it into layers when it gets crowded so busy zones stay playable. On the PvP ruleset your whole "
         "account is locked to one faction, and Blizzard can pause new characters for an overloaded faction, so "
         "creation limits only ever block *new* characters. There's no "
@@ -444,7 +444,7 @@ _VETS_LONG = {
     5: ("The Skyborne are Highborne exiles tied to Skywall who chose a side rather than being born into one. Horde Skyborne work "
         "with the Earthen Ring, which is how they unlock **Shaman**; Alliance Skyborne side with the Kirin Tor and unlock "
         "**Mage**. Either way they can also be Warriors, Hunters, Rogues or Druids, with druid forms of their own. Their "
-        "racials lean mobile: **Wind Blessed** gives 3% haste and **Walk on Air** is on a 90-second cooldown. They start on "
+        "racials lean mobile: **Wind Blessed** gives 2% haste and **Walk on Air** is on a 90-second cooldown. They start on "
         "Zephras Isle (1–12) and require the Skyborne Heroic Pack or higher."),
     4: ("PvP progress uses two separate currencies. **Honor** is what you spend on gear (a blue PvP set and an epic one), and "
         "Blizzard normalized Honor across battlegrounds so you're not stuck farming Alterac Valley. **Rank Points** climb a "
@@ -477,7 +477,7 @@ for _k, _v in _VETS_LONG.items():
 
 DEEP_DIVES.update({
     9: ("Rulesets in practice", [
-        "**Three rulesets at launch: Normal, PvP and Roleplay.** Hardcore comes later. Each one is a single huge world for your region, split into layers when it's busy, so you'll keep seeing the same community instead of being scattered across realms.",
+        "**Four rulesets at launch: Normal, PvP, Roleplay and Roleplay-PvP.** Hardcore comes later. Each one is a single huge world for your region, split into layers when it's busy, so you'll keep seeing the same community instead of being scattered across realms.",
         "**PvP locks your account to one faction.** The first character you make on PvP decides it. Normal and Roleplay don't lock you, so that's where Alliance alts go.",
         "**No cross-ruleset grouping, no transfers at launch.** You can't run a dungeon with a friend on another ruleset, and character transfers aren't available at launch, so agree on PvP Horde before anyone logs in.",
         "**Some progress follows you everywhere.** Collections and Legacy points are shared across rulesets (except Hardcore), so time on an alt elsewhere isn't wasted.",
@@ -510,7 +510,7 @@ DEEP_DIVES.update({
     5: ("Skyborne for Horde", [
         "**Lore:** Highborne exiles tied to Skywall who allied with the wind spirits and later chose a faction. On Horde they work with the Earthen Ring.",
         "**Classes:** Shaman (Horde-only for Skyborne), plus Warrior, Hunter, Rogue and Druid. Druids get Skyborne-specific forms.",
-        "**Racials:** Wind Blessed (3% haste), Walk on Air (90-second cooldown), plus Skysight and Read Leyline, both castable while moving.",
+        "**Racials:** Wind Blessed (2% haste), Walk on Air (90-second cooldown), plus Skysight and Read Leyline, both castable while moving.",
         "**Start:** Zephras Isle, levels 1–12, with its own story before you reach Kalimdor or the Eastern Kingdoms.",
         "**Mounts:** Galestriders from Genn Fairweather at Fairweather Stables on Zephras Isle.",
         "**Requirement:** the Skyborne Heroic Pack or higher.",
@@ -602,7 +602,7 @@ DEEP_DIVES.update({
     ]),
     5: ("Skyborne for Horde", [
         "**Roll Skyborne on Horde if you want Shaman** → Horde Skyborne work with the Earthen Ring, which unlocks Shaman for them.",
-        "**Pick Skyborne for a mobile character** → Wind Blessed gives 3% haste, Walk on Air is on a 90-second cooldown, and Skysight and Read Leyline can be cast while moving.",
+        "**Pick Skyborne for a mobile character** → Wind Blessed gives 2% haste, Walk on Air is on a 90-second cooldown, and Skysight and Read Leyline can be cast while moving.",
         "**Try a Skyborne Druid** → you get druid forms built just for the race.",
         "**Buy your mount from Genn Fairweather on Zephras Isle** → Galestriders are sold there, at Fairweather Stables.",
         "**Get the Skyborne Heroic Pack or higher** → it's required to play the race.",
@@ -841,6 +841,12 @@ DID_YOU_KNOW += [
 # server sees in its next post; None means the release isn't worth interrupting anyone for.
 WHATSNEW_URL = SITE_URL + "/whatsnew.html"
 RELEASE_NOTES = [
+    {"version": "1.9.1", "date": "2026-10-30", "title": "Facts check",
+     "line": None,
+     "notes": [
+         "Rulesets now include Roleplay-PvP, which Blizzard added for launch.",
+         "Skyborne Wind Blessed is 2% haste after Blizzard's Oct 26 racial tuning (was 3%).",
+     ]},
     {"version": "1.9.0", "date": "2026-10-30", "title": "What's new, right in your posts",
      "line": None,
      "notes": [

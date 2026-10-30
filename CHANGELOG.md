@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.9.1 (2026-10-30)
+Facts check. No behavior changes.
+- **Roleplay-PvP ruleset.** Blizzard added it for launch (Aggrend, Oct 22; ruleset article updated Oct 22). Ruleset lists in the day-9 rundown, the ruleset deep dive and the neutral FAQ now name it. Its faction rules aren't announced, so nothing says it locks a faction.
+- **Skyborne Wind Blessed 3% → 2% haste** (Blizzard development notes, Oct 26). Day-5 vets line and Skyborne deep dive.
+
 ## 1.9.0 (2026-10-30)
 Tell servers what changed, without extra messages.
 - **🆕 line in the next post after a release.** Releases with a `line` in `RELEASE_NOTES` add one short line above the post's footer, once per server. Existing servers get the 1.8.1 line (clips and time zones) in their next post. Servers set up from now on start up to date and don't get old news.
