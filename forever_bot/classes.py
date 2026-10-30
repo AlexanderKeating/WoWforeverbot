@@ -262,6 +262,7 @@ _DO = {
             "**Tame for the family ability, not the look** → Boar Charge, Spider Web, Turtle Shell Shield and Wolf Furious Howl each solve a different problem.",
             "**Drop a Frost Trap mid-fight and back off** → traps work in combat now, so you can fix a bad pull without running first.",
             "**Upgrade your own gear before your pet's food** → pets scale with your gear, so every upgrade counts twice.",
+            "**Playing Orc? Let your pet do more of the work** → Command is back: +5% pet damage for Hunters and Warlocks.",
         ],
         "pvp": [
             "**Scatter Shot an Undead when you need them locked down** → they can't use Will of the Forsaken while Scatter Shotted.",
@@ -321,6 +322,7 @@ _DO = {
             "**Grab your free mount at 40 from Strahad Farsan in Ratchet** → save the gold for training and gear.",
             "**Let Drain Soul finish its ticks** → it guarantees a Soul Shard if it runs long enough.",
             "**Stack some Spirit** → Life Tap scales with it, so you sit to drink less.",
+            "**Playing Orc? Let your pet do more of the work** → Command is back: +5% pet damage for Hunters and Warlocks.",
         ],
         "pvp": [
             "**Plan your fight around Fear getting answered** → Undead Will of the Forsaken it and every Priest has Fear Ward, so don't open with it.",

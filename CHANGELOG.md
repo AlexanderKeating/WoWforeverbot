@@ -1,5 +1,14 @@
 # Changelog
 
+## 1.9.2 (2026-10-30)
+More facts for launch week. Sources: Blizzard's WoW Forever development notes (Oct 1, Oct 16, Oct 26, Oct 27).
+- **Launch-week callouts.** Nov 1: US clocks fall back, launch time doesn't move. Nov 2: name reservation ends tomorrow. Nov 3 and Nov 4 callouts now say the time.
+- **Racials, concretely.** The vague "Dwarves +5% vs beasts… racials got a pass" did-you-know is replaced with the Oct 26 pass (Orc Command back, weapon-spec racials removed). New Horde did-you-knows: Troll Berserking 15s, Orc Blood Fury 2 min, Undead Touch of the Grave 15s, Tauren Plainsrunning up to 60% on foot.
+- **Skyborne:** Attuned (Read Leyline at a Ley Line) tip in the deep dive; Charged (Skysight) did-you-know.
+- **PvP:** Honor cap 25,000 in the day-4 vets line and a new `/tips pvp` tip; Marks of Honor stack to 30.
+- **Class cards:** Orc Hunters and Warlocks get a Command tip (+5% pet damage).
+- New did-you-know: wands and Auto Shot need a half-second stand-still.
+
 ## 1.9.1 (2026-10-30)
 Facts check. No behavior changes.
 - **Roleplay-PvP ruleset.** Blizzard added it for launch (Aggrend, Oct 22; ruleset article updated Oct 22). Ruleset lists in the day-9 rundown, the ruleset deep dive and the neutral FAQ now name it. Its faction rules aren't announced, so nothing says it locks a faction.

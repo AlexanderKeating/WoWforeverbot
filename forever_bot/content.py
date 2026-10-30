@@ -61,8 +61,10 @@ EVENT_PINGS = [  # (UTC time, key, text). Times checked against Blizzard's annou
 TODAY_CALLOUTS = {
     "2026-10-26": "📛 **Name reservation opens tomorrow at 1 PM Pacific / 3 PM Central.** 3 names total across all rulesets. Pick your first + last name ideas tonight (`/faq` has the rules).",
     "2026-10-27": "📛 **Name reservation opens today at 1 PM Pacific / 3 PM Central.** Skyborne pack owners can reserve **3 names total** across all rulesets, through Nov 3. Create your characters now rather than on launch night: if a faction gets crowded on PvP, Blizzard can pause *new* characters.",
-    "2026-11-03": "⏰ **Last day of name reservation.**",
-    "2026-11-04": "🚀 **It's launch day.**",
+    "2026-11-01": "🕰️ **Clocks fell back an hour last night (US).** Launch doesn't move: Wednesday at 3 PM Pacific / 5 PM Central / 6 PM Eastern.",
+    "2026-11-02": "📛 **Name reservation ends tomorrow.** Still holding out for a name? Grab it tonight.",
+    "2026-11-03": "⏰ **Last day of name reservation.** Launch is tomorrow at 3 PM Pacific / 5 PM Central.",
+    "2026-11-04": "🚀 **It's launch day.** Servers open at 3 PM Pacific / 5 PM Central / 6 PM Eastern.",
 }
 
 # ------------------------------------------------------------------ matching
@@ -211,7 +213,7 @@ DID_YOU_KNOW = [
     ("vet", "Hyjal Summit is a 20-player raid where Archimonde fell, and it drops Forever's first legendary weapon."),
     ("vet", "Talent trees drop a lot of the boring +1% talents in favor of choices you actually feel."),
     ("vet", "Paladins get a new seal built for tanking, plus some group-healing talents."),
-    ("vet", "Dwarves deal +5% damage to beasts, and Undead get a chance to drain health. Racials got a pass."),
+    ("vet", "Blizzard's last racial pass before launch (Oct 26) put class flavor back: Orc Command (+5% Hunter and Warlock pet damage) returned, and weapon-specialization racials were removed."),
     ("vet", "Tidal Charm and Whitemane's Chapeau come back reworked among hundreds of items with new effects."),
     ("vet", "Riverglades is a 35–45 zone about everyday frontier life rather than world-ending stakes."),
     ("vet", "Honor gains are normalized across battlegrounds, so there's no reason to farm only Alterac Valley."),
@@ -451,7 +453,7 @@ _VETS_LONG = {
         "14-rank personal track with a **weekly cap**, so a few battlegrounds every week beats one exhausting weekend, and nobody "
         "needs to share an account to hold a rank. Ranks reset each season, and weekly tasks add bonus points plus Legacy "
         "Points. The new 15v15 **Darkspear Islands** (30–60) has four capture points and a center flag you score at a base you "
-        "own; first to 2,000 wins. No arena or rated PvP is announced."),
+        "own; first to 2,000 wins. Honor caps at 25,000, so spend it as you go. No arena or rated PvP is announced."),
     3: ("**Camping** turns professions into group buffs. Each profession has camp items that unlock at skill 20, 140 and 300, "
         "and the Leatherworking Camp Tent's rested-XP buff even survives death. Camp buffs don't stack with matching class "
         "buffs, so they shine when your group is missing a class. **Legacy** is account-wide progress: every character that "
@@ -603,6 +605,7 @@ DEEP_DIVES.update({
     5: ("Skyborne for Horde", [
         "**Roll Skyborne on Horde if you want Shaman** → Horde Skyborne work with the Earthen Ring, which unlocks Shaman for them.",
         "**Pick Skyborne for a mobile character** → Wind Blessed gives 2% haste, Walk on Air is on a 90-second cooldown, and Skysight and Read Leyline can be cast while moving.",
+        "**Cast Read Leyline at a Ley Line** → you get Attuned for an hour: full-strength health and mana regen that lasts through death (it drops when you enter a raid).",
         "**Try a Skyborne Druid** → you get druid forms built just for the race.",
         "**Buy your mount from Genn Fairweather on Zephras Isle** → Galestriders are sold there, at Fairweather Stables.",
         "**Get the Skyborne Heroic Pack or higher** → it's required to play the race.",
@@ -667,6 +670,7 @@ TIPS["leveling"] = [
 TIPS["pvp"] = [
     "**Play a few battlegrounds every week instead of one huge weekend** → Rank Points have a weekly cap.",
     "**Aim for Rank 2 early** → that's where the PvP trinket unlocks.",
+    "**Spend Honor before it reaches 25,000** → that's the cap, and anything past it is wasted.",
     "**Check the PvP tab on your character pane (C)** → it shows your rank, your Rank Points and which rewards you can buy right now.",
     "**Do your Field of Honor journey tasks every week** → they pay Honor and Rank Points, and three per season also give a Legacy Point.",
     "**Buy the blue Honor set first, then look for Emboldened Seals** → the epic set is your blue piece plus a seal, and seals have rank requirements.",
@@ -816,6 +820,15 @@ _DULL = {
     "Honor gains are normalized across battlegrounds, so there's no reason to farm only Alterac Valley.",
 }
 DID_YOU_KNOW[:] = [x for x in DID_YOU_KNOW if x[1] not in _DULL]
+# 1.9.2: from Blizzard's development notes (Oct 1, Oct 16, Oct 26 and Oct 27 updates).
+DID_YOU_KNOW += [
+    ("horde", "Troll Berserking now lasts 15 seconds (up from 10), and Orc Blood Fury is down to a 2-minute cooldown."),
+    ("horde", "Undead Touch of the Grave can now trigger every 15 seconds instead of every 25."),
+    ("horde", "Tauren Plainsrunning builds up to 60% extra run speed on foot, but it no longer speeds up your mount."),
+    ("vet", "Skyborne who cast Skysight at an elemental convergence get Charged: 30% run speed for an hour, even through death."),
+    ("new", "Wands and Auto Shot need you to stand still for half a second before they fire. Stop, then shoot."),
+    ("vet", "Battleground Marks of Honor stack to 30 in Forever, up from 20."),
+]
 DID_YOU_KNOW += [
     ("new", "In the original game, King Varian Wrynn was missing for years. In Forever, you'll find him as a prisoner in the new Alcaz Prison dungeon."),
     ("new", "Dalaran sat sealed under a violet dome for the entire original game. Forever finally lets you inside, through the sewers."),
@@ -841,6 +854,12 @@ DID_YOU_KNOW += [
 # server sees in its next post; None means the release isn't worth interrupting anyone for.
 WHATSNEW_URL = SITE_URL + "/whatsnew.html"
 RELEASE_NOTES = [
+    {"version": "1.9.2", "date": "2026-10-30", "title": "More facts for launch week",
+     "line": None,
+     "notes": [
+         "Launch-week reminders: clocks falling back (launch time doesn't move), and the last two days of name reservation.",
+         "New did-you-knows and tips from Blizzard's latest racial and PvP notes.",
+     ]},
     {"version": "1.9.1", "date": "2026-10-30", "title": "Facts check",
      "line": None,
      "notes": [
