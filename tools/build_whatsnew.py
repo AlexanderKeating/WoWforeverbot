@@ -20,7 +20,7 @@ def inline(text: str) -> str:
 
 def page() -> str:
     items = []
-    for r in C.RELEASE_NOTES:
+    for r in C.public_notes():
         d = date.fromisoformat(r["date"])
         notes = "\n".join(f"  <li>{inline(n)}</li>" for n in r["notes"])
         items.append(f'<h2 id="v{r["version"]}">{inline(r["title"])}</h2>\n'

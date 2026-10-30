@@ -839,10 +839,16 @@ DID_YOU_KNOW += [
 # Player-facing release notes: /whatsnew, the 🆕 line in the next post after a release, and the
 # What's new page (foreversherpa.github.io/whatsnew.html). Newest first. "line" is the one-liner a
 # server sees in its next post; None means the release isn't worth interrupting anyone for.
+# "internal": True keeps a behind-the-scenes release out of /whatsnew and the What's new page.
 WHATSNEW_URL = SITE_URL + "/whatsnew.html"
 RELEASE_NOTES = [
+    {"version": "1.10.1", "date": "2026-10-30", "title": "Internal releases stay out of What's new",
+     "line": None, "internal": True,
+     "notes": [
+         "Behind the scenes: releases marked internal no longer show in `/whatsnew` or on the What's new page.",
+     ]},
     {"version": "1.10.0", "date": "2026-10-30", "title": "Owner alerts",
-     "line": None,
+     "line": None, "internal": True,
      "notes": [
          "Behind the scenes: the bot's owner now gets a DM when a server adds or removes the bot.",
      ]},
@@ -900,6 +906,11 @@ RELEASE_NOTES = [
          "Alliance race lists and racial tips on class cards.",
      ]},
 ]
+
+
+def public_notes() -> list[dict]:
+    """Releases players see in /whatsnew and on the What's new page (newest first)."""
+    return [r for r in RELEASE_NOTES if not r.get("internal")]
 
 
 def latest_line_since(version: str | None) -> tuple[str, str] | None:
