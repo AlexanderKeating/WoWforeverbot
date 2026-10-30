@@ -842,6 +842,9 @@ DID_YOU_KNOW += [
 # "internal": True keeps a behind-the-scenes release out of /whatsnew and the What's new page.
 WHATSNEW_URL = SITE_URL + "/whatsnew.html"
 RELEASE_NOTES = [
+    {"version": "1.10.4", "date": "2026-10-30", "title": "A new look",
+     "line": None,
+     "notes": ["Forever Sherpa has a new profile photo and banner."]},
     {"version": "1.10.3", "date": "2026-10-30", "title": "/postnow logging",
      "line": None, "internal": True,
      "notes": ["Behind the scenes: `/postnow` logs what it did."]},
