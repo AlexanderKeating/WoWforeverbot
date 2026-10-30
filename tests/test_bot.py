@@ -998,3 +998,17 @@ def test_times_people_actually_type():
 def test_no_dead_end_setup_replies():
     src = open(os.path.join(os.path.dirname(__file__), "..", "forever_bot", "bot.py")).read()
     assert 'Run `/setup` first."' not in src  # every one offers the Post here button now (need_setup)
+
+
+def test_tips_are_consistent():
+    seen = set()
+    for topic, tips in C.TIPS.items():
+        assert len(tips) >= 3, topic  # Brief shows the first 3
+        for t in tips:
+            assert t.startswith("**") and " → " in t, (topic, t)  # "**do this** → why"
+            assert t not in seen, t
+            seen.add(t)
+        assert R.tips_embed(topic)["title"] in R.TIP_TITLES.values()
+    for a in (t for v in C.TIPS.values() for t in v):  # no near-duplicates across topics either
+        for b in seen:
+            assert a == b or not R.too_similar(a, b, 0.8), (a, b)

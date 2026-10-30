@@ -191,7 +191,7 @@ NEWBIE_TIPS = [  # 1.2.2: "**do this** → benefit", no tips a Horde PvP player 
     "**Skip mobs with a gold dragon on their portrait unless you're grouped** → they're elites built for groups, and they're the most common early death.",
     "**Spend your first talent points at 10, then check a guide before you hit 20** → Forever reworked the talent trees, so a build from the original game won't carry over.",
     "**Ask a city guard for directions** → they put a mark on your map for the bank, trainers, flight master and more.",
-    "**Move your abilities onto keys around WASD this week, before launch** → you'll be able to move and fight at the same time. `/keybinds` shows a starting layout for your class.",
+    "**Move your abilities onto keys around WASD early** → you'll be able to move and fight at the same time. `/keybinds` shows a starting layout for your class.",
     "**Queue a battleground even when your team looks outmatched** → you earn Honor win or lose, and a win only adds more on top.",
     "**Don't judge gear by how it looks** → transmog is opt-in, so a player in starter-looking clothes might be wearing their best gear under it.",
     "**Run your first dungeons with a guildmate who knows the route** → you'll learn the pulls and the loot rules without losing a group to a wipe.",
@@ -376,41 +376,7 @@ DEEP_DIVES = {
 POST_LAUNCH_TOPICS = ["leveling", "professions", "travel", "gold", "pvp"]
 
 # Short tips for /tips <topic>, and the rotating daily "New player tip" (basics).
-TIPS = {
-    "basics": NEWBIE_TIPS,
-    "leveling": [
-        "Rested XP doubles kill XP. It builds while you're logged out in an inn, city or on a Cozy Sleeping Bag.",
-        "Mobs with a skull are 5+ levels above you. Mobs and quests 5+ below give nothing.",
-        "Only the first player or group to tag a mob gets credit. A gray nameplate means it's taken.",
-        "Cooking food with Well Fed gives +5% kill XP for about 15 minutes.",
-        "Quest turn-in XP isn't reduced by grouping, so quest with friends freely.",
-    ],
-    "pvp": [
-        "On the PvP ruleset, Alliance can attack you anywhere outside cities. Travel in groups in contested zones.",
-        "Rank Points have a weekly cap. A few BGs every week beats one huge weekend.",
-        "Darkspear Islands: four bases and a center flag. Score the flag at a base your team holds.",
-        "Queue Darkspear Islands from the Darkspear Raiders base at Merchant Coast, Dustwallow Marsh.",
-        "Undead's Will of the Forsaken breaks Fear, Charm and Sleep. Save it for the big one.",
-    ],
-    "camping": [
-        "Do \"The Great Outdoors\" around level 5 and learn Cooking to place campfires.",
-        "Each player can add one item per campfire, so camp with friends for more buffs.",
-        "Camp buffs don't stack with matching class buffs.",
-        "The Leatherworking Camp Tent gives a rested XP buff that survives death.",
-    ],
-    "professions": [
-        "You get two primary professions plus Cooking, First Aid and Fishing.",
-        "Professions open in their own window (K). Track recipes like a shopping list.",
-        "Reagent bags get their own bag slot, separate from your five normal bags.",
-        "Tauren can pick herbs without Herbalism, and get double herbs with it.",
-    ],
-    "travel": [
-        "Click every flight master you pass; long routes need the stops in between.",
-        "Ask a guard for directions to the bank, trainers and more.",
-        "Shamans and Druids get travel forms before the level-40 mount.",
-        "Crossing continents means zeppelins or boats unless a Mage or Warlock helps.",
-    ],
-}
+TIPS = {"basics": NEWBIE_TIPS}  # topics are filled in below (1.8.1 tips pass)
 
 # ------------------------------------------------------------------ tournament
 TOURNEY = {
@@ -686,44 +652,62 @@ DEEP_DIVES.update({
 # Sources (Oct 27): Blizzard "How PvP Progression in WoW: Forever Works" (Oct 7) and the Legacy System
 # article; Warcraft Tavern guides to Professions, Legacy and Camping. Faction-neutral throughout.
 # Perk numbers come from beta and can change, so tips name perks without quoting their values.
-TIPS["leveling"] += [
-    "**Eat cooked food before a long quest session** → most cooked food gives an XP bonus that stacks with camp and sleeping-bag buffs.",
+# 1.8.1 tips pass: every tip reads "**do this** → why", duplicates merged (rested XP, Well Fed, camp buffs,
+# recipe tracking, reagent bags), best tips first (Brief shows the first 3, More detail the first 4),
+# and faction-specific tips say which faction they're for. No new facts; same sources as above.
+TIPS["leveling"] = [
+    "**Log out in an inn, a city or on a Cozy Sleeping Bag** → you build rested XP, which doubles your kill XP until it runs out.",
+    "**Eat cooked food before a long quest session** → Well Fed gives +5% kill XP for about 15 minutes, on top of camp and sleeping-bag buffs.",
+    "**Quest with friends freely** → grouping doesn't reduce the XP you get for turning in quests.",
+    "**Skip skull mobs, and move on once things turn gray** → skulls are 5+ levels above you, and mobs or quests 5+ below you give nothing.",
+    "**Check the nameplate before you pull** → a gray one means someone else tagged it first, and only they get credit.",
     "**Plan your first Legacy Point for level 25** → that's when most players unlock the Legacy System (Y) and its account-wide perks.",
-    "**Take a break from your main by leveling a second class to 25** → Legacy gives a point for reaching 25, 45 and 60 on every class, and it all feeds your account.",
-    "**Log out in an inn, a city, or on a Cozy Sleeping Bag** → you come back with rested XP instead of starting cold.",
+    "**Need a break from your main? Level another class to 25** → Legacy gives a point for reaching 25, 45 and 60 on every class, and it all feeds your account.",
 ]
-TIPS["pvp"] += [
-    "**Check the PvP tab on your character pane (C)** → it shows your rank, your Rank Points and which rewards you can buy right now.",
+TIPS["pvp"] = [
+    "**Play a few battlegrounds every week instead of one huge weekend** → Rank Points have a weekly cap.",
     "**Aim for Rank 2 early** → that's where the PvP trinket unlocks.",
-    "**Buy the blue Honor set first, then look for Emboldened Seals** → the epic set is your blue piece plus a seal, and seals have rank requirements.",
+    "**Check the PvP tab on your character pane (C)** → it shows your rank, your Rank Points and which rewards you can buy right now.",
     "**Do your Field of Honor journey tasks every week** → they pay Honor and Rank Points, and three per season also give a Legacy Point.",
+    "**Buy the blue Honor set first, then look for Emboldened Seals** → the epic set is your blue piece plus a seal, and seals have rank requirements.",
     "**Queue on a battleground's holiday week** → holiday-week battlegrounds give bonus Honor and Rank Points.",
     "**Play the battleground you actually enjoy** → Honor rates were evened out, so Alterac Valley isn't the only efficient pick anymore.",
+    "**Travel in groups through contested zones on the PvP ruleset** → the other faction can attack you anywhere outside cities.",
+    "**In Darkspear Islands, carry the center flag to a base your team holds** → that's how you score. The map has four bases and the flag in the middle.",
+    "**Head to the Darkspear Raiders base at Merchant Coast in Dustwallow Marsh** → that's where you queue for Darkspear Islands.",
+    "**Playing Undead (Horde)? Save Will of the Forsaken for the big one** → it breaks Fear, Charm and Sleep.",
 ]
-TIPS["camping"] += [
+TIPS["camping"] = [
+    "**Do \"The Great Outdoors\" around level 5 and learn Cooking** → that's what lets you place campfires.",
     "**Pack Flint and Tinder and some Simple Wood** → a Basic Campfire needs only Cooking 1, holds 3 camp items and burns for about 10 minutes.",
     "**Sit (/sit) at the camp for a full minute** → camp buffs only kick in after you've rested there for a minute.",
+    "**Camp with friends: add your item, then let them add theirs** → each character places one camp item (then waits an hour), but everyone at the camp shares every buff.",
     "**Pick camp items your group's classes don't already cover** → camp buffs are a bit weaker than class buffs and don't stack with them.",
+    "**Bring a Leatherworker's Camp Tent** → its rested XP buff survives death.",
     "**Ask your Engineer for a Repair Bot** → the second-tier Engineering camp item works as a repair vendor in the middle of nowhere.",
-    "**Add your item, then let a friend add theirs** → each character places one camp item (then waits an hour), but everyone at the camp shares every buff.",
 ]
-TIPS["professions"] += [
+TIPS["professions"] = [
     "**Do the starting-zone profession quest** → it hands you a book for Mining, Skinning or Herbalism plus 2 free skill points.",
+    "**Pick two primary professions, then add Cooking, First Aid and Fishing** → those three don't use up a primary slot.",
     "**Watch the colored arrows on nodes and recipes** → orange, yellow, green and gray show your skill-up chance before you spend materials.",
-    "**Track a recipe while you farm** → it turns into a shopping list in your objectives.",
-    "**Think twice before dropping a profession** → unlearning wipes all progress, and you start over from 1.",
+    "**Track a recipe while you farm (K opens professions)** → it turns into a shopping list in your objectives.",
+    "**Grab an early reagent bag** → it gets its own slot, separate from your five normal bags. Small gathering bags drop early, and Tailors can make a 6-slot Linen Reagent Bag.",
     "**Find the special Artisan trainer at level 35** → regular trainers stop at Expert, and Artisan takes you from 225 to 300.",
-    "**Grab an early reagent bag** → small gathering bags show up early, and Tailors can make a 6-slot Linen Reagent Bag for the separate reagent slot.",
+    "**Think twice before dropping a profession** → unlearning wipes all progress, and you start over from 1.",
+    "**Playing Tauren (Horde)? Take Herbalism anyway** → Tauren can pick herbs without it, and get double herbs with it.",
 ]
-TIPS["travel"] += [
+TIPS["travel"] = [
+    "**Click every flight master you pass** → long routes need the stops in between.",
+    "**Playing a Shaman or Druid? Use your travel form** → you get it well before the level-40 mount.",
+    "**Make friends with a Mage or Warlock** → otherwise crossing continents means zeppelins or boats.",
     "**Pick up Frequent Flier in your Legacy tree if you fly a lot** → it makes flight paths cheaper and faster.",
-    "**Run, don't wait, after a death** → the Legacy perk The Quick and the Dead speeds up your ghost, and your helpful spells cost nothing for a minute after you come back.",
+    "**Take The Quick and the Dead if you die a lot** → your ghost runs faster, and your helpful spells cost nothing for a minute after you come back.",
 ]
 TIPS["gold"] = [
-    "**Sell your gray items to any vendor** → it's free gold, and it clears bag space.",
     "**Pick two gathering professions while leveling** → you sell what you pick up along the way, and that pays for your mount at 40.",
-    "**Look at Bartering in the Legacy Professions tree** → it lowers vendor prices on everything you buy.",
+    "**Sell your gray items to any vendor** → it's free gold, and it clears bag space.",
     "**Take Reagent Economy in the Legacy Resourcefulness tree** → your class abilities stop needing vendor reagents, which adds up fast on reagent-heavy classes.",
+    "**Look at Bartering in the Legacy Professions tree** → it lowers vendor prices on everything you buy.",
     "**Use an Engineer's Reagent Bot at camp** → you can buy reagents and sell loot without riding back to town.",
 ]
 TIPS["legacy"] = [
