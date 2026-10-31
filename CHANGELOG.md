@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.10.7 (2026-10-30)
+Time zone autocomplete can't crash: `resolve_tz` treats a tzdata folder name (`America`) as not-a-zone instead of raising `IsADirectoryError`, and `_tz_ac` falls back to the popular list on any error (logged as `tz_autocomplete_failed`). `American/...` is read as `America/...`.
+
 ## 1.10.6 (2026-10-30)
 Leaner owner DMs: member count and the bot's server count only. No server name, ID, channel, post time or time zone. Removals still say how long the bot stayed and whether the server was set up. `owner_setup_text` is folded into `owner_alert_text("setup", ...)`.
 

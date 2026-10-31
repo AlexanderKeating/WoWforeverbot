@@ -98,11 +98,12 @@ def resolve_tz(text: str) -> str | None:
     raw = (text or "").strip()
     if not raw:
         return None
+    raw = re.sub(r"^american\b", "America", raw, flags=re.I)  # 1.10.7: common typo, 'American/Chicago'
     try:  # exact IANA name: the common case
         ZoneInfo(raw)
         if "/" in raw or raw.upper() == "UTC":
             return raw if raw != "utc" else "UTC"
-    except (ZoneInfoNotFoundError, ValueError):
+    except (ZoneInfoNotFoundError, ValueError, OSError):  # 1.10.7: 'America' is a folder in tzdata -> IsADirectoryError
         pass
     n = _norm(raw)
     for key in (n, re.sub(r"\btime$", "", n).strip()):

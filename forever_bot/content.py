@@ -842,6 +842,9 @@ DID_YOU_KNOW += [
 # "internal": True keeps a behind-the-scenes release out of /whatsnew and the What's new page.
 WHATSNEW_URL = SITE_URL + "/whatsnew.html"
 RELEASE_NOTES = [
+    {"version": "1.10.7", "date": "2026-10-30", "title": "Time zone fix",
+     "line": None, "internal": False,
+     "notes": ["Typing a region like `America/` in `/setup` no longer breaks the time zone suggestions, and `American/Chicago` now works."]},
     {"version": "1.10.6", "date": "2026-10-30", "title": "Leaner owner alerts",
      "line": None, "internal": True,
      "notes": ["Behind the scenes: owner DMs carry server size and the server count only."]},
