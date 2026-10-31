@@ -3,6 +3,9 @@
 ## 1.11.0 (2026-10-31)
 Content pass. Every tip topic has 15+ tips (was 5–11); did-you-know grows from 47 to 120. New `content.dm()` marks datamined or beta-client items: shown with a ⛏️ label, filtered per server via the new `datamined` guild column and `/datamined` command (default on). `render.V()` applies the filter everywhere tips, facts and deep dives are picked; `render.datamined()` scopes it per render. `/tips` Standard now shows 8 tips (Brief 3, Detailed all). Plus One gets `PLUS_FACTS` and a 🎲 hub button. Corrections: Merchant Coast is in the Barrens; Ice Lance +200% vs frozen; Lava Burst 21 / Elemental Mastery 31 / Earthbound 16; Arcane Wrath replaces Missile Barrage at 16; Onyxia's Lair (40) added to Dec 9.
 
+## 1.10.8 (2026-10-31)
+Glossary: `bis` (aliases `best in slot`, `bis list`), shown as "BiS". A placeholder that says Forever's lists are coming once there's real data. Someone looked it up on Oct 30 and got "not in my book".
+
 ## 1.10.7 (2026-10-30)
 Time zone autocomplete can't crash: `resolve_tz` treats a tzdata folder name (`America`) as not-a-zone instead of raising `IsADirectoryError`, and `_tz_ac` falls back to the popular list on any error (logged as `tz_autocomplete_failed`). `American/...` is read as `America/...`.
 
