@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.10.8 (2026-10-31)
+Glossary: `bis` (aliases `best in slot`, `bis list`), shown as "BiS". A placeholder that says Forever's lists are coming once there's real data. Someone looked it up on Oct 30 and got "not in my book".
+
 ## 1.10.7 (2026-10-30)
 Time zone autocomplete can't crash: `resolve_tz` treats a tzdata folder name (`America`) as not-a-zone instead of raising `IsADirectoryError`, and `_tz_ac` falls back to the popular list on any error (logged as `tz_autocomplete_failed`). `American/...` is read as `America/...`.
 
