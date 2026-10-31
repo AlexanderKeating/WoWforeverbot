@@ -248,6 +248,49 @@ def hub_intro() -> str:
             "Everything here is private, jargon-free, and judgment-free.")
 
 
+# ------------------------------------------------------------------ 1.11: new-player facts
+# Plain words, no jargon left unexplained. Same sources as the main facts (Blizzard posts, Kotaku's beginner
+# guide, Warcraft Tavern). Shown one at a time from the 🎲 button on the /draggedalong hub.
+PLUS_FACTS = [
+    "Your regular WoW subscription already covers Forever. Nothing extra to buy unless you want the optional Skyborne race.",
+    "A yellow **!** over someone's head means they have a quest for you. A yellow **?** means you can hand one in.",
+    "The yellow arrow on your minimap (the little round map in the corner) points at your current quest goal.",
+    "Your **hearthstone** teleports you home to the inn you picked. Talk to an innkeeper to change it. It works once an hour.",
+    "Logging out at an inn or in a city saves up **rested XP**, which doubles the XP you get from monsters later.",
+    "Monsters with gray names give no XP. They're too far below your level to be worth it.",
+    "If a monster's name plate turns gray after someone else hits it, it's theirs. Only the first player or group to hit it gets credit.",
+    "A gold dragon around a monster's portrait means it's an **elite**: built for a group, so don't fight one alone.",
+    "On the **Normal** ruleset, other players can only fight you if you both agree to it.",
+    "Alliance and Horde players can't group up or chat with each other. You'll see the other side's speech as gibberish.",
+    "Typing **/1** before a message sends it to everyone in your zone, not just your partner. Use **/p** for your group.",
+    "You learn new spells from your **class trainer** in town, and it costs a little gold each time. Check in every couple of levels.",
+    "New ranks of a spell you already know don't always replace the old button. Drag the new one onto your bar.",
+    "Turn on **autoloot** in the settings and you'll grab everything from a monster in one click.",
+    "Your talents (bonus powers you choose yourself) start at level 10. There's no wrong pick early on.",
+    "Your first mount comes around level 40. Until then, it's running, boats and flying taxis.",
+    "Flying taxis start at a **flight master**. Talk to every one you pass so you can fly back there later, and ask a city guard if you can't find one.",
+    "There's no flying on your own in Forever. Taxis and boats get you around, and that's part of the charm.",
+    "Sitting at a campfire with friends for a minute gives everyone a bonus, and it gets better the more people add items to it.",
+    "Eating cooked food (not just any food) gives you a **Well Fed** bonus, and some of it even speeds up leveling a little.",
+    "Each character can learn two main professions (crafting or gathering jobs), plus Cooking, Fishing and First Aid.",
+    "Picking herbs or mining ore as you go is the easiest way to earn gold early. Gold is tight at the start for everyone.",
+    "Mailboxes in every town let you send items and gold to your partner, even when you're far apart.",
+    "Controllers are officially supported, if a keyboard and mouse aren't your thing.",
+    "Prefer the old-school look? You can switch to the original 2004 character models in the game options.",
+    "Zones don't scale to your level. If the monsters feel too hard, you're probably a little early for that area.",
+    "When you die, you become a ghost at a graveyard. Run back to your body and you're fine. The angel's offer costs you, so skip it if you can.",
+    "Your partner's account-wide **Legacy Points** don't carry over to you, but yours build up across every character you make.",
+    "An ordinary monster should take about 10 to 15 seconds to defeat. If it's taking much longer, it's probably above your level.",
+    "There are no realms (servers) to pick. You choose a ruleset, and everyone on it in your region shares one world.",
+]
+
+
+def fact_embed(i: int) -> dict:
+    n = len(PLUS_FACTS)
+    return {"title": "🎲 Did you know?", "color": PLUS_COLOR, "description": PLUS_FACTS[i % n],
+            "footer": {"text": f"Plus One mode · fact {i % n + 1} of {n} · tap again for another"}}
+
+
 # ------------------------------------------------------------------ "I'm dying" panic buttons
 # Long-standing baseline abilities for each class. Some unlock a few levels in.
 PANIC_GENERAL = {

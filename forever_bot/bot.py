@@ -9,6 +9,7 @@ Loops
 import asyncio
 import logging
 import os
+import random
 import re
 import time
 from datetime import datetime, timedelta, timezone
@@ -164,7 +165,8 @@ class DeepDiveButton(discord.ui.DynamicItem[discord.ui.Button], template=r"dd:(?
     async def callback(self, interaction: discord.Interaction):
         try:
             lvl = level_for(interaction)
-            e = R.fit_faction_embed(R.deep_dive_embed(self.key, lvl), faction_of(interaction))
+            with R.datamined(datamined_on(interaction)):
+                e = R.fit_faction_embed(R.deep_dive_embed(self.key, lvl), faction_of(interaction))
         except Exception as exc:  # noqa: BLE001 - always answer inside Discord's 3-second window
             ev(clog, "more_detail_failed", logging.ERROR, exc_info=exc, key=self.key)
             e, lvl = None, "standard"
@@ -212,6 +214,15 @@ def _control_name(cid: str, interaction: discord.Interaction) -> str:
 def E(d: dict, lvl: str | None = None) -> discord.Embed:
     """Embed from a render dict, in plain words when the person picked Plus One's level."""
     return discord.Embed.from_dict(P.plainify(d) if lvl == "plain" else d)
+
+
+def datamined_on(interaction: discord.Interaction) -> bool:
+    """1.11: this server's /datamined setting; on outside servers or if unset."""
+    try:
+        c = bot.store.get_guild(interaction.guild_id) if interaction.guild_id else None
+        return getattr(c, "datamined", True) if c else True
+    except Exception:  # noqa: BLE001
+        return True
 
 
 def faction_of(interaction: discord.Interaction) -> str:
@@ -1282,7 +1293,7 @@ async def status_cmd(interaction: discord.Interaction):
     if cfg and cfg.channel_id:
         lines.append(f"**Setup:** <#{cfg.channel_id}> · {len(guild_times(cfg))}x a day at {fmt_times(guild_times(cfg))} "
                      f"{cfg.tz} · {cfg.faction} · posts: {R.LEVEL_LABEL[R.norm_level(cfg.verbosity)]}"
-                     f"{'' if cfg.clips else ' · clips off'}"
+                     f"{'' if cfg.clips else ' · clips off'}{'' if getattr(cfg, 'datamined', True) else ' · datamined off'}"
                      f"{' · ⏸️ ON HOLD today' if cfg.hold_date == R.local_today(cfg.tz, now).isoformat() else ''}")
         nxt = bot.next_post(cfg, now)
         if nxt:
@@ -1329,9 +1340,9 @@ async def dates_cmd(interaction: discord.Interaction):
 @app_commands.describe(topic="What do you want tips on?")
 @app_commands.choices(topic=[app_commands.Choice(name=t.capitalize(), value=t) for t in R.TIP_TOPICS])
 async def tips_cmd(interaction: discord.Interaction, topic: app_commands.Choice[str] | None = None):
-    await interaction.response.send_message(
-        embed=E(R.fit_faction_embed(R.tips_embed(topic.value if topic else "basics", lvl := level_for(interaction)),
-                                    faction_of(interaction)), lvl), ephemeral=True)
+    with R.datamined(datamined_on(interaction)):
+        e = R.tips_embed(topic.value if topic else "basics", lvl := level_for(interaction))
+    await interaction.response.send_message(embed=E(R.fit_faction_embed(e, faction_of(interaction)), lvl), ephemeral=True)
 
 
 @bot.tree.command(name="classtips", description="Forever changes and tips for a class")
@@ -1446,11 +1457,12 @@ async def mysettings_cmd(interaction: discord.Interaction, detail: app_commands.
 
 
 # ------------------------------------------------------------------ 1.3 Plus One mode
-class PlusOneButton(discord.ui.DynamicItem[discord.ui.Button], template=r"po:(?P<what>kit|duo|dying|words|card|plain|plain_off|share)"):
+class PlusOneButton(discord.ui.DynamicItem[discord.ui.Button], template=r"po:(?P<what>kit|duo|dying|words|card|plain|plain_off|share|fact)"):
     """Buttons on the /draggedalong hub. Survive restarts."""
     LABELS = {"kit": ("🧭", "Survival kit"), "duo": ("💞", "Pick a class together"), "dying": ("🆘", "I'm dying"),
               "words": ("📖", "What does that mean?"), "card": ("💌", "A card for my partner"),
-              "plain": ("🌿", "Plain words on/off"), "plain_off": ("↩️", "Undo"), "share": ("📨", "Post this card here")}
+              "plain": ("🌿", "Plain words on/off"), "plain_off": ("↩️", "Undo"), "share": ("📨", "Post this card here"),
+              "fact": ("🎲", "A fun fact")}
 
     def __init__(self, what: str):
         self.what = what
@@ -1469,6 +1481,11 @@ class PlusOneButton(discord.ui.DynamicItem[discord.ui.Button], template=r"po:(?P
                 await interaction.response.send_message(embed=discord.Embed.from_dict(P.survival_kit_embed()), ephemeral=True)
             elif w == "words":
                 await interaction.response.send_message(embed=discord.Embed.from_dict(P.glossary_embed(None)), ephemeral=True)
+            elif w == "fact":  # 1.11: a random new-player fact; the button repeats so people can keep tapping
+                v = discord.ui.View(timeout=None)
+                v.add_item(PlusOneButton("fact"))
+                await interaction.response.send_message(embed=discord.Embed.from_dict(P.fact_embed(random.randrange(len(P.PLUS_FACTS)))),
+                                                        view=v, ephemeral=True)
             elif w == "dying":
                 await interaction.response.send_message("🆘 **Okay, deep breath.** What are you playing?", view=PanicClassView(),
                                                         ephemeral=True)
@@ -1513,7 +1530,7 @@ class PlusOneButton(discord.ui.DynamicItem[discord.ui.Button], template=r"po:(?P
 
 def plusone_hub_view() -> discord.ui.View:
     v = discord.ui.View(timeout=None)
-    for w in ("kit", "dying", "duo", "words", "card", "plain"):
+    for w in ("kit", "dying", "duo", "words", "fact", "card", "plain"):
         v.add_item(PlusOneButton(w))
     return v
 
@@ -1696,6 +1713,29 @@ async def clips_cmd(interaction: discord.Interaction, on: bool | None = None):
     ev(clog, "clips_set", guild=cfg.guild_id, on=on, by=interaction.user.id)
     await interaction.response.send_message(
         f"✅ Clips are now **{'on' if on else 'off'}** here, starting with the next post.", ephemeral=True)
+
+
+@bot.tree.command(name="datamined", description="Show or hide datamined tips and facts in this server")
+@app_commands.guild_only()
+@admin
+@app_commands.describe(on="On shows datamined tips and facts, labeled ⛏️. Off sticks to what Blizzard has announced.")
+async def datamined_cmd(interaction: discord.Interaction, on: bool | None = None):
+    cfg = bot.store.get_guild(interaction.guild_id)
+    if not cfg or not cfg.channel_id:
+        return await need_setup(interaction)
+    if on is None:
+        state = "on" if getattr(cfg, "datamined", True) else "off"
+        return await interaction.response.send_message(
+            f"Datamined content is **{state}** here. When on, some tips and facts come from game files or beta testing "
+            "instead of Blizzard announcements, and each one is labeled *⛏️ datamined, may change*.\n"
+            "-# Change it with `/datamined on:False` or `on:True`.", ephemeral=True)
+    cfg.datamined = on
+    bot.store.upsert_guild(cfg)
+    ev(clog, "datamined_set", guild=cfg.guild_id, on=on, by=interaction.user.id)
+    msg = ("✅ Datamined tips and facts are **on** here, each labeled ⛏️." if on else
+           "✅ Datamined tips and facts are **off** here. Posts and replies stick to what Blizzard has announced.")
+    await interaction.response.send_message(msg + "\n-# Starts with the next post. Private replies like `/tips` change right away.",
+                                            ephemeral=True)
 
 
 @bot.tree.command(name="updates", description="Turn the short 'new in Forever Sherpa' line in posts on or off")

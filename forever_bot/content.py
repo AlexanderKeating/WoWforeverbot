@@ -12,6 +12,31 @@ Forever is NOT retail and NOT Classic:
 """
 from datetime import datetime, timezone
 
+
+# ------------------------------------------------------------------ 1.11: datamined content
+class DM(str):
+    """A tip or fact that comes from game files or the beta client, not a Blizzard announcement.
+    Shown with a ⛏️ datamined label; servers can hide all of it with /datamined (on by default)."""
+    source = ""
+
+
+def dm(text: str, source: str = "") -> DM:
+    s = DM(text)
+    s.source = source
+    return s
+
+
+DM_LABEL = " *(⛏️ datamined, may change)*"
+
+
+def is_dm(item) -> bool:
+    return isinstance(item, DM) or (isinstance(item, tuple) and any(isinstance(x, DM) for x in item))
+
+
+def show(item):
+    """The text as players see it: datamined items get their label."""
+    return f"{item}{DM_LABEL}" if isinstance(item, DM) else item
+
 # ------------------------------------------------------------------ milestones
 # Nov 4, 2026 3:00 PM PST == 23:00 UTC (DST ends Nov 1, so PST not PDT)
 LAUNCH = datetime(2026, 11, 4, 23, 0, tzinfo=timezone.utc)
@@ -30,7 +55,7 @@ KEY_DATES = [
     ("2026-10-27", "Name reservation opens, 1 PM Pacific / 3 PM Central (Skyborne pack owners; 3 names)"),
     ("2026-11-03", "Name reservation ends"),
     ("2026-11-04", "Launch"),
-    ("2026-12-09", "Raids unlock: Barrow Deeps (10) and Hyjal Summit (20)"),
+    ("2026-12-09", "Raids unlock: Barrow Deeps (10), Hyjal Summit (20) and Onyxia's Lair (40)"),
 ]
 PAST_DATES = [
     ("2026-09-12", "Announced at BlizzCon"),
@@ -410,7 +435,7 @@ FAQ = [
     ("What's a PvP ruleset?", "Players from the other faction can attack you out in the world. It's part of the fun; travel in groups."),
     ("Is this retail or Classic?", "Neither. It's a third version of WoW: the classic-era world with new zones, dungeons, systems and a permanent level 60 cap."),
     ("When does it launch?", "Wed, Nov 4: 3 PM PST · 5 PM CST · 6 PM EST · 23:00 UTC."),
-    ("When do raids open?", "Dec 9: Barrow Deeps (10-player) and Hyjal Summit (20-player)."),
+    ("When do raids open?", "Dec 9: Barrow Deeps (10-player), Hyjal Summit (20-player) and Onyxia's Lair (40-player, with its classic attunement)."),
     ("Is there arena?", "No arena or rated PvP announced. PvP is battlegrounds and world PvP with Honor and Rank Points."),
 ]
 
@@ -772,7 +797,7 @@ DUNGEONS = [
     ("Shaper's Terrace", "58–60", "Northern hills of Un'Goro Crater",
      "Gather Un'Goro power crystals before you go; the consoles inside use them."),
 ]
-RAIDS_INFO = "**Raids open Dec 9:** Barrow Deeps (10 players) and Hyjal Summit (20 players)."
+RAIDS_INFO = "**Raids open Dec 9:** Barrow Deeps (10 players), Hyjal Summit (20 players) and the returning Onyxia's Lair (40 players)."
 
 
 # ------------------------------------------------------------------ 1.5: /addons
@@ -835,6 +860,191 @@ DID_YOU_KNOW += [
 ]
 
 
+# ======================================================================= 1.11: content pass
+# Researched Oct 30, 2026. Blizzard first: Deep Dive recap (Sep 13), Legacy System (Sep 23), dungeon preview,
+# PvP progression and Darkspear Islands posts (Oct 7), Shaman/Mage deep dive (Oct 7), beta development notes
+# (Oct 1, Oct 15, Oct 26 racial pass). Then Warcraft Tavern, Wowhead, Kotaku, Method, PC Gamer.
+# dm(...) = game files or beta-client numbers Blizzard hasn't announced (wowclassicforever.info client data,
+# wago.tools community datamine, Playfulls' Oct 30 datamine, Method/Wowhead beta testing). Shown with a
+# ⛏️ datamined label; /datamined off hides them.
+DID_YOU_KNOW[:] = [x for x in DID_YOU_KNOW if not x[1].startswith("Shen'dralas, the Highborne")]  # lore link unconfirmed
+
+TIPS["basics"] += [
+    "**Turn on autoloot in the game settings** → you'll stop clicking every corpse twice.",
+    "**Drag each new spell rank onto your action bar after training** → ranks are placed by hand, so it's easy to keep casting the weaker one.",
+    "**Follow the yellow arrows on your minimap** → they point at your active quest's objective, so you spend less time searching.",
+    "**Stay alert at every level on the PvP ruleset** → Blizzard has no protection planned for low-level players there.",
+    "**Set aside gold for training every couple of levels** → class trainers charge for every new spell and rank, and it adds up before 40.",
+]
+TIPS["leveling"] += [
+    "**Fight monsters your own level instead of easy green ones** → Blizzard cut the XP from green mobs compared to Classic, to balance the new food and camp buffs.",
+    "**Pick up every dungeon quest before you zone in** → Blizzard moved most dungeon XP from kills into quest rewards.",
+    "**Save rested bubbles for grinding, and quest when they run out** → rested XP doubles monster XP but does nothing for quest turn-ins.",
+    "**Head to Riverglades in your mid-30s** → it's a brand-new zone with nearly 200 quests for both factions, plus Krol'dok Stronghold at 40–45.",
+    "**Check out Shen'dralas, between Mulgore and Desolace** → it's one of Forever's new zones, with dozens of new quests.",
+    "**Explore as you quest** → entering an area for the first time gives a little XP, and uncovering the whole map is a Legacy Point.",
+    dm("**Look for the Cozy Sleeping Bag questline from about level 14** → the bag counts as a rested area out in the world, and its buff survives death."),
+    dm("**Stack every XP buff at once** → rested XP, Well Fed and the sleeping bag's Well-Rested all applied together in the beta."),
+]
+TIPS["pvp"] += [
+    "**Hit Rank 3 for the cloaks and Rank 4 for the necklace** → they're the first gear on the rank track, well before the epic tokens start at Rank 8.",
+    "**Queue Darkspear Islands from level 30** → it's open to levels 30–60, 15 players a side, from any capital's battlemaster.",
+    "**Do the Darkspear Islands reputation quests** → they pay Marks of Honor, and the rep vendor sells trinkets, rings, cloaks, weapons and armor.",
+    "**Push your Darkspear Islands faction to Exalted** → it unlocks a short questline for that faction's tabard.",
+    "**Playing Undead (Horde)? Don't count on Will of the Forsaken against Scatter Shot** → Blizzard made it unusable while you're Scatter Shotted.",
+    dm("**Plan on about 10 weeks to reach Rank 14** → the weekly cap rises a step at a time, and the game files open Rank 14 in week 10."),
+    dm("**Start battlegrounds at level 10** → the game files open Warsong Gulch at 10, Arathi Basin at 20 and Alterac Valley at 51."),
+]
+TIPS["camping"] += [
+    "**Learn your profession's first camp item at skill 20** → every profession unlocks one at 20, from a trainer or a special NPC.",
+    "**Level Cooking to upgrade your campfire** → a Journeyman Campfire holds 5 camp items and an Expert Campfire holds 10.",
+    "**Camp somewhere out of the way on the PvP ruleset** → Blizzard warns that enemy players can find your camp.",
+    dm("**No Paladin in the group? Bring a Fish Bowl** → the Fishing camp item gave +8% stats in the beta, standing in for Blessing of Kings."),
+    dm("**Melee group? Ask your Miner for a Lodestone** → in the beta client it gives melee attack power, standing in for Blessing of Might."),
+    dm("**Place a tier 2 camp item on top of your tier 1 item** → it keeps the original buff and adds utility, like the Engineer's Repair Bot."),
+    dm("**Hunt camp blueprints in early dungeons** → in the beta, Deadmines bosses dropped the Anvil, Repair Bot and Cookie's Feast blueprints, and Lord Serpentis in Wailing Caverns dropped the Journeyman Campfire."),
+    dm("**Herbalists, grow your own herbs** → the tier 2 Greenhouse grows herbs from seeds, and a Miner's Rock Garden spawns ore."),
+]
+TIPS["professions"] += [
+    "**Pair your gathering and crafting professions** → Mining feeds Blacksmithing or Engineering, Herbalism feeds Alchemy, and Skinning feeds Leatherworking.",
+    "**Train up at levels 10, 20 and 35** → Journeyman, Expert and Artisan raise your cap to 150, 225 and 300, once you have 50, 125 and 200 skill.",
+    "**Gathering? Take Bountiful Harvest in the Legacy Professions tree** → it raises what you get from mining, herbs and skinning.",
+    "**Level Cooking, First Aid and Fishing anyway** → secondary professions can't be unlearned, so there's no downside to leveling them.",
+    "**Take a crafting profession to 300 for a title** → each one has a certification that unlocks a title, like Alchemist or Engineer.",
+    "**Playing a Dwarf (Alliance)? Keep Find Treasure on** → it now runs alongside other tracking and can find extra items in most chests.",
+    dm("**Engineers: sell your gadgets to everyone** → many new Engineering items shown at BlizzCon are Bind on Equip and don't need Engineering to use."),
+]
+TIPS["travel"] += [
+    "**Use the Tanaris ship to reach Riverglades** → a Steamwheedle boat runs to Powderfuse Port, a neutral goblin town both factions can use.",
+    "**Alliance: take the new Stormwind–Auberdine ship** → it links Stormwind straight to Darkshore, so Humans and Night Elves can meet early.",
+    "**Alliance: ride the Menethil ship via Southshore** → it now runs Menethil → Southshore → Auberdine.",
+    "**Horde: know your zeppelin towers** → Orgrimmar's are outside the main gate, Undercity's are north of the city, and Grom'gol's is inside the camp.",
+    "**Playing Tauren (Horde)? Keep moving on foot** → Plainsrunning now builds up to +60% run speed, though it no longer speeds up your mount.",
+    "**Playing Skyborne? Use your racial at an elemental convergence or ley line** → Skysight becomes +30% run speed (Horde) and Read Leyline +100% regen (Alliance) for an hour, through death.",
+    "**Skyborne: take the skyboat when you finish Zephras Isle** → it carries you to Mulgore (Horde) or Dalaran (Alliance) to join the main world.",
+    "**Playing a Druid? Use Teleport: Moonglade** → it gets you out of anywhere for free, with a flight master waiting when you land.",
+    dm("**Paladins and Warlocks: do your free mount quest at 40** → in the beta it gave the class mount, so you only pay for riding."),
+    dm("**Don't plan on another race's mount** → in the beta, you couldn't buy or ride one until Exalted with that race."),
+    dm("**Grab the Riverglades flight paths** → the beta map has Rog'mar for the Horde and Farholde Keep for the Alliance."),
+]
+TIPS["gold"] += [
+    "**Kill rare monsters whenever you see one** → Forever added hundreds of new rare drops and improved world-drop epics.",
+    "**Playing Tauren (Horde)? Use Cultivation on every herb run** → its cooldown dropped to 15 minutes, and with Herbalism it doubles your herbs.",
+    "**Check the Auction House before you vendor crafting materials** → profession demand usually makes them worth more than a vendor pays.",
+    "**Sell consumables, not just raw materials** → potions, food and bandages get used up, so buyers keep coming back.",
+    "**Level Fishing and Cooking and sell the food** → most cooked food in Forever gives stats, and some gives bonus XP, so levelers buy it.",
+    dm("**Budget 100 gold for riding at 40 and 1,000 at 60** → in the beta your first mount came free with training; 40 is 60% speed and 60 is 100%."),
+    dm("**Hit Honored with your home faction before buying riding** → the beta took 10% off riding and your race's mounts, and Legacy Bartering took up to 10% more off mounts."),
+    dm("**Skip extra mount colors early** → each one cost 20 gold in the beta, and your first mount is already included."),
+    dm("**Bring gold to Powderfuse Port's Black Market** → in the beta, its reagent vendor sold Black Lotus and Arcane Crystal for a flat 50 gold."),
+    dm("**Save 150 gold for a Gift of Galloping at 60** → the beta Black Market sold it: +10% mounted speed for 15 days, stacking with other bonuses."),
+]
+TIPS["legacy"] += [
+    "**Spend Legacy Points per character** → points are shared across your account, but each character picks its own perks.",
+    "**Aim for 15 points first** → that unlocks the first cosmetic reward, a Replica Ironforge Air Rifle toy.",
+    "**Push to 55 points for the Spectral Bear mount** → the track also gives a cub pet at 25 and a tabard at 40.",
+    "**Clear Onyxia, all 13 Hyjal Summit bosses and all 8 Barrow Deeps bosses** → each is a Legacy Point once raids open Dec 9.",
+    "**Pick up PvP points even as a casual** → Ranks 3 and 7 and Field of Honor weeks 4, 7 and 10 are all Legacy challenges.",
+    "**Get Exalted with the battleground reputations** → each of the four is a Legacy Point.",
+    "**Finish the Lord Valthalak dungeon set questline** → it's one of only two Adventure challenges.",
+    "**Level crafting professions, not gathering ones, for points** → only the six crafting professions have Legacy challenges.",
+    dm("**Take Permanence if you camp a lot** → in the beta it made camp buffs last longer."),
+]
+
+DID_YOU_KNOW += [
+    # leveling and combat (Blizzard Deep Dive recap; XP changes per Blizzard beta notes)
+    ("vet", "Reaching 60 takes 4,084,700 XP, the same total as Classic."),
+    ("vet", "Green monsters give less XP in Forever than in Classic. Blizzard says it balances the new food and camp buffs."),
+    ("vet", "Blizzard aims for an ordinary monster to take a solo player about 10 to 15 seconds to kill."),
+    ("vet", "Spell, melee and ranged hit are one stat in Forever, and so is crit."),
+    ("vet", "Divine Spirit, Blessing of Kings and Improved Mark of the Wild are baseline in Forever. No talent points needed."),
+    ("vet", "Talent trees add a 16-point milestone talent between the classic 11, 21 and 31."),
+    ("new", "Every race in Forever has two active and two passive racial abilities."),
+    ("vet", "Six race and class combos are new: Gnome Priest, Human Hunter, Dwarf Shaman, Orc Mage, Troll Warlock and Undead Paladin."),
+    ("new", "Undead Paladins and Dwarf Shamans are playable. In 2004, those classes belonged only to the other faction."),
+    ("vet", "Paladins get Holy Strike at level 6 and baseline Consecration at 20, and Judgement no longer eats your Seal."),
+    ("vet", "Paladins still have no interrupt and no slow in Forever. Blizzard kept that weakness on purpose."),
+    ("vet", "The Mor'ladim quest in Duskwood now also offers the Ladimore Heirloom Ring for spellcasters."),
+    ("vet", "Hemet Nesingwary's Stranglethorn quests add a Master Hunter's Spellsword option for casters."),
+    ("vet", "Uncommon and rare dungeon drops unlock their look for every eligible player in the group, not just the winner."),
+    ("new", "You can collect high-level appearances early, but you can't wear them as transmog until level 60."),
+    ("new", "Choose Classic Mode on first launch and transmog turns off automatically. You still collect appearances."),
+    ("vet", "A Hardcore character who dies can transfer to another ruleset, even PvP."),
+    ("vet", "The PvP ruleset uses faction balance systems similar to Season of Discovery."),
+    ("vet", "Battlegrounds are shared across rulesets, except Hardcore."),
+    # PvP (Blizzard, Oct 7)
+    ("vet", "PvP Rank 1 takes 750 Rank Points. Rank 14 takes 24,750."),
+    ("vet", "The rank track gives a tabard at Rank 1 and another at Rank 6, plus a battle standard at Rank 7."),
+    ("vet", "Darkspear Islands is for levels 30–60, and the first team to 2,000 points wins."),
+    ("vet", "Each side of Darkspear Islands has its own reputation: the Darkspear Raiders and the Theramore Expeditionary Force."),
+    ("vet", "You can enter Darkspear Islands through a portal at your faction's base: the Merchant Coast for the Horde, Northwatch for the Alliance."),
+    # raids and roadmap
+    ("vet", "Onyxia's Lair returns as a 40-player raid on Dec 9, with the classic Drakefire Amulet attunement."),
+    ("vet", "Barrow Deeps has three entrances: Mount Hyjal, Winterspring and Blackmaw Hold."),
+    ("new", "Forever's level cap is a permanent 60. New updates add zones, dungeons and raids instead of levels."),
+    ("vet", "Forever's Hyjal is set after Archimonde's defeat, unlike the Burning Crusade raid that replays the battle."),
+    ("vet", "Spring 2027 brings two new raids (10 and 20 players), two new dungeons, a new zone and a legendary questline."),
+    ("vet", dm("Barrow Deeps, once Illidan's prison, has 8 bosses. Names in the client include the Deepscar Matriarch and Sonya Darkhallow.")),
+    ("vet", dm("Hyjal Summit's 13 bosses include the Ancient of Decay, the Council of Thorns and the Wild King, per names in the client.")),
+    ("vet", dm("Raid tier sets for all nine classes turned up in the game files in September, each with alternate colors.")),
+    ("vet", dm("The beta client holds over eight hours of music, including a remastered main theme and a new Skyborne theme.")),
+    ("vet", dm("About 20 zombie plague spells turned up in the game files on Oct 30. Blizzard hasn't announced an event.")),
+    # camping and professions
+    ("new", "Campfires can't hurt you below level 5. Blizzard changed that during the beta."),
+    ("vet", "Cooks can upgrade campfires to hold 5 or 10 camp items."),
+    ("vet", "Advanced Leatherworking recipes need a Tanning Rack, the Leatherworker's tier 2 camp item."),
+    ("vet", "Profession titles come from the Azeroth Commerce Authority (Alliance) and Durotar Supply and Logistics (Horde)."),
+    ("vet", "Gnome Engineers have a racial that makes their gadgets backfire less."),
+    ("vet", "Mages have their own minor tradeskill, Comprehension, for reading scrolls that monsters drop."),
+    ("vet", dm("Camp items come in three tiers per profession, at skill 20, 140 and 300.")),
+    ("vet", dm("The Skinning camp item is a Camp Chair: +2% crit, standing in for Moonkin Aura.")),
+    ("vet", dm("The Enchanting camp item is an Enchanted Lute, and its buff stands in for Mark of the Wild.")),
+    ("vet", dm("First Aid's top camp item is a Plague Doctor's Laboratory.")),
+    ("vet", dm("Engineers can make a Stealthman 52 that lets any class stealth out of combat on a cooldown.")),
+    ("vet", dm("New crafting materials include Azerothium Bar, Legionite Bar and Torbernite.")),
+    # zones and races
+    ("vet", "Riverglades has the Bloodmaster's Ring, where you fight ogre brawlers."),
+    ("new", "Shen'dralas is a new zone between Mulgore and Desolace, with dozens of new quests."),
+    ("new", "Skyborne start on Zephras Isle in Skywall, one of the elemental planes."),
+    ("vet", "Alliance Skyborne are the High Order. Horde Skyborne are the Windshapers."),
+    ("vet", "Skyborne speak Darnassian."),
+    ("vet", "Dalaran's dungeon has several paths, so each group picks its own route through the city."),
+    ("vet", dm("On the beta map, Riverglades' faction hubs are Rog'mar (Horde) and Farholde Keep (Alliance), held by the Brotherhood of the Horse.")),
+    # class and racial tuning (Blizzard beta notes, Oct 15 and Oct 26)
+    ("vet", "Hunters must stand still for half a second before Auto Shot fires. Wands work the same way."),
+    ("vet", "Battle Shout, Trueshot Aura and the Shaman buff totems all reach the whole raid in Forever."),
+    ("vet", "Vampiric Embrace is on a 30-second cooldown and can't be resisted anymore."),
+    ("vet", "Mages get a new Arcane Wrath talent that adds spell power equal to 5% of max mana."),
+    ("vet", "Elemental Mastery is back as the Shaman's 31-point Elemental talent, and Lava Burst moved to 21."),
+    ("vet", "Shaman totems now last 5 minutes, and weapon imbues last an hour."),
+    ("vet", "Tranquil Air Totem is gone, and Fire Nova is now a spell that erupts from your fire totem."),
+    ("vet", "Stoneform now cuts physical damage taken instead of adding armor."),
+    ("vet", "Humans' Spirit racial doubled from 5% to 10% in the final racial pass."),
+    ("vet", "Dwarves lost their crit racial in the final pass and got +1% hit instead."),
+    ("horde", "Will of the Forsaken breaks Charm, Fear and Sleep, but it no longer leaves you immune afterward."),
+    ("horde", "Cannibalize restores mana as well as health in Forever."),
+    ("horde", "Undead Touch of the Grave now has a 15-second internal cooldown, down from 25."),
+    ("horde", "Troll Berserking now lasts 15 seconds, up from 10."),
+    ("horde", "Orc Command is back: +5% pet damage for Hunters and Warlocks. Blood Fury is on a 2-minute cooldown."),
+    ("horde", "Tauren Plainsrunning lost its mounted speed in the final pass, but now builds to +60% on foot."),
+    ("vet", dm("The Oct 30 datamined hotfixes give Ice Lance an 8-second cooldown and take Frost Blast off the trainers.")),
+    ("vet", dm("In the latest game files, Paladins learn Righteous Fury at level 10, down from 16.")),
+    # economy
+    ("new", "Gold is tight early. In the beta, three PC Gamer writers earned about 2.5 gold together in their first two hours."),
+    ("vet", dm("The beta Black Market sold a Gift of Galloping: +10% mounted speed for 15 days, for 150 gold.")),
+    ("vet", dm("The beta client lets you bank up to 25,000 Honor, up from 15,000 earlier in the beta.")),
+]
+
+# Corrections from this pass
+def _fix(pool, old, new):
+    """Correct a line in place, keeping its datamined marker."""
+    pool[:] = [(dm(t.replace(old, new), t.source) if isinstance(t, DM) else t.replace(old, new)) for t in pool]
+
+
+_fix(TIPS["pvp"], "at Merchant Coast in Dustwallow Marsh", "at the Merchant Coast in the Barrens")  # Blizzard: Merchant Coast is in the Barrens
+_fix(TIPS["camping"], "burns for about 10 minutes", "burns for about 10 to 15 minutes")  # Blizzard said ~10; the beta client ran 15
+
+
 # ------------------------------------------------------------------ 1.9: what's new
 # Player-facing release notes: /whatsnew, the 🆕 line in the next post after a release, and the
 # What's new page (foreversherpa.github.io/whatsnew.html). Newest first. "line" is the one-liner a
@@ -842,6 +1052,14 @@ DID_YOU_KNOW += [
 # "internal": True keeps a behind-the-scenes release out of /whatsnew and the What's new page.
 WHATSNEW_URL = SITE_URL + "/whatsnew.html"
 RELEASE_NOTES = [
+    {"version": "1.11.0", "date": "2026-10-31", "title": "More tips, more facts",
+     "line": "over 60 new tips, 70+ new facts, a 🎲 fun-fact button in `/draggedalong`, and `/datamined` for admins who'd rather skip datamined info (it's labeled ⛏️).",
+     "internal": False,
+     "notes": ["Every `/tips` topic now has at least 15 tips, researched against Blizzard's posts and the latest beta notes.",
+               "Over 70 new did-you-know facts, so check-ins repeat far less often.",
+               "Some tips and facts come from game files or beta testing. They're labeled *⛏️ datamined, may change*, and admins can hide them with `/datamined`.",
+               "Plus One mode has its own new-player facts: tap 🎲 **A fun fact** in `/draggedalong`.",
+               "Fixes: the Darkspear Islands Horde base is in the Barrens, Ice Lance does 200% more to frozen targets, and Shaman talents match the Oct 15 changes. Onyxia's Lair is now listed with the Dec 9 raids."]},
     {"version": "1.10.7", "date": "2026-10-30", "title": "Time zone fix",
      "line": None, "internal": False,
      "notes": ["Typing a region like `America/` in `/setup` no longer breaks the time zone suggestions, and `American/Chicago` now works."]},

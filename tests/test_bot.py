@@ -1065,9 +1065,9 @@ def test_release_notes_and_update_line():
     latest = C.RELEASE_NOTES[0]["version"]
     # servers that never heard of anything get the newest release with a line; up-to-date ones get nothing
     got = C.latest_line_since(None)
-    assert got and got[0] == latest and "/clips" in got[1]
+    assert got and got[0] == latest and "/datamined" in got[1]
     assert C.latest_line_since("1.8.0")[1] == got[1]
-    assert C.latest_line_since(latest) is None and C.latest_line_since("1.8.1") is None
+    assert C.latest_line_since(latest) is None and C.latest_line_since("1.10.7")[1] == got[1]
     for r in C.RELEASE_NOTES:
         assert r["notes"] and (r["line"] is None or len(R.update_line(r["line"])) < 250)
     cfg = Cfg()
@@ -1104,3 +1104,68 @@ def test_whatsnew_page_builds():
     assert html_.startswith("<!doctype html>") and "<code>/clips</code>" in html_ and "`" not in html_
     assert all(f'id="v{r["version"]}"' in html_ for r in C.public_notes())
     assert not any(f'id="v{r["version"]}"' in html_ for r in C.RELEASE_NOTES if r.get("internal"))
+
+
+# ------------------------------------------------------------------ 1.11: datamined content, more tips and facts
+def test_datamined_marker_and_label():
+    d = C.dm("**Do it** → why")
+    assert isinstance(d, str) and C.is_dm(d) and not C.is_dm("plain")
+    assert C.show(d).endswith(C.DM_LABEL) and C.show("plain") == "plain"
+    assert C.is_dm(("vet", d)) and not C.is_dm(("vet", "x"))
+    with R.datamined(True):
+        assert any(t.endswith(C.DM_LABEL) for t in R.V(C.TIPS["gold"]))
+    with R.datamined(False):
+        assert not any(C.DM_LABEL in t for t in R.V(C.TIPS["gold"]))
+        assert R.V([d]) == [str(d)]  # never leave a pool empty
+
+
+def test_content_volume():
+    assert all(len(v) >= 15 for v in C.TIPS.values()), {k: len(v) for k, v in C.TIPS.items()}
+    assert len(C.DID_YOU_KNOW) >= 115
+    facts = [t for _, t in C.DID_YOU_KNOW]
+    assert len(set(facts)) == len(facts)
+    assert sum(C.is_dm(t) for t in facts) < len(facts) / 4  # mostly Blizzard-confirmed
+    from forever_bot import plusone as P
+    assert len(P.PLUS_FACTS) >= 25 and P.fact_embed(len(P.PLUS_FACTS) + 1)["description"] == P.PLUS_FACTS[1]
+
+
+def test_datamined_off_hides_everything_on_screen():
+    for topic in C.TIPS:
+        for lvl in ("brief", "standard", "detailed"):
+            with R.datamined(False):
+                e = R.tips_embed(topic, lvl)
+            assert C.DM_LABEL not in e["description"] and len(e["description"]) <= 4000
+            with R.datamined(True):
+                assert len(R.tips_embed(topic, lvl)["description"]) <= 4000
+    for on in (False, True):
+        cfg = Cfg()
+        cfg.datamined = on
+        seen = False
+        for d in range(60):  # through launch and well into the raid countdown
+            day = date(2026, 10, 31) + timedelta(days=d)
+            for slot in (0, 1, 2):
+                p = R.build_daily(cfg, at_post_time(day, cfg), SAMPLE, {}, slot=slot)
+                text = "\n".join(e.get("description", "") for e in (p.embeds if p else []))
+                seen |= C.DM_LABEL in text
+                if not on:
+                    assert C.DM_LABEL not in text, (day, slot)
+        assert seen == on
+
+
+def test_store_remembers_datamined():
+    s = tmp_store()
+    from forever_bot.store import GuildConfig
+    cfg = GuildConfig(guild_id=5, channel_id=1)
+    s.upsert_guild(cfg)
+    assert s.get_guild(5).datamined is True
+    cfg.datamined = False
+    s.upsert_guild(cfg)
+    assert s.get_guild(5).datamined is False and s.all_guilds()[0].datamined is False
+
+
+def test_content_corrections():
+    assert not any("Merchant Coast in Dustwallow" in t for t in C.TIPS["pvp"])
+    assert any("Merchant Coast in the Barrens" in t for t in C.TIPS["pvp"])
+    from forever_bot import classes as K
+    blob = json.dumps(K.__dict__.get("CLASS_INFO", {}), default=str) + open(K.__file__).read()
+    assert "Elemental Mastery is gone" not in blob and "300% more" not in blob

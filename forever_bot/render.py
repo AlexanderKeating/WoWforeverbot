@@ -7,6 +7,8 @@ Discord limits enforced here: embed description 4096, title 256, 6000 chars acro
 per message, 2000 chars message content. Links inside embeds don't unfurl, so clips/videos go in
 a follow-up message where Discord renders playable previews.
 """
+import contextvars
+from contextlib import contextmanager
 from dataclasses import dataclass, field
 from datetime import date, datetime, timedelta, timezone
 from zoneinfo import ZoneInfo
@@ -20,6 +22,26 @@ EMBED_TOTAL_CAP = 5800   # Discord hard cap is 6000
 CONTENT_CAP = 1900       # Discord hard cap is 2000
 LEVELS = ("brief", "standard", "detailed")
 LEVEL_LABEL = {"brief": "Brief", "standard": "Standard", "detailed": "Detailed", "plain": "Plain words"}
+
+# 1.11: whether datamined tips and facts are shown. Set per server for the length of one render.
+_DATAMINED = contextvars.ContextVar("datamined", default=True)
+
+
+@contextmanager
+def datamined(on: bool = True):
+    tok = _DATAMINED.set(bool(on))
+    try:
+        yield
+    finally:
+        _DATAMINED.reset(tok)
+
+
+def V(pool):
+    """A content pool as this server sees it: datamined items labeled, or left out when the server turned them off.
+    Falls back to the full pool only if filtering would leave nothing."""
+    on = _DATAMINED.get()
+    out = [C.show(t) for t in pool if on or not C.is_dm(t)]
+    return out or [C.show(t) for t in pool if not C.is_dm(t)] or list(pool)
 
 
 def norm_level(level: str | None) -> str:
@@ -283,8 +305,8 @@ def build_checkin(cfg, now: datetime, snap: dict | None, slot: int,
         title = f"{days} day{'s' if days != 1 else ''} until raids open" if days else "Raids are open"
         head = f"Barrow Deeps and Hyjal Summit · {_fmt_date(_d(C.RAIDS_DATE))}"
     topic = pick(CHECKIN_TOPICS, today, salt=slot * 5)
-    tip = pick(C.TIPS[topic], today, salt=slot * 11 + 2)
-    dyk_pool = [t for tag, t in C.DID_YOU_KNOW if tag != "horde" or faction == "horde"]
+    tip = pick(V(C.TIPS[topic]), today, salt=slot * 11 + 2)
+    dyk_pool = V([t for tag, t in C.DID_YOU_KNOW if tag != "horde" or faction == "horde"])
     cls, ctip = pick(K.SPOTLIGHT, today, salt=slot * 17 + 5)
     dyk = pick(dyk_pool, today, salt=3 + slot * 13, avoid=f"{tip}\n{ctip}")
     level = norm_level(getattr(cfg, "verbosity", None))
@@ -293,7 +315,7 @@ def build_checkin(cfg, now: datetime, snap: dict | None, slot: int,
     if level != "brief":
         parts += ["", f"❓ **Did you know?** {dyk}"]
     if level == "detailed" and topic in C.DEEP_DIVES:
-        parts += ["", f"🔎 **{C.DEEP_DIVES[topic][0]}:** {pick(C.DEEP_DIVES[topic][1], today, salt=slot)}"]
+        parts += ["", f"🔎 **{C.DEEP_DIVES[topic][0]}:** {pick(V(C.DEEP_DIVES[topic][1]), today, salt=slot)}"]
     parts += ["", footer or f"-# 📖 More detail below, at your level · /classtips {cls.lower()} · /help"]
     desc = "\n".join(parts)
     embeds, used, followup = _media(snap or {}, unseen_ids, now, include_news, getattr(cfg, "clips", True))
@@ -363,14 +385,14 @@ def _build_daily_raw(cfg, now: datetime, snap: dict | None, counts: dict | None,
             # prefer an on-topic line from today's deep dive, then any tip
             dd_today = C.DEEP_DIVES.get(days if days in C.DEEP_DIVES else 11)
             ctx = "\n".join(lines)
-            alt = [b for b in (dd_today[1] if dd_today else []) if not too_similar(b, ctx)]
-            pro = alt[0] if alt else pick([t for k, v in C.TIPS.items() if k != "basics" for t in v], today,
+            alt = [b for b in V(dd_today[1] if dd_today else []) if not too_similar(b, ctx)]
+            pro = alt[0] if alt else pick(V([t for k, v in C.TIPS.items() if k != "basics" for t in v]), today,
                                           salt=7, avoid=ctx)
         if pro:
             lines.append(f"⚔️ **Pro tip:** {pro}")
         dd = C.DEEP_DIVES.get(days if days in C.DEEP_DIVES else 11)
         if level == "detailed" and dd:
-            lines += ["", f"🔎 **From the deep dive:**"] + [f"• {b}" for b in dd[1][:2]]
+            lines += ["", f"🔎 **From the deep dive:**"] + [f"• {b}" for b in V(dd[1])[:2]]
         if rd.get("special") == "tourney" and level == "brief":
             lines.append(f"-# Warlocks went 26–7 vs other classes in the finals. Full table: /tourney")
         elif rd.get("special") == "tourney":
@@ -384,21 +406,21 @@ def _build_daily_raw(cfg, now: datetime, snap: dict | None, counts: dict | None,
         topic = pick(C.POST_LAUNCH_TOPICS, today)
         deep_key = topic
         lines += ["", f"**Today · {C.DEEP_DIVES[topic][0]}**",
-                  f"⚔️ **Pro tip:** {pick(C.TIPS.get(topic, C.NEWBIE_TIPS), today, salt=1)}"]
+                  f"⚔️ **Pro tip:** {pick(V(C.TIPS.get(topic, C.NEWBIE_TIPS)), today, salt=1)}"]
         # 1.5: a highlight or two from the topic's deep dive, so post-launch days have some substance
         n_dd = {"brief": 0, "standard": 1}.get(level, 2)
         if n_dd:
-            dd_items = C.DEEP_DIVES[topic][1]
+            dd_items = V(C.DEEP_DIVES[topic][1])
             first = pick(dd_items, today, salt=5)
             picks = [first] + [x for x in dd_items if x != first][:n_dd - 1]
             lines += ["", "🔎 **From the deep dive:**"] + [f"• {b}" for b in picks]
 
     # ---- tip + did you know (skipped in Brief)
     if level != "brief" and (days not in (0,) or kind == "raids"):
-        tip = pick(C.NEWBIE_TIPS, today, avoid="\n".join(lines))
+        tip = pick(V(C.NEWBIE_TIPS), today, avoid="\n".join(lines))
         if tip:
             lines += ["", f"💡 **New player tip:** {tip}"]
-    dyk_pool = [t for tag, t in C.DID_YOU_KNOW if tag != "horde" or faction == "horde"]
+    dyk_pool = V([t for tag, t in C.DID_YOU_KNOW if tag != "horde" or faction == "horde"])
     # 1.6.1: skip facts about a place or thing the post already covers (e.g. Riverglades twice)
     names = _proper_nouns("\n".join(lines))
     topic_words = {w for w in re.findall(r"[a-z]+", (rd or {}).get("title", "").lower()) if len(w) > 5}
@@ -444,7 +466,7 @@ def deep_dive_embed(key: str, level: str = "standard") -> dict | None:
     dd = C.DEEP_DIVES.get(k)
     if not dd:
         return None
-    title, bullets = dd
+    title, bullets = dd[0], V(dd[1])
     rd = C.RUNDOWNS.get(k) if isinstance(k, int) else None
     pro = C.PRO_TIPS.get(k) if isinstance(k, int) else None
     parts = []
@@ -459,7 +481,7 @@ def deep_dive_embed(key: str, level: str = "standard") -> dict | None:
     if level == "brief" and len(bullets) > 3:
         parts.append(f"-# {len(bullets) - 3} more in Standard or Detailed")
     if not rd and k in C.TIPS and level == "detailed":
-        parts.append("**More tips**\n" + "\n".join(f"• {t}" for t in C.TIPS[k][:4]))
+        parts.append("**More tips**\n" + "\n".join(f"• {t}" for t in V(C.TIPS[k])[:4]))
     return {"title": f"📖 {title}", "description": "\n\n".join(parts)[:4000], "color": C.BRAND_COLOR,
             "footer": level_footer(level)}
 
@@ -473,10 +495,15 @@ TIP_TITLES = {"basics": "🌱 New player tips", "leveling": "📈 Leveling tips"
 def tips_embed(topic: str, level: str = "standard") -> dict:
     level = norm_level(level)
     topic = topic if topic in C.TIPS else "basics"
-    tips = C.TIPS[topic][:3] if level == "brief" else C.TIPS[topic]
-    desc = "\n".join(f"• {t}" for t in tips)
+    pool = V(C.TIPS[topic])
+    n = {"brief": 3, "standard": 8}.get(level, len(pool))  # 1.11: topics have 15+ tips, best first
+    desc = "\n".join(f"• {t}" for t in pool[:n])
+    if len(pool) > n:
+        desc += f"\n-# {len(pool) - n} more in Detailed (/mysettings)"
     if level == "detailed" and topic in C.DEEP_DIVES:
-        desc += "\n\n" + "\n".join(f"• {b}" for b in C.DEEP_DIVES[topic][1])
+        dd = "\n\n" + "\n".join(f"• {b}" for b in V(C.DEEP_DIVES[topic][1]))
+        if len(desc) + len(dd) <= 4000:
+            desc += dd
     return {"title": TIP_TITLES.get(topic, f"💡 Tips: {topic}"), "description": desc[:4000], "color": C.GREEN,
             "footer": level_footer(level, "Topics: " + " · ".join(TIP_TOPICS))}
 
@@ -631,6 +658,7 @@ SPELLBOOK = {
             ("resume", "", "Instant", "Undo /hold."),
             ("skipnews", "", "Instant · Lasts today", "Post today without the news section."),
             ("clips", "[on]", "Instant", "Turn the Twitch clips under each post on or off (on by default)."),
+            ("datamined", "[on]", "Instant", "Show or hide datamined tips and facts, labeled ⛏️ (on by default)."),
             ("updates", "[on]", "Instant", "A short 🆕 line in the next post after Forever Sherpa updates (on by default)."),
             ("status", "", "Instant · Private", "Current settings and which sources are working."),
             ("pinpost", "[channel]", "Instant", "Post a \"start here\" card to pin. It updates itself after every post."),
@@ -869,7 +897,8 @@ def health_text(snap: dict | None) -> str:
 
 def build_daily(cfg, *a, **k):
     """Daily post or check-in, faction-neutral unless the server picked Horde (1.4.2)."""
-    post = _build_daily_raw(cfg, *a, **k)
+    with datamined(getattr(cfg, "datamined", True)):
+        post = _build_daily_raw(cfg, *a, **k)
     if post is None:  # nothing to post (e.g. after the countdown ends)
         return post
     f = getattr(cfg, "faction", None)
