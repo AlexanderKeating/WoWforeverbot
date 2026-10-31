@@ -527,6 +527,7 @@ def test_plusone_mode():
     # glossary: direct, alias, miss, autocomplete
     assert P.lookup("Zug Zug")[0] == "zug zug" and P.lookup("rezz")[0] == "rez" and P.lookup("ganked")[0] == "gank"
     assert P.lookup("xyzzy")[0] is None
+    assert P.lookup("BIS")[0] == "bis" and P.lookup("best in slot")[0] == "bis" and P.glossary_embed("bis")["title"].endswith("BiS")
     assert all(t in P.GLOSSARY for t in P.STARTER_TERMS) and all(v in P.GLOSSARY for v in P.ALIASES.values())
     assert len(P.glossary_choices("")) <= 25 and P.glossary_choices("ag")[0] == "aggro"
     for t in P.GLOSSARY:

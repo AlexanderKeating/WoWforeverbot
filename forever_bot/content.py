@@ -842,6 +842,9 @@ DID_YOU_KNOW += [
 # "internal": True keeps a behind-the-scenes release out of /whatsnew and the What's new page.
 WHATSNEW_URL = SITE_URL + "/whatsnew.html"
 RELEASE_NOTES = [
+    {"version": "1.10.8", "date": "2026-10-31", "title": "BiS in the glossary",
+     "line": None, "internal": False,
+     "notes": ["`/whatdoesthatmean bis` explains best in slot. Forever's BiS lists come once the servers are live."]},
     {"version": "1.10.7", "date": "2026-10-30", "title": "Time zone fix",
      "line": None, "internal": False,
      "notes": ["Typing a region like `America/` in `/setup` no longer breaks the time zone suggestions, and `American/Chicago` now works."]},

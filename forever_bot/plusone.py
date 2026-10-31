@@ -80,6 +80,10 @@ GLOSSARY = {
     "spec": ("Your specialization: which of your class's three talent trees you've put most points into.", None),
     "talents": ("Points you start earning at level 10 to customize your class.", None),
     "nerf": ("When the developers make something weaker.", None),
+    # Placeholder until Forever has real gear data; swap in an actual pointer once it does.
+    "bis": ("Best in slot: the single best item you can get for a gear slot at your level. "
+            "Forever's best-in-slot lists are coming once the servers are live and there's real data to go on.",
+            "Is that your BiS?"),
     "meta": ("Whatever most people think is the strongest way to play right now.", None),
     "zug zug": ("Orc for \"yes, sure, okay\". You will hear it a lot on the Horde, and you are allowed to say it back.", "Ready? Zug zug."),
     "lok'tar ogar": ("Orcish: \"victory or death\". A Horde battle cry.", None),
@@ -94,6 +98,7 @@ ALIASES = {
     "zugzug": "zug zug", "loktar": "lok'tar ogar", "lok tar": "lok'tar ogar", "lfm": "lfg", "boes": "boe",
     "kiting": "kite", "elites": "elite", "crits": "crit", "line of sight": "los", "tanks": "tank", "healers": "healer",
     "rested xp": "rested", "instances": "instance", "dungeons": "dungeon", "raids": "raid", "talent": "talents",
+    "best in slot": "bis", "bis list": "bis",
 }
 
 # The ones you'll hear in the first week, in roughly the order you'll hear them
@@ -127,6 +132,8 @@ def glossary_choices(current: str, limit: int = 25) -> list[str]:
 
 
 def _display(term: str) -> str:
+    if term == "bis":
+        return "BiS"
     return term.upper() if len(term) <= 3 and term not in ("add", "mob", "inn", "rez", "hot", "dot") else term.title()
 
 
