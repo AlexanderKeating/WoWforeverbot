@@ -1052,7 +1052,12 @@ def rejected(interaction: discord.Interaction, field: str, value) -> None:
 
 
 async def _tz_ac(interaction: discord.Interaction, current: str):
-    return [app_commands.Choice(name=n, value=v) for n, v in I.tz_choices(current)]
+    try:
+        pairs = I.tz_choices(current)
+    except Exception as e:  # 1.10.7: autocomplete must never throw; fall back to the popular list
+        ev(slog, "tz_autocomplete_failed", typed=(current or "")[:40], error=type(e).__name__)
+        pairs = I.POPULAR_TZ[:25]
+    return [app_commands.Choice(name=n, value=v) for n, v in pairs]
 
 
 def cfg_for(interaction) -> GuildConfig:
