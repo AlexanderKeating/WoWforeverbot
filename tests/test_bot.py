@@ -1204,3 +1204,20 @@ def test_postnow_after_skip_or_channel_move():
     other = GuildConfig(guild_id=10, channel_id=1)
     st.mark_posted(10, "daily", key)  # posted before 1.11.1: no channel record, so no repeat
     assert not B.full_post_needed(other, key)
+
+
+# ------------------------------------------------------------------ 1.11.2: first impressions
+def test_first_full_post_skips_update_line_and_rollcall_invites():
+    s = tmp_store()
+    s.mark_posted(1, "daily", "launch:2026-10-31:0")
+    s.mark_posted(1, "skipped", "launch:2026-10-31:0")
+    s.mark_posted(1, "daily", "launch:2026-10-31:first")
+    assert s.full_posts_sent(1) == 0  # only a skipped slot and the short welcome post
+    s.mark_posted(1, "daily", "launch:2026-11-01:0")
+    assert s.full_posts_sent(1) == 1
+    cfg = Cfg()
+    p = R.build_daily(cfg, at_post_time(date(2026, 11, 1), cfg), SAMPLE, {}, slot=0)
+    d = p.embeds[0]["description"]
+    assert "Be the first" in d and "0 in so far" not in d
+    assert "clocks fell back" in d and "3 PM Pacific" in d
+    assert "finishes 1–60" not in d and "65 challenges" in d

@@ -434,7 +434,8 @@ def _build_daily_raw(cfg, now: datetime, snap: dict | None, counts: dict | None,
     if counts is not None:
         total = sum(counts.values())
         who = {"horde": "Horde main", "alliance": "Alliance main"}.get(faction, "main")
-        lines += ["", f"**Roll call:** what's your {who}? {total} in so far. Tap a class below."]
+        lines += ["", f"**Roll call:** what's your {who}? " + (f"{total} in so far. Tap a class below." if total else
+                                                               "Be the first: tap a class below.")]
 
     lines += ["", "-# 📖 More detail below, at your own level (/mysettings) · /help for all commands"]
     desc = "\n".join(lines)

@@ -749,6 +749,10 @@ class ForeverBot(commands.Bot):
             await self.notify_staging(cfg, f"⚠️ Couldn't post the daily countdown: {problem}.\n{hint}")
             return f"⚠️ I can't post in <#{cfg.channel_id}>: {problem}.\n{hint}"
         news = C.latest_line_since(cfg.announced) if cfg.updates else None  # 1.9: 🆕 line once per release
+        if news and slot == 0 and self.store.full_posts_sent(cfg.guild_id) == 0:
+            # 1.11.2: a server's first full post shouldn't announce "new" features it has never seen. Start it up to date.
+            self.store.set_announced(cfg.guild_id, news[0])
+            news = None
         if news:
             R.add_update_line(post, news[1])
         try:

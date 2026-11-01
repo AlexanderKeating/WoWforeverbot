@@ -86,6 +86,7 @@ EVENT_PINGS = [  # (UTC time, key, text). Times checked against Blizzard's annou
 TODAY_CALLOUTS = {
     "2026-10-26": "📛 **Name reservation opens tomorrow at 1 PM Pacific / 3 PM Central.** 3 names total across all rulesets. Pick your first + last name ideas tonight (`/faq` has the rules).",
     "2026-10-27": "📛 **Name reservation opens today at 1 PM Pacific / 3 PM Central.** Skyborne pack owners can reserve **3 names total** across all rulesets, through Nov 3. Create your characters now rather than on launch night: if a faction gets crowded on PvP, Blizzard can pause *new* characters.",
+    "2026-11-01": "🕒 **US clocks fell back overnight.** Launch is still **Wednesday at 3 PM Pacific · 5 PM Central · 6 PM Eastern** (23:00 UTC). The countdown above is in your own time zone.",
     "2026-11-03": "⏰ **Last day of name reservation.**",
     "2026-11-04": "🚀 **It's launch day.**",
 }
@@ -195,7 +196,7 @@ RUNDOWNS = {
          "new": "Battlegrounds are team PvP matches you queue for. Win, earn Honor, buy PvP gear. Ranks unlock rewards like a trinket, cloaks, mounts and epic weapons.",
          "vets": "Honor is a currency (blue and epic PvP sets), normalized across BGs. Rank Points fill a 14-rank personal track with a weekly cap, not the old ladder. Seasonal weekly tasks give bonus points and Legacy Points. New 15v15 Darkspear Islands: EotS-style flag plus AB-style caps. No arena or rating."},
     3: {"title": "New systems",
-         "new": "Small quality-of-life changes: camp out with friends for a bonus, earn perks for your alts, and choose old-school or updated character models.",
+         "new": "Two systems the original game never had: build a **campfire** with friends and everyone gets buffs, and earn **Legacy Points** that unlock perks for every character on your account. Plus, you pick the look: classic 2004 models or updated ones.",
          "vets": "**Camping** (craft at others' camps, shared rest buff) · **Legacy** (each 1–60 finish unlocks alt perks; shared across rulesets except Hardcore) · opt-in **transmog** · HD/classic model toggle · controller support · no flying, no level scaling."},
     2: {"title": "Raids and the roadmap",
          "new": "Raids are big group boss fights. The first two open Dec 9, about five weeks after launch.",
@@ -477,12 +478,13 @@ _VETS_LONG = {
         "needs to share an account to hold a rank. Ranks reset each season, and weekly tasks add bonus points plus Legacy "
         "Points. The new 15v15 **Darkspear Islands** (30–60) has four capture points and a center flag you score at a base you "
         "own; first to 2,000 wins. No arena or rated PvP is announced."),
-    3: ("**Camping** turns professions into group buffs. Each profession has camp items that unlock at skill 20, 140 and 300, "
-        "and the Leatherworking Camp Tent's rested-XP buff even survives death. Camp buffs don't stack with matching class "
-        "buffs, so they shine when your group is missing a class. **Legacy** is account-wide progress: every character that "
-        "finishes 1–60 unlocks perks for your alts, shared across rulesets except Hardcore. Transmog is opt-in, HD vs. classic "
-        "models is a toggle, controllers are supported, and there's still no flying or level scaling, so zones stay as "
-        "dangerous as they were built."),
+    3: ("**Camping** turns every profession into a group buff. Each one has three camp items, the first at skill 20, "
+        "and anyone can add theirs to the same fire: a Blacksmith's Sharpening Wheel, a Tailor's Faction Banner, an "
+        "Herbalist's Incense Candle. Camp buffs stand in for missing class buffs rather than stacking with them, so they shine "
+        "in odd group comps. **Legacy** replaces achievements: 65 challenges at launch, each worth one account-wide point, "
+        "like hitting 25, 45 and 60 on every class. Each character spends up to 16 points across Professions, Adventure and "
+        "Resourcefulness, and none of it adds combat power. Transmog is opt-in, and there's still no flying or level scaling, "
+        "so zones stay as dangerous as they were built."),
     2: ("The first raids open **Dec 9**, about five weeks after launch, which is roughly how long a steady player needs to hit "
         "60 and gear up. **Barrow Deeps** is a 10-player raid in a night elf prison; **Hyjal Summit** is a 20-player raid where "
         "Archimonde fell, and it drops Forever's first legendary weapon. ||Rumor has it Barrow Deeps once held a certain infamous "
@@ -642,7 +644,7 @@ DEEP_DIVES.update({
     ]),
     3: ("Camping and leveling speed", [
         "**Do \"The Great Outdoors\" around level 5 and learn Cooking** → you unlock campfires, the base for every camp buff.",
-        "**Level Cooking to 90, then 200** → your campfire holds 5, then 10 camp items instead of 3.",
+        "**Keep leveling Cooking** → upgraded campfires hold 5, then 10 camp items instead of 3.",
         "**Camp with friends** → each player adds one item, so a group fire stacks more buffs.",
         "**Grab a Leatherworking Camp Tent** → a 1-hour rested-XP buff that survives death.",
         "**Log out on a Cozy Sleeping Bag** → it counts as a rested area, so you earn rested XP while offline, which doubles your kill XP when you're back.",
@@ -1052,6 +1054,11 @@ _fix(TIPS["camping"], "burns for about 10 minutes", "burns for about 10 to 15 mi
 # "internal": True keeps a behind-the-scenes release out of /whatsnew and the What's new page.
 WHATSNEW_URL = SITE_URL + "/whatsnew.html"
 RELEASE_NOTES = [
+    {"version": "1.11.2", "date": "2026-11-01", "title": "Sharper first posts",
+     "line": None, "internal": False,
+     "notes": ["A clearer, more accurate Day 3 post on camping and the Legacy System.",
+               "A heads-up that US clocks fell back: launch is still Wednesday at 3 PM Pacific.",
+               "A server's first full post skips the 'new in Forever Sherpa' line, and an empty roll call invites people to be first."]},
     {"version": "1.11.1", "date": "2026-10-31", "title": "Setup fixes",
      "line": None, "internal": False,
      "notes": ["`/setup` understands 24-hour times written with pm, like `16pm, 22pm`.",

@@ -186,6 +186,12 @@ class Store:
                        (guild_id, key + "@%")).fetchall()
         return {int(r["key"].rsplit("@", 1)[1]) for r in rows}
 
+    def full_posts_sent(self, guild_id: int) -> int:
+        """1.11.2: full daily posts that actually went out (slot 0, minus ones only marked done at setup)."""
+        return self._x("""SELECT COUNT(*) FROM posts p WHERE p.guild_id=? AND p.kind='daily' AND p.key LIKE '%:0'
+                          AND NOT EXISTS (SELECT 1 FROM posts s WHERE s.guild_id=p.guild_id AND s.kind='skipped'
+                                          AND s.key=p.key)""", (guild_id,)).fetchone()[0]
+
     def unmark_posted(self, guild_id: int, kind: str, key: str):
         self._x("DELETE FROM posts WHERE guild_id=? AND kind=? AND key=?", (guild_id, kind, key))
 
