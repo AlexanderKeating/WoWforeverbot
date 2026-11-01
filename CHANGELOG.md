@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.11.2 (2026-11-01)
+Facts check. No behavior changes.
+- **Onyxia's Lair on Dec 9 everywhere.** Blizzard's launch announcement (Oct 29) lists three raids opening Dec 9: Barrow Deeps, Hyjal Summit and Onyxia's Lair. The raids FAQ topic ("first two" → "first three"), its vets line, both "Gearing toward Dec 9" deep dives and the day-2 🧙 paragraph now include Onyxia; the paragraph no longer implies every original raid stays locked.
+
 ## 1.11.1 (2026-10-31)
 From live logs. `parse_hhmm` reads `13pm`–`23pm` as 24-hour times (Equinox typed "16pm, 22pm", got rejected and left). `/postnow` re-sends slot 0 when it was only marked done by `skip_passed_slots` (new `skipped` marker) or was sent to a channel the server has moved away from (new `dailychan` records via `Store.posted_channels`); Primeval moved channels after setup and got "already up" three times. Posts sent before 1.11.1 have no channel record and are treated as posted here. `/frequency times:3` maps to the 3-a-day preset.
 

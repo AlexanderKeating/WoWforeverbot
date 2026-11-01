@@ -198,8 +198,8 @@ RUNDOWNS = {
          "new": "Small quality-of-life changes: camp out with friends for a bonus, earn perks for your alts, and choose old-school or updated character models.",
          "vets": "**Camping** (craft at others' camps, shared rest buff) · **Legacy** (each 1–60 finish unlocks alt perks; shared across rulesets except Hardcore) · opt-in **transmog** · HD/classic model toggle · controller support · no flying, no level scaling."},
     2: {"title": "Raids and the roadmap",
-         "new": "Raids are big group boss fights. The first two open Dec 9, about five weeks after launch.",
-         "vets": "Barrow Deeps (10) and Hyjal Summit (20) on Dec 9; Hyjal drops Forever's first legendary. ||Barrow Deeps reportedly once held a certain infamous demon hunter.|| Hardcore in winter, major updates spring and summer 2027, including a 'revamped iconic raid'."},
+         "new": "Raids are big group boss fights. The first three open Dec 9, about five weeks after launch.",
+         "vets": "Barrow Deeps (10), Hyjal Summit (20) and Onyxia's Lair (40) on Dec 9; Hyjal drops Forever's first legendary. ||Barrow Deeps reportedly once held a certain infamous demon hunter.|| Hardcore in winter, major updates spring and summer 2027, including a 'revamped iconic raid'."},
     1: {"title": "Launch-day checklist",
          "new": "Tomorrow. Make sure your sub or game time is active, pre-install from the Battle.net dropdown, and pick **PvP ruleset → Horde**.",
          "vets": "Beta and stress-test characters are wiped. Expect queues and layering at launch. PvP faction lock is per account, so don't test an Alliance alt on PvP first."},
@@ -343,7 +343,7 @@ DEEP_DIVES = {
         "**Other camp buffs:** Mining melee AP, Skinning crit, Herbalism intellect, Engineering repair vendor, Fishing 8% stats.",
     ]),
     2: ("Gearing toward Dec 9", [
-        "**Raids:** Barrow Deeps (10) and Hyjal Summit (20). Hyjal drops Forever's first legendary weapon.",
+        "**Raids:** Barrow Deeps (10), Hyjal Summit (20) and Onyxia's Lair (40). Hyjal drops Forever's first legendary weapon.",
         "**Stock up on consumables:** an Alchemist + Herbalist in the guild keeps everyone in potions.",
         "**Save gold:** Journeyman Riding is 1,000g at 60, epic mounts 200g each.",
         "**Discounts:** Honored with your home faction is 10% off riding and mounts; the Bartering Legacy talent adds up to 10% off mounts.",
@@ -486,7 +486,8 @@ _VETS_LONG = {
     2: ("The first raids open **Dec 9**, about five weeks after launch, which is roughly how long a steady player needs to hit "
         "60 and gear up. **Barrow Deeps** is a 10-player raid in a night elf prison; **Hyjal Summit** is a 20-player raid where "
         "Archimonde fell, and it drops Forever's first legendary weapon. ||Rumor has it Barrow Deeps once held a certain infamous "
-        "demon hunter.|| Molten Core and the other original raids stay locked because the story is set before they opened. "
+        "demon hunter.|| **Onyxia's Lair** returns as a 40-player raid with its classic attunement, but Molten Core and the other "
+        "original raids stay locked because the story is set before they opened. "
         "Hardcore arrives in winter, and major updates are planned for spring and summer 2027, including a \"revamped iconic "
         "raid.\""),
     1: ("Beta and stress-test characters are wiped, so everyone starts fresh. Expect queues and layering on launch night: group "
@@ -557,7 +558,7 @@ DEEP_DIVES.update({
         "**Other camp buffs:** Mining (melee attack power), Skinning (crit), Herbalism (intellect), Engineering (a repair vendor), Fishing (8% stats). None stack with matching class buffs.",
     ]),
     2: ("Gearing toward Dec 9", [
-        "**The raids:** Barrow Deeps (10-player) and Hyjal Summit (20-player). Hyjal Summit drops Forever's first legendary weapon.",
+        "**The raids:** Barrow Deeps (10-player), Hyjal Summit (20-player) and Onyxia's Lair (40-player). Hyjal Summit drops Forever's first legendary weapon.",
         "**Consumables win raids:** an Alchemist and an Herbalist in your group keep everyone in potions, and camps fill in buffs for missing classes.",
         "**Gold plan:** Journeyman Riding is 1,000 gold at 60, and epic mounts are 200 gold each. Start saving while leveling.",
         "**Discounts stack:** Honored with your home faction is 10% off riding and mounts, and the Bartering Legacy talent adds up to 10% off mounts.",
@@ -1052,6 +1053,9 @@ _fix(TIPS["camping"], "burns for about 10 minutes", "burns for about 10 to 15 mi
 # "internal": True keeps a behind-the-scenes release out of /whatsnew and the What's new page.
 WHATSNEW_URL = SITE_URL + "/whatsnew.html"
 RELEASE_NOTES = [
+    {"version": "1.11.2", "date": "2026-11-01", "title": "Facts check",
+     "line": None, "internal": False,
+     "notes": ["Every raid mention now lists Onyxia's Lair (40-player) with Barrow Deeps and Hyjal Summit on Dec 9, matching Blizzard's launch announcement."]},
     {"version": "1.11.1", "date": "2026-10-31", "title": "Setup fixes",
      "line": None, "internal": False,
      "notes": ["`/setup` understands 24-hour times written with pm, like `16pm, 22pm`.",
