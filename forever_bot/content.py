@@ -1052,6 +1052,11 @@ _fix(TIPS["camping"], "burns for about 10 minutes", "burns for about 10 to 15 mi
 # "internal": True keeps a behind-the-scenes release out of /whatsnew and the What's new page.
 WHATSNEW_URL = SITE_URL + "/whatsnew.html"
 RELEASE_NOTES = [
+    {"version": "1.11.1", "date": "2026-10-31", "title": "Setup fixes",
+     "line": None, "internal": False,
+     "notes": ["`/setup` understands 24-hour times written with pm, like `16pm, 22pm`.",
+               "`/postnow` posts today's full post if it never went out, or if you've moved the bot to a new channel since.",
+               "`/frequency times:3` now means three posts a day."]},
     {"version": "1.11.0", "date": "2026-10-31", "title": "More tips, more facts",
      "line": "over 60 new tips, 70+ new facts, a 🎲 fun-fact button in `/draggedalong`, and `/datamined` for admins who'd rather skip datamined info (it's labeled ⛏️).",
      "internal": False,

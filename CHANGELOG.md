@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.11.1 (2026-10-31)
+From live logs. `parse_hhmm` reads `13pm`–`23pm` as 24-hour times (Equinox typed "16pm, 22pm", got rejected and left). `/postnow` re-sends slot 0 when it was only marked done by `skip_passed_slots` (new `skipped` marker) or was sent to a channel the server has moved away from (new `dailychan` records via `Store.posted_channels`); Primeval moved channels after setup and got "already up" three times. Posts sent before 1.11.1 have no channel record and are treated as posted here. `/frequency times:3` maps to the 3-a-day preset.
+
 ## 1.11.0 (2026-10-31)
 Content pass. Every tip topic has 15+ tips (was 5–11); did-you-know grows from 47 to 120. New `content.dm()` marks datamined or beta-client items: shown with a ⛏️ label, filtered per server via the new `datamined` guild column and `/datamined` command (default on). `render.V()` applies the filter everywhere tips, facts and deep dives are picked; `render.datamined()` scopes it per render. `/tips` Standard now shows 8 tips (Brief 3, Detailed all). Plus One gets `PLUS_FACTS` and a 🎲 hub button. Corrections: Merchant Coast is in the Barrens; Ice Lance +200% vs frozen; Lava Burst 21 / Elemental Mastery 31 / Earthbound 16; Arcane Wrath replaces Missile Barrage at 16; Onyxia's Lair (40) added to Dec 9.
 
