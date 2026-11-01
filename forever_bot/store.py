@@ -180,6 +180,15 @@ class Store:
     def mark_posted(self, guild_id: int, kind: str, key: str):
         self._x("INSERT OR IGNORE INTO posts VALUES (?,?,?,?)", (guild_id, kind, key, time.time()))
 
+    def posted_channels(self, guild_id: int, key: str) -> set[int]:
+        """1.11.1: channels a daily slot was actually sent to (recorded as kind 'dailychan', key 'slotkey@channel')."""
+        rows = self._x("SELECT key FROM posts WHERE guild_id=? AND kind='dailychan' AND key LIKE ?",
+                       (guild_id, key + "@%")).fetchall()
+        return {int(r["key"].rsplit("@", 1)[1]) for r in rows}
+
+    def unmark_posted(self, guild_id: int, kind: str, key: str):
+        self._x("DELETE FROM posts WHERE guild_id=? AND kind=? AND key=?", (guild_id, kind, key))
+
     def recent_posts(self, guild_id: int, limit: int = 5) -> list[tuple[str, str, float]]:
         rows = self._x("SELECT kind, key, posted_at FROM posts WHERE guild_id=? ORDER BY posted_at DESC LIMIT ?",
                        (guild_id, limit)).fetchall()

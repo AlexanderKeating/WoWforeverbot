@@ -1031,7 +1031,7 @@ def test_times_people_actually_type():
           "Midnight": (0, 0), "12am": (0, 0), "19h30": (19, 30)}
     for typed, want in ok.items():
         assert B.parse_hhmm(typed) == want, (typed, B.parse_hhmm(typed))
-    for bad in ("13pm", "25:00", "abc", "0am", ""):
+    for bad in ("25pm", "25:00", "abc", "0am", ""):  # 1.11.1: "13pm" now reads as 13:00
         assert B.parse_hhmm(bad) is None, bad
     assert B.parse_times("noon and 7p") == [(12, 0), (19, 0)]
     assert B.parse_times("12 pm, 7 pm") == [(12, 0), (19, 0)]
@@ -1170,3 +1170,37 @@ def test_content_corrections():
     from forever_bot import classes as K
     blob = json.dumps(K.__dict__.get("CLASS_INFO", {}), default=str) + open(K.__file__).read()
     assert "Elemental Mastery is gone" not in blob and "300% more" not in blob
+
+
+# ------------------------------------------------------------------ 1.11.1: setup fixes from live logs
+def test_24h_pm_times():
+    from forever_bot.bot import parse_hhmm, parse_times, check_times
+    assert parse_hhmm("16pm") == (16, 0) and parse_hhmm("22pm") == (22, 0) and parse_hhmm("13:30pm") == (13, 30)
+    t = parse_times("16pm, 22pm")
+    assert t == [(16, 0), (22, 0)] and check_times(t) is None
+    assert parse_hhmm("7pm") == (19, 0) and parse_hhmm("12pm") == (12, 0) and parse_hhmm("12am") == (0, 0)
+    assert parse_hhmm("25pm") is None and parse_hhmm("0am") is None and parse_hhmm("13am") is None
+
+
+def test_postnow_after_skip_or_channel_move():
+    os.environ["DB_PATH"] = os.path.join(tempfile.mkdtemp(), "p.db")
+    import forever_bot.bot as B
+    from forever_bot.store import GuildConfig
+    B.bot.store = tmp_store()
+    st = B.bot.store
+    cfg = GuildConfig(guild_id=9, channel_id=100, post_time="12:00", tz="America/New_York")
+    st.upsert_guild(cfg)
+    key = "launch:2026-10-31:0"
+    now = datetime(2026, 10, 31, 22, 0, tzinfo=timezone.utc)  # 6 PM Eastern, after the noon slot
+    assert B.bot.skip_passed_slots(cfg, now) == [0]
+    assert st.was_posted(9, "daily", key) and B.full_post_needed(cfg, key)  # skipped: nothing actually went out
+    st.unmark_posted(9, "skipped", key)
+    st.mark_posted(9, "dailychan", f"{key}@100")
+    assert not B.full_post_needed(cfg, key)  # really posted here
+    cfg.channel_id = 200
+    assert B.full_post_needed(cfg, key)  # moved channels since
+    st.mark_posted(9, "dailychan", f"{key}@200")
+    assert not B.full_post_needed(cfg, key) and st.posted_channels(9, key) == {100, 200}
+    other = GuildConfig(guild_id=10, channel_id=1)
+    st.mark_posted(10, "daily", key)  # posted before 1.11.1: no channel record, so no repeat
+    assert not B.full_post_needed(other, key)

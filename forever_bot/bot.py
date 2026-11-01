@@ -77,7 +77,9 @@ def parse_hhmm(s: str):
     if not m:
         return None
     h, mi, ap = int(m.group(1)), int(m.group(2) or 0), m.group(3)
-    if ap and not 1 <= h <= 12:  # "13pm" or "0am" is a typo, not a time
+    if ap == "pm" and 13 <= h <= 23:  # 1.11.1: "16pm" is a 24-hour time with a habit-pm on it; read it as 16:00
+        ap = None
+    if ap and not 1 <= h <= 12:  # "0am" or "25pm" is a typo, not a time
         return None
     if ap == "pm" and h < 12:
         h += 12
@@ -757,6 +759,8 @@ class ForeverBot(commands.Bot):
             await self.notify_staging(cfg, f"⚠️ Discord rejected the countdown post: {str(e)[:150]}")
             return f"Discord rejected the post: {str(e)[:150]}"
         self.store.mark_posted(cfg.guild_id, "daily", post.key)
+        self.store.mark_posted(cfg.guild_id, "dailychan", f"{post.key}@{channel.id}")  # 1.11.1
+        self.store.unmark_posted(cfg.guild_id, "skipped", post.key)
         self.store.mark_seen(cfg.guild_id, post.used_ids)
         if news:
             self.store.set_announced(cfg.guild_id, news[0])
@@ -787,6 +791,7 @@ class ForeverBot(commands.Bot):
             key = f"{kind}:{today.isoformat()}:{slot}"
             if post_dt(cfg, today, hm) <= local_now and not self.store.was_posted(cfg.guild_id, "daily", key):
                 self.store.mark_posted(cfg.guild_id, "daily", key)
+                self.store.mark_posted(cfg.guild_id, "skipped", key)  # 1.11.1: so /postnow knows nothing went out
                 skipped.append(slot)
         if skipped:
             ev(slog, "setup_skipped_slots", guild=cfg.guild_id, slots=",".join(map(str, skipped)),
@@ -1195,7 +1200,11 @@ async def frequency_cmd(interaction: discord.Interaction, per_day: app_commands.
         return await interaction.response.send_message(
             f"Posting **{len(cur)}x a day** at {fmt_times(cur)} ({cfg.tz}). Pick `per_day` or set `times` to change it.",
             ephemeral=True)
-    parsed = parse_times(times) if times else parse_times(FREQUENCY_PRESETS[per_day.value])
+    if times and times.strip() in ("1", "2", "3", "4"):  # 1.11.1: "/frequency times:3" means 3 a day
+        times, n = None, int(times.strip())
+    else:
+        n = per_day.value if per_day else None
+    parsed = parse_times(times) if times else parse_times(FREQUENCY_PRESETS[n])
     err = check_times(parsed, times)
     if err:
         rejected(interaction, "times", times)
@@ -1209,6 +1218,15 @@ async def frequency_cmd(interaction: discord.Interaction, per_day: app_commands.
         f"✅ Now posting **{len(parsed)}x a day** at {fmt_times(parsed)} ({cfg.tz}).{note}\n"
         f"-# Slots that already passed today won't fire until tomorrow; `/postnow` posts one right away.",
         ephemeral=True)
+
+
+def full_post_needed(cfg: GuildConfig, key0: str) -> bool:
+    """1.11.1: today's full post is marked done but never reached this server's current channel: it was skipped
+    because setup came after post time, or it went to a channel the server has since moved away from."""
+    if bot.store.was_posted(cfg.guild_id, "skipped", key0):
+        return True
+    chans = bot.store.posted_channels(cfg.guild_id, key0)
+    return bool(chans) and cfg.channel_id not in chans
 
 
 def postnow_outcome(reply: str) -> str:
@@ -1233,17 +1251,21 @@ async def postnow_cmd(interaction: discord.Interaction):
     now = now_utc()
     kind, _ = R.phase(cfg.tz, now)
     today = R.local_today(cfg.tz, now).isoformat()
-    slot = 0
-    if bot.store.was_posted(cfg.guild_id, "daily", f"{kind}:{today}:0"):
+    slot, force = 0, False
+    key0 = f"{kind}:{today}:0"
+    if bot.store.was_posted(cfg.guild_id, "daily", key0) and not full_post_needed(cfg, key0):
         slot = max(1, current_slot(cfg, now))
         if slot >= len(guild_times(cfg)):
             ev(clog, "postnow", guild=cfg.guild_id, user=interaction.user.id, outcome="already_up", slot=slot,
                slots=len(guild_times(cfg)), key=f"{kind}:{today}:0")
             return await interaction.followup.send(
-                "Today's full post is already up, and you're on 1 post a day. Use `/frequency` to add check-ins.",
+                f"Today's full post is already up in <#{cfg.channel_id}>, and there are no more slots today. "
+                "Use `/frequency` to add check-ins.",
                 ephemeral=True)
+    else:
+        force = slot == 0 and bot.store.was_posted(cfg.guild_id, "daily", key0)
     try:
-        msg = await bot.post_daily(cfg, now, slot=slot)
+        msg = await bot.post_daily(cfg, now, force=force, slot=slot)
     except Exception as e:
         ev(clog, "postnow", logging.ERROR, exc_info=e, guild=cfg.guild_id, user=interaction.user.id,
            outcome="error", slot=slot)
