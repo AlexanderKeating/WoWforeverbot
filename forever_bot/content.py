@@ -66,6 +66,12 @@ PAST_DATES = [
     ("2026-10-23", "Beta closes"),
 ]
 LATER = [("Winter 2026", "Hardcore ruleset"), ("Spring / Summer 2027", "Major content updates")]
+# 1.12: "Next up" line on daily posts after raids. (show until, text). Update when Blizzard dates these;
+# an entry stops showing after its date so posts never point at something stale.
+NEXT_UP = [
+    ("2027-03-20", "Hardcore ruleset, winter 2026–27"),
+    ("2027-09-22", "Major content updates, spring and summer 2027"),
+]
 
 # One-off pings to every server at an exact time (UTC). (iso datetime, key, text)
 EVENT_PINGS = [  # (UTC time, key, text). Times checked against Blizzard's announcement on Oct 27.
@@ -88,6 +94,8 @@ TODAY_CALLOUTS = {
     "2026-10-27": "📛 **Name reservation opens today at 1 PM Pacific / 3 PM Central.** Skyborne pack owners can reserve **3 names total** across all rulesets, through Nov 3. Create your characters now rather than on launch night: if a faction gets crowded on PvP, Blizzard can pause *new* characters.",
     "2026-11-03": "⏰ **Last day of name reservation.**",
     "2026-11-04": "🚀 **It's launch day.**",
+    "2026-12-09": "🐉 **Raids are open.** Barrow Deeps, Hyjal Summit and Onyxia's Lair, all today.",
+    "2026-12-10": "🧭 **The countdowns are done, but Forever Sherpa isn't.** Daily posts keep going: tips, news, clips and the roll call, for as long as you're playing.",
 }
 
 # ------------------------------------------------------------------ matching
@@ -132,6 +140,10 @@ NOTIFY = False
 # 1.3.3: the name-reservation alerts (EVENT_PINGS below) post again as plain channel messages.
 # No @role pings unless NOTIFY is also True. Launch-night countdown posts stay off.
 EVENT_POSTS = True
+
+# 1.12: launch-night posts in each countdown channel, minutes before launch (0 = servers live).
+# Plain posts, no pings (pings only if NOTIFY is True, which then sends all three milestones).
+LAUNCH_POST_MINUTES = (60, 0)
 
 # 1.6: WoW: Forever service status from Blizzard Support's Bluesky (free public API, no key).
 # Starts watch-only: logs event=status_would_post. Flip STATUS_POST_TO_CHANNELS once the logs look right.
@@ -762,6 +774,20 @@ DEEP_DIVES["camping"] = ("Camping 101", [
 ])
 POST_LAUNCH_TOPICS += ["legacy", "camping"]
 
+# ------------------------------------------------------------------ 1.12: raids and beyond
+RAIDS_SHORT = "Barrow Deeps (10), Hyjal Summit (20) and Onyxia's Lair (40)"
+DEEP_DIVES["raids"] = ("Raid night", [
+    "**Three raids open Dec 9:** Barrow Deeps (10 players), Hyjal Summit (20) and the returning Onyxia's Lair (40).",
+    "**Hyjal Summit** is set after Archimonde's defeat and drops Forever's first legendary weapon.",
+    "**Barrow Deeps** has three entrances: Mount Hyjal, Winterspring and Blackmaw Hold. Use whichever is closest to your group.",
+    "**Onyxia's Lair** keeps its classic attunement: the **Drakefire Amulet** quest chain. Start it before raid night, not on it.",
+    "**Legacy Points:** clearing Onyxia, all 13 Hyjal Summit bosses and all 8 Barrow Deeps bosses each earn one.",
+    dm("**Bosses in the client:** Barrow Deeps has 8 (including the Deepscar Matriarch and Sonya Darkhallow); Hyjal Summit has 13 (including the Ancient of Decay, the Council of Thorns and the Wild King)."),
+])
+# Dec 9 itself is about raids; after that, raids join the rotation for good.
+RAID_DAY_TOPIC = "raids"
+LIVE_TOPICS = POST_LAUNCH_TOPICS + ["raids"]
+
 DID_YOU_KNOW += [
     ("new", "Forever replaces achievements with the Legacy System: 65 challenges, each worth one account-wide point."),
     ("vet", "PvP Rank 11 unlocks mounts, and Rank 14 unlocks epic weapons."),
@@ -1052,6 +1078,13 @@ _fix(TIPS["camping"], "burns for about 10 minutes", "burns for about 10 to 15 mi
 # "internal": True keeps a behind-the-scenes release out of /whatsnew and the What's new page.
 WHATSNEW_URL = SITE_URL + "/whatsnew.html"
 RELEASE_NOTES = [
+    {"version": "1.12.0", "date": "2026-11-02", "title": "Launch night, raid day, and no end date",
+     "line": "a post an hour before launch and one when servers go live (no pings), a raid rundown on Dec 9, and daily posts keep going after raids open.",
+     "internal": False,
+     "notes": ["Launch night: a heads-up an hour before, and a \"WoW: Forever is live\" post the moment servers open. No pings.",
+               "Dec 9 gets its own raid rundown: Barrow Deeps, Hyjal Summit and Onyxia's Lair, plus the Drakefire Amulet attunement.",
+               "No end date. After raids open, posts keep going as \"Day N of WoW: Forever\", with raids in the topic rotation.",
+               "If the bot loses permission to post in your countdown channel, it says so once in your server's main channel instead of going quiet."]},
     {"version": "1.11.1", "date": "2026-10-31", "title": "Setup fixes",
      "line": None, "internal": False,
      "notes": ["`/setup` understands 24-hour times written with pm, like `16pm, 22pm`.",

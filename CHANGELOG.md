@@ -1,5 +1,15 @@
 # Changelog
 
+## 1.12.0 (2026-11-02)
+Launch prep, and Forever Sherpa no longer ends on Dec 9.
+- **Launch-night posts without pings.** New `LAUNCH_POST_MINUTES = (60, 0)`: a plain post an hour before launch and one at go time, in every countdown channel. `NOTIFY` still controls pings (and brings back T-10 when on). Go-time post points new players to `/tips topic:basics` and `/draggedalong`; Alliance servers get "For the Alliance." `milestone_sent` logs `guild_name` and `ping`.
+- **No end date.** `phase()` returns `("live", day_number)` after raids instead of `("done", None)`: titles read "Day N of WoW: Forever", topics rotate through `LIVE_TOPICS` (post-launch topics + raids). A "Next up" line comes from the new `NEXT_UP` list, each entry with a show-until date so posts never point at something stale. Dec 10 callout tells servers the posts keep going.
+- **Raid day.** New `raids` deep dive ("Raid night") is Dec 9's topic. Topics without a tip bank take their pro tip from the deep dive, and the highlight never repeats the pro tip.
+- **Onyxia everywhere.** Raid headers, check-ins and `/countdown` use `RAIDS_SHORT` (Barrow Deeps, Hyjal Summit and Onyxia's Lair). On Nov 2 the countdown header still listed only two raids.
+- **Blocked channels.** On Nov 2 two servers' 7 PM posts were blocked by channel permissions and the log blamed the bot being offline. Now: a once-a-week notice in the server's system channel (or first postable channel) with the fix (`blocked_notice_sent`); `slot_missed` has `reason=blocked|offline`; the staging warning goes out once per slot, not every minute of the 3-hour retry window.
+- **Status alerts:** still watch-only. New `status_near_miss` logs WoW posts from Blizzard Support that the matcher skipped, so the wording can be checked on launch night.
+- Help and README wording no longer say the bot stops after Dec 9.
+
 ## 1.11.1 (2026-10-31)
 From live logs. `parse_hhmm` reads `13pm`–`23pm` as 24-hour times (Equinox typed "16pm, 22pm", got rejected and left). `/postnow` re-sends slot 0 when it was only marked done by `skip_passed_slots` (new `skipped` marker) or was sent to a channel the server has moved away from (new `dailychan` records via `Store.posted_channels`); Primeval moved channels after setup and got "already up" three times. Posts sent before 1.11.1 have no channel record and are treated as posted here. `/frequency times:3` maps to the 3-a-day preset.
 

@@ -24,9 +24,12 @@ Works in any number of servers. Each server picks its own channel, ping role, po
   - **🎬 Top clips:** up to 2 Twitch clips from the last 24h, title exactly as the streamer wrote it, as a
     separate message so Discord shows playable previews
   - Roll call buttons for all 9 classes, with live counts
-- **Launch night:** pings at T-60 min, T-10 min, and go time
-- **After launch:** keeps posting a raid countdown through Dec 9, rotating leveling, professions, travel, gold
-  and PvP topics with their own pro tips and deep dives, then stops
+- **Launch night:** a post an hour before and one when servers go live (no pings; `LAUNCH_POST_MINUTES`)
+- **After launch:** a raid countdown through Dec 9 (raid day gets its own raid rundown), rotating leveling,
+  professions, travel, gold, PvP, Legacy and camping topics with their own pro tips and deep dives
+- **After raids open:** keeps going with no end date. Posts are titled "Day N of WoW: Forever", raids join the
+  topic rotation, and a "Next up" line shows the next thing Blizzard has announced (`NEXT_UP` in content.py;
+  each entry stops showing after its date, so update it when Blizzard dates something)
 
 ## Commands
 
@@ -145,8 +148,8 @@ Every log line is one event with `key=value` fields. In Render → **Logs**, sea
 | `event=source_down` / `event=source_stale` | A news site, Twitch or YouTube failing, and whether cache covered it |
 | `event=feed_ok` | Which feed URL worked per site, entries vs kept vs off-topic |
 | `event=twitch_clips` / `event=youtube_search` | Raw vs kept counts and why items were dropped |
-| `event=slot_late` / `event=slot_missed` | Posts that went out late or not at all (bot was offline) |
-| `event=post_blocked` | Missing channel permissions |
+| `event=slot_late` / `event=slot_missed` | Posts that went out late or not at all (`reason=offline` or `reason=blocked`) |
+| `event=post_blocked` | Missing channel permissions (`blocked_notice_sent`: the server was told, once a week) |
 | `event=command` / `event=command_error` | Who ran what, and failures with tracebacks |
 | `event=heartbeat` | Every 30 min: uptime, servers, latency, next post, loops healthy |
 | `level=ERROR` | Anything that needs attention |
@@ -167,7 +170,7 @@ Preview any day offline before pushing:
 ```
 pip install -r requirements.txt
 python -m forever_bot.preview --date 2026-10-25
-python -m forever_bot.preview --all          # every day through Dec 9
+python -m forever_bot.preview --all          # every day from now through raids
 python -m forever_bot.preview --live         # real news and clips (set Twitch keys first)
 python tests/test_bot.py                     # offline tests
 ```

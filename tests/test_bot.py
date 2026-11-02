@@ -243,12 +243,10 @@ def test_every_day_renders_within_limits():
     cfg = Cfg()
     d = date(2026, 10, 20)
     counts = {c: 3 for c in C.CLASSES}
-    while d <= date(2026, 12, 12):
+    while d <= date(2027, 2, 15):  # 1.12: no end date; keeps posting after raids
         post = R.build_daily(cfg, at_post_time(d, cfg), SAMPLE, counts)
-        if d > date(2026, 12, 9):
-            assert post is None
-        else:
-            assert post is not None
+        if True:
+            assert post is not None, d
             total = sum(len(e["title"]) + len(e["description"]) for e in post.embeds)
             assert total < 6000 and all(len(e["description"]) <= 4096 for e in post.embeds)
             assert len(post.followup or "") <= 2000
@@ -966,6 +964,115 @@ def test_mid_day_setup_skips_backfill_and_sends_short_first_post():
         for a in ("get_channel", "_can_post", "send_post", "post_daily"):
             B.bot.__dict__.pop(a, None)
 
+
+
+# ------------------------------------------------------------- 1.12
+def test_after_raids_keeps_posting_with_day_number():
+    cfg = Cfg()
+    assert R.phase(C.DEFAULT_TZ, datetime(2026, 12, 10, 18, 0, tzinfo=timezone.utc)) == ("live", 37)
+    assert R.phase(C.DEFAULT_TZ, datetime(2026, 11, 4, 18, 0, tzinfo=timezone.utc))[0] == "launch"
+    post = R.build_daily(cfg, at_post_time(date(2027, 6, 1), cfg), SAMPLE, {})
+    assert post and post.embeds[0]["title"].startswith("Day ") and post.key.startswith("live:")
+    chk = R.build_checkin(cfg, at_post_time(date(2027, 6, 1), cfg), SAMPLE, 1)
+    assert chk and chk.embeds[0]["title"].startswith("Day ")
+    seen = {R.build_daily(cfg, at_post_time(date(2026, 12, 10) + timedelta(days=i), cfg), SAMPLE, {}).deep_key
+            for i in range(30)}
+    assert "raids" in seen  # raids join the rotation
+
+
+def test_raid_day_is_about_raids_and_names_onyxia():
+    cfg = Cfg()
+    post = R.build_daily(cfg, at_post_time(date(2026, 12, 9), cfg), SAMPLE, {})
+    desc = post.embeds[0]["description"]
+    assert post.deep_key == "raids" and "Raid night" in desc and "Onyxia" in desc
+    before = R.build_daily(cfg, at_post_time(date(2026, 11, 20), cfg), SAMPLE, {})
+    assert "Onyxia's Lair (40)" in before.embeds[0]["description"]
+
+
+def test_next_up_drops_when_stale():
+    assert R.live_next_up(date(2026, 12, 10))
+    assert R.live_next_up(date(2030, 1, 1)) is None
+
+
+def test_launch_posts_without_pings():
+    assert C.LAUNCH_POST_MINUTES == (60, 0)
+    assert "For the Alliance." in R.milestone_text(0, "alliance")
+    assert "Horde" not in R.milestone_text(0, "neutral") and "Horde" not in R.milestone_text(60, "neutral")
+    assert "/draggedalong" in R.milestone_text(0, "horde")
+
+
+def test_blocked_notice_text():
+    t = R.blocked_notice_text(123, "missing permissions: Send Messages", "**Fix:** do the thing")
+    assert "<#123>" in t and "Send Messages" in t and "/setup" in t and "@" not in t.replace("<#123>", "")
+
+
+def test_blocked_channel_tells_admins_once_on_real_bot():
+    os.environ["DB_PATH"] = os.path.join(tempfile.mkdtemp(), "x.db")
+    from types import SimpleNamespace
+    from forever_bot.bot import ForeverBot
+    from forever_bot.store import GuildConfig
+    b = ForeverBot()
+    b.store = tmp_store()
+    b.snap = dict(SAMPLE, fetched_at=time.time())
+    sent = []
+
+    class Ch:
+        def __init__(self, cid, pos):
+            self.id, self.position = cid, pos
+            self.guild = guild
+
+        async def send(self, text=None, **kw):
+            sent.append((self.id, text))
+
+    guild = SimpleNamespace(id=9, me=SimpleNamespace(display_name="Forever Sherpa"))
+    blocked, system = Ch(100, 0), Ch(5, 1)
+    guild.system_channel, guild.text_channels = system, [blocked, system]
+    b.get_channel = lambda cid: {100: blocked, 5: system}.get(cid)
+    b.get_guild = lambda gid: guild if gid == 9 else None
+    b._can_post = lambda ch: "missing permissions: Send Messages" if ch is blocked else None
+    cfg = GuildConfig(guild_id=9, channel_id=100, post_time="12:00", tz="America/Chicago")
+    b.store.upsert_guild(cfg)
+    now = datetime(2026, 11, 20, 18, 1, tzinfo=timezone.utc)
+    for _ in range(3):  # the scheduler retries every minute
+        asyncio.run(b.post_daily(cfg, now))
+    assert len(sent) == 1 and sent[0][0] == 5 and "<#100>" in sent[0][1]
+    assert b.store.was_posted(9, "blocked", "raids:2026-11-20:0")
+
+
+def test_launch_loop_posts_t60_and_live_without_pings():
+    os.environ["DB_PATH"] = os.path.join(tempfile.mkdtemp(), "l.db")
+    from types import SimpleNamespace
+    import forever_bot.bot as B
+    from forever_bot.store import GuildConfig
+    b = B.ForeverBot()
+    b.store = tmp_store()
+    sent = []
+
+    class Ch:
+        id = 100
+        guild = SimpleNamespace(name="Test")
+
+        async def send(self, text=None, **kw):
+            sent.append((text, kw.get("allowed_mentions")))
+
+    b.get_channel = lambda cid: Ch() if cid == 100 else None
+    b._can_post = lambda ch: None
+    b.store.upsert_guild(GuildConfig(guild_id=9, channel_id=100, ping_role_id=55, faction="horde"))
+    real_now, real_sleep = B.now_utc, B.asyncio.sleep
+
+    async def no_sleep(_):
+        return None
+    B.asyncio.sleep = no_sleep
+    try:
+        for at in (C.LAUNCH - timedelta(minutes=60), C.LAUNCH - timedelta(minutes=10), C.LAUNCH,
+                   C.LAUNCH + timedelta(minutes=1)):
+            B.now_utc = lambda at=at: at
+            asyncio.run(b.launch_loop.coro(b))
+    finally:
+        B.now_utc, B.asyncio.sleep = real_now, real_sleep
+    assert len(sent) == 2, sent  # T-60 and live, once each; T-10 stays off
+    assert "One hour" in sent[0][0] and "is live" in sent[1][0]
+    assert all("<@&" not in t for t, _ in sent)
 
 if __name__ == "__main__":
     fns = [v for k, v in dict(globals()).items() if k.startswith("test_")]

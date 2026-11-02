@@ -29,6 +29,7 @@ _PROBLEM = re.compile(r"\b(investigat\w*|outage|issue[s]?|problem[s]?|disconnect
 _MAINT = re.compile(r"\b(maintenance|restart\w*|patch(?:ing)?|offline for)\b", re.I)
 _RESOLVED = re.compile(r"\b(resolved|fixed|restored|back (?:up|online)|now (?:be )?able|is now available|"
                        r"(?:has|have) (?:been )?completed|complete[d]? (?:and|now)|stable again)\b", re.I)
+_WOW = re.compile(r"\b(wow|world of warcraft|warcraft|azeroth)\b", re.I)
 _WIDE = re.compile(r"\b(battle\.net|all (?:blizzard )?games|account services|log ?in services)\b", re.I)
 
 
@@ -131,6 +132,11 @@ async def check(session, store) -> list[dict]:
         fetched_ids += [p["id"] for p in posts]
         new = pick_updates(posts, seen, now)
         ev(log, "status_check", source=src["name"], posts=len(posts), relevant=len(new), first_run=first_run)
+        # 1.12: log new WoW posts the matcher skipped, so the matching can be tuned from real wording
+        for p in posts:
+            if p["id"] not in seen and not first_run and _WOW.search(p["text"]) and not relevant(p["text"]):
+                ev(log, "status_near_miss", source=src["name"], kind=classify(p["text"]), url=p["url"],
+                   text=p["text"][:200].replace("\n", " "))
         for u in new:
             u["source"] = src["name"]
         updates += new

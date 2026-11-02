@@ -197,8 +197,16 @@ def local_today(tz: str, now: datetime) -> date:
     return now.astimezone(ZoneInfo(tz)).date()
 
 
+def _topic_pro_tip(topic: str, today: date) -> str:
+    """Pro tip from the topic's tip bank; topics without one (raids) use their deep dive."""
+    if topic in C.TIPS:
+        return pick(V(C.TIPS[topic]), today, salt=1)
+    return pick(V(C.DEEP_DIVES[topic][1]), today, salt=1)
+
+
 def phase(tz: str, now: datetime):
-    """('launch', days_left) before/at launch day, ('raids', days_left) after, or ('done', None)."""
+    """('launch', days_left) before/at launch day, ('raids', days_left) until raids open,
+    then ('live', day_number) for good: day 1 is launch day. 1.12: there's no end date any more."""
     today = local_today(tz, now)
     launch_local = C.LAUNCH.astimezone(ZoneInfo(tz)).date()
     if today <= launch_local:
@@ -206,7 +214,15 @@ def phase(tz: str, now: datetime):
     raids = _d(C.RAIDS_DATE)
     if today <= raids:
         return "raids", (raids - today).days
-    return "done", None
+    return "live", (today - launch_local).days + 1
+
+
+def live_next_up(today: date) -> str | None:
+    """1.12: after raids, the next thing on the horizon (C.NEXT_UP), until its show-until date passes."""
+    for until, text in C.NEXT_UP:
+        if today <= _d(until):
+            return f"-# Next up: {text}"
+    return None
 
 
 def next_key_date(today: date, skip_launch: bool):
@@ -301,9 +317,12 @@ def build_checkin(cfg, now: datetime, snap: dict | None, slot: int,
         title = ("WoW: Forever is live" if days == 0 and now >= C.LAUNCH else
                  f"{days} day{'s' if days != 1 else ''} until WoW: Forever" if days else "Launch day check-in")
         head = f"<t:{ts(C.LAUNCH)}:R>"
-    else:
+    elif kind == "raids":
         title = f"{days} day{'s' if days != 1 else ''} until raids open" if days else "Raids are open"
-        head = f"Barrow Deeps and Hyjal Summit · {_fmt_date(_d(C.RAIDS_DATE))}"
+        head = f"{C.RAIDS_SHORT} · {_fmt_date(_d(C.RAIDS_DATE))}"
+    else:
+        title = f"Day {days} of WoW: Forever"
+        head = live_next_up(today) or "-# Tips, news and clips for life in Forever."
     topic = pick(CHECKIN_TOPICS, today, salt=slot * 5)
     tip = pick(V(C.TIPS[topic]), today, salt=slot * 11 + 2)
     dyk_pool = V([t for tag, t in C.DID_YOU_KNOW if tag != "horde" or faction == "horde"])
@@ -355,12 +374,16 @@ def _build_daily_raw(cfg, now: datetime, snap: dict | None, counts: dict | None,
         title = ("Launch day: WoW: Forever opens today" if days == 0
                  else f"{days} day{'s' if days != 1 else ''} until WoW: Forever")
         lines.append(f"<t:{ts(C.LAUNCH)}:F> · <t:{ts(C.LAUNCH)}:R>")
-    else:
+    elif kind == "raids":
         title = ("Raids open today" if days == 0 else
                  f"{days} day{'s' if days != 1 else ''} until raids open")
-        lines.append(f"Barrow Deeps (10) and Hyjal Summit (20) · {_fmt_date(_d(C.RAIDS_DATE))}")
+        lines.append(f"{C.RAIDS_SHORT} · {_fmt_date(_d(C.RAIDS_DATE))}")
+    else:
+        title = f"Day {days} of WoW: Forever"
+        if live_next_up(today):
+            lines.append(live_next_up(today))
     nxt = next_key_date(today, skip_launch=(kind == "launch"))
-    if nxt and not (kind == "raids" and nxt[0] == _d(C.RAIDS_DATE)):
+    if nxt and kind != "live" and not (kind == "raids" and nxt[0] == _d(C.RAIDS_DATE)):
         nd, ntext = nxt
         if not (kind == "launch" and nd > C.LAUNCH.astimezone(ZoneInfo(cfg.tz)).date()):
             lines.append(f"-# Next up: {ntext}, {_fmt_date(nd)} ({_rel_days((nd - today).days)})")
@@ -402,21 +425,23 @@ def _build_daily_raw(cfg, now: datetime, snap: dict | None, counts: dict | None,
 
     # ---- post-launch: rotate topic, pro tip from that topic's bank
     deep_key = str(days if days in C.DEEP_DIVES else 11) if kind == "launch" else None
-    if kind == "raids":
-        topic = pick(C.POST_LAUNCH_TOPICS, today)
+    if kind in ("raids", "live"):
+        # 1.12: raid day is about raids; after that raids join the rotation
+        topic = (C.RAID_DAY_TOPIC if kind == "raids" and days == 0
+                 else pick(C.LIVE_TOPICS if kind == "live" else C.POST_LAUNCH_TOPICS, today))
         deep_key = topic
-        lines += ["", f"**Today · {C.DEEP_DIVES[topic][0]}**",
-                  f"⚔️ **Pro tip:** {pick(V(C.TIPS.get(topic, C.NEWBIE_TIPS)), today, salt=1)}"]
+        pro = _topic_pro_tip(topic, today)
+        lines += ["", f"**Today · {C.DEEP_DIVES[topic][0]}**", f"⚔️ **Pro tip:** {pro}"]
         # 1.5: a highlight or two from the topic's deep dive, so post-launch days have some substance
         n_dd = {"brief": 0, "standard": 1}.get(level, 2)
         if n_dd:
-            dd_items = V(C.DEEP_DIVES[topic][1])
+            dd_items = [x for x in V(C.DEEP_DIVES[topic][1]) if x != pro]
             first = pick(dd_items, today, salt=5)
             picks = [first] + [x for x in dd_items if x != first][:n_dd - 1]
             lines += ["", "🔎 **From the deep dive:**"] + [f"• {b}" for b in picks]
 
     # ---- tip + did you know (skipped in Brief)
-    if level != "brief" and (days not in (0,) or kind == "raids"):
+    if level != "brief" and (days not in (0,) or kind != "launch"):
         tip = pick(V(C.NEWBIE_TIPS), today, avoid="\n".join(lines))
         if tip:
             lines += ["", f"💡 **New player tip:** {tip}"]
@@ -508,18 +533,27 @@ def tips_embed(topic: str, level: str = "standard") -> dict:
             "footer": level_footer(level, "Topics: " + " · ".join(TIP_TOPICS))}
 
 
+def blocked_notice_text(channel_id: int, problem: str, hint: str) -> str:
+    """1.12: posted once a week when the countdown channel stops letting the bot post."""
+    return (f"⚠️ **Forever Sherpa can't post in <#{channel_id}> any more** ({problem}), so today's post didn't go out.\n"
+            f"{hint}\n-# Want it somewhere else? An admin can run `/setup channel:` to move it.")
+
+
 # ======================================================================= launch-night pings
 MILESTONES = [  # (minutes before launch, message)
     (60, "⏳ **One hour.** Launcher open, patch done, snacks ready. PvP ruleset → Horde."),
     (10, "🔔 **Ten minutes.** Log in to the launcher and get ready to mash that Play button."),
-    (0, "🚀 **WoW: Forever is live.** See you in Azeroth. For the Horde."),
+    (0, "🚀 **WoW: Forever is live.** See you in Azeroth. For the Horde.\n"
+        "-# First night? `/tips topic:basics` · brought along by a friend? `/draggedalong`"),
 ]
 
 
 def milestone_text(minutes: int, faction: str) -> str:
     for m, text in MILESTONES:
         if m == minutes:
-            if faction != "horde":
+            if faction == "alliance":
+                text = text.replace(" PvP ruleset → Horde.", "").replace(" For the Horde.", " For the Alliance.")
+            elif faction != "horde":
                 text = text.replace(" PvP ruleset → Horde.", "").replace(" For the Horde.", "")
             return text
     return ""
@@ -568,9 +602,10 @@ def countdown_embed(tz: str, now: datetime) -> dict:
         d = f"<t:{ts(C.LAUNCH)}:F> · <t:{ts(C.LAUNCH)}:R>"
     elif kind == "raids":
         t = f"WoW: Forever is live · raids in {days} day{'s' if days != 1 else ''}"
-        d = f"Barrow Deeps and Hyjal Summit open {_fmt_date(_d(C.RAIDS_DATE))}"
+        d = f"{C.RAIDS_SHORT} open {_fmt_date(_d(C.RAIDS_DATE))}"
     else:
-        t, d = "WoW: Forever is live", "Raids are open. Go get that legendary."
+        t = f"WoW: Forever is live · day {days}"
+        d = "Raids are open: " + C.RAIDS_SHORT + "." + (f"\n{live_next_up(local_today(tz, now))}" if live_next_up(local_today(tz, now)) else "")
     return {"title": t, "description": d, "color": C.BRAND_COLOR}
 
 
@@ -579,7 +614,7 @@ def countdown_embed(tz: str, now: datetime) -> dict:
 SPELLBOOK = {
     "quest": {
         "label": "Quest log", "emoji": "📜", "admin": False,
-        "blurb": "New to Azeroth? Six quick steps to be ready for Nov 4.",
+        "blurb": "New to Azeroth? Six quick steps to get started in Forever.",
         "flavor": "A grizzled orc slams a scroll on the table. \"Read it. Then we ride.\"",
         "spells": [
             ("faq", "", "Step 1 · Instant", "What Forever is, what to buy (nothing), and which ruleset to pick."),
@@ -595,7 +630,7 @@ SPELLBOOK = {
         "blurb": "How long until the gates open.",
         "flavor": "The hourglass on the Orgrimmar wall is nearly empty.",
         "spells": [
-            ("countdown", "", "Instant · No cooldown", "Time until launch, shown in your own time zone. After launch, time until raids."),
+            ("countdown", "", "Instant · No cooldown", "Time until launch, shown in your own time zone. After launch, time until raids, then what's next."),
             ("dates", "", "Instant", "Every key date: name reservation, launch, raids, Hardcore."),
             ("whatsnew", "", "Instant · Private", "What changed in Forever Sherpa lately."),
         ],
