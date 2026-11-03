@@ -50,7 +50,7 @@ CLASSES = {
             "**Seal of Fury** at 10: the tanking seal. Hits add Holy damage and an absorb shield; its Judgement taunts.",
             "**Judgement no longer consumes your Seal.**",
             "**Holy Strike** at 6 and **Consecration** for everyone at 20.",
-            "Salvation is no longer a Blessing, so it can sit alongside one. Lay on Hands is a 20-minute cooldown.",
+            "Salvation and Mass Salvation are gone. Lay on Hands is a 20-minute cooldown.",
             "Seal twisting now comes from the Ret talent **Twist of Light**, not baseline.",
         ],
         "leveling": [
@@ -71,7 +71,7 @@ CLASSES = {
         "role": "Ranged damage with a pet at your side. One of the most comfortable classes for leveling solo.",
         "new": [
             "**Aimed Shot** is baseline at 20 for every Hunter.",
-            "Traps work **in combat** (30-second cooldown); Frost and Fire traps have separate cooldowns.",
+            "Traps work **in combat**, and all traps share one 30-second cooldown.",
             "Pets scale with your gear, and every pet family has its own unique ability. Foxes are a new family.",
             "**Lone Wolf** (Marksmanship): 20% more damage with no pet out.",
             "Survival is a real melee spec now, with Strider Kick and Lacerating Strikes.",
@@ -116,7 +116,7 @@ CLASSES = {
         "role": "Healer or shadow caster. Every group wants one.",
         "new": [
             "**Fear Ward** and **Devouring Plague** for every Priest at 20, whatever your race.",
-            "**Divine Spirit** baseline at 30 and **Shadow Word: Death** at 32 (costs you 10% health if it doesn't kill).",
+            "**Divine Spirit** baseline at 30 and **Shadow Word: Death** at 32 (costs you 30% of your max health if it doesn't kill).",
             "Shadowform halves Shadow spell mana costs and doubles their crit bonus.",
             "Undead get **Dark Sacrifice** at 20: turn health into mana over time.",
             "New signatures: Penance (Discipline), Prayer of Mending (Holy), Vampiric Embrace (Shadow, 16).",
@@ -131,7 +131,7 @@ CLASSES = {
             "Shadow Word: Death is an instant finisher, but it costs you if it doesn't kill.",
             "Priests went 9–12 vs other classes in the beta tournament finals.",
         ],
-        "talents": ["Soul Warding (Discipline, 16)", "Penance (Discipline, 21)", "Binding Heal (Holy, 16)",
+        "talents": ["Soul Warding (Discipline, 16)", "Penance (Discipline, 21)", "Holy Binding (Holy, 16)",
                     "Prayer of Mending (Holy, 31)", "Vampiric Embrace (Shadow, 16)"],
     },
     "Shaman": {
@@ -140,9 +140,9 @@ CLASSES = {
         "new": [
             "Totems: 1-second global cooldown, and buff totems last 5 minutes.",
             "**Call of the Elements** at 20: preset four totems and drop them all in one 3-second cast.",
-            "**Totemic Projection** at 22 moves all your totems up to 30 yards.",
+            "**Totemic Call** (was Totemic Projection) pulls all your totems to you, on a 30-second cooldown.",
             "Weapon imbues last **60 minutes** and stack with stones and oils. Windfury Totem is a party buff.",
-            "New signatures: Lava Burst (Elemental), Maelstrom Weapon (Enhancement), Riptide (Restoration). Elemental Mastery is back at 31 points.",
+            "Lava Burst was cut before launch: **Call of Thunder** (+5% crit on Lightning Bolt and Chain Lightning) takes its spot, and Elemental Mastery is now **Lightning Mastery**. Also new: Maelstrom Weapon (Enhancement), Riptide (Restoration, healing over time only, 12-second cooldown).",
         ],
         "leveling": [
             "Set up a Call of the Elements preset at 20. One cast drops all four totems.",
@@ -151,11 +151,11 @@ CLASSES = {
         ],
         "pvp": [
             "Shamans went 19–11 vs other classes in the beta tournament finals and took 3rd and 4th.",
-            "Totemic Projection lets you reposition every totem mid-fight.",
+            "Totemic Call pulls every totem to you mid-fight (30-second cooldown).",
             "**Earthbound** (Elemental, 16) makes Earthbind Totem root nearby enemies for 5 seconds.",
         ],
         "talents": ["Shamanistic Focus (Enhancement, 11)", "Stormstrike (Enhancement, 16)", "Earthbound (Elemental, 16)",
-                    "Lava Burst (Elemental, 21)", "Elemental Mastery (Elemental, 31)", "Water Shield (Restoration, 11)", "Riptide (Restoration, 31)"],
+                    "Call of Thunder (Elemental, 21)", "Lightning Mastery (Elemental, 31)", "Water Shield (Restoration, 11)", "Riptide (Restoration, 31)"],
     },
     "Mage": {
         "races": "Orc (new) · Troll · Undead",
@@ -164,7 +164,7 @@ CLASSES = {
             "**Frostfire Bolt** at 40 counts as both Fire and Frost.",
             "Arcane: **Arcane Blast** (11) and the new **Arcane Wrath** (16). Missile Barrage is now an early talent.",
             "Fire: **Heating Up** is Forever's Hot Streak; crits shorten your next Pyroblast.",
-            "Frost: **Ice Lance** (11) does 200% more to Frozen targets; **Fingers of Frost** makes targets count as Frozen.",
+            "Frost: **Ice Lance** (11) does 300% more to Frozen targets, on an 8-second cooldown shared with Fire Blast; **Fingers of Frost** makes targets count as Frozen.",
             "Cone of Cold lasts less time, to stop huge kite-pulls. Orc Mages are new.",
         ],
         "leveling": [
@@ -184,7 +184,7 @@ CLASSES = {
         "races": "Orc · Troll (new) · Undead",
         "role": "Damage over time, demons and fear. A Warlock won the $100K beta duel tournament.",
         "new": [
-            "**Pets scale with your stats.** Your Voidwalker is a real tank now.",
+            "**Pets scale with your stats**, but launch tuning cut pet health to 2 per point of your Stamina (was 7.5).",
             "Curse of Agony and Curse of Doom are now **Banes**: one Bane per Warlock per target.",
             "Firestone and Spellstone are weapon imbues that stack with Wizard Oil.",
             "**Soul Link** is a 21-point talent; **Demonic Pact** (31) keeps Demonic Sacrifice when you swap pets.",
@@ -192,7 +192,7 @@ CLASSES = {
         ],
         "leveling": [
             "Free mount at 40: the quest is from **Strahad Farsan in Ratchet**.",
-            "Drain Soul now guarantees a Soul Shard after enough ticks.",
+            "Drain Soul rarely gives a Soul Shard from damage ticks now. Finish the kill with it for the shard.",
             "Life Tap scales with Spirit.",
         ],
         "pvp": [
@@ -299,7 +299,7 @@ _DO = {
             "**Pair Rockbiter with Spirit Weapons as Enhancement** → you can off-tank small groups.",
         ],
         "pvp": [
-            "**Move your totems with Totemic Projection mid-fight** → keep them on the fight instead of re-dropping them.",
+            "**Pull your totems to you with Totemic Call mid-fight** → keep them on the fight instead of re-dropping them (30-second cooldown).",
             "**Take Earthbound (Elemental, 16)** → Earthbind Totem roots nearby enemies for 5 seconds.",
             "Shamans went 19–11 vs other classes in the beta tournament finals and took 3rd and 4th.",
         ],
@@ -319,7 +319,7 @@ _DO = {
     "Warlock": {
         "leveling": [
             "**Grab your free mount at 40 from Strahad Farsan in Ratchet** → save the gold for training and gear.",
-            "**Let Drain Soul finish its ticks** → it guarantees a Soul Shard if it runs long enough.",
+            "**Finish low targets with Drain Soul** → the kill gives you a Soul Shard; damage ticks alone rarely do since launch tuning.",
             "**Stack some Spirit** → Life Tap scales with it, so you sit to drink less.",
         ],
         "pvp": [

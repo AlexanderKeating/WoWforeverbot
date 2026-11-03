@@ -301,7 +301,7 @@ DEEP_DIVES = {
     ]),
     10: ("Reading the tournament data", [
         "**Who:** 36 finalists, top 4 of each class after six Swiss rounds with 1,380 players.",
-        "**Warlocks:** 26–7 in duels vs other classes. Soul Link at 21 points plus pet scaling made them hard to kill at 30.",
+        "**Warlocks:** 26–7 in duels vs other classes. Soul Link at 21 points plus pet scaling made them hard to kill at 30. Launch tuning cut pet health to 2 per point of Stamina (was 7.5).",
         "**Shamans** were the other standout: 19–11 and both 3rd and 4th place.",
         "**Mages** went 4–12 on finals day, after a week of forum calls to nerf them. Hype isn't results.",
         "**Why it may not hold at 60:** more trinkets and Fear answers, damage outscaling healing, and BGs where nobody is forced to stand and duel.",
@@ -1041,12 +1041,12 @@ DID_YOU_KNOW += [
     ("vet", "Skyborne speak Darnassian."),
     ("vet", "Dalaran's dungeon has several paths, so each group picks its own route through the city."),
     ("vet", dm("On the beta map, Riverglades' faction hubs are Rog'mar (Horde) and Farholde Keep (Alliance), held by the Brotherhood of the Horse.")),
-    # class and racial tuning (Blizzard beta notes, Oct 15 and Oct 26)
+    # class and racial tuning (Blizzard beta notes, Oct 15, Oct 26 and Nov 2)
     ("vet", "Hunters must stand still for half a second before Auto Shot fires. Wands work the same way."),
     ("vet", "Battle Shout, Trueshot Aura and the Shaman buff totems all reach the whole raid in Forever."),
     ("vet", "Vampiric Embrace is on a 30-second cooldown and can't be resisted anymore."),
     ("vet", "Mages get a new Arcane Wrath talent that adds spell power equal to 5% of max mana."),
-    ("vet", "Elemental Mastery is back as the Shaman's 31-point Elemental talent, and Lava Burst moved to 21."),
+    ("vet", "Lava Burst was cut right before launch. Call of Thunder (+5% crit on Lightning Bolt and Chain Lightning) took its spot, and Elemental Mastery became Lightning Mastery."),
     ("vet", "Shaman totems now last 5 minutes, and weapon imbues last an hour."),
     ("vet", "Tranquil Air Totem is gone, and Fire Nova is now a spell that erupts from your fire totem."),
     ("vet", "Stoneform now cuts physical damage taken instead of adding armor."),
@@ -1058,8 +1058,8 @@ DID_YOU_KNOW += [
     ("horde", "Troll Berserking now lasts 15 seconds, up from 10."),
     ("horde", "Orc Command is back: +5% pet damage for Hunters and Warlocks. Blood Fury is on a 2-minute cooldown."),
     ("horde", "Tauren Plainsrunning lost its mounted speed in the final pass, but now builds to +60% on foot."),
-    ("vet", dm("The Oct 30 datamined hotfixes give Ice Lance an 8-second cooldown and take Frost Blast off the trainers.")),
-    ("vet", dm("In the latest game files, Paladins learn Righteous Fury at level 10, down from 16.")),
+    ("vet", "Ice Lance has an 8-second cooldown shared with Fire Blast, and Frost Blast is gone."),
+    ("vet", "Paladins learn Righteous Fury at level 10, down from 16."),
     # economy
     ("new", "Gold is tight early. In the beta, three PC Gamer writers earned about 2.5 gold together in their first two hours."),
     ("vet", dm("The beta Black Market sold a Gift of Galloping: +10% mounted speed for 15 days, for 150 gold.")),
@@ -1083,6 +1083,13 @@ _fix(TIPS["camping"], "burns for about 10 minutes", "burns for about 10 to 15 mi
 # "internal": True keeps a behind-the-scenes release out of /whatsnew and the What's new page.
 WHATSNEW_URL = SITE_URL + "/whatsnew.html"
 RELEASE_NOTES = [
+    {"version": "1.12.1", "date": "2026-11-03", "title": "Launch class tuning",
+     "line": None, "internal": False,
+     "notes": ["Class cards, `/keybinds` and rotations match Blizzard's Nov 2 launch notes.",
+               "Shaman: Lava Burst is gone (Call of Thunder takes its spot), Elemental Mastery is now Lightning Mastery, Totemic Projection is now Totemic Call, Stormstrike is on a 6-second cooldown.",
+               "Mage: Ice Lance does 300% more to frozen targets and shares an 8-second cooldown with Fire Blast.",
+               "Hunter traps share one cooldown; Paladin Salvation is gone; Priest Holy Binding replaces Binding Heal and Shadow Word: Death costs 30% health on a miss.",
+               "Warlock pets have less health, and Drain Soul's shards come from the kill."]},
     {"version": "1.12.0", "date": "2026-11-02", "title": "Launch night, raid day, and no end date",
      "line": "a post an hour before launch and one when servers go live (no pings), a raid rundown on Dec 9, and daily posts keep going after raids open.",
      "internal": False,
