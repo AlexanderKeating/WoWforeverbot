@@ -149,6 +149,7 @@ Every log line is one event with `key=value` fields. In Render → **Logs**, sea
 | `event=feed_ok` | Which feed URL worked per site, entries vs kept vs off-topic |
 | `event=twitch_clips` / `event=youtube_search` | Raw vs kept counts and why items were dropped |
 | `event=slot_late` / `event=slot_missed` | Posts that went out late or not at all (`reason=offline` or `reason=blocked`) |
+| `event=setup_reminder_sent` | The one follow-up to a server that added the bot but never set it up |
 | `event=post_blocked` | Missing channel permissions (`blocked_notice_sent`: the server was told, once a week) |
 | `event=command` / `event=command_error` | Who ran what, and failures with tracebacks |
 | `event=heartbeat` | Every 30 min: uptime, servers, latency, next post, loops healthy |

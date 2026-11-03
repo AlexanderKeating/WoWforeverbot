@@ -1086,6 +1086,23 @@ def welcome_embed(now: datetime | None = None) -> dict:
     }
 
 
+def setup_reminder_embed(now: datetime | None = None) -> dict:
+    """1.12: the one follow-up a server gets if nobody pressed 📍 Post here. No pings."""
+    now = now or datetime.now(timezone.utc)
+    if now < C.LAUNCH:
+        lead = f"**WoW: Forever launches <t:{ts(C.LAUNCH)}:R>** (<t:{ts(C.LAUNCH)}:F>, your time)."
+    else:
+        lead = "**WoW: Forever is live.**"
+    return {
+        "title": "📍 Forever Sherpa isn't posting here yet",
+        "description": (f"{lead} One click and the daily rundown starts in this channel at {_default_when()}: "
+                        "a tip, the news, the best clips and a class roll call.\n\n"
+                        "Admins: press **📍 Post here**, or run `/setup` to pick a different channel or time."),
+        "color": C.BRAND_COLOR,
+        "footer": {"text": "Just a one-time reminder. Only people with Manage Server can use the button."},
+    }
+
+
 def _stayed(seconds: float | None) -> str:
     if seconds is None or seconds < 0:
         return ""

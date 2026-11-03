@@ -145,6 +145,11 @@ EVENT_POSTS = True
 # Plain posts, no pings (pings only if NOTIFY is True, which then sends all three milestones).
 LAUNCH_POST_MINUTES = (60, 0)
 
+# 1.12: one follow-up for servers that added the bot but never set it up. Sent once, in the welcome
+# channel, between these many hours after joining (older servers are left alone).
+SETUP_REMINDER_AFTER_H = 4
+SETUP_REMINDER_UNTIL_H = 24 * 7
+
 # 1.6: WoW: Forever service status from Blizzard Support's Bluesky (free public API, no key).
 # Starts watch-only: logs event=status_would_post. Flip STATUS_POST_TO_CHANNELS once the logs look right.
 STATUS_SOURCES = [{"name": "Blizzard Support", "handle": "support.blizzard.com"}]

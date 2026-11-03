@@ -7,6 +7,7 @@ Launch prep, and Forever Sherpa no longer ends on Dec 9.
 - **Raid day.** New `raids` deep dive ("Raid night") is Dec 9's topic. Topics without a tip bank take their pro tip from the deep dive, and the highlight never repeats the pro tip.
 - **Onyxia everywhere.** Raid headers, check-ins and `/countdown` use `RAIDS_SHORT` (Barrow Deeps, Hyjal Summit and Onyxia's Lair). On Nov 2 the countdown header still listed only two raids.
 - **Blocked channels.** On Nov 2 two servers' 7 PM posts were blocked by channel permissions and the log blamed the bot being offline. Now: a once-a-week notice in the server's system channel (or first postable channel) with the fix (`blocked_notice_sent`); `slot_missed` has `reason=blocked|offline`; the staging warning goes out once per slot, not every minute of the 3-hour retry window.
+- **Setup reminder.** On Nov 2, 8 servers added the bot; Orbitrap (35 members) and GIGACHADDERS never set it up. Servers still not set up 4 hours after joining get one follow-up in the welcome channel (launch countdown + 📍 Post here, no pings). Once per server, only within 7 days of joining, checked by the 30-minute heartbeat. Log events `setup_reminder_sent`, `setup_reminder_no_channel`, `setup_reminder_failed`.
 - **Status alerts:** still watch-only. New `status_near_miss` logs WoW posts from Blizzard Support that the matcher skipped, so the wording can be checked on launch night.
 - Help and README wording no longer say the bot stops after Dec 9.
 

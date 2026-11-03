@@ -1036,6 +1036,34 @@ class ForeverBot(commands.Bot):
             if not loop.is_running():
                 ev(log, "loop_stopped", logging.ERROR, loop=name, action="restarting")
                 loop.restart()
+        try:
+            await self.send_setup_reminders(now)
+        except Exception as e:  # noqa: BLE001 - a reminder must never break the heartbeat
+            ev(log, "setup_reminder_error", logging.WARNING, error=str(e)[:150])
+
+    async def send_setup_reminders(self, now: datetime):
+        """1.12: servers that added the bot but never set it up get one follow-up, a few hours later."""
+        for guild in list(self.guilds):
+            joined = getattr(getattr(guild, "me", None), "joined_at", None)
+            cfg = self.store.get_guild(guild.id)
+            if joined is None or (cfg and cfg.channel_id):
+                continue
+            age_h = (now - joined).total_seconds() / 3600
+            if not (C.SETUP_REMINDER_AFTER_H <= age_h <= C.SETUP_REMINDER_UNTIL_H):
+                continue
+            if self.store.was_posted(guild.id, "setup_reminder", "1"):
+                continue
+            ch = welcome_channel(guild, self._can_post)
+            self.store.mark_posted(guild.id, "setup_reminder", "1")  # once, even if the send fails
+            if ch is None:
+                ev(log, "setup_reminder_no_channel", logging.WARNING, guild=guild.id, name=guild.name)
+                continue
+            try:
+                await ch.send(embed=discord.Embed.from_dict(R.setup_reminder_embed(now)), view=setup_here_view(),
+                              allowed_mentions=discord.AllowedMentions.none())
+                ev(log, "setup_reminder_sent", guild=guild.id, name=guild.name, channel=ch.id, age_h=age_h)
+            except discord.HTTPException as e:
+                ev(log, "setup_reminder_failed", logging.WARNING, guild=guild.id, error=str(e)[:150])
 
     @tasks.loop(minutes=C.STATUS_CHECK_MINUTES)
     async def status_loop(self):

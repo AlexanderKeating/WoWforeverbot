@@ -1074,6 +1074,40 @@ def test_launch_loop_posts_t60_and_live_without_pings():
     assert "One hour" in sent[0][0] and "is live" in sent[1][0]
     assert all("<@&" not in t for t, _ in sent)
 
+
+def test_setup_reminder_once_for_unconfigured_servers():
+    os.environ["DB_PATH"] = os.path.join(tempfile.mkdtemp(), "r.db")
+    from types import SimpleNamespace
+    import forever_bot.bot as B
+    from forever_bot.store import GuildConfig
+    b = B.ForeverBot()
+    b.store = tmp_store()
+    sent = []
+    now = datetime(2026, 11, 3, 18, 0, tzinfo=timezone.utc)
+
+    def guild(gid, hours_ago):
+        ch = SimpleNamespace(id=gid * 10, position=0)
+
+        async def send(**kw):
+            sent.append((gid, kw["embed"].title, kw.get("view") is not None))
+        ch.send = send
+        return SimpleNamespace(id=gid, name=f"g{gid}", system_channel=ch, text_channels=[ch],
+                               me=SimpleNamespace(joined_at=now - timedelta(hours=hours_ago)))
+
+    gs = [guild(1, 5), guild(2, 1), guild(3, 5), guild(4, 24 * 30)]  # due, too new, set up, too old
+    b.store.upsert_guild(GuildConfig(guild_id=3, channel_id=30))
+    b._can_post = lambda ch: None
+    type(b).guilds = property(lambda self: gs)
+    try:
+        for _ in range(3):  # heartbeat runs every 30 min; only one reminder ever
+            asyncio.run(b.send_setup_reminders(now))
+    finally:
+        del type(b).guilds
+    assert sent == [(1, "📍 Forever Sherpa isn't posting here yet", True)], sent
+    e = R.setup_reminder_embed(now)
+    assert "launches" in e["description"] and "@" not in e["description"]
+    assert "is live" in R.setup_reminder_embed(C.LAUNCH + timedelta(hours=1))["description"]
+
 if __name__ == "__main__":
     fns = [v for k, v in dict(globals()).items() if k.startswith("test_")]
     for fn in fns:
