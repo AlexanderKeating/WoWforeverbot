@@ -746,7 +746,12 @@ class ForeverBot(commands.Bot):
             self.say_once(slog, (cfg.guild_id, post.key, "noperm"), "post_blocked", logging.ERROR,
                           guild=cfg.guild_id, channel=cfg.channel_id, key=post.key, reason=problem)
             hint = perm_fix_hint(channel, problem)
-            await self.notify_staging(cfg, f"⚠️ Couldn't post the daily countdown: {problem}.\n{hint}")
+            first_try = not self.store.was_posted(cfg.guild_id, "blocked", post.key)
+            self.store.mark_posted(cfg.guild_id, "blocked", post.key)  # 1.12: so slot_missed says why
+            if first_try or force:  # 1.12: the scheduler retries every minute; tell staging once, not 180 times
+                await self.notify_staging(cfg, f"⚠️ Couldn't post the daily countdown: {problem}.\n{hint}")
+            if first_try and not force:
+                await self.notify_blocked(cfg, channel, problem, hint, now)
             return f"⚠️ I can't post in <#{cfg.channel_id}>: {problem}.\n{hint}"
         news = C.latest_line_since(cfg.announced) if cfg.updates else None  # 1.9: 🆕 line once per release
         if news:
@@ -854,6 +859,27 @@ class ForeverBot(commands.Bot):
             ev(slog, "pin_refresh_failed", logging.WARNING, guild=cfg.guild_id, status=getattr(e, "status", None),
                error=str(e)[:160])
 
+    async def notify_blocked(self, cfg: GuildConfig, channel, problem: str, hint: str, now: datetime):
+        """1.12: the countdown channel stopped letting the bot post. Admins otherwise never find out, so say it
+        once a week in the server's system channel (or the first channel the bot can post in). No pings."""
+        week = now.strftime("%G-W%V")
+        key = f"{cfg.channel_id}:{week}"
+        if self.store.was_posted(cfg.guild_id, "blocked_notice", key):
+            return
+        guild = self.get_guild(cfg.guild_id)
+        if guild is None:
+            return
+        ch = welcome_channel(guild, lambda c: self._can_post(c) or (c.id == cfg.channel_id and "same channel"))
+        if ch is None:
+            return ev(slog, "blocked_notice_no_channel", logging.WARNING, guild=cfg.guild_id)
+        try:
+            await ch.send(R.blocked_notice_text(cfg.channel_id, problem, hint),
+                          allowed_mentions=discord.AllowedMentions.none())
+            self.store.mark_posted(cfg.guild_id, "blocked_notice", key)
+            ev(slog, "blocked_notice_sent", guild=cfg.guild_id, channel=ch.id, reason=problem)
+        except discord.HTTPException as e:
+            ev(slog, "blocked_notice_failed", logging.WARNING, guild=cfg.guild_id, error=str(e)[:150])
+
     async def notify_staging(self, cfg: GuildConfig, text: str):
         ch = self.get_channel(cfg.staging_channel_id) if cfg.staging_channel_id else None
         if ch and not self._can_post(ch):
@@ -917,9 +943,12 @@ class ForeverBot(commands.Bot):
                                   key=key, late_min=late_min, hint="bot restarted or was down at post time")
                 await self.post_daily(cfg, now, slot=slot)
             elif local_now >= window_end and not self.store.was_posted(cfg.guild_id, "daily", key):
+                blocked = self.store.was_posted(cfg.guild_id, "blocked", key)
                 self.say_once(slog, (cfg.guild_id, key, "missed"), "slot_missed", logging.WARNING, guild=cfg.guild_id,
                               key=key, due=due.isoformat(), window_end=window_end.isoformat(),
-                              hint="bot was offline for the whole window; /postnow to send it")
+                              reason="blocked" if blocked else "offline",
+                              hint=("channel permissions blocked every try; see post_blocked" if blocked else
+                                    "bot was offline for the whole window; /postnow to send it"))
 
     @tasks.loop(seconds=30)
     async def launch_loop(self):
@@ -929,9 +958,9 @@ class ForeverBot(commands.Bot):
                 at = datetime.fromisoformat(iso)
                 if at <= now < at + MILESTONE_WINDOW:
                     await self.send_event_ping(key, text)
-        if not C.NOTIFY:
-            return  # launch-night countdown posts stay off
-        for minutes, _ in R.MILESTONES:
+        # 1.12: launch-night posts go out as plain channel posts (no pings) unless NOTIFY turns pings on
+        wanted = [m for m, _ in R.MILESTONES] if C.NOTIFY else list(C.LAUNCH_POST_MINUTES)
+        for minutes in wanted:
             at = C.LAUNCH - timedelta(minutes=minutes)
             if not (at <= now < at + MILESTONE_WINDOW):
                 continue
@@ -946,12 +975,14 @@ class ForeverBot(commands.Bot):
                     continue
                 try:
                     text = R.milestone_text(minutes, cfg.faction)
-                    ping = f"<@&{cfg.ping_role_id}> " if cfg.ping_role_id else ""
+                    role = cfg.ping_role_id if C.NOTIFY else None
+                    ping = f"<@&{role}> " if role else ""
                     await ch.send(ping + text + f"\n<t:{int(C.LAUNCH.timestamp())}:R>",
                                   allowed_mentions=discord.AllowedMentions(
-                                      roles=[discord.Object(cfg.ping_role_id)]) if cfg.ping_role_id else discord.AllowedMentions.none())
+                                      roles=[discord.Object(role)]) if role else discord.AllowedMentions.none())
                     self.store.mark_posted(cfg.guild_id, "milestone", str(minutes))
-                    ev(slog, "milestone_sent", guild=cfg.guild_id, minutes_before=minutes)
+                    ev(slog, "milestone_sent", guild=cfg.guild_id, guild_name=getattr(ch.guild, "name", None),
+                       minutes_before=minutes, ping=bool(role))
                 except discord.HTTPException as e:
                     ev(slog, "milestone_failed", logging.ERROR, guild=cfg.guild_id, minutes_before=minutes,
                        status=getattr(e, "status", None), error=str(e)[:160])
@@ -1005,6 +1036,34 @@ class ForeverBot(commands.Bot):
             if not loop.is_running():
                 ev(log, "loop_stopped", logging.ERROR, loop=name, action="restarting")
                 loop.restart()
+        try:
+            await self.send_setup_reminders(now)
+        except Exception as e:  # noqa: BLE001 - a reminder must never break the heartbeat
+            ev(log, "setup_reminder_error", logging.WARNING, error=str(e)[:150])
+
+    async def send_setup_reminders(self, now: datetime):
+        """1.12: servers that added the bot but never set it up get one follow-up, a few hours later."""
+        for guild in list(self.guilds):
+            joined = getattr(getattr(guild, "me", None), "joined_at", None)
+            cfg = self.store.get_guild(guild.id)
+            if joined is None or (cfg and cfg.channel_id):
+                continue
+            age_h = (now - joined).total_seconds() / 3600
+            if not (C.SETUP_REMINDER_AFTER_H <= age_h <= C.SETUP_REMINDER_UNTIL_H):
+                continue
+            if self.store.was_posted(guild.id, "setup_reminder", "1"):
+                continue
+            ch = welcome_channel(guild, self._can_post)
+            self.store.mark_posted(guild.id, "setup_reminder", "1")  # once, even if the send fails
+            if ch is None:
+                ev(log, "setup_reminder_no_channel", logging.WARNING, guild=guild.id, name=guild.name)
+                continue
+            try:
+                await ch.send(embed=discord.Embed.from_dict(R.setup_reminder_embed(now)), view=setup_here_view(),
+                              allowed_mentions=discord.AllowedMentions.none())
+                ev(log, "setup_reminder_sent", guild=guild.id, name=guild.name, channel=ch.id, age_h=age_h)
+            except discord.HTTPException as e:
+                ev(log, "setup_reminder_failed", logging.WARNING, guild=guild.id, error=str(e)[:150])
 
     @tasks.loop(minutes=C.STATUS_CHECK_MINUTES)
     async def status_loop(self):
