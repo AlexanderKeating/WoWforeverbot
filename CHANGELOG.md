@@ -1,5 +1,16 @@
 # Changelog
 
+## 1.12.1 (2026-11-03)
+Facts check against Blizzard's WoW Forever development notes (updated Nov 2, launch tuning).
+- **Shaman:** Lava Burst removed, Call of Thunder (+5% Lightning Bolt / Chain Lightning crit) in its slot; Elemental Mastery renamed Lightning Mastery; Totemic Projection renamed Totemic Call (pulls totems to you, 30s cooldown); Riptide 12s cooldown, HoT only; Stormstrike 6s cooldown. Class card, talents, `/keybinds` layout (4 = Lightning Shield, C = Totemic Call), Elemental and Enhancement rotations, one fact.
+- **Mage:** Ice Lance back to 300% vs Frozen, 8s cooldown shared with Fire Blast (class card, rotation). Ice Lance / Frost Blast fact is now Blizzard-confirmed, no longer datamined.
+- **Hunter:** all traps share one 30s cooldown (was "Frost and Fire separate").
+- **Paladin:** Salvation and Mass Salvation removed. Righteous Fury at 10 is now Blizzard-confirmed, no longer datamined.
+- **Priest:** Holy Binding replaces Binding Heal (talents); Shadow Word: Death self-damage 30% (was 10%).
+- **Warlock:** pet health 2 per Stamina (was 7.5): class card and tournament deep dive. Drain Soul's damage-tick shard chance cut a lot: leveling tips now say to finish the kill with it.
+- **Druid:** Lacerate is a Feral talent (bear rotation).
+- `test_content_corrections` no longer forbids "300% more" (Blizzard reverted to it) and guards the new facts instead.
+
 ## 1.12.0 (2026-11-02)
 Launch prep, and Forever Sherpa no longer ends on Dec 9.
 - **Launch-night posts without pings.** New `LAUNCH_POST_MINUTES = (60, 0)`: a plain post an hour before launch and one at go time, in every countdown channel. `NOTIFY` still controls pings (and brings back T-10 when on). Go-time post points new players to `/tips topic:basics` and `/draggedalong`; Alliance servers get "For the Alliance." `milestone_sent` logs `guild_name` and `ping`.

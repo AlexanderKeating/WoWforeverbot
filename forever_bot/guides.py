@@ -126,10 +126,10 @@ CLASS_GUIDES = {
             ("Ghost Wolf", "travel and escape"),
             ("Lesser Healing Wave / Healing Wave", "self-heal"),
         ],
-        "layout": [("1", "Stormstrike / Lightning Bolt"), ("2", "Flame Shock"), ("3", "Earth Shock"), ("4", "Lava Burst"),
+        "layout": [("1", "Stormstrike / Lightning Bolt"), ("2", "Flame Shock"), ("3", "Earth Shock"), ("4", "Lightning Shield"),
                    ("5", "Chain Lightning"), ("Q", "Frost Shock"), ("E", "Lesser Healing Wave"), ("R", "Healing Wave"),
                    ("F", "Purge"), ("G", "Ghost Wolf"), ("Z", "Call of the Elements"), ("X", "Totemic Recall"),
-                   ("C", "Totemic Projection")],
+                   ("C", "Totemic Call")],
     },
     "Mage": {
         "bind_first": [
@@ -274,15 +274,16 @@ ROTATIONS = {
     ],
     "Shaman": [
         ("Enhancement (leveling)", ["Windfury or Rockbiter imbue (lasts an hour)", "Call of the Elements to drop totems",
-                                    "Stormstrike on cooldown (every 8 seconds)", "Earth Shock or Flame Shock",
+                                    "Stormstrike on cooldown (every 6 seconds)", "Earth Shock or Flame Shock",
                                     "Instant Lightning Bolt when Maelstrom Weapon is full"]),
-        ("Elemental", ["Flame Shock", "Lava Burst on cooldown once you have it (21-point talent, stronger on Flame Shocked targets)",
-                       "Lightning Bolt (2.5-second cast now)", "Chain Lightning for groups"]),
+        ("Elemental", ["Flame Shock", "Lightning Bolt as your main nuke (faster cast than Classic)",
+                       "Chain Lightning for groups", "Call of Thunder (21) adds 5% crit to both",
+                       "Lightning Mastery (31) for a burst window"]),
         ("Restoration (healer)", ["Water Shield up", "Riptide on cooldown at 31", "Chain Heal (stronger on Riptide targets)",
                                   "Healing Wave for big hits", "Mana Tide Totem when low"]),
     ],
     "Mage": [
-        ("Frost (leveling)", ["Frostbolt", "Frostbolt", "Frost Nova when it gets close", "Ice Lance on frozen targets (200% more)",
+        ("Frost (leveling)", ["Frostbolt", "Frostbolt", "Frost Nova when it gets close", "Ice Lance on frozen targets (300% more, 8-second cooldown shared with Fire Blast)",
                               "Step back, Frostbolt again", "Cone of Cold to slow a group"]),
         ("Fire", ["Fireball", "Fire Blast and Scorch crits stack Heating Up", "Pyroblast when Heating Up is high",
                   "Frostfire Bolt at 40 counts as Fire too"]),
@@ -300,7 +301,7 @@ ROTATIONS = {
     "Druid": [
         ("Feral cat (leveling)", ["Prowl and open", "Claw or Shred to build combo points", "Rip or Ferocious Bite at 5 points",
                                   "Shifting Power (16) for a burst of energy", "Potions work in form now"]),
-        ("Feral bear (tank)", ["Primal Bite on cooldown (16)", "Lacerate to stack (42)", "Swipe for groups",
+        ("Feral bear (tank)", ["Primal Bite on cooldown (16)", "Lacerate to stack (now a Feral talent)", "Swipe for groups",
                                "Demoralizing Roar", "Growl if something gets loose"]),
         ("Balance", ["Moonfire", "Insect Swarm (16)", "Wrath (cheap now) to build Eclipse", "Starfire with Eclipse up"]),
         ("Restoration (healer)", ["Rejuvenation", "Regrowth (much cheaper now)", "Swiftmend (16, keeps the HoT now)",

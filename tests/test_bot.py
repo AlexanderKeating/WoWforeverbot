@@ -1310,7 +1310,14 @@ def test_content_corrections():
     assert any("Merchant Coast in the Barrens" in t for t in C.TIPS["pvp"])
     from forever_bot import classes as K
     blob = json.dumps(K.__dict__.get("CLASS_INFO", {}), default=str) + open(K.__file__).read()
-    assert "Elemental Mastery is gone" not in blob and "300% more" not in blob
+    assert "Elemental Mastery is gone" not in blob
+    # 1.12.1: Blizzard's Nov 2 launch notes
+    from forever_bot import guides as G
+    text = blob + open(G.__file__).read() + open(C.__file__).read()
+    for gone in ("200% more", "Totemic Projection at", "\"Lava Burst", "separate cooldowns", "10% health", "Binding Heal (Holy",
+                 "guarantees a Soul Shard", "every 8 seconds"):
+        assert gone not in text, gone
+    assert "Totemic Call" in text and "Lightning Mastery" in text and "300% more" in text
 
 
 # ------------------------------------------------------------------ 1.11.1: setup fixes from live logs
