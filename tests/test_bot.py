@@ -1781,3 +1781,16 @@ def test_daily_post_renders_when_every_source_is_down():
     for slot in (0, 1):
         p = R.build_daily(cfg, at_post_time(date(2026, 11, 4), cfg), empty, {}, slot=slot)
         assert p and p.embeds and 0 < len(p.embeds[0]["description"]) < 4096
+
+
+# ------------------------------------------------------------------ 1.12.3: language logging
+def test_language_log_fields():
+    import types
+    import discord
+    from forever_bot import bot as B
+    assert B._loc(discord.Locale.german) == "de" and B._loc(discord.Locale.american_english) == "en-US"
+    assert B._loc(None) is None and B._loc("es-ES") == "es-ES"
+    gs = [types.SimpleNamespace(preferred_locale=l) for l in
+          (discord.Locale.american_english, discord.Locale.german, discord.Locale.american_english, None)]
+    assert B.locale_tally(gs) == "en-US:2,?:1,de:1"
+    assert B.locale_tally([]) == "-"

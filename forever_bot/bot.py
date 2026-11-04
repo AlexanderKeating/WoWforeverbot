@@ -227,6 +227,23 @@ def _who(interaction: discord.Interaction) -> str:
     return (getattr(u, "display_name", None) or getattr(u, "name", "") or "?")[:40]
 
 
+def _loc(x) -> str | None:
+    """1.12.3: a discord.Locale (or None) as its code, e.g. 'de', 'es-ES', 'en-US'. For the language log fields."""
+    try:
+        return str(getattr(x, "value", x)) if x else None
+    except Exception:  # noqa: BLE001 - logging must never get in the way
+        return None
+
+
+def locale_tally(guilds) -> str:
+    """1.12.3: 'en-US:50,de:3,es-ES:2' — servers per Discord server language, most first."""
+    counts: dict[str, int] = {}
+    for g in guilds:
+        k = _loc(getattr(g, "preferred_locale", None)) or "?"
+        counts[k] = counts.get(k, 0) + 1
+    return ",".join(f"{k}:{n}" for k, n in sorted(counts.items(), key=lambda kv: (-kv[1], kv[0]))) or "-"
+
+
 def _args(interaction: discord.Interaction) -> str | None:
     """Command options as k=v, for the log (e.g. page=plusone, cls=Mage)."""
     try:
@@ -622,6 +639,8 @@ class ForeverBot(commands.Bot):
     async def on_ready(self):
         ev(log, "ready", user=str(self.user), guilds=len(self.guilds), latency_ms=self.latency * 1000,
            servers=",".join(f"{g.name}({g.id})" for g in self.guilds[:10]) or "-")
+        ev(log, "server_languages", guilds=len(self.guilds), langs=locale_tally(self.guilds),
+           note="Discord server language; non-Community servers report en-US by default")
         try:  # 1.12.2: servers that removed the bot while it was offline never fire on_guild_remove
             here = {g.id for g in self.guilds}
             stale = [c.guild_id for c in self.store.all_guilds() if c.guild_id not in here]
@@ -650,7 +669,8 @@ class ForeverBot(commands.Bot):
         ev(log, "gateway_disconnected", logging.WARNING, hint="discord.py reconnects automatically")
 
     async def on_guild_join(self, guild):
-        ev(log, "guild_join", guild=guild.id, name=guild.name, members=guild.member_count, total=len(self.guilds))
+        ev(log, "guild_join", guild=guild.id, name=guild.name, members=guild.member_count, total=len(self.guilds),
+           glang=_loc(getattr(guild, "preferred_locale", None)))
         await self.send_welcome(guild)
         await self.notify_owner(R.owner_alert_text("join", guild.member_count, len(self.guilds)),
                                 kind="join", guild=guild.id)
@@ -703,6 +723,7 @@ class ForeverBot(commands.Bot):
     async def on_app_command_completion(self, interaction: discord.Interaction, command):
         ev(clog, "command", name=command.qualified_name, guild=interaction.guild_id, user=interaction.user.id,
            who=_who(interaction), args=_args(interaction),
+           lang=_loc(interaction.locale), glang=_loc(interaction.guild_locale),
            ms=(discord.utils.utcnow() - interaction.created_at).total_seconds() * 1000)
         await self.maybe_nudge(interaction, command)
 
@@ -744,7 +765,8 @@ class ForeverBot(commands.Bot):
             vals = data.get("values") or []
             ev(clog, "click", guild=interaction.guild_id, user=interaction.user.id, who=_who(interaction),
                control=_control_name(cid, interaction), picked=",".join(map(str, vals))[:80] or None,
-               kind="dropdown" if vals else "button")
+               kind="dropdown" if vals else "button",
+               lang=_loc(interaction.locale), glang=_loc(interaction.guild_locale))
         except Exception:  # noqa: BLE001 - logging must never get in the way
             pass
 

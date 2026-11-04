@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.12.3 (2026-11-04)
+Logging only, to decide whether the bot needs other languages (about 6 of 64 servers have non-English names: German, Spanish, Russian, Swedish).
+- `command` and `click` lines add `lang=` (the person's Discord app language, e.g. `de`, `es-ES`, `en-US`) and `glang=` (the server's language).
+- `guild_join` adds `glang=`.
+- New `server_languages` line after `ready`: servers per server language, e.g. `langs=en-US:58,de:3`. Non-Community servers can't set a language and report `en-US`, so `lang=` on commands is the better signal.
+- No behavior change. Internal release (not shown in /whatsnew).
+
 ## 1.12.2 (2026-11-03)
 Hardening from a week of live error/warning logs (Oct 28 – Nov 3). 18 new tests; the two tests that were already failing on main are fixed.
 - **Roll call (Nov 2, Runedone).** A Warrior click arrived after Discord's 3-second window (10062 "Unknown interaction"); the board edit failed, then the "Saved as" fallback failed the same way and dumped a traceback. Now the pick is saved first, Discord is answered (board edit, or `defer` off-board) before the class tips card is built, and an expired interaction gets no second reply (`rollcall_late`, WARNING, `saved=True`). Storage errors reply "Couldn't save that" instead of throwing; a broken tips card can't undo a saved pick.
