@@ -589,7 +589,7 @@ def test_reservation_alerts_post_without_pings():
     fake = types.SimpleNamespace(store=types.SimpleNamespace(all_guilds=lambda: [cfg], was_posted=st.was_posted,
                                                              mark_posted=st.mark_posted),
                                  get_channel=lambda _id: Ch(), _can_post=lambda ch: None,
-                                 say_once=lambda *a, **k: None)
+                                 say_once=lambda *a, **k: None, live_cfg=lambda c: c)
     asyncio.run(B.ForeverBot.send_event_ping(fake, "names-open", "hi"))
     asyncio.run(B.ForeverBot.send_event_ping(fake, "names-open", "hi"))  # deduped
     assert len(sent) == 1 and "<@&" not in sent[0][0]
@@ -1207,9 +1207,12 @@ def test_release_notes_and_update_line():
     latest = C.RELEASE_NOTES[0]["version"]
     # servers that never heard of anything get the newest release with a line; up-to-date ones get nothing
     got = C.latest_line_since(None)
-    assert got and got[0] == latest and "/datamined" in got[1]
+    newest_line = next(r for r in C.RELEASE_NOTES if r["line"])  # the line comes from the newest release that has one
+    assert got and got[0] == latest and got[1] == newest_line["line"]
     assert C.latest_line_since("1.8.0")[1] == got[1]
-    assert C.latest_line_since(latest) is None and C.latest_line_since("1.10.7")[1] == got[1]
+    older = next(r["version"] for r in C.RELEASE_NOTES if C._vkey(r["version"]) < C._vkey(newest_line["version"]))
+    assert C.latest_line_since(latest) is None and C.latest_line_since(older)[1] == got[1]
+    assert C.latest_line_since(newest_line["version"]) is None  # heard the newest line: nothing more to say
     for r in C.RELEASE_NOTES:
         assert r["notes"] and (r["line"] is None or len(R.update_line(r["line"])) < 250)
     cfg = Cfg()
@@ -1314,7 +1317,9 @@ def test_content_corrections():
     # 1.12.1: Blizzard's Nov 2 launch notes
     from forever_bot import guides as G
     text = blob + open(G.__file__).read() + open(C.__file__).read()
-    for gone in ("200% more", "Totemic Projection at", "\"Lava Burst", "separate cooldowns", "10% health", "Binding Heal (Holy",
+    # Lava Burst may be named as cut ("Lava Burst was cut…"), never listed as an ability, keybind or rotation step
+    for gone in ("200% more", "Totemic Projection at", "\"Lava Burst\"", "\"Lava Burst (", "Lava Burst on cooldown",
+                 "signatures: Lava Burst", "separate cooldowns", "10% health", "Binding Heal (Holy",
                  "guarantees a Soul Shard", "every 8 seconds"):
         assert gone not in text, gone
     assert "Totemic Call" in text and "Lightning Mastery" in text and "300% more" in text
@@ -1352,3 +1357,427 @@ def test_postnow_after_skip_or_channel_move():
     other = GuildConfig(guild_id=10, channel_id=1)
     st.mark_posted(10, "daily", key)  # posted before 1.11.1: no channel record, so no repeat
     assert not B.full_post_needed(other, key)
+
+
+# ------------------------------------------------------------------ 1.12.2: hardening from live logs (Oct 30 – Nov 3)
+import contextlib  # noqa: E402
+import logging  # noqa: E402
+import types as _t  # noqa: E402
+
+
+@contextlib.contextmanager
+def _events(*names):
+    """Collect (event, level, fields) from our structured loggers."""
+    got = []
+
+    class H(logging.Handler):
+        def emit(self, record):
+            f = getattr(record, "fields", {}) or {}
+            got.append((f.get("event", record.getMessage()), record.levelno, f))
+    h = H(level=logging.DEBUG)
+    loggers = [logging.getLogger(n) for n in (names or ("forever.bot", "forever.sched", "forever.cmd"))]
+    old = [(lg, lg.level) for lg in loggers]
+    for lg in loggers:
+        lg.addHandler(h)
+        lg.setLevel(logging.DEBUG)
+    try:
+        yield got
+    finally:
+        for lg, lvl in old:
+            lg.removeHandler(h)
+            lg.setLevel(lvl)
+
+
+def _http(status, code, cls=None):
+    from forever_bot import bot as B
+    cls = cls or (B.discord.NotFound if status == 404 else B.discord.HTTPException)
+    return cls(_t.SimpleNamespace(status=status, reason="x"), {"code": code, "message": "x"})
+
+
+class _Resp:
+    def __init__(self, ack_error=None):
+        self.ack_error, self.done, self.calls = ack_error, False, []
+
+    def is_done(self):
+        return self.done
+
+    async def _ack(self, name, *a, **k):
+        self.calls.append(name)
+        if self.ack_error:
+            raise self.ack_error
+        self.done = True
+
+    async def edit_message(self, **k):
+        await self._ack("edit_message", **k)
+
+    async def defer(self, **k):
+        await self._ack("defer", **k)
+
+    async def send_message(self, msg=None, **k):
+        if self.done:
+            raise RuntimeError("second response")
+        await self._ack(f"send_message:{msg}", **k)
+
+
+def _inter(resp, on_board=True, gid=7, uid=70):
+    sent = []
+
+    class Followup:
+        async def send(self, msg=None, **k):
+            sent.append((msg, k))
+    msg = _t.SimpleNamespace(author=_t.SimpleNamespace(id=1), components=[]) if on_board else None
+    i = _t.SimpleNamespace(guild_id=gid, user=_t.SimpleNamespace(id=uid), message=msg, response=resp, followup=Followup())
+    return i, sent
+
+
+def _rollcall_cb(cls="Warrior"):
+    from forever_bot import bot as B
+    B.bot.store = tmp_store()
+    fake_bot = _t.SimpleNamespace(store=B.bot.store, user=_t.SimpleNamespace(id=1))
+
+    async def make():
+        return B.RollcallView(fake_bot)._make_cb(cls)
+    return B, asyncio.run(make())
+
+
+def test_interaction_expired_detection():
+    from forever_bot import bot as B
+    from discord import app_commands
+    assert B.interaction_expired(_http(404, 10062)) and B.interaction_expired(_http(400, 40060))
+    wrapped = app_commands.CommandInvokeError(_t.SimpleNamespace(qualified_name="x", name="x"), _http(404, 10062))
+    assert B.interaction_expired(wrapped)
+    assert not B.interaction_expired(_http(404, 10008)) and not B.interaction_expired(RuntimeError("boom"))
+
+
+def test_rollcall_late_click_saves_and_never_double_replies():
+    """Nov 2, Runedone: a Warrior click reached Discord after the 3-second window (10062). The edit failed,
+    then the 'Saved as' fallback failed the same way and dumped a traceback."""
+    B, cb = _rollcall_cb("Warrior")
+    resp = _Resp(ack_error=_http(404, 10062))
+    inter, sent = _inter(resp)
+    with _events() as evs:
+        asyncio.run(cb(inter))  # must not raise
+    assert {k: v for k, v in B.bot.store.class_counts(7).items() if v} == {"Warrior": 1}  # the pick is saved anyway
+    assert resp.calls == ["edit_message"] and sent == []  # no second reply into a dead interaction
+    late = [e for e in evs if e[0] == "rollcall_late"]
+    assert len(late) == 1 and late[0][1] == logging.WARNING and late[0][2]["saved"] is True
+    assert not any(lvl >= logging.ERROR for _, lvl, _ in evs)
+
+
+def test_rollcall_happy_paths_ack_first():
+    B, cb = _rollcall_cb("Mage")
+    resp = _Resp()
+    inter, sent = _inter(resp)
+    with _events() as evs:
+        asyncio.run(cb(inter))
+    assert resp.calls == ["edit_message"] and len(sent) == 1 and sent[0][0].startswith("Locked in: **Mage**")
+    assert any(e[0] == "rollcall" for e in evs)
+    # pressed somewhere that isn't the bot's own board: defer, then one private followup
+    resp2 = _Resp()
+    inter2, sent2 = _inter(resp2, on_board=False, uid=71)
+    asyncio.run(cb(inter2))
+    assert resp2.calls == ["defer"] and len(sent2) == 1 and {k: v for k, v in B.bot.store.class_counts(7).items() if v} == {"Mage": 2}
+
+
+def test_rollcall_other_failures_still_answer_once():
+    B, cb = _rollcall_cb("Rogue")
+    resp = _Resp(ack_error=_http(500, 0))  # a real Discord error, interaction still open
+    inter, sent = _inter(resp)
+    asyncio.run(cb(inter))
+    resp.ack_error = None
+    assert resp.calls[0] == "edit_message" and {k: v for k, v in B.bot.store.class_counts(7).items() if v} == {"Rogue": 1}
+    # storage blew up: apologise privately, don't throw
+    B2, cb2 = _rollcall_cb("Rogue")
+
+    def boom(*a):
+        raise RuntimeError("db locked")
+    B2.bot.store.set_class = boom
+    resp2 = _Resp()
+    inter2, _ = _inter(resp2)
+    with _events() as evs:
+        asyncio.run(cb2(inter2))
+    assert resp2.calls and resp2.calls[0].startswith("send_message:Couldn't save")
+    assert any(e[0] == "rollcall_failed" and e[2].get("stage") == "save" for e in evs)
+
+
+def test_rollcall_tips_failure_keeps_the_pick():
+    B, cb = _rollcall_cb("Druid")
+    orig = B.R.classtips_embed
+    B.R.classtips_embed = lambda *a, **k: (_ for _ in ()).throw(KeyError("x"))
+    try:
+        resp = _Resp()
+        inter, sent = _inter(resp)
+        asyncio.run(cb(inter))
+    finally:
+        B.R.classtips_embed = orig
+    assert resp.calls == ["edit_message"] and sent and sent[0][0].startswith("Locked in: **Druid**")
+    assert "embed" not in sent[0][1]
+
+
+def test_component_errors_are_one_line_and_reply_once():
+    from forever_bot import bot as B
+    item = _t.SimpleNamespace(custom_id="rc:Warrior")
+    for err, replies, level in ((_http(404, 10062), 0, logging.WARNING), (RuntimeError("bug"), 1, logging.ERROR)):
+        resp = _Resp()
+        inter, _ = _inter(resp)
+
+        async def go():
+            view = B.discord.ui.View()
+            await view.on_error(inter, err, item)
+        with _events() as evs:
+            asyncio.run(go())
+        assert len(resp.calls) == replies
+        assert [e for e in evs if e[0] in ("component_late", "component_error")][0][1] == level
+
+
+def test_app_command_late_is_quiet():
+    from forever_bot import bot as B
+    from discord import app_commands
+    resp = _Resp()
+    inter, sent = _inter(resp)
+    inter.command = _t.SimpleNamespace(qualified_name="setup", name="setup")
+    err = app_commands.CommandInvokeError(inter.command, _http(404, 10062))
+    with _events() as evs:
+        asyncio.run(B.on_app_error(inter, err))
+    assert resp.calls == [] and sent == [] and evs[0][0] == "command_late" and evs[0][1] == logging.WARNING
+
+
+def test_mention_text_is_not_an_error():
+    """Nov 1: 'Ignoring exception in command None' at ERROR, from someone @mentioning the bot with words."""
+    from forever_bot import bot as B
+    from discord.ext import commands
+    ctx = _t.SimpleNamespace(guild=_t.SimpleNamespace(id=3))
+    with _events() as evs:
+        asyncio.run(B.bot.on_command_error(ctx, commands.CommandNotFound('Command "hey" is not found')))
+    assert evs and all(lvl < logging.WARNING for _, lvl, _ in evs)
+
+
+def test_expired_interaction_log_filter():
+    """Oct 30: 'Ignoring exception in autocomplete for setup' (ERROR + traceback) was Discord's 10062."""
+    from forever_bot.logsetup import ExpiredInteractionFilter
+    import sys
+    try:
+        raise _http(404, 10062)
+    except Exception:
+        rec = logging.LogRecord("discord.app_commands.tree", logging.ERROR, __file__, 1,
+                                "Ignoring exception in autocomplete for %r", ("setup",), sys.exc_info())
+    assert ExpiredInteractionFilter().filter(rec)
+    assert rec.levelno == logging.WARNING and rec.exc_info is None and "code 10062" in rec.getMessage()
+    try:
+        raise ValueError("real bug")
+    except Exception:
+        real = logging.LogRecord("discord.app_commands.tree", logging.ERROR, __file__, 1, "x", None, sys.exc_info())
+    ExpiredInteractionFilter().filter(real)
+    assert real.levelno == logging.ERROR and real.exc_info  # real bugs keep their traceback
+
+
+def test_autocomplete_never_throws():
+    from forever_bot import bot as B
+    weird = ["", "🔥" * 50, "x" * 300, "America/", "\x00", "12pm", "  "]
+    for typed in weird:
+        for ac in (B._tz_ac, B._glossary_ac):
+            out = asyncio.run(ac(None, typed))
+            assert len(out) <= 25 and all(len(c.name) <= 100 and len(str(c.value)) <= 100 for c in out)
+    orig = B.P.glossary_choices
+    B.P.glossary_choices = lambda *a, **k: (_ for _ in ()).throw(RuntimeError("x"))
+    try:
+        assert asyncio.run(B._glossary_ac(None, "bis")) == []
+    finally:
+        B.P.glossary_choices = orig
+
+
+def _sched_bot():
+    from forever_bot import bot as B
+    B.bot.store = tmp_store()
+    ticked, posted = [], []
+
+    async def fake_post_daily(cfg, now, force=False, slot=0):
+        posted.append((cfg.guild_id, slot))
+        return "Posted."
+    B.bot.post_daily = fake_post_daily
+    return B, ticked, posted
+
+
+def _cleanup(B, *names):
+    for a in names:
+        B.bot.__dict__.pop(a, None)
+
+
+def test_server_removed_mid_pass_is_skipped():
+    """Nov 3, WoWffles: set up at 7:27 PM (noon skipped), removed the bot at 7:32. The pass that was already
+    running held the old config, whose 'posted' marks had just been deleted, and logged a false
+    slot_missed reason=offline 15 seconds later."""
+    from forever_bot.store import GuildConfig
+    B, ticked, posted = _sched_bot()
+    try:
+        st = B.bot.store
+        a = GuildConfig(guild_id=1, channel_id=10, enabled=True)
+        w = GuildConfig(guild_id=2, channel_id=20, enabled=True)
+        st.upsert_guild(a)
+        st.upsert_guild(w)
+        setup_at = datetime(2026, 11, 4, 1, 27, tzinfo=timezone.utc)  # 7:27 PM Central
+        assert B.bot.skip_passed_slots(w, setup_at) == [0]
+        real_tick = B.bot._tick_guild
+
+        async def tick(cfg, now):
+            ticked.append(cfg.guild_id)
+            if cfg.guild_id == 1:
+                st.remove_guild(2)  # WoWffles kicks the bot while the pass is on server 1
+            await real_tick(cfg, now)
+        B.bot._tick_guild = tick
+        with _events() as evs:
+            asyncio.run(B.bot.run_schedule_pass(datetime(2026, 11, 4, 1, 33, tzinfo=timezone.utc)))
+        assert ticked == [1]
+        assert not [e for e in evs if e[0] == "slot_missed" and e[2]["guild"] == 2]
+        assert not posted
+    finally:
+        _cleanup(B, "post_daily", "_tick_guild")
+
+
+def test_live_cfg_skips_servers_the_bot_left():
+    from forever_bot.store import GuildConfig
+    B, _, _ = _sched_bot()
+    try:
+        st = B.bot.store
+        st.upsert_guild(GuildConfig(guild_id=5, channel_id=50, enabled=True))
+        stale = GuildConfig(guild_id=5, channel_id=50, enabled=True, post_time="12pm")
+        st.upsert_guild(GuildConfig(guild_id=5, channel_id=50, enabled=True, post_time="9am"))
+        assert B.bot.live_cfg(stale).post_time == "9am"  # picks up a /frequency change made mid-pass
+        st.upsert_guild(GuildConfig(guild_id=5, channel_id=50, enabled=False))
+        assert B.bot.live_cfg(stale) is None  # turned off
+        st.upsert_guild(GuildConfig(guild_id=5, channel_id=50, enabled=True))
+        B.bot.is_ready, B.bot.get_guild = (lambda: True), (lambda gid: None)
+        with _events() as evs:
+            assert B.bot.live_cfg(stale) is None and B.bot.live_cfg(stale) is None
+        assert len([e for e in evs if e[0] == "tick_skipped"]) <= 1  # said once, not every minute
+        B.bot.get_guild = lambda gid: _t.SimpleNamespace(id=gid)
+        assert B.bot.live_cfg(stale) is not None
+    finally:
+        _cleanup(B, "post_daily", "is_ready", "get_guild")
+        B.bot._said.clear()
+
+
+def test_schedule_change_into_past_skips_quietly():
+    """A /frequency or /setup change that moves a slot into the past used to backfill it late or log it as
+    missed ('offline'). The reply already said passed slots wait for tomorrow; now the scheduler agrees."""
+    from forever_bot.store import GuildConfig
+    B, _, posted = _sched_bot()
+    try:
+        st = B.bot.store
+        before = GuildConfig(guild_id=8, channel_id=80, enabled=True, post_time="12:00")
+        st.upsert_guild(before)
+        st.mark_posted(8, "daily", "launch:2026-11-04:0")  # noon went out
+        after = GuildConfig(guild_id=8, channel_id=80, enabled=True, post_time="12:00,13:00")
+        st.upsert_guild(after)
+        four_pm = datetime(2026, 11, 4, 22, 0, tzinfo=timezone.utc)
+        assert B.bot.skip_passed_slots(after, four_pm, before=before) == [1]
+        with _events() as evs:
+            asyncio.run(B.bot._tick_guild(after, four_pm))
+        assert not posted and not [e for e in evs if e[0] == "slot_missed"]
+        # an unchanged slot that's due right now is left for the scheduler to post
+        due = GuildConfig(guild_id=9, channel_id=90, enabled=True, post_time="12:00")
+        st.upsert_guild(due)
+        noon = datetime(2026, 11, 4, 18, 0, 30, tzinfo=timezone.utc)
+        assert B.bot.skip_passed_slots(due, noon, before=GuildConfig(guild_id=9, channel_id=90, post_time="12:00")) == []
+        asyncio.run(B.bot._tick_guild(due, noon))
+        assert posted == [(9, 0)]
+        # a new time zone moves every slot: the passed ones are skipped
+        tz = GuildConfig(guild_id=10, channel_id=1, enabled=True, post_time="12:00", tz="Europe/London")
+        st.upsert_guild(tz)
+        assert B.bot.skip_passed_slots(tz, four_pm, before=GuildConfig(guild_id=10, post_time="12:00")) == [0]
+    finally:
+        _cleanup(B, "post_daily")
+
+
+def test_missed_slot_reported_once_across_restarts():
+    """Nov 1, The NeverEnding Story: the same missed noon slot was logged three times across deploys."""
+    from forever_bot.store import GuildConfig
+    B, _, _ = _sched_bot()
+    try:
+        cfg = GuildConfig(guild_id=11, channel_id=110, enabled=True)
+        B.bot.store.upsert_guild(cfg)
+        late = datetime(2026, 11, 1, 3, 30, tzinfo=timezone.utc)  # 10:30 PM Central, noon window long gone
+        with _events() as evs:
+            for _ in range(3):
+                B.bot._said.clear()  # what a restart does to the in-memory dedupe
+                asyncio.run(B.bot._tick_guild(cfg, late))
+        missed = [e for e in evs if e[0] == "slot_missed"]
+        assert len(missed) == 1 and missed[0][2]["reason"] == "offline"
+    finally:
+        _cleanup(B, "post_daily")
+
+
+def test_blocked_channel_logs_error_once_a_week():
+    """'Forever and ever.' has been blocked since Nov 1: an ERROR for every slot and event, every day."""
+    from forever_bot.bot import ForeverBot
+    from forever_bot.store import GuildConfig
+    os.environ["DB_PATH"] = os.path.join(tempfile.mkdtemp(), "x.db")
+    b = ForeverBot()
+    b.store = tmp_store()
+    b.snap = dict(SAMPLE, fetched_at=time.time())
+    b.get_channel, b.get_guild = (lambda cid: None), (lambda gid: None)
+    cfg = GuildConfig(guild_id=12, channel_id=120, post_time="12:00", tz="Australia/Sydney")
+    b.store.upsert_guild(cfg)
+    levels = []
+    with _events() as evs:
+        for day in (3, 4, 5, 11):  # Tue, Wed, Thu, then the next Tuesday
+            asyncio.run(b.post_daily(cfg, datetime(2026, 11, day, 1, 1, tzinfo=timezone.utc)))
+        levels = [lvl for ev_, lvl, _ in evs if ev_ == "post_blocked"]
+    assert levels == [logging.ERROR, logging.INFO, logging.INFO, logging.ERROR]
+
+
+def test_one_bad_server_never_stops_event_posts():
+    from forever_bot import bot as B
+    sent = []
+
+    class Ch:
+        def __init__(self, gid):
+            self.gid, self.guild = gid, _t.SimpleNamespace(name=f"g{gid}")
+
+        async def send(self, content, allowed_mentions=None):
+            if self.gid == 1:
+                raise RuntimeError("weird channel")
+            sent.append(self.gid)
+    cfgs = [_t.SimpleNamespace(guild_id=g, channel_id=g, ping_role_id=None) for g in (1, 2)]
+    st = tmp_store()
+    fake = _t.SimpleNamespace(store=_t.SimpleNamespace(all_guilds=lambda: cfgs, was_posted=st.was_posted,
+                                                        mark_posted=st.mark_posted),
+                              get_channel=lambda cid: Ch(cid), _can_post=lambda ch: None,
+                              say_once=lambda *a, **k: None, live_cfg=lambda c: c)
+    with _events() as evs:
+        asyncio.run(B.ForeverBot.send_event_ping(fake, "launch-test", "hi"))
+    assert sent == [2] and any(e[0] == "event_crashed" for e in evs)
+
+
+def test_status_and_heartbeat_loops_never_raise():
+    """Nov 2: Bluesky timed out three times in a row. A failed check skips that round; the loop lives."""
+    from forever_bot import bot as B
+    orig = B.S.check
+
+    async def down(session, store):
+        raise TimeoutError("bsky")
+    B.S.check = down
+    try:
+        with _events() as evs:
+            asyncio.run(B.ForeverBot.status_loop.coro(B.bot))
+        assert any(e[0] == "status_check_failed" and e[1] == logging.WARNING for e in evs)
+    finally:
+        B.S.check = orig
+
+    async def broken():
+        raise RuntimeError("x")
+    B.bot._heartbeat = broken
+    try:
+        with _events() as evs:
+            asyncio.run(B.ForeverBot.heartbeat_loop.coro(B.bot))
+        assert any(e[0] == "heartbeat_crashed" for e in evs)
+    finally:
+        _cleanup(B, "_heartbeat")
+
+
+def test_daily_post_renders_when_every_source_is_down():
+    cfg = Cfg()
+    empty = {"fetched_at": time.time()}  # no news, clips, videos or status: every fetcher failed
+    for slot in (0, 1):
+        p = R.build_daily(cfg, at_post_time(date(2026, 11, 4), cfg), empty, {}, slot=slot)
+        assert p and p.embeds and 0 < len(p.embeds[0]["description"]) < 4096
