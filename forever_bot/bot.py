@@ -7,6 +7,7 @@ Loops
   launch    every 30 s:   T-60m, T-10m and go-time pings on launch night
 """
 import asyncio
+import dataclasses
 import logging
 import os
 import random
@@ -63,6 +64,49 @@ def perm_fix_hint(channel, problem: str) -> str:
 
 def now_utc() -> datetime:
     return datetime.now(timezone.utc)
+
+
+# ---------------------------------------------------------- 1.12.2 interaction safety
+# Discord codes meaning "this interaction can't be answered any more": 10062 the 3-second window passed
+# (usually gateway lag), 40060 something already answered it. Retrying with another reply only fails again.
+_EXPIRED_CODES = (10062, 40060)
+
+
+def interaction_expired(error) -> bool:
+    """True when `error` (or the error it wraps) means the interaction can no longer be answered."""
+    e = getattr(error, "original", error)
+    return isinstance(e, discord.HTTPException) and getattr(e, "code", None) in _EXPIRED_CODES
+
+
+async def safe_reply(interaction: discord.Interaction, msg: str, **kw) -> bool:
+    """Private reply that never raises: response if still open, followup otherwise. Returns True if sent."""
+    try:
+        if interaction.response.is_done():
+            await interaction.followup.send(msg, ephemeral=True, **kw)
+        else:
+            await interaction.response.send_message(msg, ephemeral=True, **kw)
+        return True
+    except (discord.HTTPException, discord.InteractionResponded):
+        return False
+    except Exception as e:  # noqa: BLE001 - a fallback reply must never raise
+        ev(clog, "safe_reply_failed", logging.WARNING, error=type(e).__name__)
+        return False
+
+
+async def _view_on_error(self, interaction: discord.Interaction, error: Exception, item) -> None:
+    """Every button and dropdown (views and dynamic items) lands here on an unhandled error: one log line
+    instead of a traceback, and a private 'try again' when the interaction can still be answered."""
+    expired = interaction_expired(error)
+    ev(clog, "component_late" if expired else "component_error", logging.WARNING if expired else logging.ERROR,
+       exc_info=None if expired else error, control=getattr(item, "custom_id", None) or type(item).__name__,
+       guild=getattr(interaction, "guild_id", None), user=getattr(getattr(interaction, "user", None), "id", None),
+       error=type(error).__name__, detail=str(error)[:160])
+    if not expired:
+        await safe_reply(interaction, "Something went wrong. Try again in a minute.")
+
+
+for _v in {discord.ui.View, getattr(discord.ui.view, "BaseView", discord.ui.View)}:  # BaseView: discord.py 2.6+
+    _v.on_error = _view_on_error
 
 
 def parse_hhmm(s: str):
@@ -486,28 +530,47 @@ class RollcallView(discord.ui.View):
 
     def _make_cb(self, cls):
         async def cb(interaction: discord.Interaction):
+            """1.12.2: Nov 2 a Warrior click in Runedone came in after Discord's 3-second window (gateway lag);
+            the edit failed with 10062 and the 'Saved as' fallback failed the same way. Now: save first,
+            answer Discord before any optional work, and never send a second reply into an expired interaction."""
             if not interaction.guild_id:
-                return await interaction.response.send_message("Use this in a server.", ephemeral=True)
+                return await safe_reply(interaction, "Use this in a server.")
+            gid, uid = interaction.guild_id, interaction.user.id
             try:
-                self.bot.store.set_class(interaction.guild_id, interaction.user.id, cls)
-                counts = self.bot.store.class_counts(interaction.guild_id)
-                cfg = self.bot.store.get_guild(interaction.guild_id)
+                self.bot.store.set_class(gid, uid, cls)
+                counts = self.bot.store.class_counts(gid)
+            except Exception as e:  # noqa: BLE001 - storage trouble: say so, don't throw
+                ev(clog, "rollcall_failed", logging.ERROR, exc_info=e, guild=gid, cls=cls, stage="save")
+                return await safe_reply(interaction, "Couldn't save that just now. Try again in a minute.")
+            on_board = bool(interaction.message and self.bot.user
+                            and interaction.message.author.id == self.bot.user.id)
+            try:
+                if on_board:  # the ack: update the counts on the board first, before building class tips
+                    await interaction.response.edit_message(
+                        view=RollcallView(self.bot, counts, _deep_key_from(interaction.message)))
+                else:
+                    await interaction.response.defer(ephemeral=True, thinking=False)
+            except discord.HTTPException as e:
+                expired = interaction_expired(e)
+                ev(clog, "rollcall_late" if expired else "rollcall_failed", logging.WARNING, guild=gid, cls=cls,
+                   stage="ack", saved=True, error=str(e)[:160])
+                if expired:
+                    return  # the pick is saved; the board catches up on the next click
+                return await safe_reply(interaction, f"Saved as **{cls}**.")
+            ev(clog, "rollcall", guild=gid, user=uid, cls=cls, total=sum(counts.values()))
+            try:  # optional extra: never let the tips card turn a saved pick into an error
+                cfg = self.bot.store.get_guild(gid)
                 lvl = level_for(interaction)
                 tips = R.classtips_embed(cls, cfg.faction if cfg else "horde", lvl)
                 extra = {"embed": E(tips, lvl)} if tips else {}
-                if interaction.message and interaction.message.author.id == self.bot.user.id:
-                    await interaction.response.edit_message(
-                        view=RollcallView(self.bot, counts, _deep_key_from(interaction.message)))
-                    await interaction.followup.send(f"Locked in: **{cls}**. Change anytime. Here's what's new for you:",
-                                                    ephemeral=True, **extra)
-                else:
-                    await interaction.response.send_message(f"Locked in: **{cls}**.", ephemeral=True, **extra)
-                ev(clog, "rollcall", guild=interaction.guild_id, user=interaction.user.id, cls=cls,
-                   total=sum(counts.values()))
+            except Exception as e:  # noqa: BLE001
+                ev(clog, "rollcall_tips_failed", logging.WARNING, guild=gid, cls=cls, error=type(e).__name__)
+                extra = {}
+            head = f"Locked in: **{cls}**. Change anytime." + (" Here's what's new for you:" if extra else "")
+            try:
+                await interaction.followup.send(head, ephemeral=True, **extra)
             except discord.HTTPException as e:
-                ev(clog, "rollcall_failed", logging.WARNING, guild=interaction.guild_id, cls=cls, error=str(e)[:160])
-                if not interaction.response.is_done():
-                    await interaction.response.send_message(f"Saved as **{cls}**.", ephemeral=True)
+                ev(clog, "rollcall_followup_failed", logging.WARNING, guild=gid, cls=cls, error=str(e)[:160])
         return cb
 
 
@@ -559,6 +622,26 @@ class ForeverBot(commands.Bot):
     async def on_ready(self):
         ev(log, "ready", user=str(self.user), guilds=len(self.guilds), latency_ms=self.latency * 1000,
            servers=",".join(f"{g.name}({g.id})" for g in self.guilds[:10]) or "-")
+        try:  # 1.12.2: servers that removed the bot while it was offline never fire on_guild_remove
+            here = {g.id for g in self.guilds}
+            stale = [c.guild_id for c in self.store.all_guilds() if c.guild_id not in here]
+            if stale:
+                ev(log, "stale_configs", logging.WARNING, count=len(stale), guilds=",".join(map(str, stale[:20])),
+                   note="skipped by the scheduler; data kept until confirmed gone")
+        except Exception as e:  # noqa: BLE001
+            ev(log, "stale_config_check_failed", logging.WARNING, error=type(e).__name__)
+
+    async def on_error(self, event_method: str, /, *args, **kwargs):
+        """1.12.2: an exception in any gateway event handler: one structured line, not a bare traceback."""
+        import sys
+        ev(log, "event_error", logging.ERROR, exc_info=sys.exc_info()[1], handler=event_method)
+
+    async def on_command_error(self, ctx, error):
+        """1.12.2: the bot has no text commands, but @mentioning it with words makes discord.py look for one.
+        Nov 1 that logged 'Ignoring exception in command None' at ERROR. A miss isn't an error."""
+        if isinstance(error, commands.CommandNotFound):
+            return ev(clog, "text_command_ignored", logging.DEBUG, guild=getattr(ctx, "guild", None) and ctx.guild.id)
+        ev(clog, "text_command_error", logging.WARNING, error=type(error).__name__, detail=str(error)[:160])
 
     async def on_resumed(self):
         ev(log, "gateway_resumed")
@@ -730,6 +813,16 @@ class ForeverBot(commands.Bot):
                    status=getattr(e, "status", None), error=str(e)[:160])
         return msg.id, follow_id
 
+    def blocked_level(self, cfg: GuildConfig, now: datetime) -> int:
+        """1.12.2: "Forever and ever." has been blocked since Nov 1 and logged an ERROR for every slot and every
+        event, every day. A blocked channel is the server's setting, not a bot bug: ERROR the first time each
+        week per channel (the week admins get the notice), INFO after that."""
+        key = f"{cfg.channel_id}:{now.strftime('%G-W%V')}"
+        if self.store.was_posted(cfg.guild_id, "blocked_log", key):
+            return logging.INFO
+        self.store.mark_posted(cfg.guild_id, "blocked_log", key)
+        return logging.ERROR
+
     async def post_daily(self, cfg: GuildConfig, now: datetime, force=False, slot: int = 0) -> str:
         if self.snap is None or time.time() - self.snap.get("fetched_at", 0) > SNAP_MAX_AGE:
             await self.refresh(force=True)
@@ -743,8 +836,10 @@ class ForeverBot(commands.Bot):
         channel = self.get_channel(cfg.channel_id)
         problem = self._can_post(channel)
         if problem:
-            self.say_once(slog, (cfg.guild_id, post.key, "noperm"), "post_blocked", logging.ERROR,
-                          guild=cfg.guild_id, channel=cfg.channel_id, key=post.key, reason=problem)
+            lvl = self.blocked_level(cfg, now)
+            self.say_once(slog, (cfg.guild_id, post.key, "noperm"), "post_blocked", lvl,
+                          guild=cfg.guild_id, channel=cfg.channel_id, key=post.key, reason=problem,
+                          repeat=lvl != logging.ERROR)
             hint = perm_fix_hint(channel, problem)
             first_try = not self.store.was_posted(cfg.guild_id, "blocked", post.key)
             self.store.mark_posted(cfg.guild_id, "blocked", post.key)  # 1.12: so slot_missed says why
@@ -782,17 +877,23 @@ class ForeverBot(commands.Bot):
         return "Posted."
 
     # ---------------------------------------------------------- first setup (1.7.1)
-    def skip_passed_slots(self, cfg: GuildConfig, now: datetime) -> list[int]:
+    def skip_passed_slots(self, cfg: GuildConfig, now: datetime, before: GuildConfig | None = None) -> list[int]:
         """New server set up mid-day: mark today's already-passed slots as done so the scheduler doesn't
         backfill a stale full post an hour or two late. Synchronous on purpose: call it right after saving
-        the config, before any await, so the scheduler can't sneak a backfill in between."""
+        the config, before any await, so the scheduler can't sneak a backfill in between.
+        1.12.2: also after /setup or /frequency changes the schedule. Pass the old config as `before`: only
+        slots whose time (or time zone) changed are skipped, so a slot that's simply due right now still
+        posts. Without this, a slot moved into the past was either backfilled late or reported missed."""
         kind, _ = R.phase(cfg.tz, now)
         if kind == "done":
             return []
         today = R.local_today(cfg.tz, now)
         local_now = now.astimezone(ZoneInfo(cfg.tz))
+        old = guild_times(before) if before else None
         skipped = []
         for slot, hm in enumerate(guild_times(cfg)):
+            if before is not None and before.tz == cfg.tz and slot < len(old) and old[slot] == hm:
+                continue  # unchanged slot: leave it to the scheduler
             key = f"{kind}:{today.isoformat()}:{slot}"
             if post_dt(cfg, today, hm) <= local_now and not self.store.was_posted(cfg.guild_id, "daily", key):
                 self.store.mark_posted(cfg.guild_id, "daily", key)
@@ -800,7 +901,7 @@ class ForeverBot(commands.Bot):
                 skipped.append(slot)
         if skipped:
             ev(slog, "setup_skipped_slots", guild=cfg.guild_id, slots=",".join(map(str, skipped)),
-               reason="set up after post time")
+               reason="schedule changed after post time" if before else "set up after post time")
         return skipped
 
     async def send_first_post(self, cfg: GuildConfig, now: datetime) -> str | None:
@@ -890,15 +991,33 @@ class ForeverBot(commands.Bot):
         else:
             ev(log, "staging_unavailable", logging.DEBUG, guild=cfg.guild_id, note=text[:120])
 
+    def live_cfg(self, cfg: GuildConfig) -> GuildConfig | None:
+        """1.12.2: re-read a server's config right before acting on it. A pass over 50 servers takes ~25s, and
+        Nov 3 WoWffles removed the bot mid-pass: its config (and its 'posted' marks) were deleted, but the
+        pass still held the old copy and logged a false slot_missed 15s later. Returns None for servers that
+        removed the bot, turned posting off, or aren't visible to the bot right now."""
+        fresh = self.store.get_guild(cfg.guild_id)
+        if fresh is None or not fresh.enabled or not fresh.channel_id:
+            return None
+        if self.is_ready() and self.get_guild(cfg.guild_id) is None:
+            self.say_once(slog, (cfg.guild_id, "not_in_guild"), "tick_skipped", logging.WARNING,
+                          guild=cfg.guild_id, reason="bot isn't in this server (removed while offline?)")
+            return None
+        return fresh
+
+    async def run_schedule_pass(self, now: datetime):
+        for stale in self.store.all_guilds():
+            try:
+                cfg = self.live_cfg(stale)
+                if cfg is not None:
+                    await self._tick_guild(cfg, now)
+            except Exception as e:  # noqa: BLE001 -- one bad server never blocks the rest
+                ev(slog, "tick_crashed", logging.ERROR, exc_info=e, guild=stale.guild_id)
+            await asyncio.sleep(0.5)  # gentle fan-out
+
     @tasks.loop(seconds=60)
     async def schedule_loop(self):
-        now = now_utc()
-        for cfg in self.store.all_guilds():
-            try:
-                await self._tick_guild(cfg, now)
-            except Exception as e:  # noqa: BLE001 -- one bad server never blocks the rest
-                ev(slog, "tick_crashed", logging.ERROR, exc_info=e, guild=cfg.guild_id)
-            await asyncio.sleep(0.5)  # gentle fan-out
+        await self.run_schedule_pass(now_utc())
 
     async def _tick_guild(self, cfg: GuildConfig, now: datetime):
         today = R.local_today(cfg.tz, now)
@@ -942,13 +1061,17 @@ class ForeverBot(commands.Bot):
                     self.say_once(slog, (cfg.guild_id, key, "late"), "slot_late", logging.WARNING, guild=cfg.guild_id,
                                   key=key, late_min=late_min, hint="bot restarted or was down at post time")
                 await self.post_daily(cfg, now, slot=slot)
-            elif local_now >= window_end and not self.store.was_posted(cfg.guild_id, "daily", key):
+            elif local_now >= window_end and not self.store.was_posted(cfg.guild_id, "daily", key) \
+                    and not self.store.was_posted(cfg.guild_id, "missed", key):
+                # 1.12.2: remembered in the store, so a restart doesn't report the same missed slot again
+                # (Nov 1 The NeverEnding Story's noon slot was logged three times across deploys)
+                self.store.mark_posted(cfg.guild_id, "missed", key)
                 blocked = self.store.was_posted(cfg.guild_id, "blocked", key)
-                self.say_once(slog, (cfg.guild_id, key, "missed"), "slot_missed", logging.WARNING, guild=cfg.guild_id,
-                              key=key, due=due.isoformat(), window_end=window_end.isoformat(),
-                              reason="blocked" if blocked else "offline",
-                              hint=("channel permissions blocked every try; see post_blocked" if blocked else
-                                    "bot was offline for the whole window; /postnow to send it"))
+                ev(slog, "slot_missed", logging.WARNING, guild=cfg.guild_id,
+                   key=key, due=due.isoformat(), window_end=window_end.isoformat(),
+                   reason="blocked" if blocked else "offline",
+                   hint=("channel permissions blocked every try; see post_blocked" if blocked else
+                         "bot was offline for the whole window; /postnow to send it"))
 
     @tasks.loop(seconds=30)
     async def launch_loop(self):
@@ -964,13 +1087,14 @@ class ForeverBot(commands.Bot):
             at = C.LAUNCH - timedelta(minutes=minutes)
             if not (at <= now < at + MILESTONE_WINDOW):
                 continue
-            for cfg in self.store.all_guilds():
-                if self.store.was_posted(cfg.guild_id, "milestone", str(minutes)):
+            for stale in self.store.all_guilds():
+                cfg = self.live_cfg(stale)
+                if cfg is None or self.store.was_posted(cfg.guild_id, "milestone", str(minutes)):
                     continue
                 ch = self.get_channel(cfg.channel_id)
                 problem = self._can_post(ch)
                 if problem:
-                    self.say_once(slog, (cfg.guild_id, "milestone", minutes), "milestone_blocked", logging.ERROR,
+                    self.say_once(slog, (cfg.guild_id, "milestone", minutes), "milestone_blocked", self.blocked_level(cfg, now),
                                   guild=cfg.guild_id, minutes=minutes, reason=problem)
                     continue
                 try:
@@ -986,16 +1110,19 @@ class ForeverBot(commands.Bot):
                 except discord.HTTPException as e:
                     ev(slog, "milestone_failed", logging.ERROR, guild=cfg.guild_id, minutes_before=minutes,
                        status=getattr(e, "status", None), error=str(e)[:160])
+                except Exception as e:  # noqa: BLE001 -- 1.12.2: one server's bad data never stops launch night
+                    ev(slog, "milestone_crashed", logging.ERROR, exc_info=e, guild=cfg.guild_id, minutes_before=minutes)
                 await asyncio.sleep(0.5)
 
     async def send_event_ping(self, key: str, text: str):
-        for cfg in self.store.all_guilds():
-            if self.store.was_posted(cfg.guild_id, "event", key):
+        for stale in self.store.all_guilds():
+            cfg = self.live_cfg(stale)
+            if cfg is None or self.store.was_posted(cfg.guild_id, "event", key):
                 continue
             ch = self.get_channel(cfg.channel_id)
             problem = self._can_post(ch)
             if problem:
-                self.say_once(slog, (cfg.guild_id, "event", key), "event_blocked", logging.ERROR,
+                self.say_once(slog, (cfg.guild_id, "event", key), "event_blocked", self.blocked_level(cfg, now_utc()),
                               guild=cfg.guild_id, event_key=key, reason=problem)
                 continue
             role = cfg.ping_role_id if C.NOTIFY else None
@@ -1007,6 +1134,8 @@ class ForeverBot(commands.Bot):
                 ev(slog, "event_sent", guild=cfg.guild_id, guild_name=getattr(ch.guild, "name", None), event_key=key, ping=bool(role))
             except discord.HTTPException as e:
                 ev(slog, "event_failed", logging.ERROR, guild=cfg.guild_id, event_key=key, error=str(e)[:160])
+            except Exception as e:  # noqa: BLE001 -- 1.12.2
+                ev(slog, "event_crashed", logging.ERROR, exc_info=e, guild=cfg.guild_id, event_key=key)
             await asyncio.sleep(0.5)
 
     def next_post(self, cfg: GuildConfig, now: datetime):
@@ -1022,6 +1151,12 @@ class ForeverBot(commands.Bot):
 
     @tasks.loop(minutes=30)
     async def heartbeat_loop(self):
+        try:
+            await self._heartbeat()
+        except Exception as e:  # noqa: BLE001 -- 1.12.2: the heartbeat restarts the other loops; nothing restarts it
+            ev(log, "heartbeat_crashed", logging.ERROR, exc_info=e)
+
+    async def _heartbeat(self):
         now = now_utc()
         cfgs = self.store.all_guilds()
         nxt = [n for c in cfgs if (n := self.next_post(c, now))]
@@ -1069,16 +1204,20 @@ class ForeverBot(commands.Bot):
     async def status_loop(self):
         """1.6: Forever service status. Posts only problems, maintenance and fixes; never 'all good'."""
         import aiohttp
-        async with aiohttp.ClientSession() as session:
-            updates = await S.check(session, self.store)
+        try:  # 1.12.2: a source that times out (Bluesky, Nov 2) skips this check, it never kills the loop
+            async with aiohttp.ClientSession(timeout=aiohttp.ClientTimeout(total=60)) as session:
+                updates = await S.check(session, self.store)
+        except Exception as e:  # noqa: BLE001
+            return ev(slog, "status_check_failed", logging.WARNING, error=type(e).__name__, detail=str(e)[:150])
         for u in updates:
             if not C.STATUS_POST_TO_CHANNELS:
                 ev(slog, "status_would_post", kind=u["kind"], source=u["source"], created=u["created"],
                    text=u["text"][:160], url=u["url"])
                 continue
             embed = discord.Embed.from_dict(S.status_embed(u, u["source"]))
-            for cfg in self.store.all_guilds():
-                if not cfg.status_alerts or self.store.was_posted(cfg.guild_id, "status", u["id"]):
+            for stale in self.store.all_guilds():
+                cfg = self.live_cfg(stale)
+                if cfg is None or not cfg.status_alerts or self.store.was_posted(cfg.guild_id, "status", u["id"]):
                     continue
                 ch = self.get_channel(cfg.channel_id)
                 if self._can_post(ch):
@@ -1089,6 +1228,8 @@ class ForeverBot(commands.Bot):
                     ev(slog, "status_sent", guild=cfg.guild_id, kind=u["kind"], url=u["url"])
                 except discord.HTTPException as e:
                     ev(slog, "status_failed", logging.ERROR, guild=cfg.guild_id, error=str(e)[:150])
+                except Exception as e:  # noqa: BLE001 -- 1.12.2
+                    ev(slog, "status_crashed", logging.ERROR, exc_info=e, guild=cfg.guild_id)
                 await asyncio.sleep(0.5)
 
     @refresh_loop.error
@@ -1193,6 +1334,7 @@ async def setup_cmd(interaction: discord.Interaction, channel: discord.TextChann
             f"I can't post in {staging.mention}: {bot._can_post(staging)}.\n{perm_fix_hint(staging, '')}", ephemeral=True)
     cfg = cfg_for(interaction)
     first_setup = not cfg.channel_id
+    before = dataclasses.replace(cfg)  # 1.12.2: so a changed schedule can skip slots it moved into the past
     cfg.channel_id, cfg.ping_role_id = channel.id, ping_role.id if ping_role else None
     cfg.staging_channel_id = staging.id if staging else None
     cfg.post_time, cfg.tz, cfg.enabled = fmt_times(times).replace(" ", ""), timezone, True
@@ -1202,7 +1344,11 @@ async def setup_cmd(interaction: discord.Interaction, channel: discord.TextChann
         cfg.announced = cfg.announced or C.RELEASE_NOTES[0]["version"]  # 1.9: new servers start up to date
     bot.store.upsert_guild(cfg)
     now = now_utc()
-    skipped = bot.skip_passed_slots(cfg, now) if first_setup else []  # before any await: no stale backfill
+    # before any await: no stale backfill. First setup skips every passed slot (and sends a short first look);
+    # a changed schedule only skips slots it moved into the past, quietly.
+    skipped = bot.skip_passed_slots(cfg, now) if first_setup else []
+    if not first_setup:
+        bot.skip_passed_slots(cfg, now, before=before)
     if ping_role and not ping_role.mentionable and not channel.permissions_for(interaction.guild.me).mention_everyone:
         warn = f"\n⚠️ {ping_role.mention} isn't mentionable. Turn on *Allow anyone to @mention this role* or the ping won't fire."
     else:
@@ -1268,8 +1414,10 @@ async def frequency_cmd(interaction: discord.Interaction, per_day: app_commands.
     if err:
         rejected(interaction, "times", times)
         return await interaction.response.send_message(err + "\n-# Nothing was changed.", ephemeral=True)
+    before = dataclasses.replace(cfg)
     cfg.post_time = fmt_times(parsed).replace(" ", "")
     bot.store.upsert_guild(cfg)
+    bot.skip_passed_slots(cfg, now_utc(), before=before)  # 1.12.2: matches the reply below; no false slot_missed
     await bot.refresh_pin(cfg)
     note = " The first is the full post; the rest are short check-ins with a new tip, a fact, and only fresh news and clips." \
         if len(parsed) > 1 else ""
@@ -1697,7 +1845,12 @@ async def draggedalong_cmd(interaction: discord.Interaction):
 
 
 async def _glossary_ac(interaction: discord.Interaction, current: str):
-    return [app_commands.Choice(name=t, value=t) for t in P.glossary_choices(current)]
+    try:  # 1.12.2: autocomplete must never throw (same rule as _tz_ac)
+        terms = P.glossary_choices(current)
+    except Exception as e:  # noqa: BLE001
+        ev(clog, "glossary_autocomplete_failed", typed=(current or "")[:40], error=type(e).__name__)
+        terms = []
+    return [app_commands.Choice(name=str(t)[:100], value=str(t)[:100]) for t in terms[:25]]
 
 
 @bot.tree.command(name="whatdoesthatmean", description="Explain a WoW word or bit of slang, in plain English")
@@ -1990,7 +2143,11 @@ async def spellbook_cmd(interaction: discord.Interaction, page: app_commands.Cho
 
 @bot.tree.error
 async def on_app_error(interaction: discord.Interaction, error: app_commands.AppCommandError):
-    expected = isinstance(error, (app_commands.MissingPermissions, app_commands.CheckFailure, app_commands.TransformerError))
+    if interaction_expired(error):  # 1.12.2: answered too late (gateway lag); a second reply would fail too
+        return ev(clog, "command_late", logging.WARNING, name=getattr(interaction.command, "qualified_name", "?"),
+                  guild=interaction.guild_id, user=interaction.user.id,
+                  detail=str(getattr(error, "original", error))[:160])
+    expected =isinstance(error, (app_commands.MissingPermissions, app_commands.CheckFailure, app_commands.TransformerError))
     ev(clog, "command_error", logging.WARNING if expected else logging.ERROR,
        exc_info=None if expected else error, name=getattr(interaction.command, "qualified_name", "?"),
        guild=interaction.guild_id, user=interaction.user.id, error=type(error).__name__,

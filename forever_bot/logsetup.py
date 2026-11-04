@@ -84,6 +84,23 @@ def setup_logging():
     # discord.py is chatty at DEBUG; keep its noise down unless asked
     logging.getLogger("discord").setLevel(os.getenv("DISCORD_LOG_LEVEL", "INFO").upper())
     logging.getLogger("discord.client").addFilter(_DropVoiceWarnings())
+    for name in ("discord.app_commands.tree", "discord.ui.view", "discord.ext.commands.bot", "discord.client"):
+        logging.getLogger(name).addFilter(ExpiredInteractionFilter())
+
+
+class ExpiredInteractionFilter(logging.Filter):
+    """1.12.2: discord.py logs an answer that reached Discord too late (code 10062, usually gateway lag) as an
+    ERROR with a traceback, e.g. Oct 30 'Ignoring exception in autocomplete for setup'. Nothing in our code
+    failed and nothing can be retried, so keep it as one WARNING line without the traceback."""
+    CODES = (10062, 40060)
+
+    def filter(self, record):
+        exc = record.exc_info[1] if record.exc_info else None
+        if exc is not None and getattr(exc, "code", None) in self.CODES:
+            record.levelno, record.levelname = logging.WARNING, "WARNING"
+            record.msg = f"{record.getMessage()} (interaction expired: code {exc.code})"
+            record.args, record.exc_info, record.exc_text = None, None, None
+        return True
 
 
 class _DropVoiceWarnings(logging.Filter):

@@ -1083,6 +1083,10 @@ _fix(TIPS["camping"], "burns for about 10 minutes", "burns for about 10 to 15 mi
 # "internal": True keeps a behind-the-scenes release out of /whatsnew and the What's new page.
 WHATSNEW_URL = SITE_URL + "/whatsnew.html"
 RELEASE_NOTES = [
+    {"version": "1.12.2", "date": "2026-11-03", "title": "Steadier buttons and schedules",
+     "line": None, "internal": False,
+     "notes": ["Roll call: if Discord is slow to answer a click, your class is still saved and the board catches up on the next click.",
+               "Changing your post times with `/frequency` or `/setup` no longer sends a slot you just moved into the past. It waits for tomorrow, or use `/postnow`."]},
     {"version": "1.12.1", "date": "2026-11-03", "title": "Launch class tuning",
      "line": None, "internal": False,
      "notes": ["Class cards, `/keybinds` and rotations match Blizzard's Nov 2 launch notes.",
@@ -1109,7 +1113,7 @@ RELEASE_NOTES = [
                "Over 70 new did-you-know facts, so check-ins repeat far less often.",
                "Some tips and facts come from game files or beta testing. They're labeled *⛏️ datamined, may change*, and admins can hide them with `/datamined`.",
                "Plus One mode has its own new-player facts: tap 🎲 **A fun fact** in `/draggedalong`.",
-               "Fixes: the Darkspear Islands Horde base is in the Barrens, Ice Lance does 200% more to frozen targets, and Shaman talents match the Oct 15 changes. Onyxia's Lair is now listed with the Dec 9 raids."]},
+               "Fixes: the Darkspear Islands Horde base is in the Barrens, Ice Lance's bonus against frozen targets is corrected, and Shaman talents match the Oct 15 changes. Onyxia's Lair is now listed with the Dec 9 raids."]},
     {"version": "1.10.8", "date": "2026-10-31", "title": "BiS in the glossary",
      "line": None, "internal": False,
      "notes": ["`/whatdoesthatmean bis` explains best in slot. Forever's BiS lists come once the servers are live."]},
