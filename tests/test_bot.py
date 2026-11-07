@@ -736,9 +736,13 @@ def test_status_watcher():
     assert len(json.dumps(e)) < 6000 and "Maintenance" in e["title"]
     assert S.post_url("at://did:plc:x/app.bsky.feed.post/3abc", "support.blizzard.com").endswith("/post/3abc")
 
+    # S.check() looks back from the real clock, so this fake post is dated from now (it was pinned to Nov 4
+    # and started failing on Nov 5 once the post was older than the 2-hour first-run window)
+    recent = (datetime.now(timezone.utc) - timedelta(minutes=6)).isoformat().replace("+00:00", "Z")
+
     async def fake_get(session, url, params=None, want_json=False, **k):
         return {"feed": [{"post": {"uri": "at://x/app.bsky.feed.post/1", "author": {"handle": "support.blizzard.com"},
-                                   "record": {"text": "WoW: Forever login issues, investigating.", "createdAt": iso(0.1)}}},
+                                   "record": {"text": "WoW: Forever login issues, investigating.", "createdAt": recent}}},
                          {"reason": {"$type": "repost"}, "post": {"uri": "at://x/app.bsky.feed.post/2",
                                                                   "record": {"text": "repost"}}}]}
     orig = S.http_get
@@ -1781,3 +1785,90 @@ def test_daily_post_renders_when_every_source_is_down():
     for slot in (0, 1):
         p = R.build_daily(cfg, at_post_time(date(2026, 11, 4), cfg), empty, {}, slot=slot)
         assert p and p.embeds and 0 < len(p.embeds[0]["description"]) < 4096
+
+
+# ------------------------------------------------------------------ 1.12.3
+def test_blocked_retries_are_not_logged_as_late():
+    """Nov 4-6: blocked channels logged slot_late "bot restarted or was down" every day while the bot was up."""
+    os.environ["DB_PATH"] = os.path.join(tempfile.mkdtemp(), "l.db")
+    from types import SimpleNamespace
+    import forever_bot.bot as B
+    from forever_bot.store import GuildConfig
+    b = B.ForeverBot()
+    b.store = tmp_store()
+    events = []
+    b.say_once = lambda logger, dedupe, event, *a, **kw: events.append(event)
+
+    async def post_daily(cfg, now, slot=0):
+        events.append("post_daily")
+    b.post_daily = post_daily
+    cfg = GuildConfig(guild_id=9, channel_id=100, post_time="12:00", tz="America/Chicago")
+    b.store.upsert_guild(cfg)
+    late = datetime(2026, 11, 20, 18, 10, tzinfo=timezone.utc)  # 10 min after noon Central
+    asyncio.run(b._tick_guild(cfg, late))
+    assert events == ["slot_late", "post_daily"], events  # really late: still reported
+    events.clear()
+    b.store.mark_posted(9, "blocked", "raids:2026-11-20:0")
+    asyncio.run(b._tick_guild(cfg, late))
+    assert events == ["post_daily"], events  # blocked retry: keeps trying, no slot_late
+
+
+def test_setup_button_refused_falls_back_to_plain_embed():
+    """Nov 6 Eternal Wardens: Discord refused the 📍 Post here button with 20062; welcome and reminder never landed."""
+    os.environ["DB_PATH"] = os.path.join(tempfile.mkdtemp(), "w.db")
+    from types import SimpleNamespace
+    import discord
+    import forever_bot.bot as B
+    b = B.ForeverBot()
+    sent = []
+    resp = SimpleNamespace(status=403, reason="Forbidden")
+
+    class Ch:
+        id = 1
+
+        def __init__(self, code):
+            self.code = code
+
+        async def send(self, **kw):
+            if "view" in kw and self.code:
+                raise discord.HTTPException(resp, {"code": self.code, "message": "nope"})
+            sent.append(("view" in kw, kw["embed"].title))
+
+    e = discord.Embed(title="hi")
+    assert asyncio.run(b.send_with_setup_button(Ch(None), embed=e)) is False and sent == [(True, "hi")]
+    sent.clear()
+    assert asyncio.run(b.send_with_setup_button(Ch(20062), embed=e)) is True and sent == [(False, "hi")]
+    sent.clear()
+    try:  # any other refusal (e.g. Missing Permissions) still surfaces to the caller
+        asyncio.run(b.send_with_setup_button(Ch(50013), embed=e))
+        assert False, "should raise"
+    except discord.HTTPException:
+        assert sent == []
+    assert "/setup" in R.welcome_embed(datetime(2026, 11, 6, tzinfo=timezone.utc))["description"]
+    assert "/setup" in R.setup_reminder_embed(datetime(2026, 11, 6, tzinfo=timezone.utc))["description"]
+
+
+def test_refresh_done_ignores_sources_switched_off():
+    """YouTube has been off since 1.1.1; every refresh still logged ok=4 total=5."""
+    import logging
+    orig_news, orig_fetch, orig_show = C.NEWS_SOURCES, F.fetch_news_source, C.SHOW_YOUTUBE
+    lines = []
+
+    class H(logging.Handler):
+        def emit(self, rec):
+            if rec.getMessage() == "refresh_done":
+                lines.append(rec.fields)
+    h = H()
+    logging.getLogger().addHandler(h)
+    logging.getLogger().setLevel(logging.INFO)
+
+    async def fake_news(session, src):
+        return []
+    C.NEWS_SOURCES, F.fetch_news_source, C.SHOW_YOUTUBE = [{"name": "A"}, {"name": "B"}], fake_news, False
+    try:
+        snap = asyncio.run(F.refresh_all(tmp_store(), None, None))
+    finally:
+        C.NEWS_SOURCES, F.fetch_news_source, C.SHOW_YOUTUBE = orig_news, orig_fetch, orig_show
+        logging.getLogger().removeHandler(h)
+    assert snap["health"]["youtube"] == "off"
+    assert lines and lines[-1]["ok"] == 2 and lines[-1]["total"] == 2 and "youtube" in lines[-1]["off"], lines

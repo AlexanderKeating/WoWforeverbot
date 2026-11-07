@@ -1083,6 +1083,9 @@ _fix(TIPS["camping"], "burns for about 10 minutes", "burns for about 10 to 15 mi
 # "internal": True keeps a behind-the-scenes release out of /whatsnew and the What's new page.
 WHATSNEW_URL = SITE_URL + "/whatsnew.html"
 RELEASE_NOTES = [
+    {"version": "1.12.3", "date": "2026-11-06", "title": "Cleaner logs, welcome fallback",
+     "line": None, "internal": True,
+     "notes": ["If Discord won't show the 📍 Post here button in a server, the welcome and setup reminder still arrive, pointing to `/setup`."]},
     {"version": "1.12.2", "date": "2026-11-03", "title": "Steadier buttons and schedules",
      "line": None, "internal": False,
      "notes": ["Roll call: if Discord is slow to answer a click, your class is still saved and the board catches up on the next click.",
