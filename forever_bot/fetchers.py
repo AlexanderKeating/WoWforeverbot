@@ -591,8 +591,11 @@ async def refresh_all(store, twitch: Twitch | None, youtube: "YouTube | None" = 
     if "youtube" not in snap["health"]:
         snap["health"]["youtube"] = "off" if not C.SHOW_YOUTUBE else "not configured"
     h = snap["health"]
+    # 1.12.3: sources switched off on purpose (YouTube since 1.1.1) aren't counted, so a healthy run reads 4/4, not 4/5
+    active = {k: v for k, v in h.items() if v not in ("off", "not configured")}
     ev(log, "refresh_done", run=run, ms=t.elapsed_ms,
-       ok=sum(v == "ok" for v in h.values()), total=len(h),
+       ok=sum(v == "ok" for v in active.values()), total=len(active),
+       off=",".join(k for k in h if k not in active) or "-",
        down=",".join(k for k, v in h.items() if v.startswith("down")) or "-",
        stale=",".join(k for k, v in h.items() if v.startswith("stale")) or "-",
        news=len(snap["news"]), clips=len(snap["clips"]), videos=len(snap["videos"]))

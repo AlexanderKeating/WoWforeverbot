@@ -663,10 +663,24 @@ class ForeverBot(commands.Bot):
         if ch is None:
             return ev(log, "welcome_no_channel", logging.WARNING, guild=guild.id, name=guild.name)
         try:
-            await ch.send(embed=discord.Embed.from_dict(R.welcome_embed(now_utc())), view=setup_here_view())
-            ev(log, "welcome_sent", guild=guild.id, channel=ch.id)
+            fallback = await self.send_with_setup_button(ch, embed=discord.Embed.from_dict(R.welcome_embed(now_utc())))
+            ev(log, "welcome_sent", guild=guild.id, channel=ch.id, button=not fallback)
         except discord.HTTPException as e:
             ev(log, "welcome_failed", logging.WARNING, guild=guild.id, channel=ch.id, error=str(e)[:150])
+
+    async def send_with_setup_button(self, ch, **kw) -> bool:
+        """1.12.3: send with the 📍 Post here button; if Discord refuses the button (20062 "requires an application
+        to be authorized by the user", Nov 6 Eternal Wardens), send the same embed without it. The embed already
+        says to run /setup. Returns True when the button had to be dropped."""
+        try:
+            await ch.send(view=setup_here_view(), **kw)
+            return False
+        except discord.HTTPException as e:
+            if getattr(e, "code", None) != 20062:
+                raise
+            ev(log, "setup_button_refused", logging.INFO, channel=ch.id, code=20062, action="sent without button")
+            await ch.send(**kw)
+            return True
 
     async def on_guild_remove(self, guild):
         was_set_up = is_set_up(guild.id)
@@ -1057,7 +1071,9 @@ class ForeverBot(commands.Bot):
             key = f"{kind}:{today.isoformat()}:{slot}"
             if due <= local_now < window_end and not self.store.was_posted(cfg.guild_id, "daily", key):
                 late_min = (local_now - due).total_seconds() / 60
-                if late_min > 5:
+                # 1.12.3: a blocked channel is retried every minute; that retry isn't "late" (Nov 4-6, Salt Raptors,
+                # EREBOR, "Forever and ever." logged slot_late "bot restarted or was down" daily while the bot was up)
+                if late_min > 5 and not self.store.was_posted(cfg.guild_id, "blocked", key):
                     self.say_once(slog, (cfg.guild_id, key, "late"), "slot_late", logging.WARNING, guild=cfg.guild_id,
                                   key=key, late_min=late_min, hint="bot restarted or was down at post time")
                 await self.post_daily(cfg, now, slot=slot)
@@ -1194,9 +1210,10 @@ class ForeverBot(commands.Bot):
                 ev(log, "setup_reminder_no_channel", logging.WARNING, guild=guild.id, name=guild.name)
                 continue
             try:
-                await ch.send(embed=discord.Embed.from_dict(R.setup_reminder_embed(now)), view=setup_here_view(),
-                              allowed_mentions=discord.AllowedMentions.none())
-                ev(log, "setup_reminder_sent", guild=guild.id, name=guild.name, channel=ch.id, age_h=age_h)
+                fallback = await self.send_with_setup_button(ch, embed=discord.Embed.from_dict(R.setup_reminder_embed(now)),
+                                                             allowed_mentions=discord.AllowedMentions.none())
+                ev(log, "setup_reminder_sent", guild=guild.id, name=guild.name, channel=ch.id, age_h=age_h,
+                   button=not fallback)
             except discord.HTTPException as e:
                 ev(log, "setup_reminder_failed", logging.WARNING, guild=guild.id, error=str(e)[:150])
 

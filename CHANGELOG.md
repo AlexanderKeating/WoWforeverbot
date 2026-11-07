@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.12.3 (2026-11-06)
+From the Nov 3–6 live logs (82 servers). 3 new tests; `test_status_watcher` no longer depends on the date.
+- **Blocked retries aren't "late".** "Forever and ever.", EREBOR and Salt Raptors have channels the bot can't post in. The scheduler retries each minute, and at 5 minutes it logged `slot_late` "bot restarted or was down at post time" every day, though the bot was up. `slot_late` now skips slots already marked `blocked`; `post_blocked` and `slot_missed reason=blocked` still report them.
+- **Welcome / setup reminder fallback.** Nov 6 Eternal Wardens: Discord refused the message with the 📍 Post here button (403, code 20062 "requires an application to be authorized by the user"), so neither the welcome nor the reminder landed. New `send_with_setup_button()` resends the same embed without the button on 20062 (`setup_button_refused`, INFO); the embed already says to run `/setup`. Other errors still fail as before. `welcome_sent` and `setup_reminder_sent` log `button=`.
+- **Health count.** `refresh_done` no longer counts sources that are switched off or not configured (YouTube, off since 1.1.1), so a healthy run reads `ok=4 total=4` instead of `ok=4 total=5`. New `off=` field lists them. The `/status`-style health line in posts already left them out.
+- **Test fix.** `test_status_watcher`'s fake Bluesky post was dated Nov 4 while `status.check()` uses the real clock; from Nov 5 it was outside the 2-hour first-run window and the test failed. The post is now dated from the current time.
+
 ## 1.12.2 (2026-11-03)
 Hardening from a week of live error/warning logs (Oct 28 – Nov 3). 18 new tests; the two tests that were already failing on main are fixed.
 - **Roll call (Nov 2, Runedone).** A Warrior click arrived after Discord's 3-second window (10062 "Unknown interaction"); the board edit failed, then the "Saved as" fallback failed the same way and dumped a traceback. Now the pick is saved first, Discord is answered (board edit, or `defer` off-board) before the class tips card is built, and an expired interaction gets no second reply (`rollcall_late`, WARNING, `saved=True`). Storage errors reply "Couldn't save that" instead of throwing; a broken tips card can't undo a saved pick.
