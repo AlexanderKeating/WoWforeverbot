@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.12.4 (2026-11-09)
+Rolling facts check, and the Nov 8 refusal loop. 6 new tests.
+- **Discord refusals (20062) aren't retried every minute.** Nov 8: one server's noon post got 403/20062 every minute for the 3-hour window (180 ERRORs with tracebacks), then `slot_missed` said the bot was offline. Now the first refusal marks the slot `refused`, logs `post_refused` once (ERROR once a week per channel, INFO after, no traceback), tells staging once, and `slot_missed` says `reason=refused`. `/postnow` still tries. The same day a setup reminder got 20062 *without* the button, so 1.12.3's button theory doesn't cover it; the fallback stays, the docstring says so. `postnow_outcome` reports `refused`.
+- **Facts ledger.** `forever_bot/facts_ledger.json`: one entry per tip, fact, deep-dive line, pro tip and class-card line (468), with source, `added`, `verified` and optional `expires`. `tools/facts.py` keeps it in step (`sync`, `due`, `dupes`, `verified`, `record`, `expiring`, `check`); `test_ledger_matches_pools` fails if a line is added or removed without it.
+- **Fresh first, no repeats.** `pick()` gives each line added in the last 14 days one day up front (lines from the same batch go one a day, the day after they're added), only for the main post's picks so the evening check-in doesn't repeat it. Lines past `expires` drop out of rotation by themselves.
+- **🔧 Hotfix line.** Hotfix, tuning, patch-note and known-issues headlines sort to the top of the news embed with a 🔧.
+- **Facts (checked against Blizzard's Nov 5, Nov 6 and Nov 8 posts).** Dungeon kill XP +50% (Nov 8): leveling deep dive, dungeon pro tip, a new leveling tip. PvP faction lock happened on launch night: ruleset deep dive and tip now say so (was "may"). Voidwalker +~40 base health on the Warlock card. New tips: Tanning Rack at 125 (was 140), Tauren Plainsrunning no longer stacks in BG prep and drops when carrying a flag, level-40 gold for mount + dual spec. New did-you-knows: Taldramir (plus a ⛏️ datamined line on its questline), dual spec at 40, the dungeon XP change, Tuesday class tuning (expires Nov 16). Pre-launch raid lines now include Onyxia's Lair.
+
 ## 1.12.3 (2026-11-06)
 From the Nov 3–6 live logs (82 servers). 3 new tests; `test_status_watcher` no longer depends on the date.
 - **Blocked retries aren't "late".** "Forever and ever.", EREBOR and Salt Raptors have channels the bot can't post in. The scheduler retries each minute, and at 5 minutes it logged `slot_late` "bot restarted or was down at post time" every day, though the bot was up. `slot_late` now skips slots already marked `blocked`; `post_blocked` and `slot_missed reason=blocked` still report them.
