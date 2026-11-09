@@ -16,6 +16,7 @@ from zoneinfo import ZoneInfo
 from . import classes as K
 from . import content as C
 from . import guides as G
+from . import ledger as L
 
 DESC_SOFT_CAP = 2800     # main post: fuller vets lines (1.1.2); hard limit is 4096
 EMBED_TOTAL_CAP = 5800   # Discord hard cap is 6000
@@ -156,9 +157,16 @@ def bar(pct: float, width: int = 10) -> str:
 
 def pick(seq, d: date, salt: int = 0, avoid: str = ""):
     """Deterministic daily rotation: preview and real post always match.
-    `avoid`: text already in the post; skips items that mostly repeat it."""
+    `avoid`: text already in the post; skips items that mostly repeat it.
+    1.12.4: expired lines (facts ledger) drop out; a line added in the last two weeks gets one day up front
+    (the main post's picks only, salt <= 3, so the evening check-in doesn't repeat it)."""
     if not seq:
         return None
+    seq = L.live(seq, d)
+    if salt <= 3:
+        f = L.featured(seq, d)
+        if f is not None and (not avoid or not too_similar(str(f), avoid, 0.3)):
+            return f
     n = len(seq)
     # step 7 per day keeps the original rotation, but 7 must not share a factor with n or it gets stuck
     start = ((d.toordinal() * 7 if n % 7 else d.toordinal()) + salt) % n
@@ -259,17 +267,29 @@ class Post:
     deep_key: str | None = None
 
 
+_HOTFIX_RE = re.compile(r"\b(hotfix(es)?|patch notes|class tuning|tuning incoming|known issues|xp increased|"
+                        r"development notes|dev notes)\b", re.I)
+
+
+def is_hotfix(title: str) -> bool:
+    """1.12.4: headlines about a change to the live game (Blizzard hotfix lists, tuning, patch notes)."""
+    return bool(_HOTFIX_RE.search(title or ""))
+
+
 def _media(snap, unseen_ids, now, include_news, include_clips=True):
     """News embed + clip/video follow-up, shared by the full post and check-ins.
     include_clips=False (1.8, /clips) leaves Twitch clips out."""
     embeds, used, follow = [], [], []
     if include_news:
-        fresh = [n for n in snap.get("news", []) if unseen_ids is None or n["id"] in unseen_ids][:MAX_NEWS]
+        fresh = [n for n in snap.get("news", []) if unseen_ids is None or n["id"] in unseen_ids]
+        # 1.12.4: hotfix and patch-note headlines go first with 🔧, so a game change never sits below a clip roundup
+        fresh = sorted(fresh, key=lambda n: not is_hotfix(n.get("title", "")))[:MAX_NEWS]
         if fresh:
             body = []
             for n in fresh:
                 meta = " · ".join(x for x in (n.get("source"), _ago(n.get("published"), now)) if x)
-                body.append(f"[{esc(n['title'])}]({n['url']})\n-# {meta}")
+                mark = "🔧 " if is_hotfix(n.get("title", "")) else ""
+                body.append(f"{mark}[{esc(n['title'])}]({n['url']})\n-# {meta}")
             embeds.append({"title": "📰 New since last post", "description": "\n".join(body)[:4000],
                            "color": C.NEWS_COLOR})
             used += [n["id"] for n in fresh]

@@ -1872,3 +1872,76 @@ def test_refresh_done_ignores_sources_switched_off():
         logging.getLogger().removeHandler(h)
     assert snap["health"]["youtube"] == "off"
     assert lines and lines[-1]["ok"] == 2 and lines[-1]["total"] == 2 and "youtube" in lines[-1]["off"], lines
+
+
+# ------------------------------------------------------------- 1.12.4 facts ledger, refusals, hotfix line
+def _with_ledger(entries, fn):
+    """Run fn with a temporary ledger (the real one is restored after)."""
+    from forever_bot import ledger as L
+    orig = L.PATH
+    path = os.path.join(tempfile.mkdtemp(), "ledger.json")
+    with open(path, "w") as f:
+        json.dump({"entries": entries}, f)
+    L.PATH = path
+    L.entries.cache_clear()
+    try:
+        return fn()
+    finally:
+        L.PATH = orig
+        L.entries.cache_clear()
+
+
+def test_ledger_matches_pools():
+    """Every tip/fact line has a ledger entry and the ledger has no lines that were removed from the pools."""
+    import subprocess
+    r = subprocess.run([sys.executable, os.path.join(os.path.dirname(os.path.dirname(__file__)), "tools", "facts.py"),
+                        "check"], capture_output=True, text=True)
+    assert r.returncode == 0, r.stdout + r.stderr
+
+
+def test_fresh_lines_get_one_day_each():
+    pool = [f"old fact {i}" for i in range(20)] + ["new A", "new B", C.dm("new C")]
+    e = [{"text": "new A", "added": "2026-11-09"}, {"text": "new B", "added": "2026-11-09"},
+         {"text": "new C", "added": "2026-11-09"}]
+
+    def run():
+        shown = [R.pick(R.V(pool), date(2026, 11, 9) + timedelta(days=k), salt=3) for k in range(0, 6)]
+        later = R.pick(R.V(pool), date(2026, 11, 10), salt=16)  # evening check-in: no featuring
+        return shown, later
+    with R.datamined(True):
+        shown, later = _with_ledger(e, run)
+    assert shown[1:4] == ["new A", "new B", "new C" + C.DM_LABEL], shown  # then one a day, in order
+    assert later != "new A"
+
+
+def test_expired_lines_drop_out():
+    pool = ["keeps going", "only until the 10th"]
+    e = [{"text": "only until the 10th", "expires": "2026-11-10"}]
+
+    def run():
+        return {R.pick(pool, date(2026, 11, 11) + timedelta(days=k)) for k in range(10)}
+    assert _with_ledger(e, run) == {"keeps going"}
+
+
+def test_hotfix_headlines_first_with_wrench():
+    snap = {"news": [{"id": "news:1", "title": "Top 10 Forever clips this week", "url": "https://a", "source": "X"},
+                     {"id": "news:2", "title": "WoW Forever Hotfixes for November 6", "url": "https://b", "source": "Y"}]}
+    embeds, used, _ = R._media(snap, None, datetime(2026, 11, 9, tzinfo=timezone.utc), True, False)
+    desc = embeds[0]["description"]
+    assert desc.startswith("🔧 [WoW Forever Hotfixes"), desc
+    assert "🔧 [Top 10" not in desc
+    assert R.is_hotfix("Dungeon Enemy XP Increased - November 8") and not R.is_hotfix("World First Level 60")
+
+
+def test_refused_post_outcome():
+    from forever_bot.bot import postnow_outcome as o, REFUSED_CODES
+    assert 20062 in REFUSED_CODES
+    assert o("Discord refused the post: 403 Forbidden") == "refused"
+
+
+def test_new_facts_present():
+    lev = " ".join(map(str, C.TIPS["leveling"]))
+    assert "50%" in lev and "dual specialization" in lev
+    assert any("Tanning Rack at 125" in str(t) for t in C.TIPS["professions"])
+    dd9 = " ".join(C.DEEP_DIVES[9][1])
+    assert "Blizzard can pause" not in dd9 and "recalculates the balance" in dd9

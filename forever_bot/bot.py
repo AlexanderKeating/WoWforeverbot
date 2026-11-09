@@ -45,6 +45,9 @@ clog = logging.getLogger("forever.cmd")
 
 VERSION = (os.getenv("RENDER_GIT_COMMIT") or os.getenv("RAILWAY_GIT_COMMIT_SHA") or os.getenv("GIT_SHA") or "dev")[:7]
 STARTED = time.time()
+# 1.12.4: Discord errors that mean "not now, not by retrying a minute later". 20062: "This action requires an
+# application to be authorized by the user" (Nov 6 Eternal Wardens, Nov 8 daily post and setup reminder).
+REFUSED_CODES = {20062}
 
 POST_GRACE = timedelta(hours=3)        # bot was down at post time? still post within 3h
 STAGING_LEAD = timedelta(minutes=60)
@@ -671,7 +674,9 @@ class ForeverBot(commands.Bot):
     async def send_with_setup_button(self, ch, **kw) -> bool:
         """1.12.3: send with the 📍 Post here button; if Discord refuses the button (20062 "requires an application
         to be authorized by the user", Nov 6 Eternal Wardens), send the same embed without it. The embed already
-        says to run /setup. Returns True when the button had to be dropped."""
+        says to run /setup. Returns True when the button had to be dropped.
+        1.12.4: Nov 8 a setup reminder got 20062 again *without* the button, and a daily post got it too, so the
+        button isn't the whole cause. The fallback stays (it's harmless); a second refusal is logged, not retried."""
         try:
             await ch.send(view=setup_here_view(), **kw)
             return False
@@ -847,6 +852,8 @@ class ForeverBot(commands.Bot):
         if not force and self.store.was_posted(cfg.guild_id, "daily", post.key):
             ev(slog, "post_skipped", logging.DEBUG, guild=cfg.guild_id, key=post.key, reason="already_posted")
             return "Already posted for this time slot."
+        if not force and self.store.was_posted(cfg.guild_id, "refused", post.key):
+            return "Discord refused this slot's post; not retrying until /postnow."  # 1.12.4: one try per slot
         channel = self.get_channel(cfg.channel_id)
         problem = self._can_post(channel)
         if problem:
@@ -868,6 +875,18 @@ class ForeverBot(commands.Bot):
         try:
             msg_id, follow_id = await self.send_post(channel, post, cfg.ping_role_id)
         except discord.HTTPException as e:
+            if getattr(e, "code", None) in REFUSED_CODES:
+                # 1.12.4: Nov 8, one server's noon post got 403/20062 every minute for 3 hours (180 ERRORs with
+                # tracebacks), then slot_missed blamed the bot being offline. A refusal like this doesn't clear by
+                # retrying a minute later: mark the slot refused, log once (no traceback), let /postnow try again.
+                self.store.mark_posted(cfg.guild_id, "refused", post.key)
+                lvl = self.blocked_level(cfg, now)
+                ev(slog, "post_refused", lvl, guild=cfg.guild_id, channel=cfg.channel_id, key=post.key,
+                   status=getattr(e, "status", None), code=e.code, error=str(e)[:150], retry="next slot or /postnow",
+                   repeat=lvl != logging.ERROR)
+                if lvl == logging.ERROR or force:
+                    await self.notify_staging(cfg, f"⚠️ Discord refused the countdown post: {str(e)[:150]}")
+                return f"Discord refused the post: {str(e)[:150]}"
             ev(slog, "post_failed", logging.ERROR, exc_info=e, guild=cfg.guild_id, channel=cfg.channel_id,
                key=post.key, status=getattr(e, "status", None), code=getattr(e, "code", None))
             await self.notify_staging(cfg, f"⚠️ Discord rejected the countdown post: {str(e)[:150]}")
@@ -1073,7 +1092,8 @@ class ForeverBot(commands.Bot):
                 late_min = (local_now - due).total_seconds() / 60
                 # 1.12.3: a blocked channel is retried every minute; that retry isn't "late" (Nov 4-6, Salt Raptors,
                 # EREBOR, "Forever and ever." logged slot_late "bot restarted or was down" daily while the bot was up)
-                if late_min > 5 and not self.store.was_posted(cfg.guild_id, "blocked", key):
+                if late_min > 5 and not self.store.was_posted(cfg.guild_id, "blocked", key) \
+                        and not self.store.was_posted(cfg.guild_id, "refused", key):
                     self.say_once(slog, (cfg.guild_id, key, "late"), "slot_late", logging.WARNING, guild=cfg.guild_id,
                                   key=key, late_min=late_min, hint="bot restarted or was down at post time")
                 await self.post_daily(cfg, now, slot=slot)
@@ -1083,11 +1103,13 @@ class ForeverBot(commands.Bot):
                 # (Nov 1 The NeverEnding Story's noon slot was logged three times across deploys)
                 self.store.mark_posted(cfg.guild_id, "missed", key)
                 blocked = self.store.was_posted(cfg.guild_id, "blocked", key)
+                refused = self.store.was_posted(cfg.guild_id, "refused", key)  # 1.12.4
+                reason = "refused" if refused else "blocked" if blocked else "offline"
                 ev(slog, "slot_missed", logging.WARNING, guild=cfg.guild_id,
-                   key=key, due=due.isoformat(), window_end=window_end.isoformat(),
-                   reason="blocked" if blocked else "offline",
-                   hint=("channel permissions blocked every try; see post_blocked" if blocked else
-                         "bot was offline for the whole window; /postnow to send it"))
+                   key=key, due=due.isoformat(), window_end=window_end.isoformat(), reason=reason,
+                   hint={"refused": "Discord refused the post; see post_refused",
+                         "blocked": "channel permissions blocked every try; see post_blocked",
+                         "offline": "bot was offline for the whole window; /postnow to send it"}[reason])
 
     @tasks.loop(seconds=30)
     async def launch_loop(self):
@@ -1456,7 +1478,8 @@ def full_post_needed(cfg: GuildConfig, key0: str) -> bool:
 def postnow_outcome(reply: str) -> str:
     """1.10.3: one word for what /postnow did, from post_daily's reply."""
     for prefix, word in (("Posted.", "posted"), ("Already posted", "already_posted"), ("Nothing to post", "finished"),
-                         ("⚠️ I can't post", "blocked"), ("Discord rejected", "failed")):
+                         ("⚠️ I can't post", "blocked"), ("Discord rejected", "failed"),
+                         ("Discord refused", "refused")):  # 1.12.4
         if reply.startswith(prefix):
             return word
     return "other"

@@ -1,0 +1,4216 @@
+{
+ "entries": [
+  {
+   "text": "**Drink potions and open doors without leaving form** → Feral stays in form instead of paying mana to shift back.",
+   "pool": "CLASSES.Druid.leveling",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Keep upgrading your weapon as Feral** → weapons matter in forms now.",
+   "pool": "CLASSES.Druid.leveling",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Tauren: War Stomp in bear form** → racials work while shapeshifted (90-second cooldown).",
+   "pool": "CLASSES.Druid.leveling",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Revive** at 12, **Nature's Grasp** at 10, **Omen of Clarity** baseline at 20.",
+   "pool": "CLASSES.Druid.new",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "In forms, your auto-attack uses your **weapon's DPS**, and weapon enchants and procs work.",
+   "pool": "CLASSES.Druid.new",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "Most **potions and consumables work in forms**, and most doors and objects too.",
+   "pool": "CLASSES.Druid.new",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "New signatures: Berserk (Feral, 31), Wild Growth (Restoration, 31), Eclipse (Balance).",
+   "pool": "CLASSES.Druid.new",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "Tiger's Fury is gone (replaced by **Shifting Power**), and **Primal Bite** replaces Mangle.",
+   "pool": "CLASSES.Druid.new",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Barkskin without leaving form** → it works while shapeshifted now.",
+   "pool": "CLASSES.Druid.pvp",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Root indoors too** → Entangling Roots works inside buildings and caves now.",
+   "pool": "CLASSES.Druid.pvp",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "Druids went 12–14 vs other classes in the beta tournament finals; Minpojke finished top 6.",
+   "pool": "CLASSES.Druid.pvp",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Drop a Frost Trap mid-fight and back off** → traps work in combat now, so you can fix a bad pull without running first.",
+   "pool": "CLASSES.Hunter.leveling",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Tame for the family ability, not the look** → Boar Charge, Spider Web, Turtle Shell Shield and Wolf Furious Howl each solve a different problem.",
+   "pool": "CLASSES.Hunter.leveling",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Upgrade your own gear before your pet's food** → pets scale with your gear, so every upgrade counts twice.",
+   "pool": "CLASSES.Hunter.leveling",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Aimed Shot** is baseline at 20 for every Hunter.",
+   "pool": "CLASSES.Hunter.new",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Lone Wolf** (Marksmanship): 20% more damage with no pet out.",
+   "pool": "CLASSES.Hunter.new",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "Pets scale with your gear, and every pet family has its own unique ability. Foxes are a new family.",
+   "pool": "CLASSES.Hunter.new",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "Survival is a real melee spec now, with Strider Kick and Lacerating Strikes.",
+   "pool": "CLASSES.Hunter.new",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "Traps work **in combat**, and all traps share one 30-second cooldown.",
+   "pool": "CLASSES.Hunter.new",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Play group PvP from max range** → hunters went 7–11 in beta finals duels, but range is your edge in battlegrounds.",
+   "pool": "CLASSES.Hunter.pvp",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Scatter Shot an Undead when you need them locked down** → they can't use Will of the Forsaken while Scatter Shotted.",
+   "pool": "CLASSES.Hunter.pvp",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Frost Nova, then Ice Lance** → Ice Lance hits frozen targets for big damage.",
+   "pool": "CLASSES.Mage.leveling",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Learn Comprehension, the new minor tradeskill** → you can read the scrolls monsters drop.",
+   "pool": "CLASSES.Mage.leveling",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Plan smaller pulls than the old AoE kites** → Cone of Cold is shorter, so huge kite-pulls are riskier.",
+   "pool": "CLASSES.Mage.leveling",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Frostfire Bolt** at 40 counts as both Fire and Frost.",
+   "pool": "CLASSES.Mage.new",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "Arcane: **Arcane Blast** (11) and the new **Arcane Wrath** (16). Missile Barrage is now an early talent.",
+   "pool": "CLASSES.Mage.new",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "Cone of Cold lasts less time, to stop huge kite-pulls. Orc Mages are new.",
+   "pool": "CLASSES.Mage.new",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "Fire: **Heating Up** is Forever's Hot Streak; crits shorten your next Pyroblast.",
+   "pool": "CLASSES.Mage.new",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "Frost: **Ice Lance** (11) does 300% more to Frozen targets, on an 8-second cooldown shared with Fire Blast; **Fingers of Frost** makes targets count as Frozen.",
+   "pool": "CLASSES.Mage.new",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Root first, then Ice Lance on Fingers of Frost** → that combo is your burst window.",
+   "pool": "CLASSES.Mage.pvp",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Undead Mages: hold Will of the Forsaken for Warlock fears** → that's the fight you'll see most.",
+   "pool": "CLASSES.Mage.pvp",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "Mages went 4–12 vs other classes in the beta tournament finals, and all four lost in the same round.",
+   "pool": "CLASSES.Mage.pvp",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Bind Holy Strike as soon as you get it at 6** → you finally have a real button to press, not just auto-attack.",
+   "pool": "CLASSES.Paladin.leveling",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Judge on cooldown** → Judgement no longer eats your Seal, so there's no reason to save it.",
+   "pool": "CLASSES.Paladin.leveling",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Run Seal of Fury while soloing, not just tanking** → its absorb shield means fewer stops between pulls.",
+   "pool": "CLASSES.Paladin.leveling",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Holy Strike** at 6 and **Consecration** for everyone at 20.",
+   "pool": "CLASSES.Paladin.new",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Judgement no longer consumes your Seal.**",
+   "pool": "CLASSES.Paladin.new",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Seal of Fury** at 10: the tanking seal. Hits add Holy damage and an absorb shield; its Judgement taunts.",
+   "pool": "CLASSES.Paladin.new",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "Salvation and Mass Salvation are gone. Lay on Hands is a 20-minute cooldown.",
+   "pool": "CLASSES.Paladin.new",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "Seal twisting now comes from the Ret talent **Twist of Light**, not baseline.",
+   "pool": "CLASSES.Paladin.new",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Save Will of the Forsaken (Undead) for a Fear, Charm or Sleep** → breaking a Warlock's Fear is the trade that wins duels.",
+   "pool": "CLASSES.Paladin.pvp",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Try a shockadin build if you want burst** → Holy Shock is a 21-point talent on a 10-second cooldown now.",
+   "pool": "CLASSES.Paladin.pvp",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "Paladins went 16–13 vs other classes in the beta tournament finals, with four undefeated qualifiers.",
+   "pool": "CLASSES.Paladin.pvp",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Fade the moment a dungeon pull turns on you** → its threat drop is doubled now.",
+   "pool": "CLASSES.Priest.leveling",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Level as Shadow and stay in Shadowform** → Shadow spells cost half the mana, so you drink far less.",
+   "pool": "CLASSES.Priest.leveling",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Stack Renews with other Priests** → Renew from several Priests can sit on one target now.",
+   "pool": "CLASSES.Priest.leveling",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Divine Spirit** baseline at 30 and **Shadow Word: Death** at 32 (costs you 30% of your max health if it doesn't kill).",
+   "pool": "CLASSES.Priest.new",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Fear Ward** and **Devouring Plague** for every Priest at 20, whatever your race.",
+   "pool": "CLASSES.Priest.new",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "New signatures: Penance (Discipline), Prayer of Mending (Holy), Vampiric Embrace (Shadow, 16).",
+   "pool": "CLASSES.Priest.new",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "Shadowform halves Shadow spell mana costs and doubles their crit bonus.",
+   "pool": "CLASSES.Priest.new",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "Undead get **Dark Sacrifice** at 20: turn health into mana over time.",
+   "pool": "CLASSES.Priest.new",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Fear Ward yourself before engaging a Warlock** → every Priest has it now, and Warlocks won the beta tournament.",
+   "pool": "CLASSES.Priest.pvp",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Only Shadow Word: Death when it will kill** → it's an instant finisher, but it costs you if they live.",
+   "pool": "CLASSES.Priest.pvp",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "Priests went 9–12 vs other classes in the beta tournament finals.",
+   "pool": "CLASSES.Priest.pvp",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Don't pass on a good axe** → Hack and Slash gives axes a chance at an extra attack, like swords.",
+   "pool": "CLASSES.Rogue.leveling",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Run poisons and a Sharpening Stone together** → they stack now, so it's free damage.",
+   "pool": "CLASSES.Rogue.leveling",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Sap and sneak past packs you don't need** → you skip fights that give little XP and keep moving.",
+   "pool": "CLASSES.Rogue.leveling",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Sap no longer breaks Stealth.**",
+   "pool": "CLASSES.Rogue.new",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "Distract also lowers nearby enemies' stealth detection for 10 seconds.",
+   "pool": "CLASSES.Rogue.new",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "New signatures: **Mutilate** and **Venom** (Assassination), **Thousand Cuts** (Subtlety).",
+   "pool": "CLASSES.Rogue.new",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "Poisons get more charges and **stack with Sharpening Stones** and other temporary enchants.",
+   "pool": "CLASSES.Rogue.new",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "Rogues can use **one-handed axes**. Hack and Slash replaces the old weapon specializations.",
+   "pool": "CLASSES.Rogue.new",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Sap the healer, then stay stealthed** → you pick the fight and the target.",
+   "pool": "CLASSES.Rogue.pvp",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Use Distract only when you're ready to commit** → it lowers stealth detection but tells nearby players a Rogue is around.",
+   "pool": "CLASSES.Rogue.pvp",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "Rogues went 5–11 vs other classes in the beta tournament finals.",
+   "pool": "CLASSES.Rogue.pvp",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Imbue your weapon once when you log in** → imbues last an hour now, not 5 minutes.",
+   "pool": "CLASSES.Shaman.leveling",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Pair Rockbiter with Spirit Weapons as Enhancement** → you can off-tank small groups.",
+   "pool": "CLASSES.Shaman.leveling",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Set up a Call of the Elements preset at 20** → one cast drops all four totems.",
+   "pool": "CLASSES.Shaman.leveling",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Call of the Elements** at 20: preset four totems and drop them all in one 3-second cast.",
+   "pool": "CLASSES.Shaman.new",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Totemic Call** (was Totemic Projection) pulls all your totems to you, on a 30-second cooldown.",
+   "pool": "CLASSES.Shaman.new",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "Lava Burst was cut before launch: **Call of Thunder** (+5% crit on Lightning Bolt and Chain Lightning) takes its spot, and Elemental Mastery is now **Lightning Mastery**. Also new: Maelstrom Weapon (Enhancement), Riptide (Restoration, healing over time only, 12-second cooldown).",
+   "pool": "CLASSES.Shaman.new",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "Totems: 1-second global cooldown, and buff totems last 5 minutes.",
+   "pool": "CLASSES.Shaman.new",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "Weapon imbues last **60 minutes** and stack with stones and oils. Windfury Totem is a party buff.",
+   "pool": "CLASSES.Shaman.new",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Pull your totems to you with Totemic Call mid-fight** → keep them on the fight instead of re-dropping them (30-second cooldown).",
+   "pool": "CLASSES.Shaman.pvp",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Take Earthbound (Elemental, 16)** → Earthbind Totem roots nearby enemies for 5 seconds.",
+   "pool": "CLASSES.Shaman.pvp",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "Shamans went 19–11 vs other classes in the beta tournament finals and took 3rd and 4th.",
+   "pool": "CLASSES.Shaman.pvp",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Finish low targets with Drain Soul** → the kill gives you a Soul Shard; damage ticks alone rarely do since launch tuning.",
+   "pool": "CLASSES.Warlock.leveling",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Grab your free mount at 40 from Strahad Farsan in Ratchet** → save the gold for training and gear.",
+   "pool": "CLASSES.Warlock.leveling",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Stack some Spirit** → Life Tap scales with it, so you sit to drink less.",
+   "pool": "CLASSES.Warlock.leveling",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Pets scale with your stats**, but launch tuning cut pet health to 2 per point of your Stamina (was 7.5). A Nov 6 hotfix gave the Voidwalker about 40 more base health.",
+   "pool": "CLASSES.Warlock.new",
+   "source": "https://us.forums.blizzard.com/en/wow/t/2403040",
+   "added": null,
+   "verified": "2026-11-09",
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Soul Link** is a 21-point talent; **Demonic Pact** (31) keeps Demonic Sacrifice when you swap pets.",
+   "pool": "CLASSES.Warlock.new",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "Curse of Agony and Curse of Doom are now **Banes**: one Bane per Warlock per target.",
+   "pool": "CLASSES.Warlock.new",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "Firestone and Spellstone are weapon imbues that stack with Wizard Oil.",
+   "pool": "CLASSES.Warlock.new",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "New signatures: Wrack (Affliction, 31), Bane of Havoc (21) and Incinerate (31) in Destruction.",
+   "pool": "CLASSES.Warlock.new",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Plan your fight around Fear getting answered** → Undead Will of the Forsaken it and every Priest has Fear Ward, so don't open with it.",
+   "pool": "CLASSES.Warlock.pvp",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "Warlocks went 26–7 vs other classes in the beta tournament finals and took 1st and 2nd. That was level-30 dueling; at 60, more trinkets and Fear answers will change things.",
+   "pool": "CLASSES.Warlock.pvp",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Charge in Battle Stance, then swap to whatever the fight needs** → Tactical Mastery keeps 10 Rage, so swapping no longer resets you.",
+   "pool": "CLASSES.Warrior.leveling",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Keep Rend and Thunder Clap in your rotation** → both scale with Attack Power now, so they get better as your gear does.",
+   "pool": "CLASSES.Warrior.leveling",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Victory Rush right after every kill** → a free 10% heal each fight, so you stop to eat far less.",
+   "pool": "CLASSES.Warrior.leveling",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Tactical Mastery** is baseline at 14: keep 10 Rage when you swap stances.",
+   "pool": "CLASSES.Warrior.new",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Victory Rush** at 20: after a kill, an instant hit that heals 10% of your max health.",
+   "pool": "CLASSES.Warrior.new",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "Bloodthirst no longer heals. It gives 10% movement speed instead.",
+   "pool": "CLASSES.Warrior.new",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "Rage from hits ignores armor and shields, and crits give 75% more Rage.",
+   "pool": "CLASSES.Warrior.new",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "Thunder Clap works in Defensive Stance; Rend and Thunder Clap now scale with Attack Power.",
+   "pool": "CLASSES.Warrior.new",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Hunt mounted players with Spearing Strike (Arms)** → it dismounts them and hits for double damage on riders.",
+   "pool": "CLASSES.Warrior.pvp",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Queue battlegrounds with a healer on your hip** → in the level-30 beta duels, warriors struggled against kiting classes on their own.",
+   "pool": "CLASSES.Warrior.pvp",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Click every flight master you pass** → long flights only work once you've unlocked the stops in between.",
+   "pool": "DEEP_DIVES.0",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Do \"The Great Outdoors\" around level 5** → camping and campfire buffs.",
+   "pool": "DEEP_DIVES.0",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Pick two gathering professions, like Herbalism and Mining** → they pay for your level-40 mount, about 100 gold.",
+   "pool": "DEEP_DIVES.0",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Take the starter profession quest** → it hands you Mining, Skinning or Herbalism plus 2 free skill points, a head start on your mount gold.",
+   "pool": "DEEP_DIVES.0",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Visit your class trainer every couple of levels** → new spells are easy to miss.",
+   "pool": "DEEP_DIVES.0",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Group with strangers hunting the same mobs** → only the first group to tag gets credit, so groups level faster than solo racers.",
+   "pool": "DEEP_DIVES.1",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Invite your friends before you leave the starting area** → groups land on the same layer, so you can actually see each other.",
+   "pool": "DEEP_DIVES.1",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Learn First Aid in your first few levels** → bandages from the cloth you're already looting cut your downtime between pulls, on any class.",
+   "pool": "DEEP_DIVES.1",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Pre-install tonight from the Battle.net game version menu** → you're not stuck downloading at 5 PM.",
+   "pool": "DEEP_DIVES.1",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Set your hearthstone at a hub, take every flight path, and learn Cooking** → faster travel and campfires from day one.",
+   "pool": "DEEP_DIVES.1",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Mages** went 4–12 on finals day, after a week of forum calls to nerf them. Hype isn't results.",
+   "pool": "DEEP_DIVES.10",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Pick your class for fun first.** No arena is announced; Forever PvP is battlegrounds and world PvP.",
+   "pool": "DEEP_DIVES.10",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Shamans** were the other standout: 19–11 and both 3rd and 4th place.",
+   "pool": "DEEP_DIVES.10",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Warlocks:** 26–7 in duels vs other classes. Soul Link at 21 points plus pet scaling made them hard to kill at 30. Launch tuning cut pet health to 2 per point of Stamina (was 7.5).",
+   "pool": "DEEP_DIVES.10",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Who:** 36 finalists, top 4 of each class after six Swiss rounds with 1,380 players.",
+   "pool": "DEEP_DIVES.10",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Why it may not hold at 60:** more trinkets and Fear answers, damage outscaling healing, and BGs where nobody is forced to stand and duel.",
+   "pool": "DEEP_DIVES.10",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Lost?** Ask any guard: it marks the bank, trainers and more on your map.",
+   "pool": "DEEP_DIVES.11",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**No mount until 40.** Budget about 100g for Apprentice Riding plus your first mount. Skip trainer ranks you won't use to save up.",
+   "pool": "DEEP_DIVES.11",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Other continents:** zeppelins and boats only, unless a Mage or Warlock helps.",
+   "pool": "DEEP_DIVES.11",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Shamans and Druids** are the only classes with a travel form before 40.",
+   "pool": "DEEP_DIVES.11",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Travel order:** hearthstone > Mage portal / Warlock summon > flight path > zeppelin. No modern-style portal rooms.",
+   "pool": "DEEP_DIVES.11",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Chase the Hyjal Summit legendary** → the 20-player raid drops Forever's first legendary weapon.",
+   "pool": "DEEP_DIVES.2",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Get Honored with your home faction** → 10% off riding and mounts. Add the Bartering Legacy talent for up to another 10% off mounts.",
+   "pool": "DEEP_DIVES.2",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Have an Alchemist and an Herbalist in your group** → steady potions are what win early raids.",
+   "pool": "DEEP_DIVES.2",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Play Warlock or Horde Paladin for a free mount** → Warlocks get a level-40 quest from Strahad Farsan in Ratchet, and Horde Paladins have their own.",
+   "pool": "DEEP_DIVES.2",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Save 1,000 gold by 60** → that's Journeyman Riding, and epic mounts are 200 gold each.",
+   "pool": "DEEP_DIVES.2",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Use camp buffs to cover missing classes** → they don't stack with matching class buffs, but they fill gaps.",
+   "pool": "DEEP_DIVES.2",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Camp with friends** → each player adds one item, so a group fire stacks more buffs.",
+   "pool": "DEEP_DIVES.3",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Do \"The Great Outdoors\" around level 5 and learn Cooking** → you unlock campfires, the base for every camp buff.",
+   "pool": "DEEP_DIVES.3",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Eat Well Fed food before a grind** → +5% kill XP for about 15 minutes.",
+   "pool": "DEEP_DIVES.3",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Grab a Leatherworking Camp Tent** → a 1-hour rested-XP buff that survives death.",
+   "pool": "DEEP_DIVES.3",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Level Cooking to 90, then 200** → your campfire holds 5, then 10 camp items instead of 3.",
+   "pool": "DEEP_DIVES.3",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Log out on a Cozy Sleeping Bag** → it counts as a rested area, so you earn rested XP while offline, which doubles your kill XP when you're back.",
+   "pool": "DEEP_DIVES.3",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Aim for rank 2 first** → that's the PvP trinket. Later ranks unlock cloaks (3), a necklace (4), mounts (11) and epic weapons (14).",
+   "pool": "DEEP_DIVES.4",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Hold bases, then carry the center flag to one you own** → the four bases earn steady points, the flag scores bonus points, and first to 2,000 wins.",
+   "pool": "DEEP_DIVES.4",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Play a few games every week instead of marathons** → Rank Points have a weekly cap, so consistency beats grinding. Weekly tasks add bonus Honor, Rank Points and Legacy Points.",
+   "pool": "DEEP_DIVES.4",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Play whichever battleground you enjoy** → Honor is normalized across battlegrounds, so there's no penalty for skipping Alterac Valley.",
+   "pool": "DEEP_DIVES.4",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Queue from the Darkspear Raiders base at Merchant Coast** → there's a portal straight into Darkspear Islands. Battlemasters in the capitals and the Barrens work too.",
+   "pool": "DEEP_DIVES.4",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Turn in Marks of Honor for Darkspear reputation** → it unlocks vendor trinkets, rings, cloaks, weapons and armor, and Exalted opens a tabard questline.",
+   "pool": "DEEP_DIVES.4",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Buy your mount from Genn Fairweather on Zephras Isle** → Galestriders are sold there, at Fairweather Stables.",
+   "pool": "DEEP_DIVES.5",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Get the Skyborne Heroic Pack or higher** → it's required to play the race.",
+   "pool": "DEEP_DIVES.5",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Pick Skyborne for a mobile character** → Wind Blessed gives 2% haste, Walk on Air is on a 90-second cooldown, and Skysight and Read Leyline can be cast while moving.",
+   "pool": "DEEP_DIVES.5",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Roll Skyborne on Horde if you want Shaman** → Horde Skyborne work with the Earthen Ring, which unlocks Shaman for them.",
+   "pool": "DEEP_DIVES.5",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Try a Skyborne Druid** → you get druid forms built just for the race.",
+   "pool": "DEEP_DIVES.5",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Bring one tank, one healer and three damage dealers, and talk before you pull** → a 10-second plan beats a 10-minute run back from the graveyard.",
+   "pool": "DEEP_DIVES.6",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Camp a night at Krol'dok Stronghold (40–55)** → it's outdoors, it changes at night when the cultists start chanting, and the wide level range keeps it useful for a long time.",
+   "pool": "DEEP_DIVES.6",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Farm Blackmaw Hold and Shaper's Terrace at 55–60** → they're your best gear sources before Dec 9 raids.",
+   "pool": "DEEP_DIVES.6",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Go see Alcaz Prison (48–53)** → it's enterable for the first time ever, Defias against naga, in the prison where King Varian was said to be held.",
+   "pool": "DEEP_DIVES.6",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Group with people within a few levels of you** → higher-level members reduce everyone's kill XP.",
+   "pool": "DEEP_DIVES.6",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Travel to Hall of Thanes as a group** → Horde have to sneak in under Ironforge, through Alliance territory.",
+   "pool": "DEEP_DIVES.6",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Explore Shen'dralas** → the ruins between Mulgore and Desolace are finally open, with links into Maraudon and Razorfen Downs.",
+   "pool": "DEEP_DIVES.7",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Head to Riverglades around 35** → 150+ new quests on the Eastern Kingdoms coast and the outdoor dungeon Krol'dok Stronghold, so you skip the classic mid-level slump.",
+   "pool": "DEEP_DIVES.7",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Level a Skyborne on Zephras Isle (1–12)** → a whole starting story of Highborne exiles and wind spirits before you reach the main continents.",
+   "pool": "DEEP_DIVES.7",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Set up camp in Mount Hyjal at 60** → it holds Darkwhisper Gorge, the Hyjal Summit raid, and an entrance to Barrow Deeps, so it'll be your endgame home.",
+   "pool": "DEEP_DIVES.7",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Be online at 3 PM Central on Oct 27** → the best names go first, and it's first come, first served. The bot posts a heads-up 30 minutes before.",
+   "pool": "DEEP_DIVES.8",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**If a first name is taken, change the surname, not the spelling** → names are first + last and unique per region, and \"Grommash Ashfall\" ages better than \"Grommashh.\"",
+   "pool": "DEEP_DIVES.8",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Reserve on the account you'll actually play** → the reservation is tied to the Battle.net account that bought the Skyborne pack.",
+   "pool": "DEEP_DIVES.8",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Spend your 3 names on launch characters** → the 3 are shared across all rulesets, so two PvP names leaves just one for Normal or Roleplay.",
+   "pool": "DEEP_DIVES.8",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Use one surname across your roster** → only the full name has to be unique, so a shared \"family name\" is easy to claim and makes your alts recognizable.",
+   "pool": "DEEP_DIVES.8",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Don't count on a transfer to fix a mistake** → there's no cross-ruleset grouping and no character transfers at launch, so double-check the ruleset at character creation.",
+   "pool": "DEEP_DIVES.9",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**If a friend \"vanishes\" in a busy city, invite them** → the world is split into layers when crowded, and grouping pulls you onto the same one.",
+   "pool": "DEEP_DIVES.9",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Level an alt on Normal or Roleplay guilt-free** → collections and Legacy points are shared across rulesets (except Hardcore), so that time still powers up your PvP account.",
+   "pool": "DEEP_DIVES.9",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Locked out of a faction on PvP? Try again later instead of rerolling** → Blizzard recalculates the balance through the day, and the lock only ever blocks new characters, never ones you already have.",
+   "pool": "DEEP_DIVES.9",
+   "source": "https://egamers.io/?p=128162 ; https://games.gg/world-of-warcraft/guides/wow-forever-this-faction-is-currently-unavailable-what-it-means/",
+   "added": null,
+   "verified": "2026-11-09",
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Treat Hardcore as a free second shot when it arrives** → a Hardcore character that dies can transfer to another ruleset, PvP included, so a death isn't the end of that character.",
+   "pool": "DEEP_DIVES.9",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Add items:** every profession crafts three camp items. Each character can place one per camp (then waits an hour), and anyone can add to the same fire.",
+   "pool": "DEEP_DIVES.camping",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Cozy Sleeping Bag:** earned through a quest chain across both continents. It stacks with camp buffs, and you can eat cooked food on it for even more XP.",
+   "pool": "DEEP_DIVES.camping",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Get the buff:** sit within range for at least a minute. Buffs from different items combine into one Camp Benefits buff.",
+   "pool": "DEEP_DIVES.camping",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Light a fire:** Cooking plus Flint and Tinder and wood. Basic Campfire (Cooking 1, 3 items) · Journeyman (Cooking 140, 5 items) · Expert (Cooking 220, 10 items). Each burns for about 10 minutes.",
+   "pool": "DEEP_DIVES.camping",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**What they do:** stat buffs a bit weaker than class buffs (they don't stack with them), plus utility: the Leatherworking Camp Tent gives rested XP, Engineering bots sell reagents and repair, and Herbalism and Mining can grow nodes.",
+   "pool": "DEEP_DIVES.camping",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Alchemy + Herbalism** is the classic gold-making pair.",
+   "pool": "DEEP_DIVES.gold",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Discounts:** Honored with your home faction saves 10% on riding and mounts.",
+   "pool": "DEEP_DIVES.gold",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Gathering pays:** Herbalism, Mining and Skinning sell steadily early on.",
+   "pool": "DEEP_DIVES.gold",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Target:** about 100g by 40 for your first mount, 1,000g by 60 for Journeyman Riding.",
+   "pool": "DEEP_DIVES.gold",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Hardcore:** points earned there count everywhere, but not the other way around. PvP challenges are swapped for Hardcore-only ones.",
+   "pool": "DEEP_DIVES.legacy",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Rewards:** points also unlock account-wide cosmetics. At launch: a Replica Ironforge Air Rifle toy, a Spectral Bear Cub pet, a Spectral Bear Tabard and the Reins of the Spectral Bear mount.",
+   "pool": "DEEP_DIVES.legacy",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Spending:** each character can spend up to 16 points at launch across three trees: Professions, Adventure and Resourcefulness.",
+   "pool": "DEEP_DIVES.legacy",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Unlock:** your first point, usually at level 25. 150 in a crafting profession or exploring the entire world map also counts. Open it with **Y**.",
+   "pool": "DEEP_DIVES.legacy",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**What it is:** Forever's replacement for achievements. 65 challenges, each worth one Legacy Point, earned across your whole Battle.net account.",
+   "pool": "DEEP_DIVES.legacy",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Where points come from:** Classes 27 (levels 25, 45 and 60 on all nine) · Tradeskills 18 · PvP 12 · Dungeons 3 · Raids 3 · Adventure 2.",
+   "pool": "DEEP_DIVES.legacy",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Dungeons:** kill XP inside dungeons went up 50% on Nov 8, so repeat runs pay better than they did at launch.",
+   "pool": "DEEP_DIVES.leveling",
+   "source": "Kaivax blue post, Dungeon Enemy XP Increased - Nov 8 (via timesaver.gg server-status; Wowhead and MMO-Champion blue trackers)",
+   "added": null,
+   "verified": "2026-11-09",
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Explore:** new areas give a little XP.",
+   "pool": "DEEP_DIVES.leveling",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Gray quests and mobs** (5+ levels below) give no XP; quests over 5 levels below lose 10–20% per level.",
+   "pool": "DEEP_DIVES.leveling",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Grouping:** big parties split kill XP; quest turn-ins are never reduced.",
+   "pool": "DEEP_DIVES.leveling",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Rested XP** doubles kill XP. Log out in inns, cities or on a Cozy Sleeping Bag.",
+   "pool": "DEEP_DIVES.leveling",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Well Fed** food adds +5% kill XP; the Camp Tent adds a rested buff that survives death.",
+   "pool": "DEEP_DIVES.leveling",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Caps:** Apprentice 75 · Journeyman 150 (lvl 10) · Expert 225 (lvl 20) · Artisan 300 (lvl 35).",
+   "pool": "DEEP_DIVES.professions",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**New UI:** a profession window (K), recipe search and tracking, and a separate reagent bag slot.",
+   "pool": "DEEP_DIVES.professions",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**No passive bonuses.** Value comes from crafts and camp items, which unlock at skill 20, 140 and 300.",
+   "pool": "DEEP_DIVES.professions",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Pairs:** Alch + Herb, BS + Mining, Eng + Mining (PvP), Ench + Tailoring, LW + Skinning.",
+   "pool": "DEEP_DIVES.professions",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Tauren Cultivation** lets you pick herbs without Herbalism, or doubles yield with it.",
+   "pool": "DEEP_DIVES.professions",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Two primaries** plus all three secondaries (Cooking, First Aid, Fishing). Secondaries can't be unlearned.",
+   "pool": "DEEP_DIVES.professions",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Darkspear Islands:** bases first, then flag to a base you own. First to 2,000.",
+   "pool": "DEEP_DIVES.pvp",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Honor** buys blue and epic PvP sets; it's normalized across BGs, and holiday-week BGs give extra.",
+   "pool": "DEEP_DIVES.pvp",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Rank Points** have a weekly cap, so steady play beats marathons. Ranks reset each season.",
+   "pool": "DEEP_DIVES.pvp",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Weekly tasks** give bonus Honor, Rank Points, and sometimes a Legacy Point.",
+   "pool": "DEEP_DIVES.pvp",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Barrow Deeps** has three entrances: Mount Hyjal, Winterspring and Blackmaw Hold. Use whichever is closest to your group.",
+   "pool": "DEEP_DIVES.raids",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Bosses in the client:** Barrow Deeps has 8 (including the Deepscar Matriarch and Sonya Darkhallow); Hyjal Summit has 13 (including the Ancient of Decay, the Council of Thorns and the Wild King).",
+   "pool": "DEEP_DIVES.raids",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Hyjal Summit** is set after Archimonde's defeat and drops Forever's first legendary weapon.",
+   "pool": "DEEP_DIVES.raids",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Legacy Points:** clearing Onyxia, all 13 Hyjal Summit bosses and all 8 Barrow Deeps bosses each earn one.",
+   "pool": "DEEP_DIVES.raids",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Onyxia's Lair** keeps its classic attunement: the **Drakefire Amulet** quest chain. Start it before raid night, not on it.",
+   "pool": "DEEP_DIVES.raids",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Three raids open Dec 9:** Barrow Deeps (10 players), Hyjal Summit (20) and the returning Onyxia's Lair (40).",
+   "pool": "DEEP_DIVES.raids",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Epic at 60:** 1,000g Journeyman Riding, 200g per epic mount, +100% speed.",
+   "pool": "DEEP_DIVES.travel",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Free mounts:** Warlocks via Strahad Farsan in Ratchet; Horde Paladins have their own quest.",
+   "pool": "DEEP_DIVES.travel",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Horde vendors:** wolves in Orgrimmar, raptors in Sen'jin, kodos in Bloodhoof, skeletal horses in Brill.",
+   "pool": "DEEP_DIVES.travel",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Mount at 40:** 100g for Apprentice Riding with your first mount; extra colors 20g.",
+   "pool": "DEEP_DIVES.travel",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "17 of the 36 Forever Open finalists were Undead. Will of the Forsaken vs. Fear was huge.",
+   "pool": "DID_YOU_KNOW.horde",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "Cannibalize restores mana as well as health in Forever.",
+   "pool": "DID_YOU_KNOW.horde",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "In Darkspear Islands, the Horde fights alongside the Darkspear trolls; the Alliance shows up as the Theramore Expeditionary Force.",
+   "pool": "DID_YOU_KNOW.horde",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "Orc Command is back: +5% pet damage for Hunters and Warlocks. Blood Fury is on a 2-minute cooldown.",
+   "pool": "DID_YOU_KNOW.horde",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "Tauren Plainsrunning lost its mounted speed in the final pass, but now builds to +60% on foot.",
+   "pool": "DID_YOU_KNOW.horde",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "Troll Berserking now lasts 15 seconds, up from 10.",
+   "pool": "DID_YOU_KNOW.horde",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "Undead Touch of the Grave now has a 15-second internal cooldown, down from 25.",
+   "pool": "DID_YOU_KNOW.horde",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "Will of the Forsaken breaks Charm, Fear and Sleep, but it no longer leaves you immune afterward.",
+   "pool": "DID_YOU_KNOW.horde",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "Campfires can't hurt you below level 5. Blizzard changed that during the beta.",
+   "pool": "DID_YOU_KNOW.new",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "Choose Classic Mode on first launch and transmog turns off automatically. You still collect appearances.",
+   "pool": "DID_YOU_KNOW.new",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "Dalaran sat sealed under a violet dome for the entire original game. Forever finally lets you inside, through the sewers.",
+   "pool": "DID_YOU_KNOW.new",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "Dual specialization unlocks at level 40, the same level as your first mount.",
+   "pool": "DID_YOU_KNOW.new",
+   "source": "Blizzard class deep dive Oct 7 via https://kami-labs.fr/en/wow-forever/wow-forever-niveau-40-monture-double-specialisation/ ; https://buyboost.com/news/wow-forever/wow-forever-dual-spec",
+   "added": "2026-11-09",
+   "verified": "2026-11-09",
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "Every race in Forever has two active and two passive racial abilities.",
+   "pool": "DID_YOU_KNOW.new",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "Exploring the entire world map earns a Legacy Point.",
+   "pool": "DID_YOU_KNOW.new",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "Forever is set before Molten Core opened, which is why the original raids are still locked.",
+   "pool": "DID_YOU_KNOW.new",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "Forever replaces achievements with the Legacy System: 65 challenges, each worth one account-wide point.",
+   "pool": "DID_YOU_KNOW.new",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "Forever's level cap is a permanent 60. New updates add zones, dungeons and raids instead of levels.",
+   "pool": "DID_YOU_KNOW.new",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "Gold is tight early. In the beta, three PC Gamer writers earned about 2.5 gold together in their first two hours.",
+   "pool": "DID_YOU_KNOW.new",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "In the original game, King Varian Wrynn was missing for years. In Forever, you'll find him as a prisoner in the new Alcaz Prison dungeon.",
+   "pool": "DID_YOU_KNOW.new",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "Mount Hyjal was blocked off in the original game. Players spent years sneaking in through map exploits just to look around. In Forever, it's the endgame zone.",
+   "pool": "DID_YOU_KNOW.new",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "Original 2004 WoW launched with zero battlegrounds. Forever launches with a brand-new 15v15 one.",
+   "pool": "DID_YOU_KNOW.new",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "Original WoW launched on Nov 23, 2004. Forever launches on Nov 4, 2026, almost 22 years later.",
+   "pool": "DID_YOU_KNOW.new",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "Shen'dralas is a new zone between Mulgore and Desolace, with dozens of new quests.",
+   "pool": "DID_YOU_KNOW.new",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "Skyborne start on Zephras Isle in Skywall, one of the elemental planes.",
+   "pool": "DID_YOU_KNOW.new",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "The Drowned City has no door: you dive underwater off the Stranglethorn coast, west of Grom'gol, to find it.",
+   "pool": "DID_YOU_KNOW.new",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "There are no flying mounts and no level scaling. Zones stay as dangerous as they were built.",
+   "pool": "DID_YOU_KNOW.new",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "Undead Paladins and Dwarf Shamans are playable. In 2004, those classes belonged only to the other faction.",
+   "pool": "DID_YOU_KNOW.new",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "You can collect high-level appearances early, but you can't wear them as transmog until level 60.",
+   "pool": "DID_YOU_KNOW.new",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "You can earn Legacy Points without ever fighting: maxing crafting professions and exploring the whole world map both count.",
+   "pool": "DID_YOU_KNOW.new",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "Your regular WoW subscription already includes Forever. No separate purchase.",
+   "pool": "DID_YOU_KNOW.new",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "A Hardcore character who dies can transfer to another ruleset, even PvP.",
+   "pool": "DID_YOU_KNOW.vet",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "About 20 zombie plague spells turned up in the game files on Oct 30. Blizzard hasn't announced an event.",
+   "pool": "DID_YOU_KNOW.vet",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "Advanced Leatherworking recipes need a Tanning Rack, the Leatherworker's tier 2 camp item.",
+   "pool": "DID_YOU_KNOW.vet",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "All four Mage finalists in the Forever Open lost in the same round and split the Mage prize, about $1,389 each.",
+   "pool": "DID_YOU_KNOW.vet",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "Alliance Skyborne are the High Order. Horde Skyborne are the Windshapers.",
+   "pool": "DID_YOU_KNOW.vet",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "Barrow Deeps has three entrances: Mount Hyjal, Winterspring and Blackmaw Hold.",
+   "pool": "DID_YOU_KNOW.vet",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "Barrow Deeps, once Illidan's prison, has 8 bosses. Names in the client include the Deepscar Matriarch and Sonya Darkhallow.",
+   "pool": "DID_YOU_KNOW.vet",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "Battle Shout, Trueshot Aura and the Shaman buff totems all reach the whole raid in Forever.",
+   "pool": "DID_YOU_KNOW.vet",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "Battlegrounds are shared across rulesets, except Hardcore.",
+   "pool": "DID_YOU_KNOW.vet",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "Blackmaw Hold is a furbolg city hidden behind a sealed gate in Azshara, and the path inside may lead even deeper.",
+   "pool": "DID_YOU_KNOW.vet",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "Blizzard aims for an ordinary monster to take a solo player about 10 to 15 seconds to kill.",
+   "pool": "DID_YOU_KNOW.vet",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "Blizzard batches Forever's class balance changes on Tuesdays. The first round, Nov 10, covers Hunter and Warlock pets, Affliction and Enhancement.",
+   "pool": "DID_YOU_KNOW.vet",
+   "source": "Kaivax, Class Tuning Incoming - November 10 (us forums thread 2404092) via https://timesaver.gg/blog/wow-forever-class-changes-november-10",
+   "added": "2026-11-09",
+   "verified": "2026-11-09",
+   "expires": "2026-11-16",
+   "note": "Re-check after the Nov 10 hotfixes; replace with what actually changed."
+  },
+  {
+   "text": "Blizzard built a dueling arena in Hyjal Crater for Forever Open finals day, even though it was a community event.",
+   "pool": "DID_YOU_KNOW.vet",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "Blizzard dev Aggrend said the beta found more problems in six hours than six months of internal testing.",
+   "pool": "DID_YOU_KNOW.vet",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "Camp items come in three tiers per profession, at skill 20, 140 and 300.",
+   "pool": "DID_YOU_KNOW.vet",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "Cooks can upgrade campfires to hold 5 or 10 camp items.",
+   "pool": "DID_YOU_KNOW.vet",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "Dalaran's dungeon has several paths, so each group picks its own route through the city.",
+   "pool": "DID_YOU_KNOW.vet",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "Dalaran's starting quest depends on your faction: Southshore for Alliance, Tarren Mill for Horde. Those two towns were the site of a famous world PvP rivalry in the original game.",
+   "pool": "DID_YOU_KNOW.vet",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "Darkspear Islands is for levels 30–60, and the first team to 2,000 points wins.",
+   "pool": "DID_YOU_KNOW.vet",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "Darkspear Islands mixes Eye of the Storm's neutral flag with Arathi Basin–style capture points.",
+   "pool": "DID_YOU_KNOW.vet",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "Divine Spirit, Blessing of Kings and Improved Mark of the Wild are baseline in Forever. No talent points needed.",
+   "pool": "DID_YOU_KNOW.vet",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "Dwarves deal +5% damage to beasts, and Undead get a chance to drain health. Racials got a pass.",
+   "pool": "DID_YOU_KNOW.vet",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "Dwarves lost their crit racial in the final pass and got +1% hit instead.",
+   "pool": "DID_YOU_KNOW.vet",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "Each profession's top camp item is a full workstation, like the Fishing Hut or the Master Forge.",
+   "pool": "DID_YOU_KNOW.vet",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "Each side of Darkspear Islands has its own reputation: the Darkspear Raiders and the Theramore Expeditionary Force.",
+   "pool": "DID_YOU_KNOW.vet",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "Engineers can make a Stealthman 52 that lets any class stealth out of combat on a cooldown.",
+   "pool": "DID_YOU_KNOW.vet",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "First Aid's top camp item is a Plague Doctor's Laboratory.",
+   "pool": "DID_YOU_KNOW.vet",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "Forever adds over 600 new recipes, mostly using materials from the original game.",
+   "pool": "DID_YOU_KNOW.vet",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "Forever's 9 new dungeons span levels 13 to 60, so there's a new one to try at almost every stage of leveling.",
+   "pool": "DID_YOU_KNOW.vet",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "Forever's Hyjal is set after Archimonde's defeat, unlike the Burning Crusade raid that replays the battle.",
+   "pool": "DID_YOU_KNOW.vet",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "Forever's first new legendary is Taldramir, the Whispering Wood, a two-handed staff revealed an hour before launch.",
+   "pool": "DID_YOU_KNOW.vet",
+   "source": "https://www.warcrafttavern.com/forever/news/wow-forevers-first-legendary-weapon-revealed/ ; https://www.icy-veins.com/wow-forever/news/taldramir-the-whispering-wood-is-wow-forevers-first-exclusive-legendary-weapon/",
+   "added": "2026-11-09",
+   "verified": "2026-11-09",
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "Four days after launch, Blizzard raised kill XP in dungeons by 50% so repeat runs feel worth it.",
+   "pool": "DID_YOU_KNOW.vet",
+   "source": "https://timesaver.gg/tools/wow-forever/server-status (Kaivax blue post, Dungeon Enemy XP Increased - Nov 8; also Wowhead/MMO-Champion blue trackers)",
+   "added": "2026-11-09",
+   "verified": "2026-11-09",
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "Gnome Engineers have a racial that makes their gadgets backfire less.",
+   "pool": "DID_YOU_KNOW.vet",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "Green monsters give less XP in Forever than in Classic. Blizzard says it balances the new food and camp buffs.",
+   "pool": "DID_YOU_KNOW.vet",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "Hall of Thanes is the tomb of Ironforge's dwarven kings, and Dark Iron intruders have broken in.",
+   "pool": "DID_YOU_KNOW.vet",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "Hemet Nesingwary's Stranglethorn quests add a Master Hunter's Spellsword option for casters.",
+   "pool": "DID_YOU_KNOW.vet",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "Humans' Spirit racial doubled from 5% to 10% in the final racial pass.",
+   "pool": "DID_YOU_KNOW.vet",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "Hunters must stand still for half a second before Auto Shot fires. Wands work the same way.",
+   "pool": "DID_YOU_KNOW.vet",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "Hyjal Summit is a 20-player raid where Archimonde fell, and it drops Forever's first legendary weapon.",
+   "pool": "DID_YOU_KNOW.vet",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "Hyjal Summit's 13 bosses include the Ancient of Decay, the Council of Thorns and the Wild King, per names in the client.",
+   "pool": "DID_YOU_KNOW.vet",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "Ice Lance has an 8-second cooldown shared with Fire Blast, and Frost Blast is gone.",
+   "pool": "DID_YOU_KNOW.vet",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "Krol'dok Stronghold's ogres kidnap travelers on the road, and the chanting only starts after dark.",
+   "pool": "DID_YOU_KNOW.vet",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "Launch ships with nine new dungeons and over 1,000 new quests across 1–60.",
+   "pool": "DID_YOU_KNOW.vet",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "Lava Burst was cut right before launch. Call of Thunder (+5% crit on Lightning Bolt and Chain Lightning) took its spot, and Elemental Mastery became Lightning Mastery.",
+   "pool": "DID_YOU_KNOW.vet",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "Legacy Points are shared account-wide across rulesets, except Hardcore.",
+   "pool": "DID_YOU_KNOW.vet",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "Mages get a new Arcane Wrath talent that adds spell power equal to 5% of max mana.",
+   "pool": "DID_YOU_KNOW.vet",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "Mages have their own minor tradeskill, Comprehension, for reading scrolls that monsters drop.",
+   "pool": "DID_YOU_KNOW.vet",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "New crafting materials include Azerothium Bar, Legionite Bar and Torbernite.",
+   "pool": "DID_YOU_KNOW.vet",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "On the beta map, Riverglades' faction hubs are Rog'mar (Horde) and Farholde Keep (Alliance), held by the Brotherhood of the Horse.",
+   "pool": "DID_YOU_KNOW.vet",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "One of the account-wide Legacy rewards is a mount: the Reins of the Spectral Bear.",
+   "pool": "DID_YOU_KNOW.vet",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "Onyxia's Lair returns as a 40-player raid on Dec 9, with the classic Drakefire Amulet attunement.",
+   "pool": "DID_YOU_KNOW.vet",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "Paladins get Holy Strike at level 6 and baseline Consecration at 20, and Judgement no longer eats your Seal.",
+   "pool": "DID_YOU_KNOW.vet",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "Paladins get a new seal built for tanking, plus some group-healing talents.",
+   "pool": "DID_YOU_KNOW.vet",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "Paladins learn Righteous Fury at level 10, down from 16.",
+   "pool": "DID_YOU_KNOW.vet",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "Paladins still have no interrupt and no slow in Forever. Blizzard kept that weakness on purpose.",
+   "pool": "DID_YOU_KNOW.vet",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "Profession titles come from the Azeroth Commerce Authority (Alliance) and Durotar Supply and Logistics (Horde).",
+   "pool": "DID_YOU_KNOW.vet",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "PvP Rank 1 takes 750 Rank Points. Rank 14 takes 24,750.",
+   "pool": "DID_YOU_KNOW.vet",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "PvP Rank 11 unlocks mounts, and Rank 14 unlocks epic weapons.",
+   "pool": "DID_YOU_KNOW.vet",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "Raid tier sets for all nine classes turned up in the game files in September, each with alternate colors.",
+   "pool": "DID_YOU_KNOW.vet",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "Rank Points have a weekly cap. No more account-sharing to keep a rank.",
+   "pool": "DID_YOU_KNOW.vet",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "Reaching 60 takes 4,084,700 XP, the same total as Classic.",
+   "pool": "DID_YOU_KNOW.vet",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "Riverglades has the Bloodmaster's Ring, where you fight ogre brawlers.",
+   "pool": "DID_YOU_KNOW.vet",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "Riverglades is a 35–45 zone about everyday frontier life rather than world-ending stakes.",
+   "pool": "DID_YOU_KNOW.vet",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "Shaman totems now last 5 minutes, and weapon imbues last an hour.",
+   "pool": "DID_YOU_KNOW.vet",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "Shamans get three PvP gear sets in Forever: healer, melee and caster.",
+   "pool": "DID_YOU_KNOW.vet",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "Shaper's Terrace is a titan facility in Un'Goro, and its consoles run on power crystals you gather in the crater.",
+   "pool": "DID_YOU_KNOW.vet",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "Six race and class combos are new: Gnome Priest, Human Hunter, Dwarf Shaman, Orc Mage, Troll Warlock and Undead Paladin.",
+   "pool": "DID_YOU_KNOW.vet",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "Skyborne keep vanilla's asymmetry: Shaman only on Horde, Mage only on Alliance.",
+   "pool": "DID_YOU_KNOW.vet",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "Skyborne speak Darnassian.",
+   "pool": "DID_YOU_KNOW.vet",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "Soul Link moved from a 31-point to a 21-point talent, so it's live at level 30. Every Warlock finalist ran 21 in Demonology.",
+   "pool": "DID_YOU_KNOW.vet",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "Spell, melee and ranged hit are one stat in Forever, and so is crit.",
+   "pool": "DID_YOU_KNOW.vet",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "Spring 2027 brings two new raids (10 and 20 players), two new dungeons, a new zone and a legendary questline.",
+   "pool": "DID_YOU_KNOW.vet",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "Stoneform now cuts physical damage taken instead of adding armor.",
+   "pool": "DID_YOU_KNOW.vet",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "Taldramir's questline in the client has three stages and ties into Hyjal Summit, and it looks built for healers.",
+   "pool": "DID_YOU_KNOW.vet",
+   "source": "https://accountshark.net/blog/wow-forever-legendary-taldramir-whispering-wood-questline-datamine-pouch-of-violet-dust (Wowhead datamining)",
+   "added": "2026-11-09",
+   "verified": "2026-11-09",
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "Talent trees add a 16-point milestone talent between the classic 11, 21 and 31.",
+   "pool": "DID_YOU_KNOW.vet",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "Talent trees drop a lot of the boring +1% talents in favor of choices you actually feel.",
+   "pool": "DID_YOU_KNOW.vet",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "The Enchanting camp item is an Enchanted Lute, and its buff stands in for Mark of the Wild.",
+   "pool": "DID_YOU_KNOW.vet",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "The Forever Open grand final ended around 4:30 AM Paris time, hours past schedule.",
+   "pool": "DID_YOU_KNOW.vet",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "The Mor'ladim quest in Duskwood now also offers the Ladimore Heirloom Ring for spellcasters.",
+   "pool": "DID_YOU_KNOW.vet",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "The PvP ruleset uses faction balance systems similar to Season of Discovery.",
+   "pool": "DID_YOU_KNOW.vet",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "The Ruins of Lordaeron, the empty courtyard above the Undercity, are a full dungeon in Forever as the Forsaken try to reclaim them.",
+   "pool": "DID_YOU_KNOW.vet",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "The Skinning camp item is a Camp Chair: +2% crit, standing in for Moonkin Aura.",
+   "pool": "DID_YOU_KNOW.vet",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "The beta Black Market sold a Gift of Galloping: +10% mounted speed for 15 days, for 150 gold.",
+   "pool": "DID_YOU_KNOW.vet",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "The beta client holds over eight hours of music, including a remastered main theme and a new Skyborne theme.",
+   "pool": "DID_YOU_KNOW.vet",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "The beta client lets you bank up to 25,000 Honor, up from 15,000 earlier in the beta.",
+   "pool": "DID_YOU_KNOW.vet",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "The beta queue on day one passed 17,000 players.",
+   "pool": "DID_YOU_KNOW.vet",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "The collector's edition statue, a dwarf and a bear, is a nod to Hardcore and to November 2004.",
+   "pool": "DID_YOU_KNOW.vet",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "The rank track gives a tabard at Rank 1 and another at Rank 6, plus a battle standard at Rank 7.",
+   "pool": "DID_YOU_KNOW.vet",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "The roadmap has a mystery 'revamped iconic raid' in summer 2027.",
+   "pool": "DID_YOU_KNOW.vet",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "Tidal Charm and Whitemane's Chapeau come back reworked among hundreds of items with new effects.",
+   "pool": "DID_YOU_KNOW.vet",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "Tranquil Air Totem is gone, and Fire Nova is now a spell that erupts from your fire totem.",
+   "pool": "DID_YOU_KNOW.vet",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "Uncommon and rare dungeon drops unlock their look for every eligible player in the group, not just the winner.",
+   "pool": "DID_YOU_KNOW.vet",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "Vampiric Embrace is on a 30-second cooldown and can't be resisted anymore.",
+   "pool": "DID_YOU_KNOW.vet",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "You can enter Darkspear Islands through a portal at your faction's base: the Merchant Coast for the Horde, Northwatch for the Alliance.",
+   "pool": "DID_YOU_KNOW.vet",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "You can link a profession in chat to show off every recipe you know and what it needs.",
+   "pool": "DID_YOU_KNOW.vet",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Group up with people hunting the same mobs** → shared tags mean everyone gets credit instead of racing for kills in packed starting zones.",
+   "pool": "PRO_TIPS.0",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Quest with friends instead of having a higher-level friend kill things for you** → quest XP isn't reduced by grouping, but kill XP is.",
+   "pool": "PRO_TIPS.1",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "Undead vs a Warlock: save Will of the Forsaken for the Fear, not the first stun you see. It breaks Fear, Charm and Sleep, which is exactly what locks lean on.",
+   "pool": "PRO_TIPS.10",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "Set your hearthstone at a big quest hub like the Crossroads, not your starter inn, and click every flight master you pass. Long flights only work if you've unlocked the stops in between.",
+   "pool": "PRO_TIPS.11",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Start saving gold now, even while leveling** → 1,000g Journeyman Riding at 60 won't stall your gearing for Dec 9 raids.",
+   "pool": "PRO_TIPS.2",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Put down a Cozy Sleeping Bag before you log out in the field** → it counts as a rested area, so you keep earning rested XP overnight.",
+   "pool": "PRO_TIPS.3",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Capture bases first in Darkspear Islands, then run the flag to a base you hold** → steady points from the bases, plus a flag that actually scores instead of getting stuck.",
+   "pool": "PRO_TIPS.4",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Pick Skyborne if you want a Horde Shaman with built-in mobility** → Wind Blessed haste and Walk on Air on a 90-second cooldown, on a class the Horde already loves.",
+   "pool": "PRO_TIPS.5",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Run dungeons with people within a few levels of you** → kill XP in dungeons is 50% higher since Nov 8, and a high-level party member would cut it for everyone. Quest turn-ins stay full value either way.",
+   "pool": "PRO_TIPS.6",
+   "source": "Kaivax blue post, Dungeon Enemy XP Increased - Nov 8 (via timesaver.gg server-status; Wowhead and MMO-Champion blue trackers)",
+   "added": null,
+   "verified": "2026-11-09",
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Plan to head to Riverglades in your mid-30s** → 150+ fresh quests built for 35–45, right when the classic zones start running dry.",
+   "pool": "PRO_TIPS.7",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Pick one surname and use it for your whole roster** → names only have to be unique as a first + last pair, so a shared \"family name\" is easier to claim than a rare first name, and guildies can spot your alts at a glance.",
+   "pool": "PRO_TIPS.8",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Treat your first level 60 as an investment, even on an alt ruleset** → every 1–60 finish unlocks Legacy perks for all your alts, and Legacy is shared across Normal, PvP and Roleplay, so a Normal-ruleset character still powers up your PvP account.",
+   "pool": "PRO_TIPS.9",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Ask a city guard for directions** → they put a mark on your map for the bank, trainers, flight master and more.",
+   "pool": "TIPS.basics",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Don't judge gear by how it looks** → transmog is opt-in, so a player in starter-looking clothes might be wearing their best gear under it.",
+   "pool": "TIPS.basics",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Drag each new spell rank onto your action bar after training** → ranks are placed by hand, so it's easy to keep casting the weaker one.",
+   "pool": "TIPS.basics",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Follow the yellow arrows on your minimap** → they point at your active quest's objective, so you spend less time searching.",
+   "pool": "TIPS.basics",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Move your abilities onto keys around WASD early** → you'll be able to move and fight at the same time. `/keybinds` shows a starting layout for your class.",
+   "pool": "TIPS.basics",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Pick up two gathering professions from level 1 (Herbalism and Mining is a classic pair)** → you sell what you pick up along the way, and that's what pays for your mount at 40.",
+   "pool": "TIPS.basics",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Queue a battleground even when your team looks outmatched** → you earn Honor win or lose, and a win only adds more on top.",
+   "pool": "TIPS.basics",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Run your first dungeons with a guildmate who knows the route** → you'll learn the pulls and the loot rules without losing a group to a wipe.",
+   "pool": "TIPS.basics",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Set aside gold for training every couple of levels** → class trainers charge for every new spell and rank, and it adds up before 40.",
+   "pool": "TIPS.basics",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Set your hearthstone at the inn closest to where you'll quest next, not where you are** → your hearth back ends your night next to tomorrow's quests.",
+   "pool": "TIPS.basics",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Skip mobs with a gold dragon on their portrait unless you're grouped** → they're elites built for groups, and they're the most common early death.",
+   "pool": "TIPS.basics",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Spend your first talent points at 10, then check a guide before you hit 20** → Forever reworked the talent trees, so a build from the original game won't carry over.",
+   "pool": "TIPS.basics",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Start setting gold aside early for level 40** → riding plus your first mount costs about 100 gold, and that's the biggest purchase you'll make while leveling.",
+   "pool": "TIPS.basics",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Stay alert at every level on the PvP ruleset** → Blizzard has no protection planned for low-level players there.",
+   "pool": "TIPS.basics",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Turn on autoloot in the game settings** → you'll stop clicking every corpse twice.",
+   "pool": "TIPS.basics",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Visit your class trainer on every even level** → new ranks and spells come every couple of levels, and missing them is the most common reason a new character feels weak.",
+   "pool": "TIPS.basics",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Ask your Engineer for a Repair Bot** → the second-tier Engineering camp item works as a repair vendor in the middle of nowhere.",
+   "pool": "TIPS.camping",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Bring a Leatherworker's Camp Tent** → its rested XP buff survives death.",
+   "pool": "TIPS.camping",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Camp somewhere out of the way on the PvP ruleset** → Blizzard warns that enemy players can find your camp.",
+   "pool": "TIPS.camping",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Camp with friends: add your item, then let them add theirs** → each character places one camp item (then waits an hour), but everyone at the camp shares every buff.",
+   "pool": "TIPS.camping",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Do \"The Great Outdoors\" around level 5 and learn Cooking** → that's what lets you place campfires.",
+   "pool": "TIPS.camping",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Herbalists, grow your own herbs** → the tier 2 Greenhouse grows herbs from seeds, and a Miner's Rock Garden spawns ore.",
+   "pool": "TIPS.camping",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Hunt camp blueprints in early dungeons** → in the beta, Deadmines bosses dropped the Anvil, Repair Bot and Cookie's Feast blueprints, and Lord Serpentis in Wailing Caverns dropped the Journeyman Campfire.",
+   "pool": "TIPS.camping",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Learn your profession's first camp item at skill 20** → every profession unlocks one at 20, from a trainer or a special NPC.",
+   "pool": "TIPS.camping",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Level Cooking to upgrade your campfire** → a Journeyman Campfire holds 5 camp items and an Expert Campfire holds 10.",
+   "pool": "TIPS.camping",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Melee group? Ask your Miner for a Lodestone** → in the beta client it gives melee attack power, standing in for Blessing of Might.",
+   "pool": "TIPS.camping",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**No Paladin in the group? Bring a Fish Bowl** → the Fishing camp item gave +8% stats in the beta, standing in for Blessing of Kings.",
+   "pool": "TIPS.camping",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Pack Flint and Tinder and some Simple Wood** → a Basic Campfire needs only Cooking 1, holds 3 camp items and burns for about 10 to 15 minutes.",
+   "pool": "TIPS.camping",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Pick camp items your group's classes don't already cover** → camp buffs are a bit weaker than class buffs and don't stack with them.",
+   "pool": "TIPS.camping",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Place a tier 2 camp item on top of your tier 1 item** → it keeps the original buff and adds utility, like the Engineer's Repair Bot.",
+   "pool": "TIPS.camping",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Sit (/sit) at the camp for a full minute** → camp buffs only kick in after you've rested there for a minute.",
+   "pool": "TIPS.camping",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Bring gold to Powderfuse Port's Black Market** → in the beta, its reagent vendor sold Black Lotus and Arcane Crystal for a flat 50 gold.",
+   "pool": "TIPS.gold",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Budget 100 gold for riding at 40 and 1,000 at 60** → in the beta your first mount came free with training; 40 is 60% speed and 60 is 100%.",
+   "pool": "TIPS.gold",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Check the Auction House before you vendor crafting materials** → profession demand usually makes them worth more than a vendor pays.",
+   "pool": "TIPS.gold",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Hit Honored with your home faction before buying riding** → the beta took 10% off riding and your race's mounts, and Legacy Bartering took up to 10% more off mounts.",
+   "pool": "TIPS.gold",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Kill rare monsters whenever you see one** → Forever added hundreds of new rare drops and improved world-drop epics.",
+   "pool": "TIPS.gold",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Level Fishing and Cooking and sell the food** → most cooked food in Forever gives stats, and some gives bonus XP, so levelers buy it.",
+   "pool": "TIPS.gold",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Look at Bartering in the Legacy Professions tree** → it lowers vendor prices on everything you buy.",
+   "pool": "TIPS.gold",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Pick two gathering professions while leveling** → you sell what you pick up along the way, and that pays for your mount at 40.",
+   "pool": "TIPS.gold",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Playing Tauren (Horde)? Use Cultivation on every herb run** → its cooldown dropped to 15 minutes, and with Herbalism it doubles your herbs.",
+   "pool": "TIPS.gold",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Save 150 gold for a Gift of Galloping at 60** → the beta Black Market sold it: +10% mounted speed for 15 days, stacking with other bonuses.",
+   "pool": "TIPS.gold",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Sell consumables, not just raw materials** → potions, food and bandages get used up, so buyers keep coming back.",
+   "pool": "TIPS.gold",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Sell your gray items to any vendor** → it's free gold, and it clears bag space.",
+   "pool": "TIPS.gold",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Skip extra mount colors early** → each one cost 20 gold in the beta, and your first mount is already included.",
+   "pool": "TIPS.gold",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Take Reagent Economy in the Legacy Resourcefulness tree** → your class abilities stop needing vendor reagents, which adds up fast on reagent-heavy classes.",
+   "pool": "TIPS.gold",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Use an Engineer's Reagent Bot at camp** → you can buy reagents and sell loot without riding back to town.",
+   "pool": "TIPS.gold",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Aim for 15 points first** → that unlocks the first cosmetic reward, a Replica Ironforge Air Rifle toy.",
+   "pool": "TIPS.legacy",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Clear Onyxia, all 13 Hyjal Summit bosses and all 8 Barrow Deeps bosses** → each is a Legacy Point once raids open Dec 9.",
+   "pool": "TIPS.legacy",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Clear one dungeon from each difficulty group** → finishing a Novice, an Experienced and a Master dungeon is worth a Legacy Point each.",
+   "pool": "TIPS.legacy",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Finish the Lord Valthalak dungeon set questline** → it's one of only two Adventure challenges.",
+   "pool": "TIPS.legacy",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Get Exalted with the battleground reputations** → each of the four is a Legacy Point.",
+   "pool": "TIPS.legacy",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Grab Talented in the Adventure tree on new alts** → your talent points start arriving before level 10.",
+   "pool": "TIPS.legacy",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Level a crafting profession to 150, 225 and 300** → each milestone is a Legacy Point, and there are 18 to collect across six crafting professions.",
+   "pool": "TIPS.legacy",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Level crafting professions, not gathering ones, for points** → only the six crafting professions have Legacy challenges.",
+   "pool": "TIPS.legacy",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Open the Legacy System with Y** → it unlocks with your first Legacy Point, usually at level 25. Hitting 150 in a crafting profession or exploring the whole map works too.",
+   "pool": "TIPS.legacy",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Pick Well Rested if you play in short sessions** → you build rested XP faster and can bank more of it.",
+   "pool": "TIPS.legacy",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Pick up PvP points even as a casual** → Ranks 3 and 7 and Field of Honor weeks 4, 7 and 10 are all Legacy challenges.",
+   "pool": "TIPS.legacy",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Planning to try Hardcore when it arrives? Earn some points there** → Hardcore points count on every ruleset, but points from Normal, PvP or Roleplay don't carry into Hardcore.",
+   "pool": "TIPS.legacy",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Push to 55 points for the Spectral Bear mount** → the track also gives a cub pet at 25 and a tabard at 40.",
+   "pool": "TIPS.legacy",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Spend Legacy Points per character** → points are shared across your account, but each character picks its own perks.",
+   "pool": "TIPS.legacy",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Spend points with your main in mind** → each character can spend up to 16 points at launch across three trees: Professions, Adventure and Resourcefulness.",
+   "pool": "TIPS.legacy",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Take Permanence if you camp a lot** → in the beta it made camp buffs last longer.",
+   "pool": "TIPS.legacy",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Check out Shen'dralas, between Mulgore and Desolace** → it's one of Forever's new zones, with dozens of new quests.",
+   "pool": "TIPS.leveling",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Check the nameplate before you pull** → a gray one means someone else tagged it first, and only they get credit.",
+   "pool": "TIPS.leveling",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Eat cooked food before a long quest session** → Well Fed gives +5% kill XP for about 15 minutes, on top of camp and sleeping-bag buffs.",
+   "pool": "TIPS.leveling",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Explore as you quest** → entering an area for the first time gives a little XP, and uncovering the whole map is a Legacy Point.",
+   "pool": "TIPS.leveling",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Fight monsters your own level instead of easy green ones** → Blizzard cut the XP from green mobs compared to Classic, to balance the new food and camp buffs.",
+   "pool": "TIPS.leveling",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Head to Riverglades in your mid-30s** → it's a brand-new zone with nearly 200 quests for both factions, plus Krol'dok Stronghold at 40–45.",
+   "pool": "TIPS.leveling",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Log out in an inn, a city or on a Cozy Sleeping Bag** → you build rested XP, which doubles your kill XP until it runs out.",
+   "pool": "TIPS.leveling",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Look for the Cozy Sleeping Bag questline from about level 14** → the bag counts as a rested area out in the world, and its buff survives death.",
+   "pool": "TIPS.leveling",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Mix dungeon runs into your questing** → kill XP in dungeons went up 50% on Nov 8, and the dungeon quests still pay the biggest chunk of a run's XP.",
+   "pool": "TIPS.leveling",
+   "source": "https://timesaver.gg/tools/wow-forever/server-status (Kaivax blue post, Dungeon Enemy XP Increased - Nov 8; also Wowhead/MMO-Champion blue trackers)",
+   "added": "2026-11-09",
+   "verified": "2026-11-09",
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Need a break from your main? Level another class to 25** → Legacy gives a point for reaching 25, 45 and 60 on every class, and it all feeds your account.",
+   "pool": "TIPS.leveling",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Pick up every dungeon quest before you zone in** → Blizzard moved most dungeon XP from kills into quest rewards.",
+   "pool": "TIPS.leveling",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Plan your first Legacy Point for level 25** → that's when most players unlock the Legacy System (Y) and its account-wide perks.",
+   "pool": "TIPS.leveling",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Plan your level-40 gold for two things** → your first mount and dual specialization both unlock at 40.",
+   "pool": "TIPS.leveling",
+   "source": "Blizzard class deep dive Oct 7 via https://kami-labs.fr/en/wow-forever/wow-forever-niveau-40-monture-double-specialisation/ ; https://buyboost.com/news/wow-forever/wow-forever-dual-spec",
+   "added": "2026-11-09",
+   "verified": "2026-11-09",
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Quest with friends freely** → grouping doesn't reduce the XP you get for turning in quests.",
+   "pool": "TIPS.leveling",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Save rested bubbles for grinding, and quest when they run out** → rested XP doubles monster XP but does nothing for quest turn-ins.",
+   "pool": "TIPS.leveling",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Skip skull mobs, and move on once things turn gray** → skulls are 5+ levels above you, and mobs or quests 5+ below you give nothing.",
+   "pool": "TIPS.leveling",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Stack every XP buff at once** → rested XP, Well Fed and the sleeping bag's Well-Rested all applied together in the beta.",
+   "pool": "TIPS.leveling",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Do the starting-zone profession quest** → it hands you a book for Mining, Skinning or Herbalism plus 2 free skill points.",
+   "pool": "TIPS.professions",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Engineers: sell your gadgets to everyone** → many new Engineering items shown at BlizzCon are Bind on Equip and don't need Engineering to use.",
+   "pool": "TIPS.professions",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Find the special Artisan trainer at level 35** → regular trainers stop at Expert, and Artisan takes you from 225 to 300.",
+   "pool": "TIPS.professions",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Gathering? Take Bountiful Harvest in the Legacy Professions tree** → it raises what you get from mining, herbs and skinning.",
+   "pool": "TIPS.professions",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Grab an early reagent bag** → it gets its own slot, separate from your five normal bags. Small gathering bags drop early, and Tailors can make a 6-slot Linen Reagent Bag.",
+   "pool": "TIPS.professions",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Leatherworkers: build your Tanning Rack at 125** → a Nov 6 hotfix lowered it from 140, and its skill-up range moved down to match.",
+   "pool": "TIPS.professions",
+   "source": "https://us.forums.blizzard.com/en/wow/t/2403040",
+   "added": "2026-11-09",
+   "verified": "2026-11-09",
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Level Cooking, First Aid and Fishing anyway** → secondary professions can't be unlearned, so there's no downside to leveling them.",
+   "pool": "TIPS.professions",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Pair your gathering and crafting professions** → Mining feeds Blacksmithing or Engineering, Herbalism feeds Alchemy, and Skinning feeds Leatherworking.",
+   "pool": "TIPS.professions",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Pick two primary professions, then add Cooking, First Aid and Fishing** → those three don't use up a primary slot.",
+   "pool": "TIPS.professions",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Playing Tauren (Horde)? Take Herbalism anyway** → Tauren can pick herbs without it, and get double herbs with it.",
+   "pool": "TIPS.professions",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Playing a Dwarf (Alliance)? Keep Find Treasure on** → it now runs alongside other tracking and can find extra items in most chests.",
+   "pool": "TIPS.professions",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Take a crafting profession to 300 for a title** → each one has a certification that unlocks a title, like Alchemist or Engineer.",
+   "pool": "TIPS.professions",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Think twice before dropping a profession** → unlearning wipes all progress, and you start over from 1.",
+   "pool": "TIPS.professions",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Track a recipe while you farm (K opens professions)** → it turns into a shopping list in your objectives.",
+   "pool": "TIPS.professions",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Train up at levels 10, 20 and 35** → Journeyman, Expert and Artisan raise your cap to 150, 225 and 300, once you have 50, 125 and 200 skill.",
+   "pool": "TIPS.professions",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Watch the colored arrows on nodes and recipes** → orange, yellow, green and gray show your skill-up chance before you spend materials.",
+   "pool": "TIPS.professions",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Aim for Rank 2 early** → that's where the PvP trinket unlocks.",
+   "pool": "TIPS.pvp",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Buy the blue Honor set first, then look for Emboldened Seals** → the epic set is your blue piece plus a seal, and seals have rank requirements.",
+   "pool": "TIPS.pvp",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Check the PvP tab on your character pane (C)** → it shows your rank, your Rank Points and which rewards you can buy right now.",
+   "pool": "TIPS.pvp",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Do the Darkspear Islands reputation quests** → they pay Marks of Honor, and the rep vendor sells trinkets, rings, cloaks, weapons and armor.",
+   "pool": "TIPS.pvp",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Do your Field of Honor journey tasks every week** → they pay Honor and Rank Points, and three per season also give a Legacy Point.",
+   "pool": "TIPS.pvp",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Head to the Darkspear Raiders base at the Merchant Coast in the Barrens** → that's where you queue for Darkspear Islands.",
+   "pool": "TIPS.pvp",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Hit Rank 3 for the cloaks and Rank 4 for the necklace** → they're the first gear on the rank track, well before the epic tokens start at Rank 8.",
+   "pool": "TIPS.pvp",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**In Darkspear Islands, carry the center flag to a base your team holds** → that's how you score. The map has four bases and the flag in the middle.",
+   "pool": "TIPS.pvp",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Plan on about 10 weeks to reach Rank 14** → the weekly cap rises a step at a time, and the game files open Rank 14 in week 10.",
+   "pool": "TIPS.pvp",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Play a few battlegrounds every week instead of one huge weekend** → Rank Points have a weekly cap.",
+   "pool": "TIPS.pvp",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Play the battleground you actually enjoy** → Honor rates were evened out, so Alterac Valley isn't the only efficient pick anymore.",
+   "pool": "TIPS.pvp",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Playing Undead (Horde)? Don't count on Will of the Forsaken against Scatter Shot** → Blizzard made it unusable while you're Scatter Shotted.",
+   "pool": "TIPS.pvp",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Playing Undead (Horde)? Save Will of the Forsaken for the big one** → it breaks Fear, Charm and Sleep.",
+   "pool": "TIPS.pvp",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Push your Darkspear Islands faction to Exalted** → it unlocks a short questline for that faction's tabard.",
+   "pool": "TIPS.pvp",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Queue Darkspear Islands from level 30** → it's open to levels 30–60, 15 players a side, from any capital's battlemaster.",
+   "pool": "TIPS.pvp",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Queue on a battleground's holiday week** → holiday-week battlegrounds give bonus Honor and Rank Points.",
+   "pool": "TIPS.pvp",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Start battlegrounds at level 10** → the game files open Warsong Gulch at 10, Arathi Basin at 20 and Alterac Valley at 51.",
+   "pool": "TIPS.pvp",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Tauren: don't stack Plainsrunning before the gates open** → a Nov 5 hotfix stopped it stacking in the prep phase, and picking up a flag cancels it.",
+   "pool": "TIPS.pvp",
+   "source": "https://us.forums.blizzard.com/en/wow/t/2403040",
+   "added": "2026-11-09",
+   "verified": "2026-11-09",
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Travel in groups through contested zones on the PvP ruleset** → the other faction can attack you anywhere outside cities.",
+   "pool": "TIPS.pvp",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Alliance: ride the Menethil ship via Southshore** → it now runs Menethil → Southshore → Auberdine.",
+   "pool": "TIPS.travel",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Alliance: take the new Stormwind–Auberdine ship** → it links Stormwind straight to Darkshore, so Humans and Night Elves can meet early.",
+   "pool": "TIPS.travel",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Click every flight master you pass** → long routes need the stops in between.",
+   "pool": "TIPS.travel",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Don't plan on another race's mount** → in the beta, you couldn't buy or ride one until Exalted with that race.",
+   "pool": "TIPS.travel",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Grab the Riverglades flight paths** → the beta map has Rog'mar for the Horde and Farholde Keep for the Alliance.",
+   "pool": "TIPS.travel",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Horde: know your zeppelin towers** → Orgrimmar's are outside the main gate, Undercity's are north of the city, and Grom'gol's is inside the camp.",
+   "pool": "TIPS.travel",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Make friends with a Mage or Warlock** → otherwise crossing continents means zeppelins or boats.",
+   "pool": "TIPS.travel",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Paladins and Warlocks: do your free mount quest at 40** → in the beta it gave the class mount, so you only pay for riding.",
+   "pool": "TIPS.travel",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Pick up Frequent Flier in your Legacy tree if you fly a lot** → it makes flight paths cheaper and faster.",
+   "pool": "TIPS.travel",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Playing Skyborne? Use your racial at an elemental convergence or ley line** → Skysight becomes +30% run speed (Horde) and Read Leyline +100% regen (Alliance) for an hour, through death.",
+   "pool": "TIPS.travel",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Playing Tauren (Horde)? Keep moving on foot** → Plainsrunning now builds up to +60% run speed, though it no longer speeds up your mount.",
+   "pool": "TIPS.travel",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Playing a Druid? Use Teleport: Moonglade** → it gets you out of anywhere for free, with a flight master waiting when you land.",
+   "pool": "TIPS.travel",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Playing a Shaman or Druid? Use your travel form** → you get it well before the level-40 mount.",
+   "pool": "TIPS.travel",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Skyborne: take the skyboat when you finish Zephras Isle** → it carries you to Mulgore (Horde) or Dalaran (Alliance) to join the main world.",
+   "pool": "TIPS.travel",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Take The Quick and the Dead if you die a lot** → your ghost runs faster, and your helpful spells cost nothing for a minute after you come back.",
+   "pool": "TIPS.travel",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Use the Tanaris ship to reach Riverglades** → a Steamwheedle boat runs to Powderfuse Port, a neutral goblin town both factions can use.",
+   "pool": "TIPS.travel",
+   "source": "",
+   "added": null,
+   "verified": null,
+   "expires": null,
+   "note": ""
+  }
+ ]
+}

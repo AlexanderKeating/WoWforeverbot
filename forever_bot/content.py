@@ -215,8 +215,8 @@ RUNDOWNS = {
          "new": "Small quality-of-life changes: camp out with friends for a bonus, earn perks for your alts, and choose old-school or updated character models.",
          "vets": "**Camping** (craft at others' camps, shared rest buff) · **Legacy** (each 1–60 finish unlocks alt perks; shared across rulesets except Hardcore) · opt-in **transmog** · HD/classic model toggle · controller support · no flying, no level scaling."},
     2: {"title": "Raids and the roadmap",
-         "new": "Raids are big group boss fights. The first two open Dec 9, about five weeks after launch.",
-         "vets": "Barrow Deeps (10) and Hyjal Summit (20) on Dec 9; Hyjal drops Forever's first legendary. ||Barrow Deeps reportedly once held a certain infamous demon hunter.|| Hardcore in winter, major updates spring and summer 2027, including a 'revamped iconic raid'."},
+         "new": "Raids are big group boss fights. The first three open Dec 9, about five weeks after launch.",
+         "vets": "Barrow Deeps (10), Hyjal Summit (20) and Onyxia's Lair (40) on Dec 9; Hyjal drops Forever's first legendary. ||Barrow Deeps reportedly once held a certain infamous demon hunter.|| Hardcore in winter, major updates spring and summer 2027, including a 'revamped iconic raid'."},
     1: {"title": "Launch-day checklist",
          "new": "Tomorrow. Make sure your sub or game time is active, pre-install from the Battle.net dropdown, and pick **PvP ruleset → Horde**.",
          "vets": "Beta and stress-test characters are wiped. Expect queues and layering at launch. PvP faction lock is per account, so don't test an Alliance alt on PvP first."},
@@ -279,7 +279,7 @@ PRO_TIPS = {
     9: "Agree on PvP + Horde with your friends **before** anyone makes a character. One Alliance test character on the PvP ruleset locks your whole account out of Horde there.",
     8: "Pick two or three first + last name combos before Oct 27. The full name has to be unique across the region, so popular first names need a good surname.",
     7: "When the Barrens dries up in your mid-30s, head to Riverglades: 150+ new quests built for roughly 35–45.",
-    6: "Run dungeons with people near your level. Higher-level members cut everyone's kill XP, but quest turn-in XP is never reduced by grouping.",
+    6: "Run dungeons with people near your level. Kill XP in dungeons went up 50% on Nov 8, but a higher-level member still cuts everyone's kill XP. Quest turn-in XP is never reduced by grouping.",
     5: "Horde Skyborne buy riding and Galestrider mounts from Genn Fairweather on Zephras Isle. Other races' mount vendors won't sell to you until Exalted.",
     4: "Darkspear Islands: take bases first, then run the center flag to a base you own. A flag with no friendly base to score at is wasted. First team to 2,000 points wins.",
     3: "Logging out in the field? Put down a Cozy Sleeping Bag. Lying on it counts as a rested area, so you keep earning rested XP while offline.",
@@ -313,7 +313,7 @@ DEEP_DIVES = {
         "**No cross-ruleset grouping** and **no transfers at launch**: your ruleset is where your friends must be.",
         "**Shared across rulesets:** collections and Legacy points (not Hardcore).",
         "**Hardcore deaths** can move to another ruleset, PvP included.",
-        "**Faction balance:** Blizzard may temporarily limit new characters for an overloaded faction on PvP, like Season of Discovery did.",
+        "**Faction balance:** Blizzard pauses new characters for an overloaded faction on PvP. Horde hit the lock on launch night, and it switches on and off as the split evens out.",
     ]),
     8: ("Name reservation checklist", [
         "**Window:** Oct 27 → Nov 3. Needs the Skyborne Heroic Pack or higher.",
@@ -360,7 +360,7 @@ DEEP_DIVES = {
         "**Other camp buffs:** Mining melee AP, Skinning crit, Herbalism intellect, Engineering repair vendor, Fishing 8% stats.",
     ]),
     2: ("Gearing toward Dec 9", [
-        "**Raids:** Barrow Deeps (10) and Hyjal Summit (20). Hyjal drops Forever's first legendary weapon.",
+        "**Raids:** Barrow Deeps (10), Hyjal Summit (20) and Onyxia's Lair (40). Hyjal drops Forever's first legendary weapon.",
         "**Stock up on consumables:** an Alchemist + Herbalist in the guild keeps everyone in potions.",
         "**Save gold:** Journeyman Riding is 1,000g at 60, epic mounts 200g each.",
         "**Discounts:** Honored with your home faction is 10% off riding and mounts; the Bartering Legacy talent adds up to 10% off mounts.",
@@ -385,6 +385,7 @@ DEEP_DIVES = {
         "**Rested XP** doubles kill XP. Log out in inns, cities or on a Cozy Sleeping Bag.",
         "**Gray quests and mobs** (5+ levels below) give no XP; quests over 5 levels below lose 10–20% per level.",
         "**Grouping:** big parties split kill XP; quest turn-ins are never reduced.",
+        "**Dungeons:** kill XP inside dungeons went up 50% on Nov 8, so repeat runs pay better than they did at launch.",
         "**Well Fed** food adds +5% kill XP; the Camp Tent adds a rested buff that survives death.",
         "**Explore:** new areas give a little XP.",
     ]),
@@ -462,7 +463,7 @@ FAQ = [
 _VETS_LONG = {
     9: ("There are no realm lists in Forever. Each ruleset (Normal, PvP, Roleplay, Roleplay-PvP) is one big shared world per region, "
         "and Blizzard splits it into layers when it gets crowded so busy zones stay playable. On the PvP ruleset your whole "
-        "account is locked to one faction, and Blizzard can pause new characters for an overloaded faction, so "
+        "account is locked to one faction, and Blizzard pauses new characters for an overloaded faction (Horde on PvP hit it on launch night), so "
         "creation limits only ever block *new* characters. There's no "
         "grouping across rulesets and no character transfers at launch, so wherever your first character lands is where your "
         "friends need to be. Hardcore arrives later as its own ruleset, and a Hardcore character that dies can move to another "
@@ -524,7 +525,7 @@ DEEP_DIVES.update({
         "**No cross-ruleset grouping, no transfers at launch.** You can't run a dungeon with a friend on another ruleset, and character transfers aren't available at launch, so agree on PvP Horde before anyone logs in.",
         "**Some progress follows you everywhere.** Collections and Legacy points are shared across rulesets (except Hardcore), so time on an alt elsewhere isn't wasted.",
         "**Hardcore has an escape hatch.** If a Hardcore character dies, it can transfer to another ruleset, including PvP.",
-        "**Faction balance is managed.** Like Season of Discovery, Blizzard can temporarily pause new characters for an overloaded faction on PvP, so creating your character early matters.",
+        "**Faction balance is enforced.** Blizzard pauses new characters for an overloaded faction on PvP. Horde hit the lock on launch night, and it switches on and off as the split evens out. Characters that already exist are never affected.",
     ]),
     8: ("Name reservation checklist", [
         "**When:** Oct 27 at 1 PM Pacific (3 PM Central) through Nov 3. The bot pings 30 minutes before it opens and again when it's live.",
@@ -574,7 +575,7 @@ DEEP_DIVES.update({
         "**Other camp buffs:** Mining (melee attack power), Skinning (crit), Herbalism (intellect), Engineering (a repair vendor), Fishing (8% stats). None stack with matching class buffs.",
     ]),
     2: ("Gearing toward Dec 9", [
-        "**The raids:** Barrow Deeps (10-player) and Hyjal Summit (20-player). Hyjal Summit drops Forever's first legendary weapon.",
+        "**The raids:** Barrow Deeps (10-player), Hyjal Summit (20-player) and Onyxia's Lair (40-player). Hyjal Summit drops Forever's first legendary weapon.",
         "**Consumables win raids:** an Alchemist and an Herbalist in your group keep everyone in potions, and camps fill in buffs for missing classes.",
         "**Gold plan:** Journeyman Riding is 1,000 gold at 60, and epic mounts are 200 gold each. Start saving while leveling.",
         "**Discounts stack:** Honored with your home faction is 10% off riding and mounts, and the Bartering Legacy talent adds up to 10% off mounts.",
@@ -604,7 +605,7 @@ PRO_TIPS.update({
     9: "**Treat your first level 60 as an investment, even on an alt ruleset** → every 1–60 finish unlocks Legacy perks for all your alts, and Legacy is shared across Normal, PvP and Roleplay, so a Normal-ruleset character still powers up your PvP account.",
     8: "**Pick one surname and use it for your whole roster** → names only have to be unique as a first + last pair, so a shared \"family name\" is easier to claim than a rare first name, and guildies can spot your alts at a glance.",
     7: "**Plan to head to Riverglades in your mid-30s** → 150+ fresh quests built for 35–45, right when the classic zones start running dry.",
-    6: "**Run dungeons with people within a few levels of you** → nobody's kill XP gets cut by a high-level party member, and quest turn-ins stay full value either way.",
+    6: "**Run dungeons with people within a few levels of you** → kill XP in dungeons is 50% higher since Nov 8, and a high-level party member would cut it for everyone. Quest turn-ins stay full value either way.",
     5: "**Pick Skyborne if you want a Horde Shaman with built-in mobility** → Wind Blessed haste and Walk on Air on a 90-second cooldown, on a class the Horde already loves.",
     4: "**Capture bases first in Darkspear Islands, then run the flag to a base you hold** → steady points from the bases, plus a flag that actually scores instead of getting stuck.",
     3: "**Put down a Cozy Sleeping Bag before you log out in the field** → it counts as a rested area, so you keep earning rested XP overnight.",
@@ -615,7 +616,7 @@ PRO_TIPS.update({
 
 DEEP_DIVES.update({
     9: ("Rulesets in practice", [
-        "**Create your character during reservation, not on launch night** → Blizzard can pause new characters for an overloaded faction on PvP (like Season of Discovery did), and that only affects characters that don't exist yet.",
+        "**Locked out of a faction on PvP? Try again later instead of rerolling** → Blizzard recalculates the balance through the day, and the lock only ever blocks new characters, never ones you already have.",
         "**Level an alt on Normal or Roleplay guilt-free** → collections and Legacy points are shared across rulesets (except Hardcore), so that time still powers up your PvP account.",
         "**If a friend \"vanishes\" in a busy city, invite them** → the world is split into layers when crowded, and grouping pulls you onto the same one.",
         "**Treat Hardcore as a free second shot when it arrives** → a Hardcore character that dies can transfer to another ruleset, PvP included, so a death isn't the end of that character.",
@@ -1076,6 +1077,32 @@ _fix(TIPS["pvp"], "at Merchant Coast in Dustwallow Marsh", "at the Merchant Coas
 _fix(TIPS["camping"], "burns for about 10 minutes", "burns for about 10 to 15 minutes")  # Blizzard said ~10; the beta client ran 15
 
 
+# ------------------------------------------------------------------ 1.12.4: facts pass, Nov 9
+# Checked against Blizzard's posts: WoW: Forever Hotfixes Nov 5 and Nov 6 (us.forums.blizzard.com/en/wow/t/2403040),
+# "Dungeon Enemy XP Increased - November 8" (Kaivax), "Class Tuning Incoming - November 10" (Kaivax, no numbers yet).
+# Faction lock on launch night: egamers.io, games.gg and Blizzard forum threads. Taldramir: Blizzard's launch stream,
+# reported by Warcraft Tavern, Icy Veins and MeinMMO; its healer focus and questline are datamined (Wowhead).
+# Dual spec at 40: Blizzard's class deep dives (Oct 7), reported by Kami Labs and Buyboost. Every line here is in
+# facts_ledger.json with its source; the rolling check re-verifies the oldest entries each day.
+TIPS["leveling"] += [
+    "**Mix dungeon runs into your questing** → kill XP in dungeons went up 50% on Nov 8, and the dungeon quests still pay the biggest chunk of a run's XP.",
+    "**Plan your level-40 gold for two things** → your first mount and dual specialization both unlock at 40.",
+]
+TIPS["professions"] += [
+    "**Leatherworkers: build your Tanning Rack at 125** → a Nov 6 hotfix lowered it from 140, and its skill-up range moved down to match.",
+]
+TIPS["pvp"] += [
+    "**Tauren: don't stack Plainsrunning before the gates open** → a Nov 5 hotfix stopped it stacking in the prep phase, and picking up a flag cancels it.",
+]
+DID_YOU_KNOW += [
+    ("vet", "Forever's first new legendary is Taldramir, the Whispering Wood, a two-handed staff revealed an hour before launch."),
+    ("vet", dm("Taldramir's questline in the client has three stages and ties into Hyjal Summit, and it looks built for healers.", "Wowhead")),
+    ("new", "Dual specialization unlocks at level 40, the same level as your first mount."),
+    ("vet", "Four days after launch, Blizzard raised kill XP in dungeons by 50% so repeat runs feel worth it."),
+    ("vet", "Blizzard batches Forever's class balance changes on Tuesdays. The first round, Nov 10, covers Hunter and Warlock pets, Affliction and Enhancement."),
+]
+
+
 # ------------------------------------------------------------------ 1.9: what's new
 # Player-facing release notes: /whatsnew, the 🆕 line in the next post after a release, and the
 # What's new page (foreversherpa.github.io/whatsnew.html). Newest first. "line" is the one-liner a
@@ -1083,6 +1110,11 @@ _fix(TIPS["camping"], "burns for about 10 minutes", "burns for about 10 to 15 mi
 # "internal": True keeps a behind-the-scenes release out of /whatsnew and the What's new page.
 WHATSNEW_URL = SITE_URL + "/whatsnew.html"
 RELEASE_NOTES = [
+    {"version": "1.12.4", "date": "2026-11-09", "title": "Fresh facts from the live game",
+     "line": None, "internal": False,
+     "notes": ["Hotfix and patch-note headlines lead the news section, marked 🔧.",
+               "New facts and tips show first, one a day, before they join the regular rotation. Time-limited ones retire on their own.",
+               "Updated for launch week: dungeon kill XP is up 50%, the PvP faction lock, the Tanning Rack at 125, Plainsrunning in battlegrounds, the Voidwalker's extra health, Taldramir and dual spec at 40."]},
     {"version": "1.12.3", "date": "2026-11-06", "title": "Cleaner logs, welcome fallback",
      "line": None, "internal": True,
      "notes": ["If Discord won't show the 📍 Post here button in a server, the welcome and setup reminder still arrive, pointing to `/setup`."]},

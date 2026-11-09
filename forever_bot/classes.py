@@ -184,7 +184,7 @@ CLASSES = {
         "races": "Orc · Troll (new) · Undead",
         "role": "Damage over time, demons and fear. A Warlock won the $100K beta duel tournament.",
         "new": [
-            "**Pets scale with your stats**, but launch tuning cut pet health to 2 per point of your Stamina (was 7.5).",
+            "**Pets scale with your stats**, but launch tuning cut pet health to 2 per point of your Stamina (was 7.5). A Nov 6 hotfix gave the Voidwalker about 40 more base health.",
             "Curse of Agony and Curse of Doom are now **Banes**: one Bane per Warlock per target.",
             "Firestone and Spellstone are weapon imbues that stack with Wizard Oil.",
             "**Soul Link** is a 21-point talent; **Demonic Pact** (31) keeps Demonic Sacrifice when you swap pets.",
