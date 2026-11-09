@@ -34,7 +34,7 @@ Goal: posts track the live game within a day, every line has a source, and serve
    a post, nothing stale, labels right.
 8. Bump the patch version in `forever_bot/__init__.py`, add a CHANGELOG entry (what changed and the source for each), and a
    `RELEASE_NOTES` entry (`line: None`). Commit and push the branch.
-9. **Log glance (read-only):** Render service `forever-countdown`, last 24h of `error` / `warning` lines. Note anything new.
+9. **Log glance (read-only, only if Render tools are available):** service `forever-countdown`, last 24h of `error` / `warning` lines. The twice-daily activity report already covers logs, so skip this when Render isn't connected.
 10. Report: what changed and why (with links), what was re-verified, anything retired, anything weird in the logs,
     and the branch name. If nothing changed in the game and nothing needed fixing, say so in one line and don't push an empty branch.
 
