@@ -1945,3 +1945,12 @@ def test_new_facts_present():
     assert any("Tanning Rack at 125" in str(t) for t in C.TIPS["professions"])
     dd9 = " ".join(C.DEEP_DIVES[9][1])
     assert "Blizzard can pause" not in dd9 and "recalculates the balance" not in dd9 and "overall split" in dd9  # 1.12.5: Nov 10 faction balance post
+
+
+def test_raid_day_does_not_claim_open_before_unlock():
+    """1.12.5: Blizzard hasn't announced the Dec 9 unlock hour, so noon/evening posts say 'Raid day', not 'Raids are open'."""
+    from forever_bot import content as C
+    assert "Raids are open" not in C.TODAY_CALLOUTS[C.RAIDS_DATE]
+    assert "open today" in C.TODAY_CALLOUTS[C.RAIDS_DATE]
+    src = open(C.__file__.replace("content.py", "render.py")).read()
+    assert 'if days else "Raids are open"' not in src

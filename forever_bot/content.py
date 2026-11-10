@@ -94,7 +94,7 @@ TODAY_CALLOUTS = {
     "2026-10-27": "📛 **Name reservation opens today at 1 PM Pacific / 3 PM Central.** Skyborne pack owners can reserve **3 names total** across all rulesets, through Nov 3. Create your characters now rather than on launch night: if a faction gets crowded on PvP, Blizzard can pause *new* characters.",
     "2026-11-03": "⏰ **Last day of name reservation.**",
     "2026-11-04": "🚀 **It's launch day.**",
-    "2026-12-09": "🐉 **Raids are open.** Barrow Deeps, Hyjal Summit and Onyxia's Lair, all today.",
+    "2026-12-09": "🐉 **Raid day.** Barrow Deeps, Hyjal Summit and Onyxia's Lair all open today.",  # unlock hour not announced: don't say "open" at noon
     "2026-12-10": "🧭 **The countdowns are done, but Forever Sherpa isn't.** Daily posts keep going: tips, news, clips and the roll call, for as long as you're playing.",
 }
 
