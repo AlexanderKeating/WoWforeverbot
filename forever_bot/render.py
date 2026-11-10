@@ -338,7 +338,7 @@ def build_checkin(cfg, now: datetime, snap: dict | None, slot: int,
                  f"{days} day{'s' if days != 1 else ''} until WoW: Forever" if days else "Launch day check-in")
         head = f"<t:{ts(C.LAUNCH)}:R>"
     elif kind == "raids":
-        title = f"{days} day{'s' if days != 1 else ''} until raids open" if days else "Raids are open"
+        title = f"{days} day{'s' if days != 1 else ''} until raids open" if days else "Raid day"
         head = f"{C.RAIDS_SHORT} · {_fmt_date(_d(C.RAIDS_DATE))}"
     else:
         title = f"Day {days} of WoW: Forever"
