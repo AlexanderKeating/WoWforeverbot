@@ -3,18 +3,18 @@
   {
    "text": "**Drink potions and open doors without leaving form** → Feral stays in form instead of paying mana to shift back.",
    "pool": "CLASSES.Druid.leveling",
-   "source": "",
+   "source": "https://news.blizzard.com/en-us/article/24301515/world-of-warcraft-forever-class-deep-dives-hunter-and-druid",
    "added": null,
-   "verified": null,
+   "verified": "2026-11-10",
    "expires": null,
    "note": ""
   },
   {
    "text": "**Keep upgrading your weapon as Feral** → weapons matter in forms now.",
    "pool": "CLASSES.Druid.leveling",
-   "source": "",
+   "source": "https://news.blizzard.com/en-us/article/24301515/world-of-warcraft-forever-class-deep-dives-hunter-and-druid",
    "added": null,
-   "verified": null,
+   "verified": "2026-11-10",
    "expires": null,
    "note": ""
   },
@@ -30,63 +30,63 @@
   {
    "text": "**Revive** at 12, **Nature's Grasp** at 10, **Omen of Clarity** baseline at 20.",
    "pool": "CLASSES.Druid.new",
-   "source": "",
+   "source": "https://news.blizzard.com/en-us/article/24301515/world-of-warcraft-forever-class-deep-dives-hunter-and-druid",
    "added": null,
-   "verified": null,
+   "verified": "2026-11-10",
    "expires": null,
    "note": ""
   },
   {
    "text": "In forms, your auto-attack uses your **weapon's DPS**, and weapon enchants and procs work.",
    "pool": "CLASSES.Druid.new",
-   "source": "",
+   "source": "https://news.blizzard.com/en-us/article/24301515/world-of-warcraft-forever-class-deep-dives-hunter-and-druid",
    "added": null,
-   "verified": null,
+   "verified": "2026-11-10",
    "expires": null,
    "note": ""
   },
   {
    "text": "Most **potions and consumables work in forms**, and most doors and objects too.",
    "pool": "CLASSES.Druid.new",
-   "source": "",
+   "source": "https://news.blizzard.com/en-us/article/24301515/world-of-warcraft-forever-class-deep-dives-hunter-and-druid",
    "added": null,
-   "verified": null,
+   "verified": "2026-11-10",
    "expires": null,
    "note": ""
   },
   {
    "text": "New signatures: Berserk (Feral, 31), Wild Growth (Restoration, 31), Eclipse (Balance).",
    "pool": "CLASSES.Druid.new",
-   "source": "",
+   "source": "https://news.blizzard.com/en-us/article/24301515/world-of-warcraft-forever-class-deep-dives-hunter-and-druid",
    "added": null,
-   "verified": null,
+   "verified": "2026-11-10",
    "expires": null,
    "note": ""
   },
   {
    "text": "Tiger's Fury is gone (replaced by **Shifting Power**), and **Primal Bite** replaces Mangle.",
    "pool": "CLASSES.Druid.new",
-   "source": "",
+   "source": "https://news.blizzard.com/en-us/article/24301515/world-of-warcraft-forever-class-deep-dives-hunter-and-druid",
    "added": null,
-   "verified": null,
+   "verified": "2026-11-10",
    "expires": null,
    "note": ""
   },
   {
    "text": "**Barkskin without leaving form** → it works while shapeshifted now.",
    "pool": "CLASSES.Druid.pvp",
-   "source": "",
+   "source": "https://news.blizzard.com/en-us/article/24301515/world-of-warcraft-forever-class-deep-dives-hunter-and-druid",
    "added": null,
-   "verified": null,
+   "verified": "2026-11-10",
    "expires": null,
    "note": ""
   },
   {
    "text": "**Root indoors too** → Entangling Roots works inside buildings and caves now.",
    "pool": "CLASSES.Druid.pvp",
-   "source": "",
+   "source": "https://news.blizzard.com/en-us/article/24301515/world-of-warcraft-forever-class-deep-dives-hunter-and-druid",
    "added": null,
-   "verified": null,
+   "verified": "2026-11-10",
    "expires": null,
    "note": ""
   },
@@ -102,36 +102,36 @@
   {
    "text": "**Drop a Frost Trap mid-fight and back off** → traps work in combat now, so you can fix a bad pull without running first.",
    "pool": "CLASSES.Hunter.leveling",
-   "source": "",
+   "source": "https://news.blizzard.com/en-us/article/24301515/world-of-warcraft-forever-class-deep-dives-hunter-and-druid",
    "added": null,
-   "verified": null,
+   "verified": "2026-11-10",
    "expires": null,
    "note": ""
   },
   {
    "text": "**Tame for the family ability, not the look** → Boar Charge, Spider Web, Turtle Shell Shield and Wolf Furious Howl each solve a different problem.",
    "pool": "CLASSES.Hunter.leveling",
-   "source": "",
+   "source": "https://news.blizzard.com/en-us/article/24301515/world-of-warcraft-forever-class-deep-dives-hunter-and-druid",
    "added": null,
-   "verified": null,
+   "verified": "2026-11-10",
    "expires": null,
    "note": ""
   },
   {
    "text": "**Upgrade your own gear before your pet's food** → pets scale with your gear, so every upgrade counts twice.",
    "pool": "CLASSES.Hunter.leveling",
-   "source": "",
+   "source": "https://news.blizzard.com/en-us/article/24301515/world-of-warcraft-forever-class-deep-dives-hunter-and-druid",
    "added": null,
-   "verified": null,
+   "verified": "2026-11-10",
    "expires": null,
    "note": ""
   },
   {
    "text": "**Aimed Shot** is baseline at 20 for every Hunter.",
    "pool": "CLASSES.Hunter.new",
-   "source": "",
+   "source": "https://news.blizzard.com/en-us/article/24301515/world-of-warcraft-forever-class-deep-dives-hunter-and-druid",
    "added": null,
-   "verified": null,
+   "verified": "2026-11-10",
    "expires": null,
    "note": ""
   },
@@ -586,6 +586,15 @@
    "note": ""
   },
   {
+   "text": "**Enhancement: keep Strength and Attack Power gear from now on** → Blizzard is retuning Enhancement so Strength is always its best stat.",
+   "pool": "CLASSES.Shaman.leveling",
+   "source": "https://us.forums.blizzard.com/en/wow/t/2404092",
+   "added": "2026-11-10",
+   "verified": "2026-11-10",
+   "expires": null,
+   "note": ""
+  },
+  {
    "text": "**Imbue your weapon once when you log in** → imbues last an hour now, not 5 minutes.",
    "pool": "CLASSES.Shaman.leveling",
    "source": "",
@@ -682,6 +691,15 @@
    "added": null,
    "verified": null,
    "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Did \"Summon Felsteed\" before Nov 9? Summon the Felsteed once** → that grants the riding skill the quest skipped.",
+   "pool": "CLASSES.Warlock.leveling",
+   "source": "https://us.forums.blizzard.com/en/wow/t/wow-forever-hotfixes-november-9-2026/2403040",
+   "added": "2026-11-10",
+   "verified": "2026-11-10",
+   "expires": "2026-12-09",
    "note": ""
   },
   {
@@ -1423,11 +1441,11 @@
    "note": ""
   },
   {
-   "text": "**Locked out of a faction on PvP? Try again later instead of rerolling** → Blizzard recalculates the balance through the day, and the lock only ever blocks new characters, never ones you already have.",
+   "text": "**Locked out of Horde on NA PvP? Plan for it to stay hard for a while** → since Nov 10 Blizzard limits the bigger faction by the region's overall split, not hour-to-hour counts, and Horde is that side on NA PvP. Characters you already have are never blocked.",
    "pool": "DEEP_DIVES.9",
-   "source": "https://egamers.io/?p=128162 ; https://games.gg/world-of-warcraft/guides/wow-forever-this-faction-is-currently-unavailable-what-it-means/",
-   "added": null,
-   "verified": "2026-11-09",
+   "source": "https://us.forums.blizzard.com/en/wow/t/pvp-faction-balance-updates-november-10/2408781",
+   "added": "2026-11-10",
+   "verified": "2026-11-10",
    "expires": null,
    "note": ""
   },
@@ -2206,6 +2224,15 @@
    "note": ""
   },
   {
+   "text": "Blizzard's PvP rulesets sat near a 55/45 faction split in the most lopsided region after launch week; the goal is as close to 50/50 as possible.",
+   "pool": "DID_YOU_KNOW.vet",
+   "source": "https://us.forums.blizzard.com/en/wow/t/pvp-faction-balance-updates-november-10/2408781",
+   "added": "2026-11-10",
+   "verified": "2026-11-10",
+   "expires": null,
+   "note": ""
+  },
+  {
    "text": "Camp items come in three tiers per profession, at skill 20, 140 and 300.",
    "pool": "DID_YOU_KNOW.vet",
    "source": "",
@@ -2508,6 +2535,15 @@
    "source": "",
    "added": null,
    "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "On Nov 9 Blizzard lowered the player cap in crowded zones to ease congestion, and cut it further on the PvP ruleset.",
+   "pool": "DID_YOU_KNOW.vet",
+   "source": "https://us.forums.blizzard.com/en/wow/t/wow-forever-hotfixes-november-9-2026/2403040 https://us.forums.blizzard.com/en/wow/t/pvp-faction-balance-updates-november-10/2408781",
+   "added": "2026-11-10",
+   "verified": "2026-11-10",
    "expires": null,
    "note": ""
   },
@@ -3912,6 +3948,15 @@
    "source": "",
    "added": null,
    "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Carrying a Nifty Stopwatch? Chain it with Sprint, Dash or Blink** → a Nov 9 hotfix stopped it sharing a cooldown with movement abilities.",
+   "pool": "TIPS.pvp",
+   "source": "https://us.forums.blizzard.com/en/wow/t/wow-forever-hotfixes-november-9-2026/2403040",
+   "added": "2026-11-10",
+   "verified": "2026-11-10",
    "expires": null,
    "note": ""
   },

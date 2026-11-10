@@ -616,7 +616,7 @@ PRO_TIPS.update({
 
 DEEP_DIVES.update({
     9: ("Rulesets in practice", [
-        "**Locked out of a faction on PvP? Try again later instead of rerolling** → Blizzard recalculates the balance through the day, and the lock only ever blocks new characters, never ones you already have.",
+        "**Locked out of Horde on NA PvP? Plan for it to stay hard for a while** → since Nov 10 Blizzard limits the bigger faction by the region's overall split, not hour-to-hour counts, and Horde is that side on NA PvP. Characters you already have are never blocked.",
         "**Level an alt on Normal or Roleplay guilt-free** → collections and Legacy points are shared across rulesets (except Hardcore), so that time still powers up your PvP account.",
         "**If a friend \"vanishes\" in a busy city, invite them** → the world is split into layers when crowded, and grouping pulls you onto the same one.",
         "**Treat Hardcore as a free second shot when it arrives** → a Hardcore character that dies can transfer to another ruleset, PvP included, so a death isn't the end of that character.",
@@ -1103,6 +1103,19 @@ DID_YOU_KNOW += [
 ]
 
 
+# ------------------------------------------------------------------ 1.12.5: facts pass, Nov 10
+# Blizzard: WoW: Forever Hotfixes Nov 9 (us.forums.blizzard.com/en/wow/t/2403040, post #5; Blizzard news 24315281),
+# "PvP Faction Balance Updates - November 10" (us.forums.blizzard.com/en/wow/t/2408781),
+# "Class Tuning Incoming - November 10" (Enhancement advice).
+TIPS["pvp"] += [
+    "**Carrying a Nifty Stopwatch? Chain it with Sprint, Dash or Blink** → a Nov 9 hotfix stopped it sharing a cooldown with movement abilities.",
+]
+DID_YOU_KNOW += [
+    ("vet", "On Nov 9 Blizzard lowered the player cap in crowded zones to ease congestion, and cut it further on the PvP ruleset."),
+    ("vet", "Blizzard's PvP rulesets sat near a 55/45 faction split in the most lopsided region after launch week; the goal is as close to 50/50 as possible."),
+]
+
+
 # ------------------------------------------------------------------ 1.9: what's new
 # Player-facing release notes: /whatsnew, the 🆕 line in the next post after a release, and the
 # What's new page (foreversherpa.github.io/whatsnew.html). Newest first. "line" is the one-liner a
@@ -1110,6 +1123,10 @@ DID_YOU_KNOW += [
 # "internal": True keeps a behind-the-scenes release out of /whatsnew and the What's new page.
 WHATSNEW_URL = SITE_URL + "/whatsnew.html"
 RELEASE_NOTES = [
+    {"version": "1.12.5", "date": "2026-11-10", "title": "Faction balance and Nov 9 hotfixes",
+     "line": None, "internal": False,
+     "notes": ["Updated for Blizzard's Nov 10 faction balance post: new Horde characters on NA PvP are getting harder to make.",
+               "New tips from the Nov 9 hotfixes: Nifty Stopwatch with Sprint, Dash or Blink, the Warlock Felsteed riding fix, and Enhancement's move to Strength gear."]},
     {"version": "1.12.4", "date": "2026-11-09", "title": "Fresh facts from the live game",
      "line": None, "internal": False,
      "notes": ["Hotfix and patch-note headlines lead the news section, marked 🔧.",

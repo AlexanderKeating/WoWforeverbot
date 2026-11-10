@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.12.5 (2026-11-10)
+Rolling facts check against Blizzard's Nov 9 hotfixes and the Nov 10 PvP faction balance post.
+- **Faction balance (Blizzard, Nov 10, us.forums.blizzard.com/en/wow/t/2408781).** Character creation now reacts to each region's overall PvP split instead of point-in-time counts, and it will get increasingly hard to make Horde on NA PvP. Rulesets deep dive tip was "try again later, Blizzard recalculates through the day" → now "plan for it to stay hard for a while". New did-you-know: ~55/45 split in the most lopsided region, goal 50/50. `test_new_facts_present` guards the new wording.
+- **Nov 9 hotfixes (us.forums.blizzard.com/en/wow/t/2403040, post #5).** New PvP tip: Nifty Stopwatch no longer shares a cooldown with Sprint, Dash or Blink. New Warlock tip: finished "Summon Felsteed" before the fix → summon it once for the riding skill (expires Dec 9). New did-you-know: player cap lowered in congested zones, more on PvP.
+- **Enhancement (Blizzard, "Class Tuning Incoming - November 10", t/2404092).** New Shaman leveling tip: collect Strength and Attack Power gear; Blizzard is making Strength Enhancement's best stat. The Nov 10 tuning has no numbers yet; the existing "Tuesday tuning" line stays (expires Nov 16).
+- **Re-verified** 13 of the 15 oldest Druid and Hunter class-card lines against Blizzard's Hunter and Druid class deep dive (news.blizzard.com 24301515). Not verified: the Tauren War Stomp 90-second cooldown and the Druid tournament record; no source found today, left for the next run.
+
 ## 1.12.4 (2026-11-09)
 Rolling facts check, and the Nov 8 refusal loop. 6 new tests.
 - **Discord refusals (20062) aren't retried every minute.** Nov 8: one server's noon post got 403/20062 every minute for the 3-hour window (180 ERRORs with tracebacks), then `slot_missed` said the bot was offline. Now the first refusal marks the slot `refused`, logs `post_refused` once (ERROR once a week per channel, INFO after, no traceback), tells staging once, and `slot_missed` says `reason=refused`. `/postnow` still tries. The same day a setup reminder got 20062 *without* the button, so 1.12.3's button theory doesn't cover it; the fallback stays, the docstring says so. `postnow_outcome` reports `refused`.

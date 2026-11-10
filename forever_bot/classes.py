@@ -297,6 +297,7 @@ _DO = {
             "**Set up a Call of the Elements preset at 20** → one cast drops all four totems.",
             "**Imbue your weapon once when you log in** → imbues last an hour now, not 5 minutes.",
             "**Pair Rockbiter with Spirit Weapons as Enhancement** → you can off-tank small groups.",
+            "**Enhancement: keep Strength and Attack Power gear from now on** → Blizzard is retuning Enhancement so Strength is always its best stat.",
         ],
         "pvp": [
             "**Pull your totems to you with Totemic Call mid-fight** → keep them on the fight instead of re-dropping them (30-second cooldown).",
@@ -319,6 +320,7 @@ _DO = {
     "Warlock": {
         "leveling": [
             "**Grab your free mount at 40 from Strahad Farsan in Ratchet** → save the gold for training and gear.",
+            "**Did \"Summon Felsteed\" before Nov 9? Summon the Felsteed once** → that grants the riding skill the quest skipped.",
             "**Finish low targets with Drain Soul** → the kill gives you a Soul Shard; damage ticks alone rarely do since launch tuning.",
             "**Stack some Spirit** → Life Tap scales with it, so you sit to drink less.",
         ],

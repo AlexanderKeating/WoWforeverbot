@@ -1944,4 +1944,4 @@ def test_new_facts_present():
     assert "50%" in lev and "dual specialization" in lev
     assert any("Tanning Rack at 125" in str(t) for t in C.TIPS["professions"])
     dd9 = " ".join(C.DEEP_DIVES[9][1])
-    assert "Blizzard can pause" not in dd9 and "recalculates the balance" in dd9
+    assert "Blizzard can pause" not in dd9 and "recalculates the balance" not in dd9 and "overall split" in dd9  # 1.12.5: Nov 10 faction balance post
