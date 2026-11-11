@@ -51,7 +51,7 @@ CLASSES = {
             "**Judgement no longer consumes your Seal.**",
             "**Holy Strike** at 6 and **Consecration** for everyone at 20.",
             "Salvation and Mass Salvation are gone. Lay on Hands is a 20-minute cooldown.",
-            "Seal twisting now comes from the Ret talent **Twist of Light**, not baseline.",
+            "Seal twisting isn't baseline. Twist of Light was removed in launch tuning; the 31-point Retribution talent is now **Unsealed Wrath**.",
         ],
         "leveling": [
             "Holy Strike at 6 gives you a real button to press early.",
@@ -64,7 +64,7 @@ CLASSES = {
             "Undead keep **Will of the Forsaken** to break Fear, Charm and Sleep.",
         ],
         "talents": ["Holy Shock (Holy, 21)", "Light's Vigil (Holy, 31)", "Templar's Bulwark (Protection, 21)",
-                    "Sacred Arbiter (Retribution, 16)", "Twist of Light (Retribution, 31)"],
+                    "Sacred Arbiter (Retribution, 16)", "Unsealed Wrath (Retribution, 31)"],
     },
     "Hunter": {
         "races": "Orc · Troll · Tauren · Skyborne",
@@ -184,7 +184,7 @@ CLASSES = {
         "races": "Orc · Troll (new) · Undead",
         "role": "Damage over time, demons and fear. A Warlock won the $100K beta duel tournament.",
         "new": [
-            "**Pets scale with your stats**, but launch tuning cut pet health to 2 per point of your Stamina (was 7.5). A Nov 6 hotfix gave the Voidwalker about 40 more base health.",
+            "**Pets scale with your stats**, but launch tuning cut pet health to 2 per point of your Stamina (was 7.5). A Nov 6 hotfix gave the Voidwalker about 40 more base health, and on Nov 10 the Imp, Voidwalker, Succubus and Incubus got about 15% more.",
             "Curse of Agony and Curse of Doom are now **Banes**: one Bane per Warlock per target.",
             "Firestone and Spellstone are weapon imbues that stack with Wizard Oil.",
             "**Soul Link** is a 21-point talent; **Demonic Pact** (31) keeps Demonic Sacrifice when you swap pets.",
@@ -298,6 +298,7 @@ _DO = {
             "**Imbue your weapon once when you log in** → imbues last an hour now, not 5 minutes.",
             "**Pair Rockbiter with Spirit Weapons as Enhancement** → you can off-tank small groups.",
             "**Enhancement: keep Strength and Attack Power gear from now on** → Blizzard is retuning Enhancement so Strength is always its best stat.",
+            "**Keep Windfury Weapon on even under a Windfury Totem** → since Nov 10 a weapon imbue and a weapon totem work together.",
         ],
         "pvp": [
             "**Pull your totems to you with Totemic Call mid-fight** → keep them on the fight instead of re-dropping them (30-second cooldown).",
@@ -323,6 +324,7 @@ _DO = {
             "**Did \"Summon Felsteed\" before Nov 9? Summon the Felsteed once** → that grants the riding skill the quest skipped.",
             "**Finish low targets with Drain Soul** → the kill gives you a Soul Shard; damage ticks alone rarely do since launch tuning.",
             "**Stack some Spirit** → Life Tap scales with it, so you sit to drink less.",
+            "**Affliction: get Corruption, Siphon Life and Bane of Agony up before Wrack or Drain Life** → since Nov 10 each one adds to Soul Siphon's bonus (up to 36%), and Wrack makes them tick twice as fast.",
         ],
         "pvp": [
             "**Plan your fight around Fear getting answered** → Undead Will of the Forsaken it and every Priest has Fear Ward, so don't open with it.",
