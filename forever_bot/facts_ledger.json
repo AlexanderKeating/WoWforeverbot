@@ -489,90 +489,90 @@
   {
    "text": "**Don't pass on a good axe** → Hack and Slash gives axes a chance at an extra attack, like swords.",
    "pool": "CLASSES.Rogue.leveling",
-   "source": "",
+   "source": "https://www.warcrafttavern.com/forever/news/poison-pets-rogue-warlock-deep-dive-for-wow-forever/ ; https://worldofwarcraft.blizzard.com/en-us/news/24310968",
    "added": null,
-   "verified": null,
+   "verified": "2026-11-12",
    "expires": null,
    "note": ""
   },
   {
    "text": "**Run poisons and a Sharpening Stone together** → they stack now, so it's free damage.",
    "pool": "CLASSES.Rogue.leveling",
-   "source": "",
+   "source": "https://www.warcrafttavern.com/forever/news/poison-pets-rogue-warlock-deep-dive-for-wow-forever/ ; https://worldofwarcraft.blizzard.com/en-us/news/24310968",
    "added": null,
-   "verified": null,
+   "verified": "2026-11-12",
    "expires": null,
    "note": ""
   },
   {
    "text": "**Sap and sneak past packs you don't need** → you skip fights that give little XP and keep moving.",
    "pool": "CLASSES.Rogue.leveling",
-   "source": "",
+   "source": "https://www.warcrafttavern.com/forever/news/poison-pets-rogue-warlock-deep-dive-for-wow-forever/ ; https://worldofwarcraft.blizzard.com/en-us/news/24310968",
    "added": null,
-   "verified": null,
+   "verified": "2026-11-12",
    "expires": null,
    "note": ""
   },
   {
    "text": "**Sap no longer breaks Stealth.**",
    "pool": "CLASSES.Rogue.new",
-   "source": "",
+   "source": "https://www.warcrafttavern.com/forever/news/poison-pets-rogue-warlock-deep-dive-for-wow-forever/ ; https://worldofwarcraft.blizzard.com/en-us/news/24310968",
    "added": null,
-   "verified": null,
+   "verified": "2026-11-12",
    "expires": null,
    "note": ""
   },
   {
    "text": "Distract also lowers nearby enemies' stealth detection for 10 seconds.",
    "pool": "CLASSES.Rogue.new",
-   "source": "",
+   "source": "https://www.warcrafttavern.com/forever/news/poison-pets-rogue-warlock-deep-dive-for-wow-forever/ ; https://worldofwarcraft.blizzard.com/en-us/news/24310968",
    "added": null,
-   "verified": null,
+   "verified": "2026-11-12",
    "expires": null,
    "note": ""
   },
   {
    "text": "New signatures: **Mutilate** and **Venom** (Assassination), **Thousand Cuts** (Subtlety).",
    "pool": "CLASSES.Rogue.new",
-   "source": "",
+   "source": "https://www.warcrafttavern.com/forever/news/poison-pets-rogue-warlock-deep-dive-for-wow-forever/ ; https://worldofwarcraft.blizzard.com/en-us/news/24310968",
    "added": null,
-   "verified": null,
+   "verified": "2026-11-12",
    "expires": null,
    "note": ""
   },
   {
    "text": "Poisons get more charges and **stack with Sharpening Stones** and other temporary enchants.",
    "pool": "CLASSES.Rogue.new",
-   "source": "",
+   "source": "https://www.warcrafttavern.com/forever/news/poison-pets-rogue-warlock-deep-dive-for-wow-forever/ ; https://worldofwarcraft.blizzard.com/en-us/news/24310968",
    "added": null,
-   "verified": null,
+   "verified": "2026-11-12",
    "expires": null,
    "note": ""
   },
   {
    "text": "Rogues can use **one-handed axes**. Hack and Slash replaces the old weapon specializations.",
    "pool": "CLASSES.Rogue.new",
-   "source": "",
+   "source": "https://www.warcrafttavern.com/forever/news/poison-pets-rogue-warlock-deep-dive-for-wow-forever/ ; https://worldofwarcraft.blizzard.com/en-us/news/24310968",
    "added": null,
-   "verified": null,
+   "verified": "2026-11-12",
    "expires": null,
    "note": ""
   },
   {
    "text": "**Sap the healer, then stay stealthed** → you pick the fight and the target.",
    "pool": "CLASSES.Rogue.pvp",
-   "source": "",
+   "source": "https://www.warcrafttavern.com/forever/news/poison-pets-rogue-warlock-deep-dive-for-wow-forever/ ; https://worldofwarcraft.blizzard.com/en-us/news/24310968",
    "added": null,
-   "verified": null,
+   "verified": "2026-11-12",
    "expires": null,
    "note": ""
   },
   {
    "text": "**Use Distract only when you're ready to commit** → it lowers stealth detection but tells nearby players a Rogue is around.",
    "pool": "CLASSES.Rogue.pvp",
-   "source": "",
+   "source": "https://www.warcrafttavern.com/forever/news/poison-pets-rogue-warlock-deep-dive-for-wow-forever/ ; https://worldofwarcraft.blizzard.com/en-us/news/24310968",
    "added": null,
-   "verified": null,
+   "verified": "2026-11-12",
    "expires": null,
    "note": ""
   },
@@ -597,9 +597,9 @@
   {
    "text": "**Imbue your weapon once when you log in** → imbues last an hour now, not 5 minutes.",
    "pool": "CLASSES.Shaman.leveling",
-   "source": "",
+   "source": "https://worldofwarcraft.blizzard.com/news/24302097",
    "added": null,
-   "verified": null,
+   "verified": "2026-11-12",
    "expires": null,
    "note": ""
   },
@@ -615,18 +615,18 @@
   {
    "text": "**Pair Rockbiter with Spirit Weapons as Enhancement** → you can off-tank small groups.",
    "pool": "CLASSES.Shaman.leveling",
-   "source": "",
+   "source": "https://worldofwarcraft.blizzard.com/news/24302097",
    "added": null,
-   "verified": null,
+   "verified": "2026-11-12",
    "expires": null,
    "note": ""
   },
   {
    "text": "**Set up a Call of the Elements preset at 20** → one cast drops all four totems.",
    "pool": "CLASSES.Shaman.leveling",
-   "source": "",
+   "source": "https://worldofwarcraft.blizzard.com/news/24302097",
    "added": null,
-   "verified": null,
+   "verified": "2026-11-12",
    "expires": null,
    "note": ""
   },
@@ -2125,6 +2125,15 @@
    "note": ""
   },
   {
+   "text": "A Nov 11 hotfix cut the Twilight Forgemaster's Mark of Flames in Riverglades from +1,000 damage to +50 and toned down the Twilight Enforcer's Smash.",
+   "pool": "DID_YOU_KNOW.vet",
+   "source": "https://us.forums.blizzard.com/en/wow/t/wow-forever-hotfixes-november-11-2026/2403040/8",
+   "added": "2026-11-12",
+   "verified": "2026-11-12",
+   "expires": null,
+   "note": ""
+  },
+  {
    "text": "About 20 zombie plague spells turned up in the game files on Oct 30. Blizzard hasn't announced an event.",
    "pool": "DID_YOU_KNOW.vet",
    "source": "",
@@ -2728,6 +2737,15 @@
    "note": ""
   },
   {
+   "text": "Since Nov 11, Paladin Judgement counts as a ranged attack: it rolls against your ranged hit chance and no longer triggers melee procs.",
+   "pool": "DID_YOU_KNOW.vet",
+   "source": "https://us.forums.blizzard.com/en/wow/t/wow-forever-hotfixes-november-11-2026/2403040/8",
+   "added": "2026-11-12",
+   "verified": "2026-11-12",
+   "expires": null,
+   "note": ""
+  },
+  {
    "text": "Six race and class combos are new: Gnome Priest, Human Hunter, Dwarf Shaman, Orc Mage, Troll Warlock and Undead Paladin.",
    "pool": "DID_YOU_KNOW.vet",
    "source": "",
@@ -2818,12 +2836,12 @@
    "note": ""
   },
   {
-   "text": "The Auction House minimum deposit is 1 copper since Nov 10. It was 1 silver at launch.",
+   "text": "The Auction House minimum deposit drops from 1 silver to 1 copper with the Nov 17 maintenance. Blizzard pulled it from the Nov 10 hotfixes.",
    "pool": "DID_YOU_KNOW.vet",
-   "source": "https://news.blizzard.com/en-us/article/24315281/wow-forever-hotfixes-november-10-2026 ; https://us.forums.blizzard.com/en/wow/t/2403040/6",
+   "source": "https://us.forums.blizzard.com/en/wow/t/wow-forever-hotfixes-november-11-2026/2403040/7",
    "added": "2026-11-11",
-   "verified": "2026-11-11",
-   "expires": null,
+   "verified": "2026-11-12",
+   "expires": "2026-11-17",
    "note": ""
   },
   {
@@ -3412,6 +3430,15 @@
    "note": ""
   },
   {
+   "text": "**Don't vendor or delete gear you might want back** → Blizzard switched off Item Restoration on Nov 11 while it fixes a critical bug, so there's no undo for now.",
+   "pool": "TIPS.gold",
+   "source": "https://us.forums.blizzard.com/en/wow/t/wow-forever-hotfixes-november-11-2026/2403040/8",
+   "added": "2026-11-12",
+   "verified": "2026-11-12",
+   "expires": "2026-11-19",
+   "note": ""
+  },
+  {
    "text": "**Hit Honored with your home faction before buying riding** → the beta took 10% off riding and your race's mounts, and Legacy Bartering took up to 10% more off mounts.",
    "pool": "TIPS.gold",
    "source": "",
@@ -3930,6 +3957,15 @@
    "source": "",
    "added": null,
    "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Tailors: stock one extra bolt per bag before you craft** → since Nov 11 the Woolen bags, Green Silk Pack and Red Mageweave Bag take 5 bolts and the Black Silk Pack 6, so you won't come up short mid-batch.",
+   "pool": "TIPS.professions",
+   "source": "https://us.forums.blizzard.com/en/wow/t/wow-forever-hotfixes-november-11-2026/2403040/8",
+   "added": "2026-11-12",
+   "verified": "2026-11-12",
    "expires": null,
    "note": ""
   },

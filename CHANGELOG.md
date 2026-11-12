@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.12.7 (2026-11-12)
+Rolling facts check against Blizzard's Nov 11 hotfixes (us.forums.blizzard.com/en/wow/t/2403040, posts #7 and #8, Kaivax, Nov 12).
+- **Auction House deposit (correction).** Post #7: the Auction House changes were pulled from the Nov 10 update and go live with the Nov 17 weekly maintenance. The 1.12.6 did-you-know "minimum deposit is 1 copper since Nov 10" → "drops from 1 silver to 1 copper with the Nov 17 maintenance", expires Nov 17. Removed from the 1.12.6 release note.
+- **New lines (post #8, Nov 11 hotfixes):** Tailoring tip (Woolen bags, Green Silk Pack and Red Mageweave Bag now 5 bolts, Black Silk Pack 6), gold tip (Item Restoration switched off while Blizzard fixes a critical bug, expires Nov 19), did-you-know (Paladin Judgement is a ranged attack: ranged hit, no melee procs), did-you-know (Riverglades Twilight Forgemaster's Mark of Flames +1,000 → +50, Twilight Enforcer's Smash reduced).
+- **Re-verified** 13 of the 15 oldest lines (Rogue and Shaman cards) against Blizzard's Mage & Shaman deep dive (worldofwarcraft.blizzard.com/news/24302097) and the Rogue & Warlock deep dive as reproduced by Warcraft Tavern. Not verified: "Priests went 9–12" and "Rogues went 5–11" in the beta tournament finals; Kami Labs' finals breakdown has no Priest or Rogue record. Left for the next run.
+
 ## 1.12.6 (2026-11-11)
 Wednesday deep facts check against Blizzard's Nov 10 hotfixes (news.blizzard.com/en-us/article/24315281; us.forums.blizzard.com/en/wow/t/2403040, post #6), the first class tuning pass.
 - **Enhancement.** Stormstrike went from a 6 to an 8-second cooldown (and 150% to 100% weapon damage): the Enhancement rotation said "every 6 seconds", now "every 8 seconds". New Shaman tip: weapon imbues and weapon totems now work together (Windfury Weapon + Windfury Totem). The "keep Strength gear" tip stays.

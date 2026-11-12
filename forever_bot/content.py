@@ -1124,7 +1124,20 @@ TIPS["professions"] += [
     "**Blacksmiths: keep making Coarse Grinding Stones up to 90** → a Nov 10 hotfix raised their skill-ups from 75 to 90.",
 ]
 DID_YOU_KNOW += [
-    ("vet", "The Auction House minimum deposit is 1 copper since Nov 10. It was 1 silver at launch."),
+    ("vet", "The Auction House minimum deposit drops from 1 silver to 1 copper with the Nov 17 maintenance. Blizzard pulled it from the Nov 10 hotfixes."),
+]
+
+# ------------------------------------------------------------------ 1.12.7: facts pass, Nov 12
+# Blizzard: WoW: Forever Hotfixes Nov 11 (us.forums.blizzard.com/en/wow/t/2403040, posts #7 and #8).
+TIPS["professions"] += [
+    "**Tailors: stock one extra bolt per bag before you craft** → since Nov 11 the Woolen bags, Green Silk Pack and Red Mageweave Bag take 5 bolts and the Black Silk Pack 6, so you won't come up short mid-batch.",
+]
+TIPS["gold"] += [
+    "**Don't vendor or delete gear you might want back** → Blizzard switched off Item Restoration on Nov 11 while it fixes a critical bug, so there's no undo for now.",
+]
+DID_YOU_KNOW += [
+    ("vet", "Since Nov 11, Paladin Judgement counts as a ranged attack: it rolls against your ranged hit chance and no longer triggers melee procs."),
+    ("vet", "A Nov 11 hotfix cut the Twilight Forgemaster's Mark of Flames in Riverglades from +1,000 damage to +50 and toned down the Twilight Enforcer's Smash."),
 ]
 
 
@@ -1135,10 +1148,14 @@ DID_YOU_KNOW += [
 # "internal": True keeps a behind-the-scenes release out of /whatsnew and the What's new page.
 WHATSNEW_URL = SITE_URL + "/whatsnew.html"
 RELEASE_NOTES = [
+    {"version": "1.12.7", "date": "2026-11-12", "title": "Nov 11 hotfixes",
+     "line": None, "internal": False,
+     "notes": ["The 1-copper Auction House deposit was pulled from the Nov 10 hotfixes; it now arrives with the Nov 17 maintenance.",
+               "New from the Nov 11 hotfixes: Tailoring bag costs, Item Restoration switched off, Paladin Judgement as a ranged attack, and easier Twilight elites in Riverglades."]},
     {"version": "1.12.6", "date": "2026-11-11", "title": "Nov 10 hotfixes and class tuning",
      "line": None, "internal": False,
      "notes": ["Updated for Blizzard's Nov 10 hotfixes: Stormstrike's 8-second cooldown, Warlock demon health, Wrack and Soul Siphon, the Journeyman Campfire at Cooking 90.",
-               "New tips: quest gold from level 48, Windfury Weapon with Windfury Totem, Affliction DoTs before Wrack, Coarse Grinding Stones to 90, and the 1-copper Auction House deposit.",
+               "New tips: quest gold from level 48, Windfury Weapon with Windfury Totem, Affliction DoTs before Wrack, and Coarse Grinding Stones to 90.",
                "Paladin card: Twist of Light is gone; the 31-point Retribution talent is Unsealed Wrath."]},
     {"version": "1.12.5", "date": "2026-11-10", "title": "Faction balance and Nov 9 hotfixes",
      "line": None, "internal": False,
