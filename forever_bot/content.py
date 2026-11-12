@@ -772,7 +772,7 @@ DEEP_DIVES["legacy"] = ("The Legacy System", [
     "**Hardcore:** points earned there count everywhere, but not the other way around. PvP challenges are swapped for Hardcore-only ones.",
 ])
 DEEP_DIVES["camping"] = ("Camping 101", [
-    "**Light a fire:** Cooking plus Flint and Tinder and wood. Basic Campfire (Cooking 1, 3 items) · Journeyman (Cooking 140, 5 items) · Expert (Cooking 220, 10 items). Each burns for about 10 minutes.",
+    "**Light a fire:** Cooking plus Flint and Tinder and wood. Basic Campfire (Cooking 1, 3 items) · Journeyman (Cooking 90, 5 items) · Expert (Cooking 220, 10 items). Each burns for about 10 minutes.",
     "**Add items:** every profession crafts three camp items. Each character can place one per camp (then waits an hour), and anyone can add to the same fire.",
     "**Get the buff:** sit within range for at least a minute. Buffs from different items combine into one Camp Benefits buff.",
     "**What they do:** stat buffs a bit weaker than class buffs (they don't stack with them), plus utility: the Leatherworking Camp Tent gives rested XP, Engineering bots sell reagents and repair, and Herbalism and Mining can grow nodes.",
@@ -1099,7 +1099,7 @@ DID_YOU_KNOW += [
     ("vet", dm("Taldramir's questline in the client has three stages and ties into Hyjal Summit, and it looks built for healers.", "Wowhead")),
     ("new", "Dual specialization unlocks at level 40, the same level as your first mount."),
     ("vet", "Four days after launch, Blizzard raised kill XP in dungeons by 50% so repeat runs feel worth it."),
-    ("vet", "Blizzard batches Forever's class balance changes on Tuesdays. The first round, Nov 10, covers Hunter and Warlock pets, Affliction and Enhancement."),
+    ("vet", "Blizzard batches Forever's class balance changes on Tuesdays. The first round, Nov 10, gave Warlock demons more health, fixed Hunter pet health, and reworked Affliction's Wrack and Enhancement's Maelstrom Weapon."),
 ]
 
 
@@ -1115,6 +1115,31 @@ DID_YOU_KNOW += [
     ("vet", "Blizzard's PvP rulesets sat near a 55/45 faction split in the most lopsided region after launch week; the goal is as close to 50/50 as possible."),
 ]
 
+# ------------------------------------------------------------------ 1.12.6: facts pass, Nov 11
+# Blizzard: WoW: Forever Hotfixes Nov 10 (news.blizzard.com 24315281; us.forums.blizzard.com/en/wow/t/2403040, post #6).
+TIPS["gold"] += [
+    "**Turn in your quests as you go from level 48** → since Nov 10 most of them pay gold too, and Forever has no XP-to-gold conversion at 60, so saving them gets you nothing.",
+]
+TIPS["professions"] += [
+    "**Blacksmiths: keep making Coarse Grinding Stones up to 90** → a Nov 10 hotfix raised their skill-ups from 75 to 90.",
+]
+DID_YOU_KNOW += [
+    ("vet", "The Auction House minimum deposit drops from 1 silver to 1 copper with the Nov 17 maintenance. Blizzard pulled it from the Nov 10 hotfixes."),
+]
+
+# ------------------------------------------------------------------ 1.12.7: facts pass, Nov 12
+# Blizzard: WoW: Forever Hotfixes Nov 11 (us.forums.blizzard.com/en/wow/t/2403040, posts #7 and #8).
+TIPS["professions"] += [
+    "**Tailors: stock one extra bolt per bag before you craft** → since Nov 11 the Woolen bags, Green Silk Pack and Red Mageweave Bag take 5 bolts and the Black Silk Pack 6, so you won't come up short mid-batch.",
+]
+TIPS["gold"] += [
+    "**Don't vendor or delete gear you might want back** → Blizzard switched off Item Restoration on Nov 11 while it fixes a critical bug, so there's no undo for now.",
+]
+DID_YOU_KNOW += [
+    ("vet", "Since Nov 11, Paladin Judgement counts as a ranged attack: it rolls against your ranged hit chance and no longer triggers melee procs."),
+    ("vet", "A Nov 11 hotfix cut the Twilight Forgemaster's Mark of Flames in Riverglades from +1,000 damage to +50 and toned down the Twilight Enforcer's Smash."),
+]
+
 
 # ------------------------------------------------------------------ 1.9: what's new
 # Player-facing release notes: /whatsnew, the 🆕 line in the next post after a release, and the
@@ -1123,6 +1148,15 @@ DID_YOU_KNOW += [
 # "internal": True keeps a behind-the-scenes release out of /whatsnew and the What's new page.
 WHATSNEW_URL = SITE_URL + "/whatsnew.html"
 RELEASE_NOTES = [
+    {"version": "1.12.7", "date": "2026-11-12", "title": "Nov 11 hotfixes",
+     "line": None, "internal": False,
+     "notes": ["The 1-copper Auction House deposit was pulled from the Nov 10 hotfixes; it now arrives with the Nov 17 maintenance.",
+               "New from the Nov 11 hotfixes: Tailoring bag costs, Item Restoration switched off, Paladin Judgement as a ranged attack, and easier Twilight elites in Riverglades."]},
+    {"version": "1.12.6", "date": "2026-11-11", "title": "Nov 10 hotfixes and class tuning",
+     "line": None, "internal": False,
+     "notes": ["Updated for Blizzard's Nov 10 hotfixes: Stormstrike's 8-second cooldown, Warlock demon health, Wrack and Soul Siphon, the Journeyman Campfire at Cooking 90.",
+               "New tips: quest gold from level 48, Windfury Weapon with Windfury Totem, Affliction DoTs before Wrack, and Coarse Grinding Stones to 90.",
+               "Paladin card: Twist of Light is gone; the 31-point Retribution talent is Unsealed Wrath."]},
     {"version": "1.12.5", "date": "2026-11-10", "title": "Faction balance and Nov 9 hotfixes",
      "line": None, "internal": False,
      "notes": ["Updated for Blizzard's Nov 10 faction balance post: new Horde characters on NA PvP are getting harder to make.",

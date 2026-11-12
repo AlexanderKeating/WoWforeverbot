@@ -274,7 +274,7 @@ ROTATIONS = {
     ],
     "Shaman": [
         ("Enhancement (leveling)", ["Windfury or Rockbiter imbue (lasts an hour)", "Call of the Elements to drop totems",
-                                    "Stormstrike on cooldown (every 6 seconds)", "Earth Shock or Flame Shock",
+                                    "Stormstrike on cooldown (every 8 seconds)", "Earth Shock or Flame Shock",
                                     "Instant Lightning Bolt when Maelstrom Weapon is full"]),
         ("Elemental", ["Flame Shock", "Lightning Bolt as your main nuke (faster cast than Classic)",
                        "Chain Lightning for groups", "Call of Thunder (21) adds 5% crit to both",
@@ -292,7 +292,7 @@ ROTATIONS = {
     ],
     "Warlock": [
         ("Affliction (leveling)", ["Pet attacks first", "Corruption", "Bane of Agony", "Drain Life to heal while you fight",
-                                   "Life Tap for mana, Drain Soul on low targets for shards", "Wrack at 31"]),
+                                   "Life Tap for mana, Drain Soul on low targets for shards", "Wrack at 31 with your DoTs up (they tick twice as fast while you channel it)"]),
         ("Demonology", ["Voidwalker tanks (pets scale with you now)", "Corruption and Bane", "Shadow Bolt",
                         "Health Funnel the pet when needed", "Soul Link at 21"]),
         ("Destruction", ["Immolate", "Conflagrate on cooldown (16)", "Incinerate at 31 (stronger with Immolate)",

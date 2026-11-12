@@ -1324,8 +1324,12 @@ def test_content_corrections():
     # Lava Burst may be named as cut ("Lava Burst was cut…"), never listed as an ability, keybind or rotation step
     for gone in ("200% more", "Totemic Projection at", "\"Lava Burst\"", "\"Lava Burst (", "Lava Burst on cooldown",
                  "signatures: Lava Burst", "separate cooldowns", "10% health", "Binding Heal (Holy",
-                 "guarantees a Soul Shard", "every 8 seconds"):
+                 "guarantees a Soul Shard",
+                 # 1.12.6: Nov 10 hotfixes put Stormstrike back on 8s; Twist of Light was removed on Nov 2
+                 "every 6 seconds", "Ret talent **Twist of Light**", "Twist of Light (Retribution",
+                 "Journeyman (Cooking 140"):
         assert gone not in text, gone
+    assert "Stormstrike on cooldown (every 8 seconds)" in text and "Unsealed Wrath (Retribution, 31)" in text
     assert "Totemic Call" in text and "Lightning Mastery" in text and "300% more" in text
 
 

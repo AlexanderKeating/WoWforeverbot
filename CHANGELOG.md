@@ -1,5 +1,22 @@
 # Changelog
 
+## 1.12.7 (2026-11-12)
+Rolling facts check against Blizzard's Nov 11 hotfixes (us.forums.blizzard.com/en/wow/t/2403040, posts #7 and #8, Kaivax, Nov 12).
+- **Auction House deposit (correction).** Post #7: the Auction House changes were pulled from the Nov 10 update and go live with the Nov 17 weekly maintenance. The 1.12.6 did-you-know "minimum deposit is 1 copper since Nov 10" → "drops from 1 silver to 1 copper with the Nov 17 maintenance", expires Nov 17. Removed from the 1.12.6 release note.
+- **New lines (post #8, Nov 11 hotfixes):** Tailoring tip (Woolen bags, Green Silk Pack and Red Mageweave Bag now 5 bolts, Black Silk Pack 6), gold tip (Item Restoration switched off while Blizzard fixes a critical bug, expires Nov 19), did-you-know (Paladin Judgement is a ranged attack: ranged hit, no melee procs), did-you-know (Riverglades Twilight Forgemaster's Mark of Flames +1,000 → +50, Twilight Enforcer's Smash reduced).
+- **Re-verified** 13 of the 15 oldest lines (Rogue and Shaman cards) against Blizzard's Mage & Shaman deep dive (worldofwarcraft.blizzard.com/news/24302097) and the Rogue & Warlock deep dive as reproduced by Warcraft Tavern. Not verified: "Priests went 9–12" and "Rogues went 5–11" in the beta tournament finals; Kami Labs' finals breakdown has no Priest or Rogue record. Left for the next run.
+
+## 1.12.6 (2026-11-11)
+Wednesday deep facts check against Blizzard's Nov 10 hotfixes (news.blizzard.com/en-us/article/24315281; us.forums.blizzard.com/en/wow/t/2403040, post #6), the first class tuning pass.
+- **Enhancement.** Stormstrike went from a 6 to an 8-second cooldown (and 150% to 100% weapon damage): the Enhancement rotation said "every 6 seconds", now "every 8 seconds". New Shaman tip: weapon imbues and weapon totems now work together (Windfury Weapon + Windfury Totem). The "keep Strength gear" tip stays.
+- **Warlock.** Card: Imp, Voidwalker, Succubus and Incubus got about 15% more base health on Nov 10 (added to the pets line). Affliction rotation: Wrack is now a 6s channel that makes your DoTs tick 100% faster, so "Wrack at 31" → "Wrack at 31 with your DoTs up". New tip: Soul Siphon now scales with Corruption, Siphon Life and Bane of Agony on the target (up to 36%).
+- **Tuning did-you-know.** Was "the first round, Nov 10, covers Hunter and Warlock pets, Affliction and Enhancement" (written before the numbers) → now says what landed. Still expires Nov 16.
+- **Camping deep dive.** Journeyman Campfire: Cooking 140 → 90 (Nov 10 hotfix). Expert stays 220 (Warcraft Tavern, wow-professions.com). Note: five other camping lines say a campfire "holds 10 at Cooking 200"; 200 looks like where you learn the Expert kit and 220 where you can place it. Not changed today, needs a Blizzard source.
+- **Paladin (correction).** "Seal twisting now comes from the Ret talent Twist of Light" was wrong since the Nov 2 development notes: Twist of Light was removed and Unsealed Wrath is the 31-point Retribution talent (Wowhead's write-up of the dev notes, Kami Labs). Card line and talent list updated.
+- **New lines (Nov 10 hotfixes):** gold tip (most quests from 48 pay gold, no XP-to-gold at 60), Blacksmithing tip (Coarse Grinding Stone skill-ups to 90), did-you-know (AH minimum deposit 1 copper, was 1 silver).
+- **Raid check.** Dec 9 for all three raids still matches; Blizzard still hasn't given an unlock hour. No raid lines changed.
+- **Re-verified** 39 of the 40 oldest lines (Druid, Hunter, Mage, Paladin, Priest cards) against Blizzard's class deep dives, the Nov 2 development notes and tournament results; the 40th (Twist of Light) is the correction above.
+
 ## 1.12.5 (2026-11-10)
 Rolling facts check against Blizzard's Nov 9 hotfixes and the Nov 10 PvP faction balance post.
 - **Faction balance (Blizzard, Nov 10, us.forums.blizzard.com/en/wow/t/2408781).** Character creation now reacts to each region's overall PvP split instead of point-in-time counts, and it will get increasingly hard to make Horde on NA PvP. Rulesets deep dive tip was "try again later, Blizzard recalculates through the day" → now "plan for it to stay hard for a while". New did-you-know: ~55/45 split in the most lopsided region, goal 50/50. `test_new_facts_present` guards the new wording.

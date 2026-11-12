@@ -21,9 +21,9 @@
   {
    "text": "**Tauren: War Stomp in bear form** → racials work while shapeshifted (90-second cooldown).",
    "pool": "CLASSES.Druid.leveling",
-   "source": "",
+   "source": "https://news.blizzard.com/en-us/article/24301515/world-of-warcraft-forever-class-deep-dives-hunter-and-druid ; https://www.warcrafttavern.com/forever/news/racial-class-ability-changes-in-the-wow-forever-beta/",
    "added": null,
-   "verified": null,
+   "verified": "2026-11-11",
    "expires": null,
    "note": ""
   },
@@ -93,9 +93,9 @@
   {
    "text": "Druids went 12–14 vs other classes in the beta tournament finals; Minpojke finished top 6.",
    "pool": "CLASSES.Druid.pvp",
-   "source": "",
+   "source": "https://timesaver.gg/blog/wow-forever-open-duel-tournament-results-warlock ; https://kami-labs.fr/en/wow-forever/forever-open-resultats-finale/",
    "added": null,
-   "verified": null,
+   "verified": "2026-11-11",
    "expires": null,
    "note": ""
   },
@@ -138,342 +138,342 @@
   {
    "text": "**Lone Wolf** (Marksmanship): 20% more damage with no pet out.",
    "pool": "CLASSES.Hunter.new",
-   "source": "",
+   "source": "https://news.blizzard.com/en-us/article/24301515/world-of-warcraft-forever-class-deep-dives-hunter-and-druid",
    "added": null,
-   "verified": null,
+   "verified": "2026-11-11",
    "expires": null,
    "note": ""
   },
   {
    "text": "Pets scale with your gear, and every pet family has its own unique ability. Foxes are a new family.",
    "pool": "CLASSES.Hunter.new",
-   "source": "",
+   "source": "https://news.blizzard.com/en-us/article/24301515/world-of-warcraft-forever-class-deep-dives-hunter-and-druid",
    "added": null,
-   "verified": null,
+   "verified": "2026-11-11",
    "expires": null,
    "note": ""
   },
   {
    "text": "Survival is a real melee spec now, with Strider Kick and Lacerating Strikes.",
    "pool": "CLASSES.Hunter.new",
-   "source": "",
+   "source": "https://news.blizzard.com/en-us/article/24301515/world-of-warcraft-forever-class-deep-dives-hunter-and-druid",
    "added": null,
-   "verified": null,
+   "verified": "2026-11-11",
    "expires": null,
    "note": ""
   },
   {
    "text": "Traps work **in combat**, and all traps share one 30-second cooldown.",
    "pool": "CLASSES.Hunter.new",
-   "source": "",
+   "source": "https://www.wowhead.com/news/wow-forever-official-development-notes-and-class-tuning-383704",
    "added": null,
-   "verified": null,
+   "verified": "2026-11-11",
    "expires": null,
    "note": ""
   },
   {
    "text": "**Play group PvP from max range** → hunters went 7–11 in beta finals duels, but range is your edge in battlegrounds.",
    "pool": "CLASSES.Hunter.pvp",
-   "source": "",
+   "source": "https://timesaver.gg/blog/wow-forever-open-duel-tournament-results-warlock ; https://kami-labs.fr/en/wow-forever/forever-open-resultats-finale/",
    "added": null,
-   "verified": null,
+   "verified": "2026-11-11",
    "expires": null,
    "note": ""
   },
   {
    "text": "**Scatter Shot an Undead when you need them locked down** → they can't use Will of the Forsaken while Scatter Shotted.",
    "pool": "CLASSES.Hunter.pvp",
-   "source": "",
+   "source": "https://www.warcrafttavern.com/forever/news/racial-class-ability-changes-in-the-wow-forever-beta/",
    "added": null,
-   "verified": null,
+   "verified": "2026-11-11",
    "expires": null,
    "note": ""
   },
   {
    "text": "**Frost Nova, then Ice Lance** → Ice Lance hits frozen targets for big damage.",
    "pool": "CLASSES.Mage.leveling",
-   "source": "",
+   "source": "https://www.warcrafttavern.com/forever/news/scrolls-totems-mage-shaman-deep-dive-for-wow-forever/ (Blizzard 24302097) ; https://www.wowhead.com/news/wow-forever-official-development-notes-and-class-tuning-383704",
    "added": null,
-   "verified": null,
+   "verified": "2026-11-11",
    "expires": null,
    "note": ""
   },
   {
    "text": "**Learn Comprehension, the new minor tradeskill** → you can read the scrolls monsters drop.",
    "pool": "CLASSES.Mage.leveling",
-   "source": "",
+   "source": "https://www.warcrafttavern.com/forever/news/scrolls-totems-mage-shaman-deep-dive-for-wow-forever/ (Blizzard 24302097)",
    "added": null,
-   "verified": null,
+   "verified": "2026-11-11",
    "expires": null,
    "note": ""
   },
   {
    "text": "**Plan smaller pulls than the old AoE kites** → Cone of Cold is shorter, so huge kite-pulls are riskier.",
    "pool": "CLASSES.Mage.leveling",
-   "source": "",
+   "source": "https://www.warcrafttavern.com/forever/news/scrolls-totems-mage-shaman-deep-dive-for-wow-forever/ (Blizzard 24302097)",
    "added": null,
-   "verified": null,
+   "verified": "2026-11-11",
    "expires": null,
    "note": ""
   },
   {
    "text": "**Frostfire Bolt** at 40 counts as both Fire and Frost.",
    "pool": "CLASSES.Mage.new",
-   "source": "",
+   "source": "https://www.warcrafttavern.com/forever/news/scrolls-totems-mage-shaman-deep-dive-for-wow-forever/ (Blizzard 24302097)",
    "added": null,
-   "verified": null,
+   "verified": "2026-11-11",
    "expires": null,
    "note": ""
   },
   {
    "text": "Arcane: **Arcane Blast** (11) and the new **Arcane Wrath** (16). Missile Barrage is now an early talent.",
    "pool": "CLASSES.Mage.new",
-   "source": "",
+   "source": "https://www.warcrafttavern.com/forever/news/scrolls-totems-mage-shaman-deep-dive-for-wow-forever/ (Blizzard 24302097) ; https://www.warcrafttavern.com/forever/news/racial-class-ability-changes-in-the-wow-forever-beta/ ; https://www.wowhead.com/news/wow-forever-official-development-notes-and-class-tuning-383704",
    "added": null,
-   "verified": null,
+   "verified": "2026-11-11",
    "expires": null,
    "note": ""
   },
   {
    "text": "Cone of Cold lasts less time, to stop huge kite-pulls. Orc Mages are new.",
    "pool": "CLASSES.Mage.new",
-   "source": "",
+   "source": "https://www.warcrafttavern.com/forever/news/scrolls-totems-mage-shaman-deep-dive-for-wow-forever/ (Blizzard 24302097) ; https://news.blizzard.com/en-us/article/24304075",
    "added": null,
-   "verified": null,
+   "verified": "2026-11-11",
    "expires": null,
    "note": ""
   },
   {
    "text": "Fire: **Heating Up** is Forever's Hot Streak; crits shorten your next Pyroblast.",
    "pool": "CLASSES.Mage.new",
-   "source": "",
+   "source": "https://www.warcrafttavern.com/forever/news/scrolls-totems-mage-shaman-deep-dive-for-wow-forever/ (Blizzard 24302097)",
    "added": null,
-   "verified": null,
+   "verified": "2026-11-11",
    "expires": null,
    "note": ""
   },
   {
    "text": "Frost: **Ice Lance** (11) does 300% more to Frozen targets, on an 8-second cooldown shared with Fire Blast; **Fingers of Frost** makes targets count as Frozen.",
    "pool": "CLASSES.Mage.new",
-   "source": "",
+   "source": "https://www.warcrafttavern.com/forever/news/scrolls-totems-mage-shaman-deep-dive-for-wow-forever/ (Blizzard 24302097) ; https://www.wowhead.com/news/wow-forever-official-development-notes-and-class-tuning-383704",
    "added": null,
-   "verified": null,
+   "verified": "2026-11-11",
    "expires": null,
    "note": ""
   },
   {
    "text": "**Root first, then Ice Lance on Fingers of Frost** → that combo is your burst window.",
    "pool": "CLASSES.Mage.pvp",
-   "source": "",
+   "source": "https://www.warcrafttavern.com/forever/news/scrolls-totems-mage-shaman-deep-dive-for-wow-forever/ (Blizzard 24302097)",
    "added": null,
-   "verified": null,
+   "verified": "2026-11-11",
    "expires": null,
    "note": ""
   },
   {
    "text": "**Undead Mages: hold Will of the Forsaken for Warlock fears** → that's the fight you'll see most.",
    "pool": "CLASSES.Mage.pvp",
-   "source": "",
+   "source": "https://www.warcrafttavern.com/forever/news/racial-class-ability-changes-in-the-wow-forever-beta/",
    "added": null,
-   "verified": null,
+   "verified": "2026-11-11",
    "expires": null,
    "note": ""
   },
   {
    "text": "Mages went 4–12 vs other classes in the beta tournament finals, and all four lost in the same round.",
    "pool": "CLASSES.Mage.pvp",
-   "source": "",
+   "source": "https://timesaver.gg/blog/wow-forever-open-duel-tournament-results-warlock ; https://kami-labs.fr/en/wow-forever/forever-open-resultats-finale/",
    "added": null,
-   "verified": null,
+   "verified": "2026-11-11",
    "expires": null,
    "note": ""
   },
   {
    "text": "**Bind Holy Strike as soon as you get it at 6** → you finally have a real button to press, not just auto-attack.",
    "pool": "CLASSES.Paladin.leveling",
-   "source": "",
+   "source": "https://news.blizzard.com/en-us/article/24302099",
    "added": null,
-   "verified": null,
+   "verified": "2026-11-11",
    "expires": null,
    "note": ""
   },
   {
    "text": "**Judge on cooldown** → Judgement no longer eats your Seal, so there's no reason to save it.",
    "pool": "CLASSES.Paladin.leveling",
-   "source": "",
+   "source": "https://news.blizzard.com/en-us/article/24302099",
    "added": null,
-   "verified": null,
+   "verified": "2026-11-11",
    "expires": null,
    "note": ""
   },
   {
    "text": "**Run Seal of Fury while soloing, not just tanking** → its absorb shield means fewer stops between pulls.",
    "pool": "CLASSES.Paladin.leveling",
-   "source": "",
+   "source": "https://news.blizzard.com/en-us/article/24302099",
    "added": null,
-   "verified": null,
+   "verified": "2026-11-11",
    "expires": null,
    "note": ""
   },
   {
    "text": "**Holy Strike** at 6 and **Consecration** for everyone at 20.",
    "pool": "CLASSES.Paladin.new",
-   "source": "",
+   "source": "https://news.blizzard.com/en-us/article/24302099",
    "added": null,
-   "verified": null,
+   "verified": "2026-11-11",
    "expires": null,
    "note": ""
   },
   {
    "text": "**Judgement no longer consumes your Seal.**",
    "pool": "CLASSES.Paladin.new",
-   "source": "",
+   "source": "https://news.blizzard.com/en-us/article/24302099",
    "added": null,
-   "verified": null,
+   "verified": "2026-11-11",
    "expires": null,
    "note": ""
   },
   {
    "text": "**Seal of Fury** at 10: the tanking seal. Hits add Holy damage and an absorb shield; its Judgement taunts.",
    "pool": "CLASSES.Paladin.new",
-   "source": "",
+   "source": "https://news.blizzard.com/en-us/article/24302099",
    "added": null,
-   "verified": null,
+   "verified": "2026-11-11",
    "expires": null,
    "note": ""
   },
   {
    "text": "Salvation and Mass Salvation are gone. Lay on Hands is a 20-minute cooldown.",
    "pool": "CLASSES.Paladin.new",
-   "source": "",
+   "source": "https://www.wowhead.com/news/wow-forever-official-development-notes-and-class-tuning-383704 ; https://news.blizzard.com/en-us/article/24302099",
    "added": null,
-   "verified": null,
+   "verified": "2026-11-11",
    "expires": null,
    "note": ""
   },
   {
-   "text": "Seal twisting now comes from the Ret talent **Twist of Light**, not baseline.",
+   "text": "Seal twisting isn't baseline. Twist of Light was removed in launch tuning; the 31-point Retribution talent is now **Unsealed Wrath**.",
    "pool": "CLASSES.Paladin.new",
-   "source": "",
+   "source": "Blizzard Nov 2 development notes via https://www.wowhead.com/news/wow-forever-official-development-notes-and-class-tuning-383704 ; https://kami-labs.fr/en/wow-forever/",
    "added": null,
-   "verified": null,
+   "verified": "2026-11-11",
    "expires": null,
-   "note": ""
+   "note": "Was 'comes from Twist of Light' (wrong since Nov 2 notes)."
   },
   {
    "text": "**Save Will of the Forsaken (Undead) for a Fear, Charm or Sleep** → breaking a Warlock's Fear is the trade that wins duels.",
    "pool": "CLASSES.Paladin.pvp",
-   "source": "",
+   "source": "https://www.warcrafttavern.com/forever/news/racial-class-ability-changes-in-the-wow-forever-beta/",
    "added": null,
-   "verified": null,
+   "verified": "2026-11-11",
    "expires": null,
    "note": ""
   },
   {
    "text": "**Try a shockadin build if you want burst** → Holy Shock is a 21-point talent on a 10-second cooldown now.",
    "pool": "CLASSES.Paladin.pvp",
-   "source": "",
+   "source": "https://news.blizzard.com/en-us/article/24302099",
    "added": null,
-   "verified": null,
+   "verified": "2026-11-11",
    "expires": null,
    "note": ""
   },
   {
    "text": "Paladins went 16–13 vs other classes in the beta tournament finals, with four undefeated qualifiers.",
    "pool": "CLASSES.Paladin.pvp",
-   "source": "",
+   "source": "https://timesaver.gg/blog/wow-forever-open-duel-tournament-results-warlock ; https://kami-labs.fr/en/wow-forever/forever-open-resultats-finale/ ; https://kami-labs.fr/en/wow-forever/forever-open-qualifies-finale/",
    "added": null,
-   "verified": null,
+   "verified": "2026-11-11",
    "expires": null,
    "note": ""
   },
   {
    "text": "**Fade the moment a dungeon pull turns on you** → its threat drop is doubled now.",
    "pool": "CLASSES.Priest.leveling",
-   "source": "",
+   "source": "https://news.blizzard.com/en-us/article/24301514/world-of-warcraft-forever-class-deep-dives-priest-and-warrior",
    "added": null,
-   "verified": null,
+   "verified": "2026-11-11",
    "expires": null,
    "note": ""
   },
   {
    "text": "**Level as Shadow and stay in Shadowform** → Shadow spells cost half the mana, so you drink far less.",
    "pool": "CLASSES.Priest.leveling",
-   "source": "",
+   "source": "https://news.blizzard.com/en-us/article/24301514/world-of-warcraft-forever-class-deep-dives-priest-and-warrior",
    "added": null,
-   "verified": null,
+   "verified": "2026-11-11",
    "expires": null,
    "note": ""
   },
   {
    "text": "**Stack Renews with other Priests** → Renew from several Priests can sit on one target now.",
    "pool": "CLASSES.Priest.leveling",
-   "source": "",
+   "source": "https://news.blizzard.com/en-us/article/24301514/world-of-warcraft-forever-class-deep-dives-priest-and-warrior",
    "added": null,
-   "verified": null,
+   "verified": "2026-11-11",
    "expires": null,
    "note": ""
   },
   {
    "text": "**Divine Spirit** baseline at 30 and **Shadow Word: Death** at 32 (costs you 30% of your max health if it doesn't kill).",
    "pool": "CLASSES.Priest.new",
-   "source": "",
+   "source": "https://news.blizzard.com/en-us/article/24301514/world-of-warcraft-forever-class-deep-dives-priest-and-warrior ; https://www.wowhead.com/news/wow-forever-official-development-notes-and-class-tuning-383704",
    "added": null,
-   "verified": null,
+   "verified": "2026-11-11",
    "expires": null,
    "note": ""
   },
   {
    "text": "**Fear Ward** and **Devouring Plague** for every Priest at 20, whatever your race.",
    "pool": "CLASSES.Priest.new",
-   "source": "",
+   "source": "https://news.blizzard.com/en-us/article/24301514/world-of-warcraft-forever-class-deep-dives-priest-and-warrior",
    "added": null,
-   "verified": null,
+   "verified": "2026-11-11",
    "expires": null,
    "note": ""
   },
   {
    "text": "New signatures: Penance (Discipline), Prayer of Mending (Holy), Vampiric Embrace (Shadow, 16).",
    "pool": "CLASSES.Priest.new",
-   "source": "",
+   "source": "https://news.blizzard.com/en-us/article/24301514/world-of-warcraft-forever-class-deep-dives-priest-and-warrior",
    "added": null,
-   "verified": null,
+   "verified": "2026-11-11",
    "expires": null,
    "note": ""
   },
   {
    "text": "Shadowform halves Shadow spell mana costs and doubles their crit bonus.",
    "pool": "CLASSES.Priest.new",
-   "source": "",
+   "source": "https://news.blizzard.com/en-us/article/24301514/world-of-warcraft-forever-class-deep-dives-priest-and-warrior",
    "added": null,
-   "verified": null,
+   "verified": "2026-11-11",
    "expires": null,
    "note": ""
   },
   {
    "text": "Undead get **Dark Sacrifice** at 20: turn health into mana over time.",
    "pool": "CLASSES.Priest.new",
-   "source": "",
+   "source": "https://news.blizzard.com/en-us/article/24301514/world-of-warcraft-forever-class-deep-dives-priest-and-warrior",
    "added": null,
-   "verified": null,
+   "verified": "2026-11-11",
    "expires": null,
    "note": ""
   },
   {
    "text": "**Fear Ward yourself before engaging a Warlock** → every Priest has it now, and Warlocks won the beta tournament.",
    "pool": "CLASSES.Priest.pvp",
-   "source": "",
+   "source": "https://news.blizzard.com/en-us/article/24301514/world-of-warcraft-forever-class-deep-dives-priest-and-warrior ; https://timesaver.gg/blog/wow-forever-open-duel-tournament-results-warlock ; https://kami-labs.fr/en/wow-forever/forever-open-resultats-finale/",
    "added": null,
-   "verified": null,
+   "verified": "2026-11-11",
    "expires": null,
    "note": ""
   },
   {
    "text": "**Only Shadow Word: Death when it will kill** → it's an instant finisher, but it costs you if they live.",
    "pool": "CLASSES.Priest.pvp",
-   "source": "",
+   "source": "https://news.blizzard.com/en-us/article/24301514/world-of-warcraft-forever-class-deep-dives-priest-and-warrior ; https://www.wowhead.com/news/wow-forever-official-development-notes-and-class-tuning-383704",
    "added": null,
-   "verified": null,
+   "verified": "2026-11-11",
    "expires": null,
    "note": ""
   },
@@ -489,90 +489,90 @@
   {
    "text": "**Don't pass on a good axe** → Hack and Slash gives axes a chance at an extra attack, like swords.",
    "pool": "CLASSES.Rogue.leveling",
-   "source": "",
+   "source": "https://www.warcrafttavern.com/forever/news/poison-pets-rogue-warlock-deep-dive-for-wow-forever/ ; https://worldofwarcraft.blizzard.com/en-us/news/24310968",
    "added": null,
-   "verified": null,
+   "verified": "2026-11-12",
    "expires": null,
    "note": ""
   },
   {
    "text": "**Run poisons and a Sharpening Stone together** → they stack now, so it's free damage.",
    "pool": "CLASSES.Rogue.leveling",
-   "source": "",
+   "source": "https://www.warcrafttavern.com/forever/news/poison-pets-rogue-warlock-deep-dive-for-wow-forever/ ; https://worldofwarcraft.blizzard.com/en-us/news/24310968",
    "added": null,
-   "verified": null,
+   "verified": "2026-11-12",
    "expires": null,
    "note": ""
   },
   {
    "text": "**Sap and sneak past packs you don't need** → you skip fights that give little XP and keep moving.",
    "pool": "CLASSES.Rogue.leveling",
-   "source": "",
+   "source": "https://www.warcrafttavern.com/forever/news/poison-pets-rogue-warlock-deep-dive-for-wow-forever/ ; https://worldofwarcraft.blizzard.com/en-us/news/24310968",
    "added": null,
-   "verified": null,
+   "verified": "2026-11-12",
    "expires": null,
    "note": ""
   },
   {
    "text": "**Sap no longer breaks Stealth.**",
    "pool": "CLASSES.Rogue.new",
-   "source": "",
+   "source": "https://www.warcrafttavern.com/forever/news/poison-pets-rogue-warlock-deep-dive-for-wow-forever/ ; https://worldofwarcraft.blizzard.com/en-us/news/24310968",
    "added": null,
-   "verified": null,
+   "verified": "2026-11-12",
    "expires": null,
    "note": ""
   },
   {
    "text": "Distract also lowers nearby enemies' stealth detection for 10 seconds.",
    "pool": "CLASSES.Rogue.new",
-   "source": "",
+   "source": "https://www.warcrafttavern.com/forever/news/poison-pets-rogue-warlock-deep-dive-for-wow-forever/ ; https://worldofwarcraft.blizzard.com/en-us/news/24310968",
    "added": null,
-   "verified": null,
+   "verified": "2026-11-12",
    "expires": null,
    "note": ""
   },
   {
    "text": "New signatures: **Mutilate** and **Venom** (Assassination), **Thousand Cuts** (Subtlety).",
    "pool": "CLASSES.Rogue.new",
-   "source": "",
+   "source": "https://www.warcrafttavern.com/forever/news/poison-pets-rogue-warlock-deep-dive-for-wow-forever/ ; https://worldofwarcraft.blizzard.com/en-us/news/24310968",
    "added": null,
-   "verified": null,
+   "verified": "2026-11-12",
    "expires": null,
    "note": ""
   },
   {
    "text": "Poisons get more charges and **stack with Sharpening Stones** and other temporary enchants.",
    "pool": "CLASSES.Rogue.new",
-   "source": "",
+   "source": "https://www.warcrafttavern.com/forever/news/poison-pets-rogue-warlock-deep-dive-for-wow-forever/ ; https://worldofwarcraft.blizzard.com/en-us/news/24310968",
    "added": null,
-   "verified": null,
+   "verified": "2026-11-12",
    "expires": null,
    "note": ""
   },
   {
    "text": "Rogues can use **one-handed axes**. Hack and Slash replaces the old weapon specializations.",
    "pool": "CLASSES.Rogue.new",
-   "source": "",
+   "source": "https://www.warcrafttavern.com/forever/news/poison-pets-rogue-warlock-deep-dive-for-wow-forever/ ; https://worldofwarcraft.blizzard.com/en-us/news/24310968",
    "added": null,
-   "verified": null,
+   "verified": "2026-11-12",
    "expires": null,
    "note": ""
   },
   {
    "text": "**Sap the healer, then stay stealthed** → you pick the fight and the target.",
    "pool": "CLASSES.Rogue.pvp",
-   "source": "",
+   "source": "https://www.warcrafttavern.com/forever/news/poison-pets-rogue-warlock-deep-dive-for-wow-forever/ ; https://worldofwarcraft.blizzard.com/en-us/news/24310968",
    "added": null,
-   "verified": null,
+   "verified": "2026-11-12",
    "expires": null,
    "note": ""
   },
   {
    "text": "**Use Distract only when you're ready to commit** → it lowers stealth detection but tells nearby players a Rogue is around.",
    "pool": "CLASSES.Rogue.pvp",
-   "source": "",
+   "source": "https://www.warcrafttavern.com/forever/news/poison-pets-rogue-warlock-deep-dive-for-wow-forever/ ; https://worldofwarcraft.blizzard.com/en-us/news/24310968",
    "added": null,
-   "verified": null,
+   "verified": "2026-11-12",
    "expires": null,
    "note": ""
   },
@@ -597,27 +597,36 @@
   {
    "text": "**Imbue your weapon once when you log in** → imbues last an hour now, not 5 minutes.",
    "pool": "CLASSES.Shaman.leveling",
-   "source": "",
+   "source": "https://worldofwarcraft.blizzard.com/news/24302097",
    "added": null,
-   "verified": null,
+   "verified": "2026-11-12",
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Keep Windfury Weapon on even under a Windfury Totem** → since Nov 10 a weapon imbue and a weapon totem work together.",
+   "pool": "CLASSES.Shaman.leveling",
+   "source": "https://news.blizzard.com/en-us/article/24315281/wow-forever-hotfixes-november-10-2026 ; https://us.forums.blizzard.com/en/wow/t/2403040/6",
+   "added": "2026-11-11",
+   "verified": "2026-11-11",
    "expires": null,
    "note": ""
   },
   {
    "text": "**Pair Rockbiter with Spirit Weapons as Enhancement** → you can off-tank small groups.",
    "pool": "CLASSES.Shaman.leveling",
-   "source": "",
+   "source": "https://worldofwarcraft.blizzard.com/news/24302097",
    "added": null,
-   "verified": null,
+   "verified": "2026-11-12",
    "expires": null,
    "note": ""
   },
   {
    "text": "**Set up a Call of the Elements preset at 20** → one cast drops all four totems.",
    "pool": "CLASSES.Shaman.leveling",
-   "source": "",
+   "source": "https://worldofwarcraft.blizzard.com/news/24302097",
    "added": null,
-   "verified": null,
+   "verified": "2026-11-12",
    "expires": null,
    "note": ""
   },
@@ -694,6 +703,15 @@
    "note": ""
   },
   {
+   "text": "**Affliction: get Corruption, Siphon Life and Bane of Agony up before Wrack or Drain Life** → since Nov 10 each one adds to Soul Siphon's bonus (up to 36%), and Wrack makes them tick twice as fast.",
+   "pool": "CLASSES.Warlock.leveling",
+   "source": "https://news.blizzard.com/en-us/article/24315281/wow-forever-hotfixes-november-10-2026 ; https://us.forums.blizzard.com/en/wow/t/2403040/6",
+   "added": "2026-11-11",
+   "verified": "2026-11-11",
+   "expires": null,
+   "note": ""
+  },
+  {
    "text": "**Did \"Summon Felsteed\" before Nov 9? Summon the Felsteed once** → that grants the riding skill the quest skipped.",
    "pool": "CLASSES.Warlock.leveling",
    "source": "https://us.forums.blizzard.com/en/wow/t/wow-forever-hotfixes-november-9-2026/2403040",
@@ -730,11 +748,11 @@
    "note": ""
   },
   {
-   "text": "**Pets scale with your stats**, but launch tuning cut pet health to 2 per point of your Stamina (was 7.5). A Nov 6 hotfix gave the Voidwalker about 40 more base health.",
+   "text": "**Pets scale with your stats**, but launch tuning cut pet health to 2 per point of your Stamina (was 7.5). A Nov 6 hotfix gave the Voidwalker about 40 more base health, and on Nov 10 the Imp, Voidwalker, Succubus and Incubus got about 15% more.",
    "pool": "CLASSES.Warlock.new",
-   "source": "https://us.forums.blizzard.com/en/wow/t/2403040",
+   "source": "https://us.forums.blizzard.com/en/wow/t/2403040 ; https://news.blizzard.com/en-us/article/24315281/wow-forever-hotfixes-november-10-2026 ; https://us.forums.blizzard.com/en/wow/t/2403040/6",
    "added": null,
-   "verified": "2026-11-09",
+   "verified": "2026-11-11",
    "expires": null,
    "note": ""
   },
@@ -1486,11 +1504,11 @@
    "note": ""
   },
   {
-   "text": "**Light a fire:** Cooking plus Flint and Tinder and wood. Basic Campfire (Cooking 1, 3 items) · Journeyman (Cooking 140, 5 items) · Expert (Cooking 220, 10 items). Each burns for about 10 minutes.",
+   "text": "**Light a fire:** Cooking plus Flint and Tinder and wood. Basic Campfire (Cooking 1, 3 items) · Journeyman (Cooking 90, 5 items) · Expert (Cooking 220, 10 items). Each burns for about 10 minutes.",
    "pool": "DEEP_DIVES.camping",
-   "source": "",
+   "source": "https://news.blizzard.com/en-us/article/24315281/wow-forever-hotfixes-november-10-2026 ; https://us.forums.blizzard.com/en/wow/t/2403040/6 (Journeyman 140→90) ; https://www.warcrafttavern.com/forever/guides/camping-objects-buffs/ ; https://www.wow-professions.com/forever/camping-guide (Expert 220)",
    "added": null,
-   "verified": null,
+   "verified": "2026-11-11",
    "expires": null,
    "note": ""
   },
@@ -2107,6 +2125,15 @@
    "note": ""
   },
   {
+   "text": "A Nov 11 hotfix cut the Twilight Forgemaster's Mark of Flames in Riverglades from +1,000 damage to +50 and toned down the Twilight Enforcer's Smash.",
+   "pool": "DID_YOU_KNOW.vet",
+   "source": "https://us.forums.blizzard.com/en/wow/t/wow-forever-hotfixes-november-11-2026/2403040/8",
+   "added": "2026-11-12",
+   "verified": "2026-11-12",
+   "expires": null,
+   "note": ""
+  },
+  {
    "text": "About 20 zombie plague spells turned up in the game files on Oct 30. Blizzard hasn't announced an event.",
    "pool": "DID_YOU_KNOW.vet",
    "source": "",
@@ -2197,13 +2224,13 @@
    "note": ""
   },
   {
-   "text": "Blizzard batches Forever's class balance changes on Tuesdays. The first round, Nov 10, covers Hunter and Warlock pets, Affliction and Enhancement.",
+   "text": "Blizzard batches Forever's class balance changes on Tuesdays. The first round, Nov 10, gave Warlock demons more health, fixed Hunter pet health, and reworked Affliction's Wrack and Enhancement's Maelstrom Weapon.",
    "pool": "DID_YOU_KNOW.vet",
-   "source": "Kaivax, Class Tuning Incoming - November 10 (us forums thread 2404092) via https://timesaver.gg/blog/wow-forever-class-changes-november-10",
+   "source": "https://news.blizzard.com/en-us/article/24315281/wow-forever-hotfixes-november-10-2026 ; https://us.forums.blizzard.com/en/wow/t/2403040/6 ; Kaivax, Class Tuning Incoming - November 10 (us forums thread 2404092)",
    "added": "2026-11-09",
-   "verified": "2026-11-09",
+   "verified": "2026-11-11",
    "expires": "2026-11-16",
-   "note": "Re-check after the Nov 10 hotfixes; replace with what actually changed."
+   "note": ""
   },
   {
    "text": "Blizzard built a dueling arena in Hyjal Crater for Forever Open finals day, even though it was a community event.",
@@ -2710,6 +2737,15 @@
    "note": ""
   },
   {
+   "text": "Since Nov 11, Paladin Judgement counts as a ranged attack: it rolls against your ranged hit chance and no longer triggers melee procs.",
+   "pool": "DID_YOU_KNOW.vet",
+   "source": "https://us.forums.blizzard.com/en/wow/t/wow-forever-hotfixes-november-11-2026/2403040/8",
+   "added": "2026-11-12",
+   "verified": "2026-11-12",
+   "expires": null,
+   "note": ""
+  },
+  {
    "text": "Six race and class combos are new: Gnome Priest, Human Hunter, Dwarf Shaman, Orc Mage, Troll Warlock and Undead Paladin.",
    "pool": "DID_YOU_KNOW.vet",
    "source": "",
@@ -2797,6 +2833,15 @@
    "added": null,
    "verified": null,
    "expires": null,
+   "note": ""
+  },
+  {
+   "text": "The Auction House minimum deposit drops from 1 silver to 1 copper with the Nov 17 maintenance. Blizzard pulled it from the Nov 10 hotfixes.",
+   "pool": "DID_YOU_KNOW.vet",
+   "source": "https://us.forums.blizzard.com/en/wow/t/wow-forever-hotfixes-november-11-2026/2403040/7",
+   "added": "2026-11-11",
+   "verified": "2026-11-12",
+   "expires": "2026-11-17",
    "note": ""
   },
   {
@@ -3385,6 +3430,15 @@
    "note": ""
   },
   {
+   "text": "**Don't vendor or delete gear you might want back** → Blizzard switched off Item Restoration on Nov 11 while it fixes a critical bug, so there's no undo for now.",
+   "pool": "TIPS.gold",
+   "source": "https://us.forums.blizzard.com/en/wow/t/wow-forever-hotfixes-november-11-2026/2403040/8",
+   "added": "2026-11-12",
+   "verified": "2026-11-12",
+   "expires": "2026-11-19",
+   "note": ""
+  },
+  {
    "text": "**Hit Honored with your home faction before buying riding** → the beta took 10% off riding and your race's mounts, and Legacy Bartering took up to 10% more off mounts.",
    "pool": "TIPS.gold",
    "source": "",
@@ -3480,6 +3534,15 @@
    "source": "",
    "added": null,
    "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Turn in your quests as you go from level 48** → since Nov 10 most of them pay gold too, and Forever has no XP-to-gold conversion at 60, so saving them gets you nothing.",
+   "pool": "TIPS.gold",
+   "source": "https://news.blizzard.com/en-us/article/24315281/wow-forever-hotfixes-november-10-2026 ; https://us.forums.blizzard.com/en/wow/t/2403040/6",
+   "added": "2026-11-11",
+   "verified": "2026-11-11",
    "expires": null,
    "note": ""
   },
@@ -3790,6 +3853,15 @@
    "note": ""
   },
   {
+   "text": "**Blacksmiths: keep making Coarse Grinding Stones up to 90** → a Nov 10 hotfix raised their skill-ups from 75 to 90.",
+   "pool": "TIPS.professions",
+   "source": "https://news.blizzard.com/en-us/article/24315281/wow-forever-hotfixes-november-10-2026 ; https://us.forums.blizzard.com/en/wow/t/2403040/6",
+   "added": "2026-11-11",
+   "verified": "2026-11-11",
+   "expires": null,
+   "note": ""
+  },
+  {
    "text": "**Do the starting-zone profession quest** → it hands you a book for Mining, Skinning or Herbalism plus 2 free skill points.",
    "pool": "TIPS.professions",
    "source": "",
@@ -3885,6 +3957,15 @@
    "source": "",
    "added": null,
    "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Tailors: stock one extra bolt per bag before you craft** → since Nov 11 the Woolen bags, Green Silk Pack and Red Mageweave Bag take 5 bolts and the Black Silk Pack 6, so you won't come up short mid-batch.",
+   "pool": "TIPS.professions",
+   "source": "https://us.forums.blizzard.com/en/wow/t/wow-forever-hotfixes-november-11-2026/2403040/8",
+   "added": "2026-11-12",
+   "verified": "2026-11-12",
    "expires": null,
    "note": ""
   },
