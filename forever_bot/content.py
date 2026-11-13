@@ -1099,7 +1099,7 @@ DID_YOU_KNOW += [
     ("vet", dm("Taldramir's questline in the client has three stages and ties into Hyjal Summit, and it looks built for healers.", "Wowhead")),
     ("new", "Dual specialization unlocks at level 40, the same level as your first mount."),
     ("vet", "Four days after launch, Blizzard raised kill XP in dungeons by 50% so repeat runs feel worth it."),
-    ("vet", "Blizzard batches Forever's class balance changes on Tuesdays. The first round, Nov 10, gave Warlock demons more health, fixed Hunter pet health, and reworked Affliction's Wrack and Enhancement's Maelstrom Weapon."),
+    ("vet", "Blizzard batches Forever's class balance changes on Tuesdays. The first round, Nov 10, gave Warlock demons more health, fixed Hunter pet health and reworked Affliction's Wrack; its Enhancement Shaman changes slipped to Nov 12."),
 ]
 
 
@@ -1124,7 +1124,7 @@ TIPS["professions"] += [
     "**Blacksmiths: keep making Coarse Grinding Stones up to 90** → a Nov 10 hotfix raised their skill-ups from 75 to 90.",
 ]
 DID_YOU_KNOW += [
-    ("vet", "The Auction House minimum deposit drops from 1 silver to 1 copper with the Nov 17 maintenance. Blizzard pulled it from the Nov 10 hotfixes."),
+    ("vet", "The Auction House minimum deposit drops from 1 silver to 1 copper with the weekly maintenance on Nov 17 (Nov 18 in Europe). Blizzard pulled it from the Nov 10 hotfixes."),
 ]
 
 # ------------------------------------------------------------------ 1.12.7: facts pass, Nov 12
@@ -1140,6 +1140,13 @@ DID_YOU_KNOW += [
     ("vet", "A Nov 11 hotfix cut the Twilight Forgemaster's Mark of Flames in Riverglades from +1,000 damage to +50 and toned down the Twilight Enforcer's Smash."),
 ]
 
+# ------------------------------------------------------------------ 1.12.8: facts pass, Nov 13
+# Blizzard: WoW: Forever Hotfixes (us.forums.blizzard.com/en/wow/t/2403040, post #9, Kaivax, Nov 12):
+# the Nov 10 Enhancement changes were delayed and went live Nov 12, 10:45 a.m. PST.
+DID_YOU_KNOW += [
+    ("vet", "Since Nov 12, Enhancement's Mental Dexterity turns 33/66/100% of your Intellect into Attack Power, down from 50/100/150%."),
+]
+
 
 # ------------------------------------------------------------------ 1.9: what's new
 # Player-facing release notes: /whatsnew, the 🆕 line in the next post after a release, and the
@@ -1148,6 +1155,11 @@ DID_YOU_KNOW += [
 # "internal": True keeps a behind-the-scenes release out of /whatsnew and the What's new page.
 WHATSNEW_URL = SITE_URL + "/whatsnew.html"
 RELEASE_NOTES = [
+    {"version": "1.12.8", "date": "2026-11-13", "title": "Enhancement changes went live Nov 12",
+     "line": None, "internal": False,
+     "notes": ["Blizzard's Nov 10 Enhancement Shaman changes were delayed and went live on Nov 12: the Windfury tip and the class tuning fact now say so.",
+               "New: Maelstrom Weapon's per-rank proc rate and Mental Dexterity's lower Intellect-to-Attack Power ratio.",
+               "The 1-copper Auction House deposit arrives with the weekly maintenance on Nov 17 (Nov 18 in Europe)."]},
     {"version": "1.12.7", "date": "2026-11-12", "title": "Nov 11 hotfixes",
      "line": None, "internal": False,
      "notes": ["The 1-copper Auction House deposit was pulled from the Nov 10 hotfixes; it now arrives with the Nov 17 maintenance.",

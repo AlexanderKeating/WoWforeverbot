@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.12.8 (2026-11-13)
+Rolling facts check against Blizzard's Nov 12 post (us.forums.blizzard.com/en/wow/t/2403040, post #9, Kaivax): "due to an unexpected delay in deployment", the Enhancement Shaman changes listed with the Nov 10 hotfixes went live on Nov 12, 10:45 a.m. PST.
+- **Windfury tip (correction).** "since Nov 10 a weapon imbue and a weapon totem work together" → "since Nov 12".
+- **Class tuning did-you-know (correction).** Said the Nov 10 round reworked Enhancement's Maelstrom Weapon → now says the Enhancement changes slipped to Nov 12. Still expires Nov 16.
+- **Auction House deposit.** "with the Nov 17 maintenance" → "with the weekly maintenance on Nov 17 (Nov 18 in Europe)", per the EU copy of post #6 (eu.forums.blizzard.com/en/wow/t/639885). Still expires Nov 17.
+- **New lines (post #9):** Shaman leveling tip (all 5 points in Maelstrom Weapon: 6–10 procs a minute by rank, 20% cast time and mana per stack at every rank; was 20 a minute and 4–20% by rank), did-you-know (Mental Dexterity 33/66/100% of Intellect as Attack Power, was 50/100/150%). The Enhancement rotation's "instant Lightning Bolt when Maelstrom Weapon is full" still holds (5 × 20%).
+- **Not re-verified today.** The 15 oldest lines (Priest/Rogue tournament records, Shaman and Warlock card lines) couldn't be checked: Blizzard's class deep dive and development notes didn't load in this unattended run. Left for the next run.
+
 ## 1.12.7 (2026-11-12)
 Rolling facts check against Blizzard's Nov 11 hotfixes (us.forums.blizzard.com/en/wow/t/2403040, posts #7 and #8, Kaivax, Nov 12).
 - **Auction House deposit (correction).** Post #7: the Auction House changes were pulled from the Nov 10 update and go live with the Nov 17 weekly maintenance. The 1.12.6 did-you-know "minimum deposit is 1 copper since Nov 10" → "drops from 1 silver to 1 copper with the Nov 17 maintenance", expires Nov 17. Removed from the 1.12.6 release note.

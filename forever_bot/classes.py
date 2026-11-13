@@ -298,7 +298,8 @@ _DO = {
             "**Imbue your weapon once when you log in** → imbues last an hour now, not 5 minutes.",
             "**Pair Rockbiter with Spirit Weapons as Enhancement** → you can off-tank small groups.",
             "**Enhancement: keep Strength and Attack Power gear from now on** → Blizzard is retuning Enhancement so Strength is always its best stat.",
-            "**Keep Windfury Weapon on even under a Windfury Totem** → since Nov 10 a weapon imbue and a weapon totem work together.",
+            "**Keep Windfury Weapon on even under a Windfury Totem** → since Nov 12 a weapon imbue and a weapon totem work together.",
+            "**Enhancement: put all 5 points in Maelstrom Weapon** → since Nov 12 each rank adds a proc per minute (6 up to 10), and every stack takes 20% off your next spell's cast time and mana at any rank.",
         ],
         "pvp": [
             "**Pull your totems to you with Totemic Call mid-fight** → keep them on the fight instead of re-dropping them (30-second cooldown).",
