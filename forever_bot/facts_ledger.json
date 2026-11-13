@@ -595,6 +595,15 @@
    "note": ""
   },
   {
+   "text": "**Enhancement: put all 5 points in Maelstrom Weapon** → since Nov 12 each rank adds a proc per minute (6 up to 10), and every stack takes 20% off your next spell's cast time and mana at any rank.",
+   "pool": "CLASSES.Shaman.leveling",
+   "source": "https://us.forums.blizzard.com/en/wow/t/wow-forever-hotfixes-november-11-2026/2403040/9",
+   "added": "2026-11-13",
+   "verified": "2026-11-13",
+   "expires": null,
+   "note": ""
+  },
+  {
    "text": "**Imbue your weapon once when you log in** → imbues last an hour now, not 5 minutes.",
    "pool": "CLASSES.Shaman.leveling",
    "source": "https://worldofwarcraft.blizzard.com/news/24302097",
@@ -604,11 +613,11 @@
    "note": ""
   },
   {
-   "text": "**Keep Windfury Weapon on even under a Windfury Totem** → since Nov 10 a weapon imbue and a weapon totem work together.",
+   "text": "**Keep Windfury Weapon on even under a Windfury Totem** → since Nov 12 a weapon imbue and a weapon totem work together.",
    "pool": "CLASSES.Shaman.leveling",
-   "source": "https://news.blizzard.com/en-us/article/24315281/wow-forever-hotfixes-november-10-2026 ; https://us.forums.blizzard.com/en/wow/t/2403040/6",
+   "source": "https://us.forums.blizzard.com/en/wow/t/wow-forever-hotfixes-november-11-2026/2403040/9",
    "added": "2026-11-11",
-   "verified": "2026-11-11",
+   "verified": "2026-11-13",
    "expires": null,
    "note": ""
   },
@@ -2224,11 +2233,11 @@
    "note": ""
   },
   {
-   "text": "Blizzard batches Forever's class balance changes on Tuesdays. The first round, Nov 10, gave Warlock demons more health, fixed Hunter pet health, and reworked Affliction's Wrack and Enhancement's Maelstrom Weapon.",
+   "text": "Blizzard batches Forever's class balance changes on Tuesdays. The first round, Nov 10, gave Warlock demons more health, fixed Hunter pet health and reworked Affliction's Wrack; its Enhancement Shaman changes slipped to Nov 12.",
    "pool": "DID_YOU_KNOW.vet",
-   "source": "https://news.blizzard.com/en-us/article/24315281/wow-forever-hotfixes-november-10-2026 ; https://us.forums.blizzard.com/en/wow/t/2403040/6 ; Kaivax, Class Tuning Incoming - November 10 (us forums thread 2404092)",
+   "source": "https://news.blizzard.com/en-us/article/24315281/wow-forever-hotfixes-november-10-2026 ; https://us.forums.blizzard.com/en/wow/t/wow-forever-hotfixes-november-11-2026/2403040/9",
    "added": "2026-11-09",
-   "verified": "2026-11-11",
+   "verified": "2026-11-13",
    "expires": "2026-11-16",
    "note": ""
   },
@@ -2746,6 +2755,15 @@
    "note": ""
   },
   {
+   "text": "Since Nov 12, Enhancement's Mental Dexterity turns 33/66/100% of your Intellect into Attack Power, down from 50/100/150%.",
+   "pool": "DID_YOU_KNOW.vet",
+   "source": "https://us.forums.blizzard.com/en/wow/t/wow-forever-hotfixes-november-11-2026/2403040/9",
+   "added": "2026-11-13",
+   "verified": "2026-11-13",
+   "expires": null,
+   "note": ""
+  },
+  {
    "text": "Six race and class combos are new: Gnome Priest, Human Hunter, Dwarf Shaman, Orc Mage, Troll Warlock and Undead Paladin.",
    "pool": "DID_YOU_KNOW.vet",
    "source": "",
@@ -2836,11 +2854,11 @@
    "note": ""
   },
   {
-   "text": "The Auction House minimum deposit drops from 1 silver to 1 copper with the Nov 17 maintenance. Blizzard pulled it from the Nov 10 hotfixes.",
+   "text": "The Auction House minimum deposit drops from 1 silver to 1 copper with the weekly maintenance on Nov 17 (Nov 18 in Europe). Blizzard pulled it from the Nov 10 hotfixes.",
    "pool": "DID_YOU_KNOW.vet",
-   "source": "https://us.forums.blizzard.com/en/wow/t/wow-forever-hotfixes-november-11-2026/2403040/7",
+   "source": "https://us.forums.blizzard.com/en/wow/t/wow-forever-hotfixes-november-11-2026/2403040/7 ; https://eu.forums.blizzard.com/en/wow/t/wow-forever-hotfixes-november-11-2026/639885",
    "added": "2026-11-11",
-   "verified": "2026-11-12",
+   "verified": "2026-11-13",
    "expires": "2026-11-17",
    "note": ""
   },
