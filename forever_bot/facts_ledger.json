@@ -642,54 +642,54 @@
   {
    "text": "**Call of the Elements** at 20: preset four totems and drop them all in one 3-second cast.",
    "pool": "CLASSES.Shaman.new",
-   "source": "",
+   "source": "https://news.blizzard.com/en-us/article/24302097/",
    "added": null,
-   "verified": null,
+   "verified": "2026-11-14",
    "expires": null,
    "note": ""
   },
   {
    "text": "**Totemic Call** (was Totemic Projection) pulls all your totems to you, on a 30-second cooldown.",
    "pool": "CLASSES.Shaman.new",
-   "source": "",
+   "source": "https://us.forums.blizzard.com/en/wow/t/2360696/9",
    "added": null,
-   "verified": null,
+   "verified": "2026-11-14",
    "expires": null,
    "note": ""
   },
   {
    "text": "Lava Burst was cut before launch: **Call of Thunder** (+5% crit on Lightning Bolt and Chain Lightning) takes its spot, and Elemental Mastery is now **Lightning Mastery**. Also new: Maelstrom Weapon (Enhancement), Riptide (Restoration, healing over time only, 12-second cooldown).",
    "pool": "CLASSES.Shaman.new",
-   "source": "",
+   "source": "https://us.forums.blizzard.com/en/wow/t/2360696/9; https://news.blizzard.com/en-us/article/24302097/",
    "added": null,
-   "verified": null,
+   "verified": "2026-11-14",
    "expires": null,
    "note": ""
   },
   {
    "text": "Totems: 1-second global cooldown, and buff totems last 5 minutes.",
    "pool": "CLASSES.Shaman.new",
-   "source": "",
+   "source": "https://news.blizzard.com/en-us/article/24302097/",
    "added": null,
-   "verified": null,
+   "verified": "2026-11-14",
    "expires": null,
    "note": ""
   },
   {
    "text": "Weapon imbues last **60 minutes** and stack with stones and oils. Windfury Totem is a party buff.",
    "pool": "CLASSES.Shaman.new",
-   "source": "",
+   "source": "https://news.blizzard.com/en-us/article/24302097/",
    "added": null,
-   "verified": null,
+   "verified": "2026-11-14",
    "expires": null,
    "note": ""
   },
   {
    "text": "**Pull your totems to you with Totemic Call mid-fight** → keep them on the fight instead of re-dropping them (30-second cooldown).",
    "pool": "CLASSES.Shaman.pvp",
-   "source": "",
+   "source": "https://us.forums.blizzard.com/en/wow/t/2360696/9",
    "added": null,
-   "verified": null,
+   "verified": "2026-11-14",
    "expires": null,
    "note": ""
   },
@@ -732,9 +732,9 @@
   {
    "text": "**Finish low targets with Drain Soul** → the kill gives you a Soul Shard; damage ticks alone rarely do since launch tuning.",
    "pool": "CLASSES.Warlock.leveling",
-   "source": "",
+   "source": "https://us.forums.blizzard.com/en/wow/t/2360696/9; https://kami-labs.fr/en/wow-forever/patch-notes-2-novembre-notes-de-lancement/",
    "added": null,
-   "verified": null,
+   "verified": "2026-11-14",
    "expires": null,
    "note": ""
   },
@@ -750,9 +750,9 @@
   {
    "text": "**Stack some Spirit** → Life Tap scales with it, so you sit to drink less.",
    "pool": "CLASSES.Warlock.leveling",
-   "source": "",
+   "source": "https://www.warcrafttavern.com/forever/news/poison-pets-rogue-warlock-deep-dive-for-wow-forever/ (Blizzard Rogue & Warlock deep dive, worldofwarcraft.blizzard.com/en-us/news/24310968)",
    "added": null,
-   "verified": null,
+   "verified": "2026-11-14",
    "expires": null,
    "note": ""
   },
@@ -768,18 +768,18 @@
   {
    "text": "**Soul Link** is a 21-point talent; **Demonic Pact** (31) keeps Demonic Sacrifice when you swap pets.",
    "pool": "CLASSES.Warlock.new",
-   "source": "",
+   "source": "https://www.warcrafttavern.com/forever/news/poison-pets-rogue-warlock-deep-dive-for-wow-forever/ (Blizzard deep dive 24310968); https://kami-labs.fr/en/wow-forever/build-demoniste-demonologie-wow-forever/",
    "added": null,
-   "verified": null,
+   "verified": "2026-11-14",
    "expires": null,
    "note": ""
   },
   {
    "text": "Curse of Agony and Curse of Doom are now **Banes**: one Bane per Warlock per target.",
    "pool": "CLASSES.Warlock.new",
-   "source": "",
+   "source": "https://www.warcrafttavern.com/forever/news/poison-pets-rogue-warlock-deep-dive-for-wow-forever/ (Blizzard deep dive 24310968); https://kami-labs.fr/en/wow-forever/build-demoniste-affliction-wow-forever/",
    "added": null,
-   "verified": null,
+   "verified": "2026-11-14",
    "expires": null,
    "note": ""
   },
@@ -2746,11 +2746,11 @@
    "note": ""
   },
   {
-   "text": "Since Nov 11, Paladin Judgement counts as a ranged attack: it rolls against your ranged hit chance and no longer triggers melee procs.",
+   "text": "Paladin Judgements are ranged attacks (ranged hit, no melee procs), but since Nov 13 Judgement of Command is melee and triggers on-hit effects.",
    "pool": "DID_YOU_KNOW.vet",
-   "source": "https://us.forums.blizzard.com/en/wow/t/wow-forever-hotfixes-november-11-2026/2403040/8",
-   "added": "2026-11-12",
-   "verified": "2026-11-12",
+   "source": "https://us.forums.blizzard.com/en/wow/t/wow-forever-hotfixes-november-13-2026/2403040/10; https://us.forums.blizzard.com/en/wow/t/2403040/8",
+   "added": "2026-11-14",
+   "verified": "2026-11-14",
    "expires": null,
    "note": ""
   },
@@ -2760,6 +2760,42 @@
    "source": "https://us.forums.blizzard.com/en/wow/t/wow-forever-hotfixes-november-11-2026/2403040/9",
    "added": "2026-11-13",
    "verified": "2026-11-13",
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "Since Nov 13, Windfury Totem can proc from melee abilities that don't use your main-hand weapon. The off-hand strikes of Whirlwind and Mutilate still can't trigger it.",
+   "pool": "DID_YOU_KNOW.vet",
+   "source": "https://us.forums.blizzard.com/en/wow/t/wow-forever-hotfixes-november-13-2026/2403040/10; https://wow.gg/guides/wow-forever-hotfixes-13-11-26",
+   "added": "2026-11-14",
+   "verified": "2026-11-14",
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "Since Nov 13, stuns between players and creatures have diminishing returns in both directions; before the fix they had none.",
+   "pool": "DID_YOU_KNOW.vet",
+   "source": "https://us.forums.blizzard.com/en/wow/t/wow-forever-hotfixes-november-13-2026/2403040/10; https://wow.gg/guides/wow-forever-hotfixes-13-11-26",
+   "added": "2026-11-14",
+   "verified": "2026-11-14",
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "Since Nov 13, the Channeler's Ring has spell power instead of Spirit and the Blessed Band of Light lost its hit. Pix Xizzix will swap a Blessed Band for a Channeler's Ring, and the swap can't be undone.",
+   "pool": "DID_YOU_KNOW.vet",
+   "source": "https://us.forums.blizzard.com/en/wow/t/wow-forever-hotfixes-november-13-2026/2403040/10; https://wow.gg/guides/wow-forever-hotfixes-13-11-26",
+   "added": "2026-11-14",
+   "verified": "2026-11-14",
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "Since Nov 13, the Warrior's Berserker Rage removes Sap, not just fear.",
+   "pool": "DID_YOU_KNOW.vet",
+   "source": "https://us.forums.blizzard.com/en/wow/t/wow-forever-hotfixes-november-13-2026/2403040/10; https://wow.gg/guides/wow-forever-hotfixes-13-11-26",
+   "added": "2026-11-14",
+   "verified": "2026-11-14",
    "expires": null,
    "note": ""
   },
@@ -3759,6 +3795,15 @@
    "source": "",
    "added": null,
    "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Group with players close to your level for dungeons** → since Nov 13, if a mob is trivial (gray) for anyone in the party, nobody gets kill XP for it.",
+   "pool": "TIPS.leveling",
+   "source": "https://us.forums.blizzard.com/en/wow/t/wow-forever-hotfixes-november-13-2026/2403040/10; https://wow.gg/guides/wow-forever-hotfixes-13-11-26",
+   "added": "2026-11-14",
+   "verified": "2026-11-14",
    "expires": null,
    "note": ""
   },
