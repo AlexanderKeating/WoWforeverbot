@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.12.9 (2026-11-14)
+Rolling facts check against Blizzard's Nov 13 hotfixes (us.forums.blizzard.com/en/wow/t/2403040, post #10, Kaivax, Nov 14 01:54 UTC; full list also on wow.gg/guides/wow-forever-hotfixes-13-11-26).
+- **Paladin Judgement (correction).** "Since Nov 11, Paladin Judgement counts as a ranged attack" → Judgements are ranged since Nov 11, except Judgement of Command, which since Nov 13 counts as melee and triggers on-hit effects.
+- **Warrior keybinds.** Berserker Rage note "breaks fear" → "breaks fear and Sap" (Nov 13: Berserker Rage now correctly removes Sap).
+- **New lines (post #10):** leveling tip (no kill XP for anyone if a mob is trivial for any party member), did-you-knows: stun diminishing returns between players and creatures, Windfury Totem procs from non-main-hand melee abilities (not Whirlwind/Mutilate off-hand strikes), Berserker Rage removes Sap, Channeler's Ring now spell power and the one-way Blessed Band of Light swap at Pix Xizzix.
+- **Re-verified** 10 of the 15 oldest lines (Shaman and Warlock cards) against Blizzard's Mage & Shaman deep dive (news.blizzard.com 24302097), the Nov 2 development notes (us.forums.blizzard.com/en/wow/t/2360696/9) and the Rogue & Warlock deep dive as reproduced by Warcraft Tavern, plus Kami Labs.
+- **Not verified, needs a look.** Earthbound tier: the bot says Earthbound (Elemental, 16) and Call of Thunder (21); Blizzard's Oct 7 deep dive had Call of Thunder at 16 and Earthbound at 21, and the Nov 2 notes moved talents without mentioning either. Not changed until a post-launch source settles it. Also unverified: Warlock mount from Strahad Farsan at 40, and the Priest/Rogue/Shaman tournament records.
+
 ## 1.12.8 (2026-11-13)
 Rolling facts check against Blizzard's Nov 12 post (us.forums.blizzard.com/en/wow/t/2403040, post #9, Kaivax): "due to an unexpected delay in deployment", the Enhancement Shaman changes listed with the Nov 10 hotfixes went live on Nov 12, 10:45 a.m. PST.
 - **Windfury tip (correction).** "since Nov 10 a weapon imbue and a weapon totem work together" → "since Nov 12".

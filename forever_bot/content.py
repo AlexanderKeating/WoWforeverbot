@@ -1136,7 +1136,7 @@ TIPS["gold"] += [
     "**Don't vendor or delete gear you might want back** → Blizzard switched off Item Restoration on Nov 11 while it fixes a critical bug, so there's no undo for now.",
 ]
 DID_YOU_KNOW += [
-    ("vet", "Since Nov 11, Paladin Judgement counts as a ranged attack: it rolls against your ranged hit chance and no longer triggers melee procs."),
+    ("vet", "Paladin Judgements are ranged attacks (ranged hit, no melee procs), but since Nov 13 Judgement of Command is melee and triggers on-hit effects."),
     ("vet", "A Nov 11 hotfix cut the Twilight Forgemaster's Mark of Flames in Riverglades from +1,000 damage to +50 and toned down the Twilight Enforcer's Smash."),
 ]
 
@@ -1147,6 +1147,19 @@ DID_YOU_KNOW += [
     ("vet", "Since Nov 12, Enhancement's Mental Dexterity turns 33/66/100% of your Intellect into Attack Power, down from 50/100/150%."),
 ]
 
+# ------------------------------------------------------------------ 1.12.9: facts pass, Nov 14
+# Blizzard: WoW: Forever Hotfixes - November 13, 2026 (us.forums.blizzard.com/en/wow/t/2403040, post #10, Kaivax,
+# Nov 14 01:54 UTC); full list also at wow.gg/guides/wow-forever-hotfixes-13-11-26.
+TIPS["leveling"] += [
+    "**Group with players close to your level for dungeons** → since Nov 13, if a mob is trivial (gray) for anyone in the party, nobody gets kill XP for it.",
+]
+DID_YOU_KNOW += [
+    ("vet", "Since Nov 13, stuns between players and creatures have diminishing returns in both directions; before the fix they had none."),
+    ("vet", "Since Nov 13, Windfury Totem can proc from melee abilities that don't use your main-hand weapon. The off-hand strikes of Whirlwind and Mutilate still can't trigger it."),
+    ("vet", "Since Nov 13, the Warrior's Berserker Rage removes Sap, not just fear."),
+    ("vet", "Since Nov 13, the Channeler's Ring has spell power instead of Spirit and the Blessed Band of Light lost its hit. Pix Xizzix will swap a Blessed Band for a Channeler's Ring, and the swap can't be undone."),
+]
+
 
 # ------------------------------------------------------------------ 1.9: what's new
 # Player-facing release notes: /whatsnew, the 🆕 line in the next post after a release, and the
@@ -1155,6 +1168,10 @@ DID_YOU_KNOW += [
 # "internal": True keeps a behind-the-scenes release out of /whatsnew and the What's new page.
 WHATSNEW_URL = SITE_URL + "/whatsnew.html"
 RELEASE_NOTES = [
+    {"version": "1.12.9", "date": "2026-11-14", "title": "Nov 13 hotfixes",
+     "line": None, "internal": False,
+     "notes": ["Paladin Judgement of Command now counts as melee and triggers on-hit effects; the other Judgements stay ranged.",
+               "New: no dungeon kill XP if a mob is trivial for anyone in the group, stun diminishing returns with creatures, Windfury Totem procs, Berserker Rage removes Sap, and the Channeler's Ring swap."]},
     {"version": "1.12.8", "date": "2026-11-13", "title": "Enhancement changes went live Nov 12",
      "line": None, "internal": False,
      "notes": ["Blizzard's Nov 10 Enhancement Shaman changes were delayed and went live on Nov 12: the Windfury tip and the class tuning fact now say so.",

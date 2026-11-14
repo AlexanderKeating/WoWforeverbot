@@ -50,7 +50,7 @@ CLASS_GUIDES = {
             ("Hamstring", "keeps runners from escaping"),
             ("Victory Rush", "free 10% heal after a kill (new baseline at 20)"),
             ("Intimidating Shout", "fear a group off you or a healer"),
-            ("Berserker Rage", "breaks fear"),
+            ("Berserker Rage", "breaks fear and Sap"),
             ("Shield Wall / Retaliation", "emergency buttons; they no longer share a cooldown"),
         ],
         "layout": [("1", "Heroic Strike"), ("2", "Rend"), ("3", "Victory Rush"), ("4", "Thunder Clap"),
