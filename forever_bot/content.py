@@ -1099,7 +1099,6 @@ DID_YOU_KNOW += [
     ("vet", dm("Taldramir's questline in the client has three stages and ties into Hyjal Summit, and it looks built for healers.", "Wowhead")),
     ("new", "Dual specialization unlocks at level 40, the same level as your first mount."),
     ("vet", "Four days after launch, Blizzard raised kill XP in dungeons by 50% so repeat runs feel worth it."),
-    ("vet", "Blizzard batches Forever's class balance changes on Tuesdays. The first round, Nov 10, gave Warlock demons more health, fixed Hunter pet health and reworked Affliction's Wrack; its Enhancement Shaman changes slipped to Nov 12."),
 ]
 
 
@@ -1151,13 +1150,27 @@ DID_YOU_KNOW += [
 # Blizzard: WoW: Forever Hotfixes - November 13, 2026 (us.forums.blizzard.com/en/wow/t/2403040, post #10, Kaivax,
 # Nov 14 01:54 UTC); full list also at wow.gg/guides/wow-forever-hotfixes-13-11-26.
 TIPS["leveling"] += [
-    "**Group with players close to your level for dungeons** → since Nov 13, if a mob is trivial (gray) for anyone in the party, nobody gets kill XP for it.",
+    "**Keep your dungeon group within 12 levels of the mobs** → since Nov 14, if anyone in the party is more than 12 levels above a mob, nobody gets kill XP for it.",
 ]
 DID_YOU_KNOW += [
     ("vet", "Since Nov 13, stuns between players and creatures have diminishing returns in both directions; before the fix they had none."),
     ("vet", "Since Nov 13, Windfury Totem can proc from melee abilities that don't use your main-hand weapon. The off-hand strikes of Whirlwind and Mutilate still can't trigger it."),
     ("vet", "Since Nov 13, the Warrior's Berserker Rage removes Sap, not just fear."),
-    ("vet", "Since Nov 13, the Channeler's Ring has spell power instead of Spirit and the Blessed Band of Light lost its hit. Pix Xizzix will swap a Blessed Band for a Channeler's Ring, and the swap can't be undone."),
+    ("vet", "Since Nov 13, the Channeler's Ring has spell power instead of Spirit and the Blessed Band of Light lost its hit. Until raids open on Dec 9, Pix Xizzix will swap a Blessed Band for a Channeler's Ring, and the swap can't be undone."),
+]
+
+# ------------------------------------------------------------------ 1.12.10: facts pass, Nov 16
+# Blizzard: "Player-Level Dungeon XP Adjustment - November 14" (Kaivax, us.forums.blizzard.com/en/wow/t/2416343):
+# the Nov 13 zero-XP rule now applies only when a party member is more than 12 levels above the mob.
+# Also from WoW: Forever Hotfixes - November 13 (worldofwarcraft.blizzard.com/en-us/news/24315281).
+TIPS["leveling"] += [
+    "**Don't rush the Drowned City** → since Nov 13 its trash respawns every 2 hours instead of every hour, so a slow clear won't get re-pulled from behind.",
+]
+TIPS["basics"] += [
+    "**Set up your second spec's action bars once** → since Nov 13 they no longer reset when you log out.",
+]
+DID_YOU_KNOW += [
+    ("vet", "Since Nov 13, Restoration's Wild Growth heals twice as much: its healing coefficient went from 3.3% to 6.6%."),
 ]
 
 
@@ -1168,6 +1181,10 @@ DID_YOU_KNOW += [
 # "internal": True keeps a behind-the-scenes release out of /whatsnew and the What's new page.
 WHATSNEW_URL = SITE_URL + "/whatsnew.html"
 RELEASE_NOTES = [
+    {"version": "1.12.10", "date": "2026-11-16", "title": "Dungeon XP rule loosened",
+     "line": None, "internal": False,
+     "notes": ["Dungeon kill XP: since Nov 14 it's only lost when someone in the group is more than 12 levels above the mob (Nov 13 it was any gray mob).",
+               "New: the Drowned City's 2-hour trash respawn, second-spec action bars that stay put, and Wild Growth's doubled healing. The Blessed Band swap runs until raids open on Dec 9."]},
     {"version": "1.12.9", "date": "2026-11-14", "title": "Nov 13 hotfixes",
      "line": None, "internal": False,
      "notes": ["Paladin Judgement of Command now counts as melee and triggers on-hit effects; the other Judgements stay ranged.",

@@ -705,9 +705,9 @@
   {
    "text": "Shamans went 19–11 vs other classes in the beta tournament finals and took 3rd and 4th.",
    "pool": "CLASSES.Shaman.pvp",
-   "source": "",
+   "source": "https://kami-labs.fr/en/wow-forever/forever-open-resultats-finale/ ; https://timesaver.gg/blog/wow-forever-open-duel-tournament-results-warlock",
    "added": null,
-   "verified": null,
+   "verified": "2026-11-16",
    "expires": null,
    "note": ""
   },
@@ -786,90 +786,90 @@
   {
    "text": "Firestone and Spellstone are weapon imbues that stack with Wizard Oil.",
    "pool": "CLASSES.Warlock.new",
-   "source": "",
+   "source": "https://worldofwarcraft.blizzard.com/news/24310968",
    "added": null,
-   "verified": null,
+   "verified": "2026-11-16",
    "expires": null,
    "note": ""
   },
   {
    "text": "New signatures: Wrack (Affliction, 31), Bane of Havoc (21) and Incinerate (31) in Destruction.",
    "pool": "CLASSES.Warlock.new",
-   "source": "",
+   "source": "https://worldofwarcraft.blizzard.com/news/24310968",
    "added": null,
-   "verified": null,
+   "verified": "2026-11-16",
    "expires": null,
    "note": ""
   },
   {
    "text": "**Plan your fight around Fear getting answered** → Undead Will of the Forsaken it and every Priest has Fear Ward, so don't open with it.",
    "pool": "CLASSES.Warlock.pvp",
-   "source": "",
+   "source": "https://news.blizzard.com/en-us/article/24301514 ; https://www.warcrafttavern.com/forever/guides/undead_racials/",
    "added": null,
-   "verified": null,
+   "verified": "2026-11-16",
    "expires": null,
    "note": ""
   },
   {
    "text": "Warlocks went 26–7 vs other classes in the beta tournament finals and took 1st and 2nd. That was level-30 dueling; at 60, more trinkets and Fear answers will change things.",
    "pool": "CLASSES.Warlock.pvp",
-   "source": "",
+   "source": "https://kami-labs.fr/en/wow-forever/forever-open-resultats-finale/ ; https://timesaver.gg/blog/wow-forever-open-duel-tournament-results-warlock",
    "added": null,
-   "verified": null,
+   "verified": "2026-11-16",
    "expires": null,
    "note": ""
   },
   {
    "text": "**Charge in Battle Stance, then swap to whatever the fight needs** → Tactical Mastery keeps 10 Rage, so swapping no longer resets you.",
    "pool": "CLASSES.Warrior.leveling",
-   "source": "",
+   "source": "https://news.blizzard.com/en-us/article/24301514",
    "added": null,
-   "verified": null,
+   "verified": "2026-11-16",
    "expires": null,
    "note": ""
   },
   {
    "text": "**Keep Rend and Thunder Clap in your rotation** → both scale with Attack Power now, so they get better as your gear does.",
    "pool": "CLASSES.Warrior.leveling",
-   "source": "",
+   "source": "https://news.blizzard.com/en-us/article/24301514",
    "added": null,
-   "verified": null,
+   "verified": "2026-11-16",
    "expires": null,
    "note": ""
   },
   {
    "text": "**Victory Rush right after every kill** → a free 10% heal each fight, so you stop to eat far less.",
    "pool": "CLASSES.Warrior.leveling",
-   "source": "",
+   "source": "https://news.blizzard.com/en-us/article/24301514",
    "added": null,
-   "verified": null,
+   "verified": "2026-11-16",
    "expires": null,
    "note": ""
   },
   {
    "text": "**Tactical Mastery** is baseline at 14: keep 10 Rage when you swap stances.",
    "pool": "CLASSES.Warrior.new",
-   "source": "",
+   "source": "https://news.blizzard.com/en-us/article/24301514",
    "added": null,
-   "verified": null,
+   "verified": "2026-11-16",
    "expires": null,
    "note": ""
   },
   {
    "text": "**Victory Rush** at 20: after a kill, an instant hit that heals 10% of your max health.",
    "pool": "CLASSES.Warrior.new",
-   "source": "",
+   "source": "https://news.blizzard.com/en-us/article/24301514",
    "added": null,
-   "verified": null,
+   "verified": "2026-11-16",
    "expires": null,
    "note": ""
   },
   {
    "text": "Bloodthirst no longer heals. It gives 10% movement speed instead.",
    "pool": "CLASSES.Warrior.new",
-   "source": "",
+   "source": "https://news.blizzard.com/en-us/article/24301514",
    "added": null,
-   "verified": null,
+   "verified": "2026-11-16",
    "expires": null,
    "note": ""
   },
@@ -2233,15 +2233,6 @@
    "note": ""
   },
   {
-   "text": "Blizzard batches Forever's class balance changes on Tuesdays. The first round, Nov 10, gave Warlock demons more health, fixed Hunter pet health and reworked Affliction's Wrack; its Enhancement Shaman changes slipped to Nov 12.",
-   "pool": "DID_YOU_KNOW.vet",
-   "source": "https://news.blizzard.com/en-us/article/24315281/wow-forever-hotfixes-november-10-2026 ; https://us.forums.blizzard.com/en/wow/t/wow-forever-hotfixes-november-11-2026/2403040/9",
-   "added": "2026-11-09",
-   "verified": "2026-11-13",
-   "expires": "2026-11-16",
-   "note": ""
-  },
-  {
    "text": "Blizzard built a dueling arena in Hyjal Crater for Forever Open finals day, even though it was a community event.",
    "pool": "DID_YOU_KNOW.vet",
    "source": "",
@@ -2611,6 +2602,15 @@
    "note": ""
   },
   {
+   "text": "Paladin Judgements are ranged attacks (ranged hit, no melee procs), but since Nov 13 Judgement of Command is melee and triggers on-hit effects.",
+   "pool": "DID_YOU_KNOW.vet",
+   "source": "https://us.forums.blizzard.com/en/wow/t/wow-forever-hotfixes-november-13-2026/2403040/10; https://us.forums.blizzard.com/en/wow/t/2403040/8",
+   "added": "2026-11-14",
+   "verified": "2026-11-14",
+   "expires": null,
+   "note": ""
+  },
+  {
    "text": "Paladins get Holy Strike at level 6 and baseline Consecration at 20, and Judgement no longer eats your Seal.",
    "pool": "DID_YOU_KNOW.vet",
    "source": "",
@@ -2746,20 +2746,20 @@
    "note": ""
   },
   {
-   "text": "Paladin Judgements are ranged attacks (ranged hit, no melee procs), but since Nov 13 Judgement of Command is melee and triggers on-hit effects.",
-   "pool": "DID_YOU_KNOW.vet",
-   "source": "https://us.forums.blizzard.com/en/wow/t/wow-forever-hotfixes-november-13-2026/2403040/10; https://us.forums.blizzard.com/en/wow/t/2403040/8",
-   "added": "2026-11-14",
-   "verified": "2026-11-14",
-   "expires": null,
-   "note": ""
-  },
-  {
    "text": "Since Nov 12, Enhancement's Mental Dexterity turns 33/66/100% of your Intellect into Attack Power, down from 50/100/150%.",
    "pool": "DID_YOU_KNOW.vet",
    "source": "https://us.forums.blizzard.com/en/wow/t/wow-forever-hotfixes-november-11-2026/2403040/9",
    "added": "2026-11-13",
    "verified": "2026-11-13",
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "Since Nov 13, Restoration's Wild Growth heals twice as much: its healing coefficient went from 3.3% to 6.6%.",
+   "pool": "DID_YOU_KNOW.vet",
+   "source": "https://worldofwarcraft.blizzard.com/en-us/news/24315281",
+   "added": "2026-11-16",
+   "verified": "2026-11-16",
    "expires": null,
    "note": ""
   },
@@ -2782,12 +2782,12 @@
    "note": ""
   },
   {
-   "text": "Since Nov 13, the Channeler's Ring has spell power instead of Spirit and the Blessed Band of Light lost its hit. Pix Xizzix will swap a Blessed Band for a Channeler's Ring, and the swap can't be undone.",
+   "text": "Since Nov 13, the Channeler's Ring has spell power instead of Spirit and the Blessed Band of Light lost its hit. Until raids open on Dec 9, Pix Xizzix will swap a Blessed Band for a Channeler's Ring, and the swap can't be undone.",
    "pool": "DID_YOU_KNOW.vet",
-   "source": "https://us.forums.blizzard.com/en/wow/t/wow-forever-hotfixes-november-13-2026/2403040/10; https://wow.gg/guides/wow-forever-hotfixes-13-11-26",
-   "added": "2026-11-14",
-   "verified": "2026-11-14",
-   "expires": null,
+   "source": "https://worldofwarcraft.blizzard.com/en-us/news/24315281",
+   "added": "2026-11-16",
+   "verified": "2026-11-16",
+   "expires": "2026-12-09",
    "note": ""
   },
   {
@@ -3255,6 +3255,15 @@
    "source": "",
    "added": null,
    "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Set up your second spec's action bars once** → since Nov 13 they no longer reset when you log out.",
+   "pool": "TIPS.basics",
+   "source": "https://worldofwarcraft.blizzard.com/en-us/news/24315281",
+   "added": "2026-11-16",
+   "verified": "2026-11-16",
    "expires": null,
    "note": ""
   },
@@ -3772,6 +3781,15 @@
    "note": ""
   },
   {
+   "text": "**Don't rush the Drowned City** → since Nov 13 its trash respawns every 2 hours instead of every hour, so a slow clear won't get re-pulled from behind.",
+   "pool": "TIPS.leveling",
+   "source": "https://worldofwarcraft.blizzard.com/en-us/news/24315281",
+   "added": "2026-11-16",
+   "verified": "2026-11-16",
+   "expires": null,
+   "note": ""
+  },
+  {
    "text": "**Eat cooked food before a long quest session** → Well Fed gives +5% kill XP for about 15 minutes, on top of camp and sleeping-bag buffs.",
    "pool": "TIPS.leveling",
    "source": "",
@@ -3799,20 +3817,20 @@
    "note": ""
   },
   {
-   "text": "**Group with players close to your level for dungeons** → since Nov 13, if a mob is trivial (gray) for anyone in the party, nobody gets kill XP for it.",
-   "pool": "TIPS.leveling",
-   "source": "https://us.forums.blizzard.com/en/wow/t/wow-forever-hotfixes-november-13-2026/2403040/10; https://wow.gg/guides/wow-forever-hotfixes-13-11-26",
-   "added": "2026-11-14",
-   "verified": "2026-11-14",
-   "expires": null,
-   "note": ""
-  },
-  {
    "text": "**Head to Riverglades in your mid-30s** → it's a brand-new zone with nearly 200 quests for both factions, plus Krol'dok Stronghold at 40–45.",
    "pool": "TIPS.leveling",
    "source": "",
    "added": null,
    "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Keep your dungeon group within 12 levels of the mobs** → since Nov 14, if anyone in the party is more than 12 levels above a mob, nobody gets kill XP for it.",
+   "pool": "TIPS.leveling",
+   "source": "https://us.forums.blizzard.com/en/wow/t/2416343 ; https://www.icy-veins.com/wow-forever/news/level-difference-needed-to-remove-enemy-xp-in-dungeons-increased/ ; https://foreverchanges.pro/patch-notes",
+   "added": "2026-11-16",
+   "verified": "2026-11-16",
    "expires": null,
    "note": ""
   },

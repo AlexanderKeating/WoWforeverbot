@@ -1,5 +1,14 @@
 # Changelog
 
+## 1.12.10 (2026-11-16)
+Rolling facts check. Only new Blizzard post since the last run: "Player-Level Dungeon XP Adjustment - November 14" (Kaivax, us.forums.blizzard.com/en/wow/t/2416343, live about 01:15 UTC Nov 15), confirmed by Icy Veins (icy-veins.com/wow-forever/news/level-difference-needed-to-remove-enemy-xp-in-dungeons-increased) and foreverchanges.pro. Blizzard's hotfix article (worldofwarcraft.blizzard.com/en-us/news/24315281) has nothing newer than Nov 13.
+- **Dungeon XP tip (correction).** "since Nov 13, if a mob is trivial (gray) for anyone in the party, nobody gets kill XP" → "since Nov 14, if anyone in the party is more than 12 levels above a mob, nobody gets kill XP for it".
+- **Channeler's Ring swap.** Added "until raids open on Dec 9" (Blizzard's Nov 13 developer note), expires Dec 9.
+- **New lines (Nov 13 hotfixes, news 24315281):** leveling tip (Drowned City trash respawn 1 → 2 hours), basics tip (second-spec action bars no longer reset on logout), did-you-know (Wild Growth healing coefficient 3.3% → 6.6%).
+- **Retired** the "class balance changes on Tuesdays / first round Nov 10" did-you-know (expired Nov 16). No second tuning round has been announced.
+- **Re-verified** 11 of the 15 oldest lines (Warrior and Warlock cards, Shaman and Warlock tournament records) against Blizzard's Warrior & Paladin deep dive (news.blizzard.com 24301514), Rogue & Warlock deep dive (24310968), Kami Labs and timesaver.gg.
+- **Still not verified.** Priest 9–12 and Rogue 5–11 tournament records (one source only, timesaver.gg); Warlock mount from Strahad Farsan in Ratchet (one full source, conquestcapped.com); Earthbound tier (bot says 16, Blizzard's last official placement is 21; GuildOrder shows 16 but looks outdated). Not changed.
+
 ## 1.12.9 (2026-11-14)
 Rolling facts check against Blizzard's Nov 13 hotfixes (us.forums.blizzard.com/en/wow/t/2403040, post #10, Kaivax, Nov 14 01:54 UTC; full list also on wow.gg/guides/wow-forever-hotfixes-13-11-26).
 - **Paladin Judgement (correction).** "Since Nov 11, Paladin Judgement counts as a ranged attack" → Judgements are ranged since Nov 11, except Judgement of Command, which since Nov 13 counts as melee and triggers on-hit effects.
