@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.12.11 (2026-11-17)
+Rolling facts check. New Blizzard post since the last run: "WoW: Forever Hotfixes - November 16, 2026" (us.forums.blizzard.com/en/wow/t/2403040, post #11, Kaivax, Nov 17 02:17 UTC; also news.blizzard.com/en-us/article/24315281). Nothing in the bot contradicted it (checked Fishing Rack, Vampiric Embrace, Windfury Totem, Maelstrom Weapon, Drowned City, Enchant Boots lines).
+- **New lines (post #11):** camping tip (Fishing Rack gives lures to everyone, Bloated Fish drop more often), did-you-know (Vampiric Embrace party healing 20% → 10% of Shadow damage with the Nov 17 maintenance, the Priest's own healing doubled so solo is unchanged), did-you-know (reputation Formula: Enchant Boots - Speed is now bind-on-pickup).
+- **Retired** the Auction House 1-copper deposit did-you-know (expired Nov 17). No source yet confirms it went live, so no "since Nov 17" replacement.
+- **Not re-verified today.** Blizzard's class deep dives and development notes couldn't be fetched in this unattended run; the 15 oldest lines (Warrior/Shaman/Warlock card lines, Priest/Rogue tournament records, leveling deep-dive tips) are left for the next run.
+
 ## 1.12.10 (2026-11-16)
 Rolling facts check. Only new Blizzard post since the last run: "Player-Level Dungeon XP Adjustment - November 14" (Kaivax, us.forums.blizzard.com/en/wow/t/2416343, live about 01:15 UTC Nov 15), confirmed by Icy Veins (icy-veins.com/wow-forever/news/level-difference-needed-to-remove-enemy-xp-in-dungeons-increased) and foreverchanges.pro. Blizzard's hotfix article (worldofwarcraft.blizzard.com/en-us/news/24315281) has nothing newer than Nov 13.
 - **Dungeon XP tip (correction).** "since Nov 13, if a mob is trivial (gray) for anyone in the party, nobody gets kill XP" → "since Nov 14, if anyone in the party is more than 12 levels above a mob, nobody gets kill XP for it".

@@ -2800,6 +2800,15 @@
    "note": ""
   },
   {
+   "text": "Since Nov 16, the reputation Formula: Enchant Boots - Speed is bind-on-pickup, as Blizzard intended, so new copies can't be traded.",
+   "pool": "DID_YOU_KNOW.vet",
+   "source": "https://us.forums.blizzard.com/en/wow/t/wow-forever-hotfixes-november-16-2026/2403040/11 ; https://news.blizzard.com/en-us/article/24315281",
+   "added": "2026-11-17",
+   "verified": "2026-11-17",
+   "expires": null,
+   "note": ""
+  },
+  {
    "text": "Six race and class combos are new: Gnome Priest, Human Hunter, Dwarf Shaman, Orc Mage, Troll Warlock and Undead Paladin.",
    "pool": "DID_YOU_KNOW.vet",
    "source": "",
@@ -2854,6 +2863,15 @@
    "note": ""
   },
   {
+   "text": "Starting with the Nov 17 weekly maintenance, Vampiric Embrace heals the party for 10% of the Shadow Priest's Shadow damage instead of 20%. The Priest gets double from it, so solo play doesn't change.",
+   "pool": "DID_YOU_KNOW.vet",
+   "source": "https://us.forums.blizzard.com/en/wow/t/wow-forever-hotfixes-november-16-2026/2403040/11 ; https://news.blizzard.com/en-us/article/24315281",
+   "added": "2026-11-17",
+   "verified": "2026-11-17",
+   "expires": null,
+   "note": ""
+  },
+  {
    "text": "Stoneform now cuts physical damage taken instead of adding armor.",
    "pool": "DID_YOU_KNOW.vet",
    "source": "",
@@ -2887,15 +2905,6 @@
    "added": null,
    "verified": null,
    "expires": null,
-   "note": ""
-  },
-  {
-   "text": "The Auction House minimum deposit drops from 1 silver to 1 copper with the weekly maintenance on Nov 17 (Nov 18 in Europe). Blizzard pulled it from the Nov 10 hotfixes.",
-   "pool": "DID_YOU_KNOW.vet",
-   "source": "https://us.forums.blizzard.com/en/wow/t/wow-forever-hotfixes-november-11-2026/2403040/7 ; https://eu.forums.blizzard.com/en/wow/t/wow-forever-hotfixes-november-11-2026/639885",
-   "added": "2026-11-11",
-   "verified": "2026-11-13",
-   "expires": "2026-11-17",
    "note": ""
   },
   {
@@ -3372,6 +3381,15 @@
    "source": "",
    "added": null,
    "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Going fishing with friends? Put down a Fishing Rack** → since Nov 16 it gives lures to everyone, and the Bloated Fish it brings up drop more often.",
+   "pool": "TIPS.camping",
+   "source": "https://us.forums.blizzard.com/en/wow/t/wow-forever-hotfixes-november-16-2026/2403040/11 ; https://news.blizzard.com/en-us/article/24315281",
+   "added": "2026-11-17",
+   "verified": "2026-11-17",
    "expires": null,
    "note": ""
   },

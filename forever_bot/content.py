@@ -1122,9 +1122,6 @@ TIPS["gold"] += [
 TIPS["professions"] += [
     "**Blacksmiths: keep making Coarse Grinding Stones up to 90** → a Nov 10 hotfix raised their skill-ups from 75 to 90.",
 ]
-DID_YOU_KNOW += [
-    ("vet", "The Auction House minimum deposit drops from 1 silver to 1 copper with the weekly maintenance on Nov 17 (Nov 18 in Europe). Blizzard pulled it from the Nov 10 hotfixes."),
-]
 
 # ------------------------------------------------------------------ 1.12.7: facts pass, Nov 12
 # Blizzard: WoW: Forever Hotfixes Nov 11 (us.forums.blizzard.com/en/wow/t/2403040, posts #7 and #8).
@@ -1173,6 +1170,17 @@ DID_YOU_KNOW += [
     ("vet", "Since Nov 13, Restoration's Wild Growth heals twice as much: its healing coefficient went from 3.3% to 6.6%."),
 ]
 
+# ------------------------------------------------------------------ 1.12.11: facts pass, Nov 17
+# Blizzard: WoW: Forever Hotfixes - November 16, 2026 (us.forums.blizzard.com/en/wow/t/2403040, post #11, Kaivax,
+# Nov 17 02:17 UTC; also news.blizzard.com/en-us/article/24315281).
+TIPS["camping"] += [
+    "**Going fishing with friends? Put down a Fishing Rack** → since Nov 16 it gives lures to everyone, and the Bloated Fish it brings up drop more often.",
+]
+DID_YOU_KNOW += [
+    ("vet", "Starting with the Nov 17 weekly maintenance, Vampiric Embrace heals the party for 10% of the Shadow Priest's Shadow damage instead of 20%. The Priest gets double from it, so solo play doesn't change."),
+    ("vet", "Since Nov 16, the reputation Formula: Enchant Boots - Speed is bind-on-pickup, as Blizzard intended, so new copies can't be traded."),
+]
+
 
 # ------------------------------------------------------------------ 1.9: what's new
 # Player-facing release notes: /whatsnew, the 🆕 line in the next post after a release, and the
@@ -1181,6 +1189,9 @@ DID_YOU_KNOW += [
 # "internal": True keeps a behind-the-scenes release out of /whatsnew and the What's new page.
 WHATSNEW_URL = SITE_URL + "/whatsnew.html"
 RELEASE_NOTES = [
+    {"version": "1.12.11", "date": "2026-11-17", "title": "Nov 16 hotfixes",
+     "line": None, "internal": False,
+     "notes": ["New: Fishing Racks give everyone lures, Vampiric Embrace's party healing halved from the Nov 17 maintenance (solo unchanged), and the reputation Enchant Boots - Speed formula is now bind-on-pickup."]},
     {"version": "1.12.10", "date": "2026-11-16", "title": "Dungeon XP rule loosened",
      "line": None, "internal": False,
      "notes": ["Dungeon kill XP: since Nov 14 it's only lost when someone in the group is more than 12 levels above the mob (Nov 13 it was any gray mob).",
