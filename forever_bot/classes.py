@@ -25,7 +25,7 @@ CLASSES = {
         "races": "Orc · Troll · Tauren · Undead · Skyborne",
         "role": "The front line. Tank as Protection, or deal big melee damage as Arms or Fury. Rage builds as you hit and get hit.",
         "new": [
-            "Rage from hits ignores armor and shields, and crits give 75% more Rage.",
+            "Rage from hits ignores armor and shields, and crits give 100% more Rage.",
             "**Tactical Mastery** is baseline at 14: keep 10 Rage when you swap stances.",
             "**Victory Rush** at 20: after a kill, an instant hit that heals 10% of your max health.",
             "Thunder Clap works in Defensive Stance; Rend and Thunder Clap now scale with Attack Power.",

@@ -216,7 +216,7 @@ RUNDOWNS = {
          "vets": "**Camping** (craft at others' camps, shared rest buff) · **Legacy** (each 1–60 finish unlocks alt perks; shared across rulesets except Hardcore) · opt-in **transmog** · HD/classic model toggle · controller support · no flying, no level scaling."},
     2: {"title": "Raids and the roadmap",
          "new": "Raids are big group boss fights. The first three open Dec 9, about five weeks after launch.",
-         "vets": "Barrow Deeps (10), Hyjal Summit (20) and Onyxia's Lair (40) on Dec 9; Hyjal drops Forever's first legendary. ||Barrow Deeps reportedly once held a certain infamous demon hunter.|| Hardcore in winter, major updates spring and summer 2027, including a 'revamped iconic raid'."},
+         "vets": "Barrow Deeps (10), Hyjal Summit (20) and Onyxia's Lair (40) on Dec 9. ||Barrow Deeps reportedly once held a certain infamous demon hunter.|| Hardcore in winter, major updates spring and summer 2027, including a 'revamped iconic raid'."},
     1: {"title": "Launch-day checklist",
          "new": "Tomorrow. Make sure your sub or game time is active, pre-install from the Battle.net dropdown, and pick **PvP ruleset → Horde**.",
          "vets": "Beta and stress-test characters are wiped. Expect queues and layering at launch. PvP faction lock is per account, so don't test an Alliance alt on PvP first."},
@@ -250,7 +250,6 @@ DID_YOU_KNOW = [
     ("vet", "Darkspear Islands mixes Eye of the Storm's neutral flag with Arathi Basin–style capture points."),
     ("horde", "In Darkspear Islands, the Horde fights alongside the Darkspear trolls; the Alliance shows up as the Theramore Expeditionary Force."),
     ("vet", "Skyborne keep vanilla's asymmetry: Shaman only on Horde, Mage only on Alliance."),
-    ("vet", "Hyjal Summit is a 20-player raid where Archimonde fell, and it drops Forever's first legendary weapon."),
     ("vet", "Talent trees drop a lot of the boring +1% talents in favor of choices you actually feel."),
     ("vet", "Paladins get a new seal built for tanking, plus some group-healing talents."),
     ("vet", "Dwarves deal +5% damage to beasts, and Undead get a chance to drain health. Racials got a pass."),
@@ -352,15 +351,15 @@ DEEP_DIVES = {
         "**Rank rewards:** 2 trinket · 3 cloaks · 4 necklace · 5 combat potions · 7 battle standard · 9 epic boots token · 11 mounts · 14 epic weapons.",
     ]),
     3: ("Camping and leveling speed", [
-        "**Unlock:** \"The Great Outdoors\" quest around level 5, plus Cooking for a Basic Campfire.",
+        "**Start:** Cooking gives you a Basic Campfire at skill 1; \"The Great Outdoors\" around level 5 walks you through it.",
         "**Campfire tiers:** Cooking 1 (3 items), 90 (5), 200 (10). Each player adds one item.",
-        "**Best leveling items:** Leatherworking Camp Tent (1h rested XP buff, survives death) and Cozy Sleeping Bag (up to +3% XP, counts as rested).",
+        "**Best leveling items:** Leatherworking Camp Tent (rested XP worth 5% of a level for everyone sitting nearby) and Cozy Sleeping Bag (up to +3% XP, counts as rested).",
         "**Rested XP** doubles kill XP; it builds 5% of a level per 8h, up to 150%.",
         "**Well Fed** cooking food: +5% kill XP for about 15 minutes.",
         "**Other camp buffs:** Mining melee AP, Skinning crit, Herbalism intellect, Engineering repair vendor, Fishing 8% stats.",
     ]),
     2: ("Gearing toward Dec 9", [
-        "**Raids:** Barrow Deeps (10), Hyjal Summit (20) and Onyxia's Lair (40). Hyjal drops Forever's first legendary weapon.",
+        "**Raids:** Barrow Deeps (10), Hyjal Summit (20) and Onyxia's Lair (40).",
         "**Stock up on consumables:** an Alchemist + Herbalist in the guild keeps everyone in potions.",
         "**Save gold:** Journeyman Riding is 1,000g at 60, epic mounts 200g each.",
         "**Discounts:** Honored with your home faction is 10% off riding and mounts; the Bartering Legacy talent adds up to 10% off mounts.",
@@ -375,7 +374,7 @@ DEEP_DIVES = {
     ]),
     0: ("First hour checklist", [
         "**Grab every flight path** and set your hearthstone at a hub.",
-        "**Learn Cooking** and do \"The Great Outdoors\" around level 5 to unlock camping.",
+        "**Learn Cooking** for a Basic Campfire; \"The Great Outdoors\" around level 5 shows you how camping works.",
         "**Two gathering professions** (like Herbalism and Mining) fund your level-40 mount.",
         "**Train spells** every couple of levels.",
         "**On PvP,** watch for Alliance in contested zones and travel with friends.",
@@ -386,7 +385,7 @@ DEEP_DIVES = {
         "**Gray quests and mobs** (5+ levels below) give no XP; quests over 5 levels below lose 10–20% per level.",
         "**Grouping:** big parties split kill XP; quest turn-ins are never reduced.",
         "**Dungeons:** kill XP inside dungeons went up 50% on Nov 8, so repeat runs pay better than they did at launch.",
-        "**Well Fed** food adds +5% kill XP; the Camp Tent adds a rested buff that survives death.",
+        "**Well Fed** food adds +5% kill XP; the Camp Tent adds rested XP worth 5% of a level.",
         "**Explore:** new areas give a little XP.",
     ]),
     "gold": ("Gold basics", [
@@ -496,14 +495,14 @@ _VETS_LONG = {
         "Points. The new 15v15 **Darkspear Islands** (30–60) has four capture points and a center flag you score at a base you "
         "own; first to 2,000 wins. No arena or rated PvP is announced."),
     3: ("**Camping** turns professions into group buffs. Each profession has camp items that unlock at skill 20, 140 and 300, "
-        "and the Leatherworking Camp Tent's rested-XP buff even survives death. Camp buffs don't stack with matching class "
+        "and the Leatherworking Camp Tent tops up rested XP by 5% of a level for everyone sitting nearby. Camp buffs don't stack with matching class "
         "buffs, so they shine when your group is missing a class. **Legacy** is account-wide progress: every character that "
         "finishes 1–60 unlocks perks for your alts, shared across rulesets except Hardcore. Transmog is opt-in, HD vs. classic "
         "models is a toggle, controllers are supported, and there's still no flying or level scaling, so zones stay as "
         "dangerous as they were built."),
     2: ("The first raids open **Dec 9**, about five weeks after launch, which is roughly how long a steady player needs to hit "
         "60 and gear up. **Barrow Deeps** is a 10-player raid in a night elf prison; **Hyjal Summit** is a 20-player raid where "
-        "Archimonde fell, and it drops Forever's first legendary weapon. ||Rumor has it Barrow Deeps once held a certain infamous "
+        "Archimonde fell. ||Rumor has it Barrow Deeps once held a certain infamous "
         "demon hunter.|| Molten Core and the other original raids stay locked because the story is set before they opened. "
         "Hardcore arrives in winter, and major updates are planned for spring and summer 2027, including a \"revamped iconic "
         "raid.\""),
@@ -512,7 +511,7 @@ _VETS_LONG = {
         "you pass, and learn Cooking early so you can use campfires."),
     0: ("Servers open at the same moment worldwide. Starting zones will be packed, and only the first player or group to tag a "
         "mob gets credit, so group up with people hunting the same thing instead of racing them. Do \"The Great Outdoors\" "
-        "around level 5 to unlock camping, and pick up two gathering professions early: they'll pay for your level-40 mount "
+        "around level 5 to learn camping, and pick up two gathering professions early: they'll pay for your level-40 mount "
         "(about 100 gold)."),
 }
 for _k, _v in _VETS_LONG.items():
@@ -567,15 +566,15 @@ DEEP_DIVES.update({
         "**Rank rewards:** 2 trinket · 3 cloaks · 4 necklace · 5 combat potions · 7 battle standard · 9 epic boots token · 11 mounts · 14 epic weapons.",
     ]),
     3: ("Camping and leveling speed", [
-        "**Unlock it early:** do \"The Great Outdoors\" around level 5 and learn Cooking. A Basic Campfire needs Simple Wood and Flint and Tinder.",
+        "**Start early:** learn Cooking (the Basic Campfire comes at skill 1) and do \"The Great Outdoors\" around level 5. A Basic Campfire needs Simple Wood and Flint and Tinder.",
         "**Campfires grow with Cooking:** skill 1 holds 3 camp items, 90 holds 5, and 200 holds 10. Each player can add one item, so camp with friends.",
-        "**Best items for leveling:** the Leatherworking Camp Tent (1-hour rested-XP buff that survives death) and the Cozy Sleeping Bag (up to +3% XP, and lying on it counts as a rested area while you're logged out).",
+        "**Best items for leveling:** the Leatherworking Camp Tent (rested XP worth 5% of a level for you and anyone sitting nearby, once an hour) and the Cozy Sleeping Bag (up to +3% XP, and lying on it counts as a rested area while you're logged out).",
         "**How rested XP works:** it doubles kill XP (not quest XP) and builds 5% of a level every 8 hours you're resting, up to 150% of a level.",
         "**Food matters:** Well Fed adds +5% kill XP for about 15 minutes.",
         "**Other camp buffs:** Mining (melee attack power), Skinning (crit), Herbalism (intellect), Engineering (a repair vendor), Fishing (8% stats). None stack with matching class buffs.",
     ]),
     2: ("Gearing toward Dec 9", [
-        "**The raids:** Barrow Deeps (10-player), Hyjal Summit (20-player) and Onyxia's Lair (40-player). Hyjal Summit drops Forever's first legendary weapon.",
+        "**The raids:** Barrow Deeps (10-player), Hyjal Summit (20-player) and Onyxia's Lair (40-player).",
         "**Consumables win raids:** an Alchemist and an Herbalist in your group keep everyone in potions, and camps fill in buffs for missing classes.",
         "**Gold plan:** Journeyman Riding is 1,000 gold at 60, and epic mounts are 200 gold each. Start saving while leveling.",
         "**Discounts stack:** Honored with your home faction is 10% off riding and mounts, and the Bartering Legacy talent adds up to 10% off mounts.",
@@ -659,10 +658,10 @@ DEEP_DIVES.update({
         "**Aim for rank 2 first** → that's the PvP trinket. Later ranks unlock cloaks (3), a necklace (4), mounts (11) and epic weapons (14).",
     ]),
     3: ("Camping and leveling speed", [
-        "**Do \"The Great Outdoors\" around level 5 and learn Cooking** → you unlock campfires, the base for every camp buff.",
-        "**Level Cooking to 90, then 200** → your campfire holds 5, then 10 camp items instead of 3.",
+        "**Learn Cooking early** → the Basic Campfire comes at skill 1, and every camp buff is built on a campfire.",
+        "**Level Cooking to 90, then 220** → your campfire holds 5, then 10 camp items instead of 3 (the Expert kit is learned at 200 but placed at 220).",
         "**Camp with friends** → each player adds one item, so a group fire stacks more buffs.",
-        "**Grab a Leatherworking Camp Tent** → a 1-hour rested-XP buff that survives death.",
+        "**Grab a Leatherworking Camp Tent** → it tops up rested XP by 5% of a level for you and anyone sitting nearby, once an hour.",
         "**Log out on a Cozy Sleeping Bag** → it counts as a rested area, so you earn rested XP while offline, which doubles your kill XP when you're back.",
         "**Eat Well Fed food before a grind** → +5% kill XP for about 15 minutes.",
     ]),
@@ -672,7 +671,6 @@ DEEP_DIVES.update({
         "**Have an Alchemist and an Herbalist in your group** → steady potions are what win early raids.",
         "**Use camp buffs to cover missing classes** → they don't stack with matching class buffs, but they fill gaps.",
         "**Play Warlock or Horde Paladin for a free mount** → Warlocks get a level-40 quest from Strahad Farsan in Ratchet, and Horde Paladins have their own.",
-        "**Chase the Hyjal Summit legendary** → the 20-player raid drops Forever's first legendary weapon.",
     ]),
     1: ("Launch-night game plan", [
         "**Pre-install tonight from the Battle.net game version menu** → you're not stuck downloading at 5 PM.",
@@ -683,7 +681,7 @@ DEEP_DIVES.update({
     ]),
     0: ("First hour checklist", [
         "**Click every flight master you pass** → long flights only work once you've unlocked the stops in between.",
-        "**Do \"The Great Outdoors\" around level 5** → camping and campfire buffs.",
+        "**Do \"The Great Outdoors\" around level 5** → it walks you through campfires and camp buffs.",
         "**Pick two gathering professions, like Herbalism and Mining** → they pay for your level-40 mount, about 100 gold.",
         "**Visit your class trainer every couple of levels** → new spells are easy to miss.",
         "**Take the starter profession quest** → it hands you Mining, Skinning or Herbalism plus 2 free skill points, a head start on your mount gold.",
@@ -721,12 +719,12 @@ TIPS["pvp"] = [
     "**Playing Undead (Horde)? Save Will of the Forsaken for the big one** → it breaks Fear, Charm and Sleep.",
 ]
 TIPS["camping"] = [
-    "**Do \"The Great Outdoors\" around level 5 and learn Cooking** → that's what lets you place campfires.",
+    "**Learn Cooking before you head out** → the Basic Campfire comes at skill 1, and every camp buff needs a fire nearby.",
     "**Pack Flint and Tinder and some Simple Wood** → a Basic Campfire needs only Cooking 1, holds 3 camp items and burns for about 10 minutes.",
     "**Sit (/sit) at the camp for a full minute** → camp buffs only kick in after you've rested there for a minute.",
     "**Camp with friends: add your item, then let them add theirs** → each character places one camp item (then waits an hour), but everyone at the camp shares every buff.",
     "**Pick camp items your group's classes don't already cover** → camp buffs are a bit weaker than class buffs and don't stack with them.",
-    "**Bring a Leatherworker's Camp Tent** → its rested XP buff survives death.",
+    "**Bring a Leatherworker's Camp Tent** → everyone sitting nearby gets rested XP worth 5% of a level, once an hour.",
     "**Ask your Engineer for a Repair Bot** → the second-tier Engineering camp item works as a repair vendor in the middle of nowhere.",
 ]
 TIPS["professions"] = [
@@ -784,7 +782,7 @@ POST_LAUNCH_TOPICS += ["legacy", "camping"]
 RAIDS_SHORT = "Barrow Deeps (10), Hyjal Summit (20) and Onyxia's Lair (40)"
 DEEP_DIVES["raids"] = ("Raid night", [
     "**Three raids open Dec 9:** Barrow Deeps (10 players), Hyjal Summit (20) and the returning Onyxia's Lair (40).",
-    "**Hyjal Summit** is set after Archimonde's defeat and drops Forever's first legendary weapon.",
+    "**Hyjal Summit** is set after Archimonde's defeat. Blizzard hasn't said where Taldramir, Forever's first legendary, comes from.",
     "**Barrow Deeps** has three entrances: Mount Hyjal, Winterspring and Blackmaw Hold. Use whichever is closest to your group.",
     "**Onyxia's Lair** keeps its classic attunement: the **Drakefire Amulet** quest chain. Start it before raid night, not on it.",
     "**Legacy Points:** clearing Onyxia, all 13 Hyjal Summit bosses and all 8 Barrow Deeps bosses each earn one.",
@@ -1177,8 +1175,24 @@ TIPS["camping"] += [
     "**Going fishing with friends? Put down a Fishing Rack** → since Nov 16 it gives lures to everyone, and the Bloated Fish it brings up drop more often.",
 ]
 DID_YOU_KNOW += [
-    ("vet", "Starting with the Nov 17 weekly maintenance, Vampiric Embrace heals the party for 10% of the Shadow Priest's Shadow damage instead of 20%. The Priest gets double from it, so solo play doesn't change."),
+    ("vet", "From the Nov 17 maintenance, Vampiric Embrace heals the party for 10% of the Priest's Shadow damage, not 20%. The Priest gets double, so solo play is unchanged."),
     ("vet", "Since Nov 16, the reputation Formula: Enchant Boots - Speed is bind-on-pickup, as Blizzard intended, so new copies can't be traded."),
+]
+
+# ------------------------------------------------------------------ 1.12.12: facts pass, Nov 18 (Wednesday deep pass)
+# Blizzard: WoW: Forever Hotfixes - November 17, 2026 (us.forums.blizzard.com/en/wow/t/2403040, post #12, Kaivax,
+# Nov 18 03:24 UTC; also news.blizzard.com/en-us/article/24315281), and "Actions For Blackmaw Hold Abuse - 17 November"
+# (Kaivax, eu.forums.blizzard.com/en/wow/t/643759; us.forums.blizzard.com/en/wow/t/2419757).
+TIPS["leveling"] += [
+    "**Bring a full group to Upper Blackrock Spire** → since Nov 17 its enemies are back to their intended health and damage, and Blizzard says it needs a full, careful group again.",
+]
+TIPS["camping"] += [
+    "**Get off your mount and watch for the Resting aura on a Cozy Sleeping Bag** → since Nov 17 the aura shows you're inside the bag's area, and mounted players can't sleep on it.",
+]
+DID_YOU_KNOW += [
+    ("vet", "Since Nov 17, Soulforge Armor, the upgraded tank dungeon set, has Spell Power instead of Strength. Blizzard says Paladin tanks are leaning on Spell Power for their damage."),
+    ("vet", "A pack of non-elite mobs in Blackmaw Hold dropped full elite dungeon loot until a Nov 16 hotfix. On Nov 17 Blizzard began removing the gold made by vendoring it and suspending the heaviest farmers; players who just ran the dungeon did nothing wrong."),
+    ("vet", "Since Nov 17, the Battle for Alterac Valley quests need level 58 to accept, and you can no longer mount up in the Warsong Gulch starting rooms."),
 ]
 
 
@@ -1189,6 +1203,10 @@ DID_YOU_KNOW += [
 # "internal": True keeps a behind-the-scenes release out of /whatsnew and the What's new page.
 WHATSNEW_URL = SITE_URL + "/whatsnew.html"
 RELEASE_NOTES = [
+    {"version": "1.12.12", "date": "2026-11-18", "title": "Nov 17 hotfixes",
+     "line": None, "internal": False,
+     "notes": ["New: Upper Blackrock Spire back to full difficulty, the Cozy Sleeping Bag's Resting aura, Soulforge Armor's Spell Power for Paladin tanks, Blizzard's Blackmaw Hold crackdown, and the level-58 Alterac Valley quests.",
+               "Corrected: the Leatherworking Camp Tent adds rested XP worth 5% of a level (it isn't a buff that survives death), the Expert Campfire is placed at Cooking 220, Warrior crits give 100% more Rage, and Blizzard hasn't said Hyjal Summit drops the first legendary."]},
     {"version": "1.12.11", "date": "2026-11-17", "title": "Nov 16 hotfixes",
      "line": None, "internal": False,
      "notes": ["New: Fishing Racks give everyone lures, Vampiric Embrace's party healing halved from the Nov 17 maintenance (solo unchanged), and the reputation Enchant Boots - Speed formula is now bind-on-pickup."]},
