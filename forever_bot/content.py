@@ -1203,6 +1203,9 @@ DID_YOU_KNOW += [
 # "internal": True keeps a behind-the-scenes release out of /whatsnew and the What's new page.
 WHATSNEW_URL = SITE_URL + "/whatsnew.html"
 RELEASE_NOTES = [
+    {"version": "1.12.13", "date": "2026-11-19", "title": "Facts check: Item Restoration still off",
+     "line": None, "internal": True,
+     "notes": ["Kept the Item Restoration tip a week longer: Blizzard hasn't switched it back on."]},
     {"version": "1.12.12", "date": "2026-11-18", "title": "Nov 17 hotfixes",
      "line": None, "internal": False,
      "notes": ["New: Upper Blackrock Spire back to full difficulty, the Cozy Sleeping Bag's Resting aura, Soulforge Armor's Spell Power for Paladin tanks, Blizzard's Blackmaw Hold crackdown, and the level-58 Alterac Valley quests.",

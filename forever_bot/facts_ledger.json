@@ -3531,11 +3531,11 @@
   {
    "text": "**Don't vendor or delete gear you might want back** → Blizzard switched off Item Restoration on Nov 11 while it fixes a critical bug, so there's no undo for now.",
    "pool": "TIPS.gold",
-   "source": "https://us.forums.blizzard.com/en/wow/t/wow-forever-hotfixes-november-11-2026/2403040/8",
+   "source": "https://worldofwarcraft.blizzard.com/en-us/news/24315281 ; https://www.icy-veins.com/wow-forever/news/dont-vendor-gear-you-might-want-back-item-restoration-disabled/",
    "added": "2026-11-12",
-   "verified": "2026-11-12",
-   "expires": "2026-11-19",
-   "note": ""
+   "verified": "2026-11-19",
+   "expires": "2026-11-26",
+   "note": "Nov 19: Blizzard's hotfix article through Nov 17 has no re-enable; extended a week"
   },
   {
    "text": "**Hit Honored with your home faction before buying riding** → the beta took 10% off riding and your race's mounts, and Legacy Bartering took up to 10% more off mounts.",

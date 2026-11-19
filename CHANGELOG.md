@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.12.13 (2026-11-19)
+Rolling facts check. No new Blizzard hotfixes since the Nov 17 post: Blizzard's hotfix article (worldofwarcraft.blizzard.com/en-us/news/24315281) still ends at Nov 17, matching Blue Tracker and PatchBot.
+- **Item Restoration tip (kept, expiry Nov 19 → Nov 26).** Blizzard's article has only the Nov 11 "disabled while we investigate" bullet and nothing re-enabling it; Icy Veins agrees. Still true, so it stays another week instead of dropping off.
+- **Not added (one source only).** foreverchanges.pro lists a Nov 18 hotfix: Ruzzgot's Shipment for "The Big Payback" now drops for everyone in the party with the quest. It isn't on Blizzard's article and the forum thread couldn't be opened in this run. Revisit tomorrow.
+- **Not re-verified today.** The Blizzard forums and Warcraft Tavern couldn't be fetched in this unattended run; the 15 oldest lines (Priest/Rogue tournament records, Earthbound tier, Warlock mount NPC, leveling deep-dive tips) are left for the next run.
+
 ## 1.12.12 (2026-11-18)
 Wednesday deep facts check. New Blizzard posts since the last run: "WoW: Forever Hotfixes - November 17, 2026" (us.forums.blizzard.com/en/wow/t/2403040, post #12, Kaivax, Nov 18 03:24 UTC; also news.blizzard.com/en-us/article/24315281) and "Actions For Blackmaw Hold Abuse - 17 November" (Kaivax, eu.forums.blizzard.com/en/wow/t/643759, confirmed by Warcraft Tavern). Nothing in the bot contradicted them (checked UBRS, Cozy Sleeping Bag, Warsong Gulch, Alterac Valley, Blackmaw Hold, Flurry/Windfury lines).
 - **New lines (post #12 and the Blackmaw post):** leveling tip (Upper Blackrock Spire back to intended health and damage, needs a full group), camping tip (Cozy Sleeping Bag Resting aura, no sleeping while mounted), did-you-knows: Soulforge Armor Spell Power instead of Strength for Paladin tanks, the Blackmaw Hold loot bug and Blizzard's gold removal and suspensions, Alterac Valley quests at 58 and no mounting in Warsong Gulch starting rooms.
