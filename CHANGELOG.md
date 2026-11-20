@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.12.14 (2026-11-20)
+Rolling facts check. New Blizzard post since the last run: "WoW: Forever Hotfixes - November 19, 2026" (us.forums.blizzard.com/en/wow/t/2403040, post #13, Kaivax, Nov 20 04:00 UTC; also news.blizzard.com/en-us/article/24315281). Nothing in the bot contradicted it (checked Seed Hybridizer, Cultivation, Genn Fairweather / Honored discount, Retribution, Shaper's Terrace, Motes of Unstable Magic lines).
+- **New lines (post #13):** camping tip (Seed Hybridizer re-enabled; Scarce Herb Seeds can't go in, combining can fail), travel tip (Horde Skyborne now get the Honored 10% discount on Apprentice and Journeyman Riding from Genn Fairweather), did-you-knows (Retribution Two-Handed Weapon Specialization now boosts all Holy damage with a two-hander; Motes of Unstable Magic are soulbound).
+- **Item Restoration tip kept** (expires Nov 26): post #13 doesn't re-enable it.
+- **Still not added (one source only).** The Nov 18 Ruzzgot's Shipment / "The Big Payback" fix still isn't on Blizzard's article or post #13, and no second source turned up.
+- **Not re-verified.** Warlock mount from Strahad Farsan: warcraft.wiki.gg confirms he's in Ratchet with a level-40 Summon Felsteed quest, but that's Classic-era data and Icy Veins' Forever Warlock quest page couldn't be fetched; not changed. The other oldest lines (Priest/Rogue tournament records, Earthbound tier, leveling deep-dive tips) still lack a fetchable second source in this unattended run.
+
 ## 1.12.13 (2026-11-19)
 Rolling facts check. No new Blizzard hotfixes since the Nov 17 post: Blizzard's hotfix article (worldofwarcraft.blizzard.com/en-us/news/24315281) still ends at Nov 17, matching Blue Tracker and PatchBot.
 - **Item Restoration tip (kept, expiry Nov 19 → Nov 26).** Blizzard's article has only the Nov 11 "disabled while we investigate" bullet and nothing re-enabling it; Icy Veins agrees. Still true, so it stays another week instead of dropping off.

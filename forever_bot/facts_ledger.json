@@ -2827,6 +2827,24 @@
    "note": ""
   },
   {
+   "text": "Since Nov 19, Motes of Unstable Magic are soulbound, so they can no longer be traded or sold on the Auction House.",
+   "pool": "DID_YOU_KNOW.vet",
+   "source": "https://us.forums.blizzard.com/en/wow/t/2403040/13 ; https://news.blizzard.com/en-us/article/24315281",
+   "added": "2026-11-20",
+   "verified": "2026-11-20",
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "Since Nov 19, Retribution's Two-Handed Weapon Specialization boosts all the Holy damage a Paladin deals while wielding a two-hander, as the talent intended.",
+   "pool": "DID_YOU_KNOW.vet",
+   "source": "https://us.forums.blizzard.com/en/wow/t/2403040/13 ; https://news.blizzard.com/en-us/article/24315281",
+   "added": "2026-11-20",
+   "verified": "2026-11-20",
+   "expires": null,
+   "note": ""
+  },
+  {
    "text": "Six race and class combos are new: Gnome Priest, Human Hunter, Dwarf Shaman, Orc Mage, Troll Warlock and Undead Paladin.",
    "pool": "DID_YOU_KNOW.vet",
    "source": "",
@@ -3417,6 +3435,15 @@
    "source": "",
    "added": null,
    "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Keep your Scarce Herb Seeds out of the Seed Hybridizer** → it's back on since Nov 19, but scarce seeds can't go in any more and combining seeds can now fail.",
+   "pool": "TIPS.camping",
+   "source": "https://us.forums.blizzard.com/en/wow/t/2403040/13 ; https://news.blizzard.com/en-us/article/24315281",
+   "added": "2026-11-20",
+   "verified": "2026-11-20",
    "expires": null,
    "note": ""
   },
@@ -4362,6 +4389,15 @@
    "source": "",
    "added": null,
    "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Horde Skyborne: hit Honored before buying riding from Genn Fairweather** → since Nov 19 the 10% Honored discount finally applies to Apprentice and Journeyman Riding there.",
+   "pool": "TIPS.travel",
+   "source": "https://us.forums.blizzard.com/en/wow/t/2403040/13 ; https://news.blizzard.com/en-us/article/24315281",
+   "added": "2026-11-20",
+   "verified": "2026-11-20",
    "expires": null,
    "note": ""
   },

@@ -1195,6 +1195,20 @@ DID_YOU_KNOW += [
     ("vet", "Since Nov 17, the Battle for Alterac Valley quests need level 58 to accept, and you can no longer mount up in the Warsong Gulch starting rooms."),
 ]
 
+# ------------------------------------------------------------------ 1.12.14: facts pass, Nov 20
+# Blizzard: WoW: Forever Hotfixes - November 19, 2026 (us.forums.blizzard.com/en/wow/t/2403040, post #13, Kaivax,
+# Nov 20 04:00 UTC; also news.blizzard.com/en-us/article/24315281).
+TIPS["camping"] += [
+    "**Keep your Scarce Herb Seeds out of the Seed Hybridizer** → it's back on since Nov 19, but scarce seeds can't go in any more and combining seeds can now fail.",
+]
+TIPS["travel"] += [
+    "**Horde Skyborne: hit Honored before buying riding from Genn Fairweather** → since Nov 19 the 10% Honored discount finally applies to Apprentice and Journeyman Riding there.",
+]
+DID_YOU_KNOW += [
+    ("vet", "Since Nov 19, Retribution's Two-Handed Weapon Specialization boosts all the Holy damage a Paladin deals while wielding a two-hander, as the talent intended."),
+    ("vet", "Since Nov 19, Motes of Unstable Magic are soulbound, so they can no longer be traded or sold on the Auction House."),
+]
+
 
 # ------------------------------------------------------------------ 1.9: what's new
 # Player-facing release notes: /whatsnew, the 🆕 line in the next post after a release, and the
@@ -1203,6 +1217,9 @@ DID_YOU_KNOW += [
 # "internal": True keeps a behind-the-scenes release out of /whatsnew and the What's new page.
 WHATSNEW_URL = SITE_URL + "/whatsnew.html"
 RELEASE_NOTES = [
+    {"version": "1.12.14", "date": "2026-11-20", "title": "Nov 19 hotfixes",
+     "line": None, "internal": False,
+     "notes": ["New: the Seed Hybridizer is back (scarce seeds can't go in, and combining can fail), Horde Skyborne finally get the Honored riding discount from Genn Fairweather, Retribution's two-hander talent boosts all Holy damage, and Motes of Unstable Magic are soulbound."]},
     {"version": "1.12.13", "date": "2026-11-19", "title": "Facts check: Item Restoration still off",
      "line": None, "internal": True,
      "notes": ["Kept the Item Restoration tip a week longer: Blizzard hasn't switched it back on."]},
