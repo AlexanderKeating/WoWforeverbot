@@ -2845,6 +2845,24 @@
    "note": ""
   },
   {
+   "text": "Since Nov 20, a Combat Rogue's Blade Flurry correctly makes Shank hit an extra target.",
+   "pool": "DID_YOU_KNOW.vet",
+   "source": "https://news.blizzard.com/en-us/article/24315281/wow-forever-hotfixes-november-20-2026 https://us.forums.blizzard.com/en/wow/t/wow-forever-hotfixes-november-20-2026/2403040/14 https://patchbot.io/games/world-of-warcraft-forever/articles/2326-hotfixes-november-20-2026",
+   "added": "2026-11-21",
+   "verified": "2026-11-21",
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "Since Nov 20, the Stormshroud Armor 3-piece bonus has a 3% chance on a melee hit to restore 18 energy. It was 4% for 30.",
+   "pool": "DID_YOU_KNOW.vet",
+   "source": "https://news.blizzard.com/en-us/article/24315281/wow-forever-hotfixes-november-20-2026 https://us.forums.blizzard.com/en/wow/t/wow-forever-hotfixes-november-20-2026/2403040/14 https://patchbot.io/games/world-of-warcraft-forever/articles/2326-hotfixes-november-20-2026",
+   "added": "2026-11-21",
+   "verified": "2026-11-21",
+   "expires": null,
+   "note": ""
+  },
+  {
    "text": "Six race and class combos are new: Gnome Priest, Human Hunter, Dwarf Shaman, Orc Mage, Troll Warlock and Undead Paladin.",
    "pool": "DID_YOU_KNOW.vet",
    "source": "",
@@ -3880,6 +3898,15 @@
    "note": ""
   },
   {
+   "text": "**Farming a dungeon? Alternate between two** → since Nov 20 each dungeon can only be reset and entered 5 times an hour (it was 10).",
+   "pool": "TIPS.leveling",
+   "source": "https://news.blizzard.com/en-us/article/24315281/wow-forever-hotfixes-november-20-2026 https://us.forums.blizzard.com/en/wow/t/wow-forever-hotfixes-november-20-2026/2403040/14 https://patchbot.io/games/world-of-warcraft-forever/articles/2326-hotfixes-november-20-2026",
+   "added": "2026-11-21",
+   "verified": "2026-11-21",
+   "expires": null,
+   "note": ""
+  },
+  {
    "text": "**Fight monsters your own level instead of easy green ones** → Blizzard cut the XP from green mobs compared to Classic, to balance the new food and camp buffs.",
    "pool": "TIPS.leveling",
    "source": "",
@@ -4110,6 +4137,15 @@
    "source": "",
    "added": null,
    "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Smelt and smith at Toron Rockhoof's forge in Summit of Eternity** → since Nov 20 his forge and anvil finally work for Blacksmithing and smelting.",
+   "pool": "TIPS.professions",
+   "source": "https://news.blizzard.com/en-us/article/24315281/wow-forever-hotfixes-november-20-2026 https://us.forums.blizzard.com/en/wow/t/wow-forever-hotfixes-november-20-2026/2403040/14 https://patchbot.io/games/world-of-warcraft-forever/articles/2326-hotfixes-november-20-2026",
+   "added": "2026-11-21",
+   "verified": "2026-11-21",
    "expires": null,
    "note": ""
   },

@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.12.15 (2026-11-21)
+Rolling facts check. New Blizzard post since the last run: "WoW: Forever Hotfixes - November 20, 2026" (us.forums.blizzard.com/en/wow/t/2403040, post #14, Nov 21 00:28 UTC; also news.blizzard.com/en-us/article/24315281). Blizzard's pages couldn't be opened in this unattended run; the list was read from patchbot.io (articles/2326) and cross-checked against mmo-champion.com (content/14711), which match. Nothing in the bot contradicted it (checked dungeon resets, Blade Flurry/Shank, Demonic Aegis, Stormshroud, Toron Rockhoof, group finder lines).
+- **New lines (post #14):** leveling tip (each dungeon can be reset and entered 5 times an hour, was 10), professions tip (Toron Rockhoof's forge and anvil in Summit of Eternity work for Blacksmithing and smelting), did-you-knows (Stormshroud Armor 3-piece: 3% for 18 energy, was 4% for 30; Blade Flurry now makes Shank hit an extra target).
+- **Item Restoration tip kept** (expires Nov 26): post #14 doesn't re-enable it. Ruzzgot's Shipment / "The Big Payback" still not on any Blizzard post; not added.
+- **Not re-verified.** 10 of the 15 "due" lines are countdown-only deep dives (days 0 and 1 before launch) that no longer post; the other 5 (Priest/Rogue tournament records, Earthbound tier, Warlock mount NPC, Thunder Clap/Rend) still lack a fetchable second source.
+
 ## 1.12.14 (2026-11-20)
 Rolling facts check. New Blizzard post since the last run: "WoW: Forever Hotfixes - November 19, 2026" (us.forums.blizzard.com/en/wow/t/2403040, post #13, Kaivax, Nov 20 04:00 UTC; also news.blizzard.com/en-us/article/24315281). Nothing in the bot contradicted it (checked Seed Hybridizer, Cultivation, Genn Fairweather / Honored discount, Retribution, Shaper's Terrace, Motes of Unstable Magic lines).
 - **New lines (post #13):** camping tip (Seed Hybridizer re-enabled; Scarce Herb Seeds can't go in, combining can fail), travel tip (Horde Skyborne now get the Honored 10% discount on Apprentice and Journeyman Riding from Genn Fairweather), did-you-knows (Retribution Two-Handed Weapon Specialization now boosts all Holy damage with a two-hander; Motes of Unstable Magic are soulbound).

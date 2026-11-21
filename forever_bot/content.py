@@ -1209,6 +1209,20 @@ DID_YOU_KNOW += [
     ("vet", "Since Nov 19, Motes of Unstable Magic are soulbound, so they can no longer be traded or sold on the Auction House."),
 ]
 
+# ------------------------------------------------------------------ 1.12.15: facts pass, Nov 21
+# Blizzard: WoW: Forever Hotfixes - November 20, 2026 (us.forums.blizzard.com/en/wow/t/2403040, post #14, Kaivax,
+# Nov 21 00:28 UTC; also news.blizzard.com/en-us/article/24315281). Read via patchbot.io and mmo-champion.com mirrors.
+TIPS["leveling"] += [
+    "**Farming a dungeon? Alternate between two** → since Nov 20 each dungeon can only be reset and entered 5 times an hour (it was 10).",
+]
+TIPS["professions"] += [
+    "**Smelt and smith at Toron Rockhoof's forge in Summit of Eternity** → since Nov 20 his forge and anvil finally work for Blacksmithing and smelting.",
+]
+DID_YOU_KNOW += [
+    ("vet", "Since Nov 20, the Stormshroud Armor 3-piece bonus has a 3% chance on a melee hit to restore 18 energy. It was 4% for 30."),
+    ("vet", "Since Nov 20, a Combat Rogue's Blade Flurry correctly makes Shank hit an extra target."),
+]
+
 
 # ------------------------------------------------------------------ 1.9: what's new
 # Player-facing release notes: /whatsnew, the 🆕 line in the next post after a release, and the
@@ -1217,6 +1231,9 @@ DID_YOU_KNOW += [
 # "internal": True keeps a behind-the-scenes release out of /whatsnew and the What's new page.
 WHATSNEW_URL = SITE_URL + "/whatsnew.html"
 RELEASE_NOTES = [
+    {"version": "1.12.15", "date": "2026-11-21", "title": "Nov 20 hotfixes",
+     "line": None, "internal": False,
+     "notes": ["New: dungeons can be reset and entered 5 times an hour (was 10), Toron Rockhoof's forge in Summit of Eternity works, the Stormshroud Armor set bonus is weaker, and Blade Flurry now spreads Shank."]},
     {"version": "1.12.14", "date": "2026-11-20", "title": "Nov 19 hotfixes",
      "line": None, "internal": False,
      "notes": ["New: the Seed Hybridizer is back (scarce seeds can't go in, and combining can fail), Horde Skyborne finally get the Honored riding discount from Genn Fairweather, Retribution's two-hander talent boosts all Holy damage, and Motes of Unstable Magic are soulbound."]},
