@@ -874,13 +874,13 @@
    "note": ""
   },
   {
-   "text": "Rage from hits ignores armor and shields, and crits give 75% more Rage.",
+   "text": "Rage from hits ignores armor and shields, and crits give 100% more Rage.",
    "pool": "CLASSES.Warrior.new",
-   "source": "",
-   "added": null,
-   "verified": null,
+   "source": "https://eu.forums.blizzard.com/en/wow/t/633050/1 ; https://www.warcrafttavern.com/forever/news/rage-will-benefit-from-crit-priest-warrior-deep-dive-for-wow-forever/",
+   "added": "2026-11-18",
+   "verified": "2026-11-18",
    "expires": null,
-   "note": ""
+   "note": "was 75% (deep dive); Blizzard beta post raised it to 100%"
   },
   {
    "text": "Thunder Clap works in Defensive Stance; Rend and Thunder Clap now scale with Attack Power.",
@@ -894,9 +894,9 @@
   {
    "text": "**Hunt mounted players with Spearing Strike (Arms)** → it dismounts them and hits for double damage on riders.",
    "pool": "CLASSES.Warrior.pvp",
-   "source": "",
+   "source": "https://www.warcrafttavern.com/forever/news/rage-will-benefit-from-crit-priest-warrior-deep-dive-for-wow-forever/ ; https://rankedboost.com/world-of-warcraft/forever/whats-new/talents/",
    "added": null,
-   "verified": null,
+   "verified": "2026-11-18",
    "expires": null,
    "note": ""
   },
@@ -919,11 +919,11 @@
    "note": ""
   },
   {
-   "text": "**Do \"The Great Outdoors\" around level 5** → camping and campfire buffs.",
+   "text": "**Do \"The Great Outdoors\" around level 5** → it walks you through campfires and camp buffs.",
    "pool": "DEEP_DIVES.0",
-   "source": "",
-   "added": null,
-   "verified": null,
+   "source": "https://news.blizzard.com/en-us/article/24301516 ; https://www.wow-professions.com/forever/camping-guide",
+   "added": "2026-11-18",
+   "verified": "2026-11-18",
    "expires": null,
    "note": ""
   },
@@ -1002,9 +1002,9 @@
   {
    "text": "**Mages** went 4–12 on finals day, after a week of forum calls to nerf them. Hype isn't results.",
    "pool": "DEEP_DIVES.10",
-   "source": "",
+   "source": "https://kami-labs.fr/en/wow-forever/forever-open-resultats-finale/ ; https://timesaver.gg/blog/wow-forever-open-duel-tournament-results-warlock",
    "added": null,
-   "verified": null,
+   "verified": "2026-11-18",
    "expires": null,
    "note": ""
   },
@@ -1020,18 +1020,18 @@
   {
    "text": "**Shamans** were the other standout: 19–11 and both 3rd and 4th place.",
    "pool": "DEEP_DIVES.10",
-   "source": "",
+   "source": "https://kami-labs.fr/en/wow-forever/forever-open-resultats-finale/ ; https://timesaver.gg/blog/wow-forever-open-duel-tournament-results-warlock",
    "added": null,
-   "verified": null,
+   "verified": "2026-11-18",
    "expires": null,
    "note": ""
   },
   {
    "text": "**Warlocks:** 26–7 in duels vs other classes. Soul Link at 21 points plus pet scaling made them hard to kill at 30. Launch tuning cut pet health to 2 per point of Stamina (was 7.5).",
    "pool": "DEEP_DIVES.10",
-   "source": "",
+   "source": "https://www.warcrafttavern.com/forever/news/wow-forever-pre-launch-class-changes-bug-fixes/",
    "added": null,
-   "verified": null,
+   "verified": "2026-11-18",
    "expires": null,
    "note": ""
   },
@@ -1056,18 +1056,18 @@
   {
    "text": "**Lost?** Ask any guard: it marks the bank, trainers and more on your map.",
    "pool": "DEEP_DIVES.11",
-   "source": "",
+   "source": "https://news.blizzard.com/en-gb/article/24315280",
    "added": null,
-   "verified": null,
+   "verified": "2026-11-18",
    "expires": null,
    "note": ""
   },
   {
    "text": "**No mount until 40.** Budget about 100g for Apprentice Riding plus your first mount. Skip trainer ranks you won't use to save up.",
    "pool": "DEEP_DIVES.11",
-   "source": "",
+   "source": "https://www.method.gg/wow-forever/how-to-get-a-mount-in-wow-forever-cost-requirement-and-mount-options ; https://www.warcrafttavern.com/forever/guides/riding/",
    "added": null,
-   "verified": null,
+   "verified": "2026-11-18",
    "expires": null,
    "note": ""
   },
@@ -1099,20 +1099,11 @@
    "note": ""
   },
   {
-   "text": "**Chase the Hyjal Summit legendary** → the 20-player raid drops Forever's first legendary weapon.",
-   "pool": "DEEP_DIVES.2",
-   "source": "",
-   "added": null,
-   "verified": null,
-   "expires": null,
-   "note": ""
-  },
-  {
    "text": "**Get Honored with your home faction** → 10% off riding and mounts. Add the Bartering Legacy talent for up to another 10% off mounts.",
    "pool": "DEEP_DIVES.2",
-   "source": "",
+   "source": "https://www.method.gg/wow-forever/how-to-get-a-mount-in-wow-forever-cost-requirement-and-mount-options ; https://www.warcrafttavern.com/forever/guides/legacy/",
    "added": null,
-   "verified": null,
+   "verified": "2026-11-18",
    "expires": null,
    "note": ""
   },
@@ -1137,18 +1128,18 @@
   {
    "text": "**Save 1,000 gold by 60** → that's Journeyman Riding, and epic mounts are 200 gold each.",
    "pool": "DEEP_DIVES.2",
-   "source": "",
+   "source": "https://www.method.gg/wow-forever/how-to-get-a-mount-in-wow-forever-cost-requirement-and-mount-options ; https://www.warcrafttavern.com/forever/guides/riding/",
    "added": null,
-   "verified": null,
+   "verified": "2026-11-18",
    "expires": null,
    "note": ""
   },
   {
    "text": "**Use camp buffs to cover missing classes** → they don't stack with matching class buffs, but they fill gaps.",
    "pool": "DEEP_DIVES.2",
-   "source": "",
+   "source": "https://news.blizzard.com/en-us/article/24301516",
    "added": null,
-   "verified": null,
+   "verified": "2026-11-18",
    "expires": null,
    "note": ""
   },
@@ -1162,38 +1153,38 @@
    "note": ""
   },
   {
-   "text": "**Do \"The Great Outdoors\" around level 5 and learn Cooking** → you unlock campfires, the base for every camp buff.",
-   "pool": "DEEP_DIVES.3",
-   "source": "",
-   "added": null,
-   "verified": null,
-   "expires": null,
-   "note": ""
-  },
-  {
    "text": "**Eat Well Fed food before a grind** → +5% kill XP for about 15 minutes.",
    "pool": "DEEP_DIVES.3",
-   "source": "",
+   "source": "https://www.warcrafttavern.com/forever/news/cooked-food-provides-an-xp-buff-in-world-of-warcraft-forever ; https://rankedboost.com/world-of-warcraft/forever/buffs/food/",
    "added": null,
-   "verified": null,
+   "verified": "2026-11-18",
    "expires": null,
    "note": ""
   },
   {
-   "text": "**Grab a Leatherworking Camp Tent** → a 1-hour rested-XP buff that survives death.",
+   "text": "**Grab a Leatherworking Camp Tent** → it tops up rested XP by 5% of a level for you and anyone sitting nearby, once an hour.",
    "pool": "DEEP_DIVES.3",
-   "source": "",
-   "added": null,
-   "verified": null,
+   "source": "https://news.blizzard.com/en-us/article/24301516 ; https://www.wow-professions.com/forever/camping-guide",
+   "added": "2026-11-18",
+   "verified": "2026-11-18",
    "expires": null,
    "note": ""
   },
   {
-   "text": "**Level Cooking to 90, then 200** → your campfire holds 5, then 10 camp items instead of 3.",
+   "text": "**Learn Cooking early** → the Basic Campfire comes at skill 1, and every camp buff is built on a campfire.",
    "pool": "DEEP_DIVES.3",
-   "source": "",
-   "added": null,
-   "verified": null,
+   "source": "https://news.blizzard.com/en-us/article/24301516 ; https://www.wow-professions.com/forever/camping-guide",
+   "added": "2026-11-18",
+   "verified": "2026-11-18",
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Level Cooking to 90, then 220** → your campfire holds 5, then 10 camp items instead of 3 (the Expert kit is learned at 200 but placed at 220).",
+   "pool": "DEEP_DIVES.3",
+   "source": "https://news.blizzard.com/en-us/article/24301516 ; https://www.wow-professions.com/forever/camping-guide ; https://rankedboost.com/world-of-warcraft/forever/camping/campfires/ ; https://warcraft.wiki.gg/wiki/Expert_Campfire_Kit",
+   "added": "2026-11-18",
+   "verified": "2026-11-18",
    "expires": null,
    "note": ""
   },
@@ -1666,11 +1657,11 @@
    "note": ""
   },
   {
-   "text": "**Well Fed** food adds +5% kill XP; the Camp Tent adds a rested buff that survives death.",
+   "text": "**Well Fed** food adds +5% kill XP; the Camp Tent adds rested XP worth 5% of a level.",
    "pool": "DEEP_DIVES.leveling",
-   "source": "",
-   "added": null,
-   "verified": null,
+   "source": "https://news.blizzard.com/en-us/article/24301516 ; https://www.wow-professions.com/forever/camping-guide",
+   "added": "2026-11-18",
+   "verified": "2026-11-18",
    "expires": null,
    "note": ""
   },
@@ -1783,20 +1774,20 @@
    "note": ""
   },
   {
-   "text": "**Hyjal Summit** is set after Archimonde's defeat and drops Forever's first legendary weapon.",
+   "text": "**Hyjal Summit** is set after Archimonde's defeat. Blizzard hasn't said where Taldramir, Forever's first legendary, comes from.",
    "pool": "DEEP_DIVES.raids",
-   "source": "",
-   "added": null,
-   "verified": null,
+   "source": "https://kami-labs.fr/en/wow-forever/taldramir-legendaire-wow-forever/ ; https://lfcarry.com/guides/wow-forever-raids",
+   "added": "2026-11-18",
+   "verified": "2026-11-18",
    "expires": null,
-   "note": ""
+   "note": "no source names where it drops"
   },
   {
    "text": "**Legacy Points:** clearing Onyxia, all 13 Hyjal Summit bosses and all 8 Barrow Deeps bosses each earn one.",
    "pool": "DEEP_DIVES.raids",
-   "source": "",
+   "source": "https://www.wowhead.com/news=383067 ; https://www.warcrafttavern.com/forever/guides/legacy/",
    "added": null,
-   "verified": null,
+   "verified": "2026-11-18",
    "expires": null,
    "note": ""
   },
@@ -2143,6 +2134,15 @@
    "note": ""
   },
   {
+   "text": "A pack of non-elite mobs in Blackmaw Hold dropped full elite dungeon loot until a Nov 16 hotfix. On Nov 17 Blizzard began removing the gold made by vendoring it and suspending the heaviest farmers; players who just ran the dungeon did nothing wrong.",
+   "pool": "DID_YOU_KNOW.vet",
+   "source": "https://eu.forums.blizzard.com/en/wow/t/actions-for-blackmaw-hold-abuse-17-november/643759 ; https://www.warcrafttavern.com/forever/news/blizzard-suspending-accounts-over-blackmaw-hold-exploit-in-wow-forever/",
+   "added": "2026-11-18",
+   "verified": "2026-11-18",
+   "expires": null,
+   "note": ""
+  },
+  {
    "text": "About 20 zombie plague spells turned up in the game files on Oct 30. Blizzard hasn't announced an event.",
    "pool": "DID_YOU_KNOW.vet",
    "source": "",
@@ -2422,6 +2422,15 @@
    "note": ""
   },
   {
+   "text": "From the Nov 17 maintenance, Vampiric Embrace heals the party for 10% of the Priest's Shadow damage, not 20%. The Priest gets double, so solo play is unchanged.",
+   "pool": "DID_YOU_KNOW.vet",
+   "source": "https://us.forums.blizzard.com/en/wow/t/wow-forever-hotfixes-november-16-2026/2403040/11 ; https://news.blizzard.com/en-us/article/24315281",
+   "added": "2026-11-17",
+   "verified": "2026-11-18",
+   "expires": null,
+   "note": ""
+  },
+  {
    "text": "Gnome Engineers have a racial that makes their gadgets backfire less.",
    "pool": "DID_YOU_KNOW.vet",
    "source": "",
@@ -2468,15 +2477,6 @@
   },
   {
    "text": "Hunters must stand still for half a second before Auto Shot fires. Wands work the same way.",
-   "pool": "DID_YOU_KNOW.vet",
-   "source": "",
-   "added": null,
-   "verified": null,
-   "expires": null,
-   "note": ""
-  },
-  {
-   "text": "Hyjal Summit is a 20-player raid where Archimonde fell, and it drops Forever's first legendary weapon.",
    "pool": "DID_YOU_KNOW.vet",
    "source": "",
    "added": null,
@@ -2809,6 +2809,60 @@
    "note": ""
   },
   {
+   "text": "Since Nov 17, Soulforge Armor, the upgraded tank dungeon set, has Spell Power instead of Strength. Blizzard says Paladin tanks are leaning on Spell Power for their damage.",
+   "pool": "DID_YOU_KNOW.vet",
+   "source": "https://us.forums.blizzard.com/en/wow/t/wow-forever-hotfixes-november-17-2026/2403040/12 ; https://news.blizzard.com/en-us/article/24315281",
+   "added": "2026-11-18",
+   "verified": "2026-11-18",
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "Since Nov 17, the Battle for Alterac Valley quests need level 58 to accept, and you can no longer mount up in the Warsong Gulch starting rooms.",
+   "pool": "DID_YOU_KNOW.vet",
+   "source": "https://us.forums.blizzard.com/en/wow/t/wow-forever-hotfixes-november-17-2026/2403040/12 ; https://news.blizzard.com/en-us/article/24315281",
+   "added": "2026-11-18",
+   "verified": "2026-11-18",
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "Since Nov 19, Motes of Unstable Magic are soulbound, so they can no longer be traded or sold on the Auction House.",
+   "pool": "DID_YOU_KNOW.vet",
+   "source": "https://us.forums.blizzard.com/en/wow/t/2403040/13 ; https://news.blizzard.com/en-us/article/24315281",
+   "added": "2026-11-20",
+   "verified": "2026-11-20",
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "Since Nov 19, Retribution's Two-Handed Weapon Specialization boosts all the Holy damage a Paladin deals while wielding a two-hander, as the talent intended.",
+   "pool": "DID_YOU_KNOW.vet",
+   "source": "https://us.forums.blizzard.com/en/wow/t/2403040/13 ; https://news.blizzard.com/en-us/article/24315281",
+   "added": "2026-11-20",
+   "verified": "2026-11-20",
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "Since Nov 20, a Combat Rogue's Blade Flurry correctly makes Shank hit an extra target.",
+   "pool": "DID_YOU_KNOW.vet",
+   "source": "https://news.blizzard.com/en-us/article/24315281/wow-forever-hotfixes-november-20-2026 https://us.forums.blizzard.com/en/wow/t/wow-forever-hotfixes-november-20-2026/2403040/14 https://patchbot.io/games/world-of-warcraft-forever/articles/2326-hotfixes-november-20-2026",
+   "added": "2026-11-21",
+   "verified": "2026-11-21",
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "Since Nov 20, the Stormshroud Armor 3-piece bonus has a 3% chance on a melee hit to restore 18 energy. It was 4% for 30.",
+   "pool": "DID_YOU_KNOW.vet",
+   "source": "https://news.blizzard.com/en-us/article/24315281/wow-forever-hotfixes-november-20-2026 https://us.forums.blizzard.com/en/wow/t/wow-forever-hotfixes-november-20-2026/2403040/14 https://patchbot.io/games/world-of-warcraft-forever/articles/2326-hotfixes-november-20-2026",
+   "added": "2026-11-21",
+   "verified": "2026-11-21",
+   "expires": null,
+   "note": ""
+  },
+  {
    "text": "Six race and class combos are new: Gnome Priest, Human Hunter, Dwarf Shaman, Orc Mage, Troll Warlock and Undead Paladin.",
    "pool": "DID_YOU_KNOW.vet",
    "source": "",
@@ -2859,15 +2913,6 @@
    "source": "",
    "added": null,
    "verified": null,
-   "expires": null,
-   "note": ""
-  },
-  {
-   "text": "Starting with the Nov 17 weekly maintenance, Vampiric Embrace heals the party for 10% of the Shadow Priest's Shadow damage instead of 20%. The Priest gets double from it, so solo play doesn't change.",
-   "pool": "DID_YOU_KNOW.vet",
-   "source": "https://us.forums.blizzard.com/en/wow/t/wow-forever-hotfixes-november-16-2026/2403040/11 ; https://news.blizzard.com/en-us/article/24315281",
-   "added": "2026-11-17",
-   "verified": "2026-11-17",
    "expires": null,
    "note": ""
   },
@@ -3349,11 +3394,11 @@
    "note": ""
   },
   {
-   "text": "**Bring a Leatherworker's Camp Tent** → its rested XP buff survives death.",
+   "text": "**Bring a Leatherworker's Camp Tent** → everyone sitting nearby gets rested XP worth 5% of a level, once an hour.",
    "pool": "TIPS.camping",
-   "source": "",
-   "added": null,
-   "verified": null,
+   "source": "https://news.blizzard.com/en-us/article/24301516 ; https://www.wow-professions.com/forever/camping-guide",
+   "added": "2026-11-18",
+   "verified": "2026-11-18",
    "expires": null,
    "note": ""
   },
@@ -3376,11 +3421,11 @@
    "note": ""
   },
   {
-   "text": "**Do \"The Great Outdoors\" around level 5 and learn Cooking** → that's what lets you place campfires.",
+   "text": "**Get off your mount and watch for the Resting aura on a Cozy Sleeping Bag** → since Nov 17 the aura shows you're inside the bag's area, and mounted players can't sleep on it.",
    "pool": "TIPS.camping",
-   "source": "",
-   "added": null,
-   "verified": null,
+   "source": "https://us.forums.blizzard.com/en/wow/t/wow-forever-hotfixes-november-17-2026/2403040/12 ; https://news.blizzard.com/en-us/article/24315281",
+   "added": "2026-11-18",
+   "verified": "2026-11-18",
    "expires": null,
    "note": ""
   },
@@ -3408,6 +3453,24 @@
    "source": "",
    "added": null,
    "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Keep your Scarce Herb Seeds out of the Seed Hybridizer** → it's back on since Nov 19, but scarce seeds can't go in any more and combining seeds can now fail.",
+   "pool": "TIPS.camping",
+   "source": "https://us.forums.blizzard.com/en/wow/t/2403040/13 ; https://news.blizzard.com/en-us/article/24315281",
+   "added": "2026-11-20",
+   "verified": "2026-11-20",
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Learn Cooking before you head out** → the Basic Campfire comes at skill 1, and every camp buff needs a fire nearby.",
+   "pool": "TIPS.camping",
+   "source": "https://news.blizzard.com/en-us/article/24301516 ; https://www.wow-professions.com/forever/camping-guide",
+   "added": "2026-11-18",
+   "verified": "2026-11-18",
    "expires": null,
    "note": ""
   },
@@ -3513,11 +3576,11 @@
   {
    "text": "**Don't vendor or delete gear you might want back** → Blizzard switched off Item Restoration on Nov 11 while it fixes a critical bug, so there's no undo for now.",
    "pool": "TIPS.gold",
-   "source": "https://us.forums.blizzard.com/en/wow/t/wow-forever-hotfixes-november-11-2026/2403040/8",
+   "source": "https://worldofwarcraft.blizzard.com/en-us/news/24315281 ; https://www.icy-veins.com/wow-forever/news/dont-vendor-gear-you-might-want-back-item-restoration-disabled/",
    "added": "2026-11-12",
-   "verified": "2026-11-12",
-   "expires": "2026-11-19",
-   "note": ""
+   "verified": "2026-11-19",
+   "expires": "2026-11-26",
+   "note": "Nov 19: Blizzard's hotfix article through Nov 17 has no re-enable; extended a week"
   },
   {
    "text": "**Hit Honored with your home faction before buying riding** → the beta took 10% off riding and your race's mounts, and Legacy Bartering took up to 10% more off mounts.",
@@ -3781,6 +3844,15 @@
    "note": ""
   },
   {
+   "text": "**Bring a full group to Upper Blackrock Spire** → since Nov 17 its enemies are back to their intended health and damage, and Blizzard says it needs a full, careful group again.",
+   "pool": "TIPS.leveling",
+   "source": "https://us.forums.blizzard.com/en/wow/t/wow-forever-hotfixes-november-17-2026/2403040/12 ; https://news.blizzard.com/en-us/article/24315281",
+   "added": "2026-11-18",
+   "verified": "2026-11-18",
+   "expires": null,
+   "note": ""
+  },
+  {
    "text": "**Check out Shen'dralas, between Mulgore and Desolace** → it's one of Forever's new zones, with dozens of new quests.",
    "pool": "TIPS.leveling",
    "source": "",
@@ -3822,6 +3894,15 @@
    "source": "",
    "added": null,
    "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Farming a dungeon? Alternate between two** → since Nov 20 each dungeon can only be reset and entered 5 times an hour (it was 10).",
+   "pool": "TIPS.leveling",
+   "source": "https://news.blizzard.com/en-us/article/24315281/wow-forever-hotfixes-november-20-2026 https://us.forums.blizzard.com/en/wow/t/wow-forever-hotfixes-november-20-2026/2403040/14 https://patchbot.io/games/world-of-warcraft-forever/articles/2326-hotfixes-november-20-2026",
+   "added": "2026-11-21",
+   "verified": "2026-11-21",
    "expires": null,
    "note": ""
   },
@@ -4056,6 +4137,15 @@
    "source": "",
    "added": null,
    "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Smelt and smith at Toron Rockhoof's forge in Summit of Eternity** → since Nov 20 his forge and anvil finally work for Blacksmithing and smelting.",
+   "pool": "TIPS.professions",
+   "source": "https://news.blizzard.com/en-us/article/24315281/wow-forever-hotfixes-november-20-2026 https://us.forums.blizzard.com/en/wow/t/wow-forever-hotfixes-november-20-2026/2403040/14 https://patchbot.io/games/world-of-warcraft-forever/articles/2326-hotfixes-november-20-2026",
+   "added": "2026-11-21",
+   "verified": "2026-11-21",
    "expires": null,
    "note": ""
   },
@@ -4335,6 +4425,15 @@
    "source": "",
    "added": null,
    "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Horde Skyborne: hit Honored before buying riding from Genn Fairweather** → since Nov 19 the 10% Honored discount finally applies to Apprentice and Journeyman Riding there.",
+   "pool": "TIPS.travel",
+   "source": "https://us.forums.blizzard.com/en/wow/t/2403040/13 ; https://news.blizzard.com/en-us/article/24315281",
+   "added": "2026-11-20",
+   "verified": "2026-11-20",
    "expires": null,
    "note": ""
   },
