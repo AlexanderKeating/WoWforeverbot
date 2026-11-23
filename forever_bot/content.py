@@ -1223,6 +1223,13 @@ DID_YOU_KNOW += [
     ("vet", "Since Nov 20, a Combat Rogue's Blade Flurry correctly makes Shank hit an extra target."),
 ]
 
+# ------------------------------------------------------------------ 1.12.16: facts pass, Nov 23
+# No new Blizzard hotfix post since #14 (Nov 20). Unannounced Nov 22 hotfix: Wowhead (forever/news/...-383956) and
+# foreverchanges.pro/patch-notes (first seen Nov 22 18:03 UTC) both report lockbox contents now go straight to bags.
+DID_YOU_KNOW += [
+    ("vet", "Since Nov 22, opening a lockbox, junkbox or sack of gems puts everything straight into your bags, so you can no longer peek inside first."),
+]
+
 
 # ------------------------------------------------------------------ 1.9: what's new
 # Player-facing release notes: /whatsnew, the 🆕 line in the next post after a release, and the
@@ -1231,6 +1238,9 @@ DID_YOU_KNOW += [
 # "internal": True keeps a behind-the-scenes release out of /whatsnew and the What's new page.
 WHATSNEW_URL = SITE_URL + "/whatsnew.html"
 RELEASE_NOTES = [
+    {"version": "1.12.16", "date": "2026-11-23", "title": "Lockboxes open straight into your bags",
+     "line": None, "internal": False,
+     "notes": ["New: since Nov 22, lockboxes, junkboxes and sacks of gems put their contents straight into your bags, so you can't peek inside first."]},
     {"version": "1.12.15", "date": "2026-11-21", "title": "Nov 20 hotfixes",
      "line": None, "internal": False,
      "notes": ["New: dungeons can be reset and entered 5 times an hour (was 10), Toron Rockhoof's forge in Summit of Eternity works, the Stormshroud Armor set bonus is weaker, and Blade Flurry now spreads Shank."]},

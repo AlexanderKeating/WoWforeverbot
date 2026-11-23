@@ -966,9 +966,9 @@
   {
    "text": "**Invite your friends before you leave the starting area** → groups land on the same layer, so you can actually see each other.",
    "pool": "DEEP_DIVES.1",
-   "source": "",
+   "source": "https://www.icy-veins.com/wow-forever/news/dont-get-separated-from-your-friends-how-to-avoid-being-layered-in-wow-forever/",
    "added": null,
-   "verified": null,
+   "verified": "2026-11-23",
    "expires": null,
    "note": ""
   },
@@ -2859,6 +2859,15 @@
    "source": "https://news.blizzard.com/en-us/article/24315281/wow-forever-hotfixes-november-20-2026 https://us.forums.blizzard.com/en/wow/t/wow-forever-hotfixes-november-20-2026/2403040/14 https://patchbot.io/games/world-of-warcraft-forever/articles/2326-hotfixes-november-20-2026",
    "added": "2026-11-21",
    "verified": "2026-11-21",
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "Since Nov 22, opening a lockbox, junkbox or sack of gems puts everything straight into your bags, so you can no longer peek inside first.",
+   "pool": "DID_YOU_KNOW.vet",
+   "source": "https://www.wowhead.com/forever/news/players-can-no-longer-peek-inside-lockboxes-due-to-reroll-exploit-383956 https://foreverchanges.pro/patch-notes",
+   "added": "2026-11-23",
+   "verified": "2026-11-23",
    "expires": null,
    "note": ""
   },
