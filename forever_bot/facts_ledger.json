@@ -2872,6 +2872,24 @@
    "note": ""
   },
   {
+   "text": "Since Nov 23, the Feralheart 4-piece bonus correctly grants 4 Energy every second for 5 seconds.",
+   "pool": "DID_YOU_KNOW.vet",
+   "source": "https://news.blizzard.com/en-us/article/24315281/wow-forever-hotfixes-november-23-2026 https://www.wowhead.com/forever/news/class-and-profession-bug-fixes-wow-forever-hotfixes-for-november-23-2026-383972",
+   "added": "2026-11-24",
+   "verified": "2026-11-24",
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "Since Nov 23, world buffs no longer fall off when you change zones, but they still drop the moment you enter a raid instance.",
+   "pool": "DID_YOU_KNOW.vet",
+   "source": "https://news.blizzard.com/en-us/article/24315281/wow-forever-hotfixes-november-23-2026 https://www.wowhead.com/forever/news/class-and-profession-bug-fixes-wow-forever-hotfixes-for-november-23-2026-383972",
+   "added": "2026-11-24",
+   "verified": "2026-11-24",
+   "expires": null,
+   "note": ""
+  },
+  {
    "text": "Six race and class combos are new: Gnome Priest, Human Hunter, Dwarf Shaman, Orc Mage, Troll Warlock and Undead Paladin.",
    "pool": "DID_YOU_KNOW.vet",
    "source": "",
@@ -3102,6 +3120,15 @@
    "source": "",
    "added": null,
    "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "Until Nov 23, Fengus' Ferocity and the Darkmoon Faire buffs gave twice the power Blizzard intended. Both are back to normal now.",
+   "pool": "DID_YOU_KNOW.vet",
+   "source": "https://news.blizzard.com/en-us/article/24315281/wow-forever-hotfixes-november-23-2026 https://www.wowhead.com/forever/news/class-and-profession-bug-fixes-wow-forever-hotfixes-for-november-23-2026-383972",
+   "added": "2026-11-24",
+   "verified": "2026-11-24",
    "expires": null,
    "note": ""
   },
@@ -4047,6 +4074,15 @@
    "source": "https://news.blizzard.com/en-us/article/24315281/wow-forever-hotfixes-november-10-2026 ; https://us.forums.blizzard.com/en/wow/t/2403040/6",
    "added": "2026-11-11",
    "verified": "2026-11-11",
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Cooking for Well Fed? Clam dishes count again** → since Nov 23 Boiled Clams, Clam Chowder, Clam Linguine and the other clam recipes give their proper Well Fed buff.",
+   "pool": "TIPS.professions",
+   "source": "https://news.blizzard.com/en-us/article/24315281/wow-forever-hotfixes-november-23-2026 https://www.wowhead.com/forever/news/class-and-profession-bug-fixes-wow-forever-hotfixes-for-november-23-2026-383972",
+   "added": "2026-11-24",
+   "verified": "2026-11-24",
    "expires": null,
    "note": ""
   },

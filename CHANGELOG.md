@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.12.17 (2026-11-24)
+Rolling facts check. New Blizzard post since the last run: "WoW: Forever Hotfixes - November 23, 2026" (news.blizzard.com/en-us/article/24315281; us.forums.blizzard.com/en/wow/t/2403040, post #15, Kaivax), matched bullet for bullet by Wowhead (wowhead.com/forever/news/class-and-profession-bug-fixes-wow-forever-hotfixes-for-november-23-2026-383972). Nothing in the bot contradicted it (checked world buffs, Well Fed, clam food, Mortal Strike, Feralheart, Fengus, Darkmoon, Uldaman, Intensity, Chastise lines).
+- **New lines (post #15):** professions tip (clam dishes give their proper Well Fed buff again), did-you-knows: world buffs survive zone changes but still drop on raid entry; Fengus' Ferocity and Darkmoon Faire buffs were giving double power until Nov 23; Feralheart 4-piece grants 4 Energy every second for 5 seconds.
+- **Not added:** Mortal Strike needs the talent (obvious to veterans), Wisp Form on living players, Filcher's Cowl level requirement, Uldaman Obsidian Sentinel loot, Engineering/Leatherworking recipe and Wetlands/Riverglades quest fixes (too narrow).
+- **Item Restoration tip kept** (expires Nov 26): Blizzard's article still has only the Nov 11 "disabled" bullet.
+- **Re-verified** 0 of the 15 "due" lines. Warlock mount NPC still unsettled: Icy Veins' Forever Warlock quest page ends at the level-30 Felhunter quest (Strahad Farsan, Ratchet) and has no level-40 Felsteed entry. The rest are countdown-only deep dives that no longer post, plus Priest/Rogue tournament records, Earthbound tier and Thunder Clap/Rend, still without a second source.
+- **Base branch:** stacked on facts/2026-11-23 (1.12.16, unshipped).
+
 ## 1.12.16 (2026-11-23)
 Rolling facts check. No new Blizzard hotfix post since the last run: the Forever hotfix thread (us.forums.blizzard.com/en/wow/t/2403040) still ends at post #14 (Nov 20 hotfixes, Kaivax, Nov 21 00:18 UTC) as far as could be read (post #15 wouldn't open in this unattended run), and Blue Tracker lists no newer Forever blue post. One unannounced hotfix, reported by two independent sources.
 - **New line:** did-you-know (since Nov 22, lockboxes, junkboxes and sacks of gems put their contents straight into your bags, so you can't peek inside first). Sources: Wowhead (wowhead.com/forever/news/players-can-no-longer-peek-inside-lockboxes-due-to-reroll-exploit-383956) and foreverchanges.pro/patch-notes (first seen Nov 22 18:03 UTC). Blizzard hasn't posted notes for it.

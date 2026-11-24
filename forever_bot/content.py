@@ -1230,6 +1230,18 @@ DID_YOU_KNOW += [
     ("vet", "Since Nov 22, opening a lockbox, junkbox or sack of gems puts everything straight into your bags, so you can no longer peek inside first."),
 ]
 
+# ------------------------------------------------------------------ 1.12.17: facts pass, Nov 24
+# Blizzard: WoW: Forever Hotfixes - November 23, 2026 (news.blizzard.com/en-us/article/24315281;
+# us.forums.blizzard.com/en/wow/t/2403040, post #15, Kaivax), matched by Wowhead (forever/news/...-383972).
+TIPS["professions"] += [
+    "**Cooking for Well Fed? Clam dishes count again** → since Nov 23 Boiled Clams, Clam Chowder, Clam Linguine and the other clam recipes give their proper Well Fed buff.",
+]
+DID_YOU_KNOW += [
+    ("vet", "Since Nov 23, world buffs no longer fall off when you change zones, but they still drop the moment you enter a raid instance."),
+    ("vet", "Until Nov 23, Fengus' Ferocity and the Darkmoon Faire buffs gave twice the power Blizzard intended. Both are back to normal now."),
+    ("vet", "Since Nov 23, the Feralheart 4-piece bonus correctly grants 4 Energy every second for 5 seconds."),
+]
+
 
 # ------------------------------------------------------------------ 1.9: what's new
 # Player-facing release notes: /whatsnew, the 🆕 line in the next post after a release, and the
@@ -1238,6 +1250,9 @@ DID_YOU_KNOW += [
 # "internal": True keeps a behind-the-scenes release out of /whatsnew and the What's new page.
 WHATSNEW_URL = SITE_URL + "/whatsnew.html"
 RELEASE_NOTES = [
+    {"version": "1.12.17", "date": "2026-11-24", "title": "Nov 23 hotfixes",
+     "line": None, "internal": False,
+     "notes": ["New: world buffs now survive zone changes (not raid entry), clam dishes give Well Fed again, Fengus' Ferocity and Darkmoon Faire buffs are back to normal strength, and the Feralheart 4-piece works."]},
     {"version": "1.12.16", "date": "2026-11-23", "title": "Lockboxes open straight into your bags",
      "line": None, "internal": False,
      "notes": ["New: since Nov 22, lockboxes, junkboxes and sacks of gems put their contents straight into your bags, so you can't peek inside first."]},
