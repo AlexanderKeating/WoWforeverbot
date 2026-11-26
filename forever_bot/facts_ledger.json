@@ -730,20 +730,20 @@
    "note": ""
   },
   {
+   "text": "**Do the free Summon Felsteed class quest at 40 instead of buying a mount** → save the gold for training and gear.",
+   "pool": "CLASSES.Warlock.leveling",
+   "source": "https://conquestcapped.com/guides/wow-forever/wow-forever-warlock-quests/ ; U4N Forever Warlock guide (Nov 23 run)",
+   "added": "2026-11-26",
+   "verified": "2026-11-26",
+   "expires": null,
+   "note": "Nov 26: NPC name (Strahad Farsan, Ratchet) dropped; only Classic-era data named him for Felsteed, conquestcapped says capital trainer"
+  },
+  {
    "text": "**Finish low targets with Drain Soul** → the kill gives you a Soul Shard; damage ticks alone rarely do since launch tuning.",
    "pool": "CLASSES.Warlock.leveling",
    "source": "https://us.forums.blizzard.com/en/wow/t/2360696/9; https://kami-labs.fr/en/wow-forever/patch-notes-2-novembre-notes-de-lancement/",
    "added": null,
    "verified": "2026-11-14",
-   "expires": null,
-   "note": ""
-  },
-  {
-   "text": "**Grab your free mount at 40 from Strahad Farsan in Ratchet** → save the gold for training and gear.",
-   "pool": "CLASSES.Warlock.leveling",
-   "source": "",
-   "added": null,
-   "verified": null,
    "expires": null,
    "note": ""
   },
@@ -1117,13 +1117,13 @@
    "note": ""
   },
   {
-   "text": "**Play Warlock or Horde Paladin for a free mount** → Warlocks get a level-40 quest from Strahad Farsan in Ratchet, and Horde Paladins have their own.",
+   "text": "**Play Warlock or Horde Paladin for a free mount** → Warlocks get a free level-40 Summon Felsteed quest, and Horde Paladins have their own.",
    "pool": "DEEP_DIVES.2",
-   "source": "",
-   "added": null,
-   "verified": null,
+   "source": "https://conquestcapped.com/guides/wow-forever/wow-forever-warlock-quests/ ; U4N Forever Warlock guide (Nov 23 run)",
+   "added": "2026-11-26",
+   "verified": "2026-11-26",
    "expires": null,
-   "note": ""
+   "note": "Nov 26: NPC name (Strahad Farsan, Ratchet) dropped; only Classic-era data named him for Felsteed, conquestcapped says capital trainer"
   },
   {
    "text": "**Save 1,000 gold by 60** → that's Journeyman Riding, and epic mounts are 200 gold each.",
@@ -1819,13 +1819,13 @@
    "note": ""
   },
   {
-   "text": "**Free mounts:** Warlocks via Strahad Farsan in Ratchet; Horde Paladins have their own quest.",
+   "text": "**Free mounts:** Warlocks via the level-40 Summon Felsteed quest; Horde Paladins have their own quest.",
    "pool": "DEEP_DIVES.travel",
-   "source": "",
-   "added": null,
-   "verified": null,
+   "source": "https://conquestcapped.com/guides/wow-forever/wow-forever-warlock-quests/ ; U4N Forever Warlock guide (Nov 23 run)",
+   "added": "2026-11-26",
+   "verified": "2026-11-26",
    "expires": null,
-   "note": ""
+   "note": "Nov 26: NPC name (Strahad Farsan, Ratchet) dropped; only Classic-era data named him for Felsteed, conquestcapped says capital trainer"
   },
   {
    "text": "**Horde vendors:** wolves in Orgrimmar, raptors in Sen'jin, kodos in Bloodhoof, skeletal horses in Brill.",
@@ -2890,6 +2890,33 @@
    "note": ""
   },
   {
+   "text": "Since Nov 25, Alterac Valley's generals, Warmasters and Marshals start with 4 stacks of a 20-minute buff and lose one each time an objective falls, and the long-match reputation bonus kicks in after 20 minutes instead of 60.",
+   "pool": "DID_YOU_KNOW.vet",
+   "source": "https://news.blizzard.com/en-us/article/24315281/wow-forever-hotfixes-november-25-2026 ; https://us.forums.blizzard.com/en/wow/t/2403040 ; https://www.bluetracker.gg/wow/topic/eu-en/639885-wow-forever-hotfixes-november-25-2026/ ; https://wow.gg/guides/wow-forever-hotfixes-25-11-26",
+   "added": "2026-11-26",
+   "verified": "2026-11-26",
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "Since Nov 25, Balance Druids have Dreamstate instead of Moonfury, Moonkin Form adds 10% Arcane and Nature damage, and Improved Starfire is a 2-point talent; Druids who had 3 or more points in it got their talents reset.",
+   "pool": "DID_YOU_KNOW.vet",
+   "source": "https://news.blizzard.com/en-us/article/24315281/wow-forever-hotfixes-november-25-2026 ; https://us.forums.blizzard.com/en/wow/t/2403040 ; https://www.bluetracker.gg/wow/topic/eu-en/639885-wow-forever-hotfixes-november-25-2026/ ; https://wow.gg/guides/wow-forever-hotfixes-25-11-26",
+   "added": "2026-11-26",
+   "verified": "2026-11-26",
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "Since Nov 25, Rogue poisons and Blinding Powder are temporarily bind-on-pickup, so for now you can't trade them or sell them on the Auction House.",
+   "pool": "DID_YOU_KNOW.vet",
+   "source": "https://news.blizzard.com/en-us/article/24315281/wow-forever-hotfixes-november-25-2026 ; https://us.forums.blizzard.com/en/wow/t/2403040 ; https://www.bluetracker.gg/wow/topic/eu-en/639885-wow-forever-hotfixes-november-25-2026/ ; https://wow.gg/guides/wow-forever-hotfixes-25-11-26",
+   "added": "2026-11-26",
+   "verified": "2026-11-26",
+   "expires": "2026-12-03",
+   "note": ""
+  },
+  {
    "text": "Six race and class combos are new: Gnome Priest, Human Hunter, Dwarf Shaman, Orc Mage, Troll Warlock and Undead Paladin.",
    "pool": "DID_YOU_KNOW.vet",
    "source": "",
@@ -3614,9 +3641,9 @@
    "pool": "TIPS.gold",
    "source": "https://worldofwarcraft.blizzard.com/en-us/news/24315281 ; https://www.icy-veins.com/wow-forever/news/dont-vendor-gear-you-might-want-back-item-restoration-disabled/",
    "added": "2026-11-12",
-   "verified": "2026-11-19",
-   "expires": "2026-11-26",
-   "note": "Nov 19: Blizzard's hotfix article through Nov 17 has no re-enable; extended a week"
+   "verified": "2026-11-26",
+   "expires": "2026-12-03",
+   "note": "Nov 26: Blizzard's article through Nov 25 still has only the Nov 11 disabled bullet; extended a week"
   },
   {
    "text": "**Hit Honored with your home faction before buying riding** → the beta took 10% off riding and your race's mounts, and Legacy Bartering took up to 10% more off mounts.",
@@ -4321,6 +4348,15 @@
    "note": ""
   },
   {
+   "text": "**In Alterac Valley, take towers, graveyards and mines before you rush the general** → since Nov 25 objectives give more reputation and a bit more Honor, while killing the general gives much less of both.",
+   "pool": "TIPS.pvp",
+   "source": "https://news.blizzard.com/en-us/article/24315281/wow-forever-hotfixes-november-25-2026 ; https://us.forums.blizzard.com/en/wow/t/2403040 ; https://www.bluetracker.gg/wow/topic/eu-en/639885-wow-forever-hotfixes-november-25-2026/ ; https://wow.gg/guides/wow-forever-hotfixes-25-11-26",
+   "added": "2026-11-26",
+   "verified": "2026-11-26",
+   "expires": null,
+   "note": ""
+  },
+  {
    "text": "**In Darkspear Islands, carry the center flag to a base your team holds** → that's how you score. The map has four bases and the flag in the middle.",
    "pool": "TIPS.pvp",
    "source": "",
@@ -4443,6 +4479,15 @@
    "source": "",
    "added": null,
    "verified": null,
+   "expires": null,
+   "note": ""
+  },
+  {
+   "text": "**Already ran Dreadsteed of Xoroth, or Justice and Retribution as a Forsaken Paladin? Talk to Zevrost in the Cleft of Shadow or Danitha Morr in Bandarion Keep** → since Nov 25 those epic mount quests come with Journeyman Riding, so you skip the 1,000g training.",
+   "pool": "TIPS.travel",
+   "source": "https://news.blizzard.com/en-us/article/24315281/wow-forever-hotfixes-november-25-2026 ; https://us.forums.blizzard.com/en/wow/t/2403040 ; https://www.bluetracker.gg/wow/topic/eu-en/639885-wow-forever-hotfixes-november-25-2026/ ; https://wow.gg/guides/wow-forever-hotfixes-25-11-26",
+   "added": "2026-11-26",
+   "verified": "2026-11-26",
    "expires": null,
    "note": ""
   },

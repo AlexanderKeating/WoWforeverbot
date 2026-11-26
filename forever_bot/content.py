@@ -363,7 +363,7 @@ DEEP_DIVES = {
         "**Stock up on consumables:** an Alchemist + Herbalist in the guild keeps everyone in potions.",
         "**Save gold:** Journeyman Riding is 1,000g at 60, epic mounts 200g each.",
         "**Discounts:** Honored with your home faction is 10% off riding and mounts; the Bartering Legacy talent adds up to 10% off mounts.",
-        "**Warlocks** get a free level-40 mount quest from Strahad Farsan in Ratchet.",
+        "**Warlocks** get a free level-40 mount quest (Summon Felsteed).",
     ]),
     1: ("Launch-night game plan", [
         "**Before:** sub or game time active, client pre-installed, addons updated.",
@@ -412,7 +412,7 @@ DEEP_DIVES = {
         "**Mount at 40:** 100g for Apprentice Riding with your first mount; extra colors 20g.",
         "**Epic at 60:** 1,000g Journeyman Riding, 200g per epic mount, +100% speed.",
         "**Horde vendors:** wolves in Orgrimmar, raptors in Sen'jin, kodos in Bloodhoof, skeletal horses in Brill.",
-        "**Free mounts:** Warlocks via Strahad Farsan in Ratchet; Horde Paladins have their own quest.",
+        "**Free mounts:** Warlocks via the level-40 Summon Felsteed quest; Horde Paladins have their own quest.",
     ]),
 }
 POST_LAUNCH_TOPICS = ["leveling", "professions", "travel", "gold", "pvp"]
@@ -578,7 +578,7 @@ DEEP_DIVES.update({
         "**Consumables win raids:** an Alchemist and an Herbalist in your group keep everyone in potions, and camps fill in buffs for missing classes.",
         "**Gold plan:** Journeyman Riding is 1,000 gold at 60, and epic mounts are 200 gold each. Start saving while leveling.",
         "**Discounts stack:** Honored with your home faction is 10% off riding and mounts, and the Bartering Legacy talent adds up to 10% off mounts.",
-        "**Free mounts:** Warlocks get a level-40 mount quest from Strahad Farsan in Ratchet, and Horde Paladins have their own mount quest.",
+        "**Free mounts:** Warlocks get a free level-40 Summon Felsteed quest, and Horde Paladins have their own mount quest.",
         "**Dungeons to farm:** Blackmaw Hold and Shaper's Terrace are the 55–60 dungeons to target first.",
     ]),
     1: ("Launch-night game plan", [
@@ -670,7 +670,7 @@ DEEP_DIVES.update({
         "**Get Honored with your home faction** → 10% off riding and mounts. Add the Bartering Legacy talent for up to another 10% off mounts.",
         "**Have an Alchemist and an Herbalist in your group** → steady potions are what win early raids.",
         "**Use camp buffs to cover missing classes** → they don't stack with matching class buffs, but they fill gaps.",
-        "**Play Warlock or Horde Paladin for a free mount** → Warlocks get a level-40 quest from Strahad Farsan in Ratchet, and Horde Paladins have their own.",
+        "**Play Warlock or Horde Paladin for a free mount** → Warlocks get a free level-40 Summon Felsteed quest, and Horde Paladins have their own.",
     ]),
     1: ("Launch-night game plan", [
         "**Pre-install tonight from the Battle.net game version menu** → you're not stuck downloading at 5 PM.",
@@ -1242,6 +1242,21 @@ DID_YOU_KNOW += [
     ("vet", "Since Nov 23, the Feralheart 4-piece bonus correctly grants 4 Energy every second for 5 seconds."),
 ]
 
+# ------------------------------------------------------------------ 1.12.18: facts pass, Nov 26
+# Blizzard: WoW: Forever Hotfixes - November 25, 2026 (news.blizzard.com/en-us/article/24315281;
+# us.forums.blizzard.com/en/wow/t/2403040), matched by bluetracker.gg (eu 639885) and wow.gg (wow-forever-hotfixes-25-11-26).
+TIPS["pvp"] += [
+    "**In Alterac Valley, take towers, graveyards and mines before you rush the general** → since Nov 25 objectives give more reputation and a bit more Honor, while killing the general gives much less of both.",
+]
+TIPS["travel"] += [
+    "**Already ran Dreadsteed of Xoroth, or Justice and Retribution as a Forsaken Paladin? Talk to Zevrost in the Cleft of Shadow or Danitha Morr in Bandarion Keep** → since Nov 25 those epic mount quests come with Journeyman Riding, so you skip the 1,000g training.",
+]
+DID_YOU_KNOW += [
+    ("vet", "Since Nov 25, Alterac Valley's generals, Warmasters and Marshals start with 4 stacks of a 20-minute buff and lose one each time an objective falls, and the long-match reputation bonus kicks in after 20 minutes instead of 60."),
+    ("vet", "Since Nov 25, Balance Druids have Dreamstate instead of Moonfury, Moonkin Form adds 10% Arcane and Nature damage, and Improved Starfire is a 2-point talent; Druids who had 3 or more points in it got their talents reset."),
+    ("vet", "Since Nov 25, Rogue poisons and Blinding Powder are temporarily bind-on-pickup, so for now you can't trade them or sell them on the Auction House."),
+]
+
 
 # ------------------------------------------------------------------ 1.9: what's new
 # Player-facing release notes: /whatsnew, the 🆕 line in the next post after a release, and the
@@ -1250,6 +1265,9 @@ DID_YOU_KNOW += [
 # "internal": True keeps a behind-the-scenes release out of /whatsnew and the What's new page.
 WHATSNEW_URL = SITE_URL + "/whatsnew.html"
 RELEASE_NOTES = [
+    {"version": "1.12.18", "date": "2026-11-26", "title": "Nov 25 hotfixes",
+     "line": None, "internal": False,
+     "notes": ["New: Alterac Valley rewards objectives over the general kill, Warlock and Paladin epic mount quests now grant Journeyman Riding (earlier finishers get it free), Balance Druid talent changes, and Rogue poisons are temporarily bind-on-pickup."]},
     {"version": "1.12.17", "date": "2026-11-24", "title": "Nov 23 hotfixes",
      "line": None, "internal": False,
      "notes": ["New: world buffs now survive zone changes (not raid entry), clam dishes give Well Fed again, Fengus' Ferocity and Darkmoon Faire buffs are back to normal strength, and the Feralheart 4-piece works."]},

@@ -191,7 +191,7 @@ CLASSES = {
             "New signatures: Wrack (Affliction, 31), Bane of Havoc (21) and Incinerate (31) in Destruction.",
         ],
         "leveling": [
-            "Free mount at 40: the quest is from **Strahad Farsan in Ratchet**.",
+            "Free mount at 40: there's a **Summon Felsteed class quest**, no gold needed.",
             "Drain Soul rarely gives a Soul Shard from damage ticks now. Finish the kill with it for the shard.",
             "Life Tap scales with Spirit.",
         ],
@@ -321,7 +321,7 @@ _DO = {
     },
     "Warlock": {
         "leveling": [
-            "**Grab your free mount at 40 from Strahad Farsan in Ratchet** → save the gold for training and gear.",
+            "**Do the free Summon Felsteed class quest at 40 instead of buying a mount** → save the gold for training and gear.",
             "**Did \"Summon Felsteed\" before Nov 9? Summon the Felsteed once** → that grants the riding skill the quest skipped.",
             "**Finish low targets with Drain Soul** → the kill gives you a Soul Shard; damage ticks alone rarely do since launch tuning.",
             "**Stack some Spirit** → Life Tap scales with it, so you sit to drink less.",
