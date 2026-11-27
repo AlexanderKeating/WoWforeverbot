@@ -1265,6 +1265,9 @@ DID_YOU_KNOW += [
 # "internal": True keeps a behind-the-scenes release out of /whatsnew and the What's new page.
 WHATSNEW_URL = SITE_URL + "/whatsnew.html"
 RELEASE_NOTES = [
+    {"version": "1.12.19", "date": "2026-11-27", "title": "Facts check: Warrior line sourced",
+     "line": None, "internal": True,
+     "notes": ["No new hotfixes since Nov 25. Confirmed the Warrior Thunder Clap and Rend line against Blizzard's deep dive."]},
     {"version": "1.12.18", "date": "2026-11-26", "title": "Nov 25 hotfixes",
      "line": None, "internal": False,
      "notes": ["New: Alterac Valley rewards objectives over the general kill, Warlock and Paladin epic mount quests now grant Journeyman Riding (earlier finishers get it free), Balance Druid talent changes, and Rogue poisons are temporarily bind-on-pickup."]},

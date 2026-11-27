@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.12.19 (2026-11-27)
+Rolling facts check. No new Blizzard hotfix post since the last run: the newest is still "WoW: Forever Hotfixes - November 25, 2026" (us.forums.blizzard.com/en/wow/t/2403040, post #16, Nov 26 00:25 UTC). mein-mmo's "Hotfixes from November 26" article is the same Nov 25 batch (published 06:57 UTC Nov 26), and wowforever.news (updated Nov 27) lists no newer Blizzard post, Item Restoration change or raid unlock time. No bot text changed.
+- **Re-verified** 1 of the 15 "due" lines: "Thunder Clap works in Defensive Stance; Rend and Thunder Clap now scale with Attack Power" against Blizzard's Priest & Warrior deep dive (news.blizzard.com/en-us/article/24301514: Thunder Clap "Useable in Defensive Stance", Rend and Thunder Clap "Now gains significant damage scaling from Attack Power"). The line had no source in the ledger.
+- **Still unsettled:** Earthbound tier (conquestcapped, Kami Labs and Warcraft Tavern give no tier; the 5-second root is on conquestcapped only), Priest/Rogue tournament records (one source). The rest of the due list is countdown-only deep dives that no longer post.
+- **No new lines:** the Nov 25 post was mined yesterday and nothing new came out on Thanksgiving.
+- **Base branch:** stacked on facts/2026-11-26 (1.12.18, unshipped), which stacks on facts/2026-11-24 and facts/2026-11-23.
+
 ## 1.12.18 (2026-11-26)
 Rolling facts check. New Blizzard post since the last run: "WoW: Forever Hotfixes - November 25, 2026" (news.blizzard.com/en-us/article/24315281; us.forums.blizzard.com/en/wow/t/2403040), matched section by section by bluetracker.gg (eu topic 639885) and wow.gg (guides/wow-forever-hotfixes-25-11-26). No Nov 24 post. Nothing in the bot contradicted it (checked Alterac Valley, Balance talents, poisons, Journeyman Riding, Dreadsteed, Weaponmaster, Maelstrom Weapon, Hurricane, hawks, Kirin Tor, Revelation, Reinforce, The Quick and the Dead lines).
 - **New lines (Nov 25 post):** pvp tip (Alterac Valley objectives now give more reputation and a bit more Honor; the general kill gives much less), travel tip (Dreadsteed of Xoroth and Forsaken Paladin Justice and Retribution grant Journeyman Riding; earlier finishers get it free from Zevrost or Danitha Morr), did-you-knows: Alterac Valley commander buff stacks and 20-minute long-match bonus; Balance changes (Dreamstate replaces Moonfury, Moonkin Form +10% Arcane/Nature, Improved Starfire now 2 points with talent resets); Rogue poisons and Blinding Powder temporarily bind-on-pickup (expires Dec 3 for a recheck).

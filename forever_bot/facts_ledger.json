@@ -885,9 +885,9 @@
   {
    "text": "Thunder Clap works in Defensive Stance; Rend and Thunder Clap now scale with Attack Power.",
    "pool": "CLASSES.Warrior.new",
-   "source": "",
+   "source": "https://news.blizzard.com/en-us/article/24301514",
    "added": null,
-   "verified": null,
+   "verified": "2026-11-27",
    "expires": null,
    "note": ""
   },
