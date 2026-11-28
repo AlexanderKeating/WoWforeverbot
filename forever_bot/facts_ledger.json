@@ -694,13 +694,13 @@
    "note": ""
   },
   {
-   "text": "**Take Earthbound (Elemental, 16)** → Earthbind Totem roots nearby enemies for 5 seconds.",
+   "text": "**Take Earthbound (Elemental)** → Earthbind Totem roots nearby enemies instead of just slowing them.",
    "pool": "CLASSES.Shaman.pvp",
-   "source": "",
-   "added": null,
-   "verified": null,
+   "source": "https://www.icy-veins.com/wow-forever/elemental-shaman-ranged-dps-pve-guide ; https://www.warcrafttavern.com/forever/guides/elemental-shaman/",
+   "added": "2026-11-28",
+   "verified": "2026-11-28",
    "expires": null,
-   "note": ""
+   "note": "Dropped unsourced tier 16 and 5-second duration; only conquestcapped gave the duration"
   },
   {
    "text": "Shamans went 19–11 vs other classes in the beta tournament finals and took 3rd and 4th.",

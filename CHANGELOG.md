@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.12.20 (2026-11-28)
+Rolling facts check. No new Blizzard hotfix post since the last run: Blizzard's hotfix article (news.blizzard.com/en-us/article/24315281) and the forum thread (us.forums.blizzard.com/en/wow/t/2403040) still end at November 25; space4games' week in review (updated Nov 28) lists nothing newer.
+- **Earthbound (correction, 2 lines).** "Earthbound (Elemental, 16) makes Earthbind Totem root nearby enemies for 5 seconds" → "Earthbound (Elemental) turns Earthbind Totem's slow into a root". Icy Veins' Forever Elemental guide ("the root effect provided by Earthbound") and Warcraft Tavern's ("an AoE immobilize if talented") confirm the root; only conquestcapped gave 5 seconds, and nobody confirms the tier. wow.gg instead names a 2-point Enhancement talent "Earth's Grasp" with a 5-second immobilize, so the details stay out until a Blizzard or second source settles them. The talents list still says "Earthbound (Elemental, 16)".
+- **Not added (one source only):** Night Watchman's Torch usable while mounted and shapeshifted again (Wowhead, about Nov 27, citing a player on X; no Blizzard note). The Dec 1 Grrgle Twitch drop is a retail housing item, not Forever.
+- **Re-verified** 1 of the 15 "due" lines (Earthbound, above). The rest are countdown-only deep dives that no longer post and the Priest/Rogue tournament records, still on one source.
+- **Base branch:** stacked on facts/2026-11-27 (1.12.19, unshipped), which stacks on facts/2026-11-26, facts/2026-11-24 and facts/2026-11-23.
+
 ## 1.12.19 (2026-11-27)
 Rolling facts check. No new Blizzard hotfix post since the last run: the newest is still "WoW: Forever Hotfixes - November 25, 2026" (us.forums.blizzard.com/en/wow/t/2403040, post #16, Nov 26 00:25 UTC). mein-mmo's "Hotfixes from November 26" article is the same Nov 25 batch (published 06:57 UTC Nov 26), and wowforever.news (updated Nov 27) lists no newer Blizzard post, Item Restoration change or raid unlock time. No bot text changed.
 - **Re-verified** 1 of the 15 "due" lines: "Thunder Clap works in Defensive Stance; Rend and Thunder Clap now scale with Attack Power" against Blizzard's Priest & Warrior deep dive (news.blizzard.com/en-us/article/24301514: Thunder Clap "Useable in Defensive Stance", Rend and Thunder Clap "Now gains significant damage scaling from Attack Power"). The line had no source in the ledger.

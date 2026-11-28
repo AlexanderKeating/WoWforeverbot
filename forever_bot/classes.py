@@ -152,7 +152,7 @@ CLASSES = {
         "pvp": [
             "Shamans went 19–11 vs other classes in the beta tournament finals and took 3rd and 4th.",
             "Totemic Call pulls every totem to you mid-fight (30-second cooldown).",
-            "**Earthbound** (Elemental, 16) makes Earthbind Totem root nearby enemies for 5 seconds.",
+            "**Earthbound** (Elemental) turns Earthbind Totem's slow into a root on nearby enemies.",
         ],
         "talents": ["Shamanistic Focus (Enhancement, 11)", "Stormstrike (Enhancement, 16)", "Earthbound (Elemental, 16)",
                     "Call of Thunder (Elemental, 21)", "Lightning Mastery (Elemental, 31)", "Water Shield (Restoration, 11)", "Riptide (Restoration, 31)"],
@@ -303,7 +303,7 @@ _DO = {
         ],
         "pvp": [
             "**Pull your totems to you with Totemic Call mid-fight** → keep them on the fight instead of re-dropping them (30-second cooldown).",
-            "**Take Earthbound (Elemental, 16)** → Earthbind Totem roots nearby enemies for 5 seconds.",
+            "**Take Earthbound (Elemental)** → Earthbind Totem roots nearby enemies instead of just slowing them.",
             "Shamans went 19–11 vs other classes in the beta tournament finals and took 3rd and 4th.",
         ],
     },
